@@ -26,7 +26,14 @@ Copy `.env.example` to `.env.local` when Supabase credentials are ready.
 
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 ```
 
-The current MVP uses mock data only. Supabase helpers are included under `src/lib/supabase` for future integration.
+The app reads suppliers, categories, and RFQs from Supabase when environment
+variables are present. Without local Supabase variables, it falls back to the
+seed-like mock data in `src/lib/data.ts` so development still works.
+
+## Database
+
+Apply the SQL in `supabase/migrations/20260508000000_initial_marketplace_schema.sql`
+to create the marketplace tables, RLS policies, and starter supplier data.

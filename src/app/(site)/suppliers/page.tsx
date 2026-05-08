@@ -7,8 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
+import { getCategories, getSuppliers } from "@/lib/marketplace";
 import { createMetadata } from "@/lib/seo";
-import { categories, suppliers } from "@/lib/data";
 
 export const metadata: Metadata = createMetadata({
   title: "Verified Turkish Suppliers | TMP",
@@ -17,7 +17,14 @@ export const metadata: Metadata = createMetadata({
   path: "/suppliers",
 });
 
-export default function SuppliersPage() {
+export const revalidate = 300;
+
+export default async function SuppliersPage() {
+  const [categories, suppliers] = await Promise.all([
+    getCategories(),
+    getSuppliers(),
+  ]);
+
   return (
     <section className="section-shell">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">

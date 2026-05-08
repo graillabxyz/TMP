@@ -18,9 +18,16 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { categories, heroImage, suppliers, trustMetrics } from "@/lib/data";
+import { heroImage, trustMetrics } from "@/lib/data";
+import { getCategories, getSuppliers } from "@/lib/marketplace";
 
-export default function HomePage() {
+export const revalidate = 300;
+
+export default async function HomePage() {
+  const [categories, suppliers] = await Promise.all([
+    getCategories(),
+    getSuppliers(),
+  ]);
   const featuredSuppliers = suppliers
     .filter((supplier) => supplier.verified)
     .slice(0, 3);

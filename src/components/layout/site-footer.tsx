@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Logo } from "@/components/logo";
-import { categories } from "@/lib/data";
+import { getCategories } from "@/lib/marketplace";
 
 const footerLinks = [
   { label: "Suppliers", href: "/suppliers" },
@@ -10,7 +10,9 @@ const footerLinks = [
   { label: "Supplier onboarding", href: "/register" },
 ];
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const categories = await getCategories();
+
   return (
     <footer className="border-t border-white/10 bg-charcoal-900">
       <div className="container py-12">

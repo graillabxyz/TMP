@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { categories } from "@/lib/data";
+import { submitRfq } from "@/app/actions/rfq";
+import { getCategories } from "@/lib/marketplace";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
@@ -18,7 +19,32 @@ export const metadata: Metadata = createMetadata({
   path: "/rfq",
 });
 
-export default function RFQPage() {
+type RFQPageProps = {
+  searchParams?: Promise<{
+    status?: string;
+  }>;
+};
+
+const statusMessages = {
+  success: "RFQ submitted. Our sourcing team will review it shortly.",
+  missing: "Please add a product request, quantity, and destination country.",
+  config: "Supabase is not configured for this environment yet.",
+  error: "We could not submit the RFQ. Please try again.",
+};
+
+export const revalidate = 300;
+
+export default async function RFQPage({ searchParams }: RFQPageProps) {
+  const [categories, resolvedSearchParams] = await Promise.all([
+    getCategories(),
+    searchParams,
+  ]);
+  const status = resolvedSearchParams?.status;
+  const statusMessage =
+    status && status in statusMessages
+      ? statusMessages[status as keyof typeof statusMessages]
+      : null;
+
   return (
     <section className="section-shell">
       <div className="mx-auto max-w-5xl">
@@ -53,11 +79,19 @@ export default function RFQPage() {
 
           <Card className="bg-white/[0.035]">
             <CardContent className="p-6 sm:p-8">
-              <form className="grid gap-5">
+              {statusMessage && (
+                <div className="mb-5 rounded-lg border border-gold-300/25 bg-gold-300/[0.08] px-4 py-3 text-sm text-gold-50">
+                  {statusMessage}
+                </div>
+              )}
+
+              <form action={submitRfq} className="grid gap-5">
                 <div className="grid gap-2">
                   <Label htmlFor="product">Product request</Label>
                   <Input
                     id="product"
+                    name="product_request"
+                    required
                     placeholder="Organic cotton hoodies, CNC housings..."
                   />
                 </div>
@@ -65,7 +99,7 @@ export default function RFQPage() {
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="grid gap-2">
                     <Label htmlFor="category">Category</Label>
-                    <Select id="category" defaultValue="">
+                    <Select id="category" name="category_slug" defaultValue="">
                       <option value="" disabled>
                         Select category
                       </option>
@@ -78,14 +112,24 @@ export default function RFQPage() {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="quantity">Quantity</Label>
-                    <Input id="quantity" placeholder="500 units" />
+                    <Input
+                      id="quantity"
+                      name="quantity"
+                      required
+                      placeholder="500 units"
+                    />
                   </div>
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="grid gap-2">
                     <Label htmlFor="country">Destination country</Label>
-                    <Select id="country" defaultValue="">
+                    <Select
+                      id="country"
+                      name="destination_country"
+                      defaultValue=""
+                      required
+                    >
                       <option value="" disabled>
                         Select country
                       </option>
@@ -105,7 +149,11 @@ export default function RFQPage() {
                   </div>
                   <div className="grid gap-2">
                     <Label htmlFor="timeline">Target timeline</Label>
-                    <Input id="timeline" placeholder="Sample in 3 weeks" />
+                    <Input
+                      id="timeline"
+                      name="target_timeline"
+                      placeholder="Sample in 3 weeks"
+                    />
                   </div>
                 </div>
 
@@ -113,6 +161,7 @@ export default function RFQPage() {
                   <Label htmlFor="notes">Notes / message</Label>
                   <Textarea
                     id="notes"
+                    name="notes"
                     placeholder="Share materials, certifications, packaging, Incoterms, and any existing supplier benchmark."
                   />
                 </div>
@@ -128,10 +177,15 @@ export default function RFQPage() {
                   <span className="mt-1 text-xs text-muted-foreground">
                     Technical drawings, reference images, or spec sheets
                   </span>
-                  <input id="attachment" type="file" className="sr-only" />
+                  <input
+                    id="attachment"
+                    name="attachment"
+                    type="file"
+                    className="sr-only"
+                  />
                 </label>
 
-                <Button type="button" size="lg" className="w-full">
+                <Button type="submit" size="lg" className="w-full">
                   Submit RFQ
                   <Send aria-hidden="true" />
                 </Button>

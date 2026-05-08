@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
 
 import { siteConfig } from "@/lib/constants";
-import { suppliers } from "@/lib/data";
+import { getSuppliers } from "@/lib/marketplace";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const suppliers = await getSuppliers();
   const routes = [
     "",
     "/suppliers",

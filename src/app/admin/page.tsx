@@ -6,7 +6,7 @@ import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { suppliers } from "@/lib/data";
+import { getSuppliers } from "@/lib/marketplace";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
@@ -15,7 +15,10 @@ export const metadata: Metadata = createMetadata({
   path: "/admin",
 });
 
-export default function AdminPage() {
+export const revalidate = 300;
+
+export default async function AdminPage() {
+  const suppliers = await getSuppliers();
   const approvalRows = suppliers.slice(0, 5).map((supplier, index) => ({
     ...supplier,
     status: index % 2 === 0 ? "Verification review" : "Awaiting documents",

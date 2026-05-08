@@ -18,14 +18,18 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { getSupplierBySlug, getSuppliers } from "@/lib/marketplace";
 import { createMetadata } from "@/lib/seo";
-import { suppliers } from "@/lib/data";
 
 type SupplierDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const suppliers = await getSuppliers();
+
   return suppliers.map((supplier) => ({
     slug: supplier.slug,
   }));
@@ -35,7 +39,7 @@ export async function generateMetadata({
   params,
 }: SupplierDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const supplier = suppliers.find((item) => item.slug === slug);
+  const supplier = await getSupplierBySlug(slug);
 
   if (!supplier) {
     return createMetadata({
@@ -56,7 +60,7 @@ export default async function SupplierDetailPage({
   params,
 }: SupplierDetailPageProps) {
   const { slug } = await params;
-  const supplier = suppliers.find((item) => item.slug === slug);
+  const supplier = await getSupplierBySlug(slug);
 
   if (!supplier) {
     notFound();

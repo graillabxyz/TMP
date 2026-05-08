@@ -1,12 +1,14 @@
 import { createBrowserClient } from "@supabase/ssr";
 
-export function createClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+import { getSupabaseConfig } from "@/lib/supabase/env";
+import type { Database } from "@/types/database";
 
-  if (!supabaseUrl || !supabaseAnonKey) {
+export function createClient() {
+  const config = getSupabaseConfig();
+
+  if (!config) {
     throw new Error("Missing Supabase browser environment variables.");
   }
 
-  return createBrowserClient(supabaseUrl, supabaseAnonKey);
+  return createBrowserClient<Database>(config.url, config.publishableKey);
 }
