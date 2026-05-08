@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 import { cn } from "@/lib/utils";
 
@@ -10,10 +11,15 @@ type LogoProps = {
 export function Logo({ compact = false, className }: LogoProps) {
   return (
     <Link href="/" className={cn("flex items-center gap-3", className)}>
-      <span className="relative flex size-10 items-center justify-center rounded-lg border border-gold-300/[0.35] bg-gold-300/10 shadow-glow">
-        <span className="absolute size-5 rotate-45 rounded-sm border border-gold-200/80" />
-        <span className="absolute size-2 rounded-sm bg-gold-200" />
-        <span className="absolute -right-1 -top-1 size-2 rounded-full bg-white" />
+      <span className="relative flex size-10 items-center justify-center overflow-hidden rounded-lg border border-gold-300/[0.35] bg-gold-300/10 shadow-glow">
+        <Image
+          src="/brand/tmp-logo.webp"
+          alt="TMP logo"
+          fill
+          sizes="40px"
+          className="object-cover"
+          priority
+        />
       </span>
       {!compact && (
         <span className="flex flex-col leading-none">
