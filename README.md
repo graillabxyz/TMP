@@ -39,5 +39,19 @@ Supabase Row Level Security policies.
 
 ## Database
 
-Apply the SQL in `supabase/migrations/20260508000000_initial_marketplace_schema.sql`
-to create the marketplace tables, RLS policies, and starter supplier data.
+Apply the SQL migrations in order from `supabase/migrations/`.
+
+- `20260508000000_initial_marketplace_schema.sql` creates the base marketplace seed.
+- `20260508001000_auth_rls_i18n.sql` adds the ownership-ready `profiles` and
+  `supplier_accounts` model, bilingual fields, storage buckets, and the RLS
+  direction for public reads/RFQ inserts.
+
+Current RLS stance:
+
+- Public can read published categories, approved/published supplier accounts,
+  and published products.
+- Public can insert RFQs only.
+- Public cannot select, update, or delete RFQs.
+- Public cannot update or delete marketplace records.
+- Future suppliers can update their own supplier account and draft listing data,
+  while approval/status fields remain admin-only.

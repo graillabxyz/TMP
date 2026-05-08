@@ -8,9 +8,20 @@ import type { Supplier } from "@/types";
 
 type SupplierCardProps = {
   supplier: Supplier;
+  labels?: {
+    verified: string;
+    moq: string;
+    response: string;
+  };
 };
 
-export function SupplierCard({ supplier }: SupplierCardProps) {
+export function SupplierCard({ supplier, labels }: SupplierCardProps) {
+  const copy = labels ?? {
+    verified: "Verified",
+    moq: "MOQ",
+    response: "Response",
+  };
+
   return (
     <Card className="group overflow-hidden bg-white/[0.035] transition duration-300 hover:-translate-y-1 hover:border-gold-300/30 hover:bg-white/[0.055]">
       <div className="relative aspect-[16/10] overflow-hidden">
@@ -25,7 +36,7 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
         {supplier.verified && (
           <Badge className="absolute left-4 top-4" variant="success">
             <BadgeCheck className="mr-1 size-3" aria-hidden="true" />
-            Verified
+            {copy.verified}
           </Badge>
         )}
       </div>
@@ -61,11 +72,11 @@ export function SupplierCard({ supplier }: SupplierCardProps) {
         </div>
         <div className="mt-5 grid grid-cols-2 gap-3 border-t border-white/10 pt-4 text-sm">
           <div>
-            <p className="text-muted-foreground">MOQ</p>
+            <p className="text-muted-foreground">{copy.moq}</p>
             <p className="mt-1 font-medium text-white">{supplier.moq}</p>
           </div>
           <div>
-            <p className="text-muted-foreground">Response</p>
+            <p className="text-muted-foreground">{copy.response}</p>
             <p className="mt-1 font-medium text-white">
               {supplier.responseTime}
             </p>

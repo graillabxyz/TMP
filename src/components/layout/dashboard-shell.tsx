@@ -8,31 +8,39 @@ import {
 } from "lucide-react";
 
 import { Logo } from "@/components/logo";
+import { getDictionary } from "@/lib/dictionary";
+import { getLocale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-
-const navItems = [
-  { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Listings", href: "/dashboard", icon: Boxes },
-  { label: "RFQs", href: "/dashboard", icon: BadgeCheck },
-  { label: "Messages", href: "/dashboard", icon: MessageSquare },
-  { label: "Verification", href: "/dashboard", icon: ShieldCheck },
-];
 
 type DashboardShellProps = {
   children: React.ReactNode;
-  eyebrow?: string;
+  eyebrow: string;
   title: string;
   description: string;
   admin?: boolean;
 };
 
-export function DashboardShell({
+export async function DashboardShell({
   children,
-  eyebrow = "Supplier workspace",
+  eyebrow,
   title,
   description,
   admin = false,
 }: DashboardShellProps) {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+  const navItems = [
+    { label: t.dashboard.overview, href: "/dashboard", icon: LayoutDashboard },
+    { label: t.dashboard.listings, href: "/dashboard", icon: Boxes },
+    { label: t.dashboard.rfqs, href: "/dashboard", icon: BadgeCheck },
+    { label: t.dashboard.messages, href: "/dashboard", icon: MessageSquare },
+    {
+      label: t.dashboard.verification,
+      href: "/dashboard",
+      icon: ShieldCheck,
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-surface-radial">
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-white/10 bg-charcoal-900/[0.94] p-6 lg:block">

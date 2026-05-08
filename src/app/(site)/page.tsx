@@ -19,14 +19,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { heroImage, trustMetrics } from "@/lib/data";
+import { getDictionary } from "@/lib/dictionary";
+import { getLocale } from "@/lib/i18n";
 import { getCategories, getSuppliers } from "@/lib/marketplace";
 
 export const revalidate = 300;
 
 export default async function HomePage() {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
   const [categories, suppliers] = await Promise.all([
-    getCategories(),
-    getSuppliers(),
+    getCategories(locale),
+    getSuppliers(locale),
   ]);
   const featuredSuppliers = suppliers
     .filter((supplier) => supplier.verified)
@@ -50,14 +54,13 @@ export default async function HomePage() {
           <div className="max-w-4xl animate-fade-up">
             <Badge>
               <Sparkles className="mr-1 size-3" aria-hidden="true" />
-              Verified Turkish supply network for Europe
+              {t.home.badge}
             </Badge>
             <h1 className="mt-6 max-w-4xl text-5xl font-semibold text-white sm:text-6xl lg:text-7xl">
-              Turkiye Market Place
+              {t.home.title}
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-white/[0.78] sm:text-xl">
-              Source textiles, machinery, food, home goods, automotive parts,
-              and packaging from export-ready Turkish suppliers.
+              {t.home.subtitle}
             </p>
 
             <div className="mt-9 max-w-4xl rounded-lg border border-white/[0.15] bg-black/[0.42] p-3 shadow-premium backdrop-blur-xl">
@@ -69,11 +72,11 @@ export default async function HomePage() {
                   />
                   <Input
                     className="pl-10"
-                    placeholder="Search product, category, or supplier"
+                    placeholder={t.home.searchPlaceholder}
                   />
                 </div>
                 <Select defaultValue="all">
-                  <option value="all">All categories</option>
+                  <option value="all">{t.home.allCategories}</option>
                   {categories.map((category) => (
                     <option key={category.slug} value={category.slug}>
                       {category.name}
@@ -82,7 +85,7 @@ export default async function HomePage() {
                 </Select>
                 <Button asChild size="lg">
                   <Link href="/rfq">
-                    Start sourcing
+                    {t.home.startSourcing}
                     <ArrowRight aria-hidden="true" />
                   </Link>
                 </Button>
@@ -90,7 +93,7 @@ export default async function HomePage() {
             </div>
 
             <div className="mt-9 grid max-w-3xl grid-cols-3 gap-3">
-              {trustMetrics.map((metric) => (
+              {trustMetrics.map((metric, index) => (
                 <div
                   key={metric.label}
                   className="rounded-lg border border-white/10 bg-white/[0.055] p-4 backdrop-blur-md"
@@ -99,7 +102,7 @@ export default async function HomePage() {
                     {metric.value}
                   </p>
                   <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                    {metric.label}
+                    {t.home.trustMetrics[index]}
                   </p>
                 </div>
               ))}
@@ -111,18 +114,26 @@ export default async function HomePage() {
       <section className="section-shell">
         <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <div>
-            <p className="text-sm text-gold-200">Featured suppliers</p>
+            <p className="text-sm text-gold-200">{t.home.featuredSuppliers}</p>
             <h2 className="mt-3 max-w-2xl text-3xl font-semibold text-white sm:text-4xl">
-              Export-ready partners with visible credibility.
+              {t.home.featuredTitle}
             </h2>
           </div>
           <Button asChild variant="outline">
-            <Link href="/suppliers">Explore suppliers</Link>
+            <Link href="/suppliers">{t.home.exploreSuppliers}</Link>
           </Button>
         </div>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
           {featuredSuppliers.map((supplier) => (
-            <SupplierCard key={supplier.slug} supplier={supplier} />
+            <SupplierCard
+              key={supplier.slug}
+              supplier={supplier}
+              labels={{
+                verified: t.common.verified,
+                moq: t.common.moq,
+                response: t.common.response,
+              }}
+            />
           ))}
         </div>
       </section>
@@ -131,16 +142,15 @@ export default async function HomePage() {
         <div className="section-shell">
           <div className="grid gap-8 lg:grid-cols-[.85fr_1.15fr] lg:items-end">
             <div>
-              <p className="text-sm text-gold-200">Featured categories</p>
+              <p className="text-sm text-gold-200">
+                {t.home.featuredCategories}
+              </p>
               <h2 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
-                Built around the categories European buyers already source from
-                Turkiye.
+                {t.home.categoriesTitle}
               </h2>
             </div>
             <p className="text-sm leading-7 text-muted-foreground">
-              Browse a focused supplier network shaped around practical buyer
-              signals: category fit, capacity, certifications, export markets,
-              and response speed.
+              {t.home.categoriesBody}
             </p>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -174,18 +184,18 @@ export default async function HomePage() {
           {[
             {
               icon: ShieldCheck,
-              title: "Verification-first profiles",
-              body: "Certification, export markets, response speed, and supplier readiness sit close to every RFQ path.",
+              title: t.home.benefitVerificationTitle,
+              body: t.home.benefitVerificationBody,
             },
             {
               icon: Globe2,
-              title: "Designed for EU sourcing",
-              body: "Buyers can compare categories, MOQs, private label capacity, and country-specific export experience.",
+              title: t.home.benefitEuropeTitle,
+              body: t.home.benefitEuropeBody,
             },
             {
               icon: Factory,
-              title: "Supplier growth engine",
-              body: "Turkish manufacturers get a premium digital presence built for buyer trust and conversion.",
+              title: t.home.benefitGrowthTitle,
+              body: t.home.benefitGrowthBody,
             },
           ].map((benefit) => {
             const Icon = benefit.icon;
@@ -219,17 +229,13 @@ export default async function HomePage() {
             <div>
               <Badge variant="outline">
                 <BadgeCheck className="mr-1 size-3" aria-hidden="true" />
-                Supplier verification
+                {t.home.verificationBadge}
               </Badge>
               <h2 className="mt-5 max-w-2xl text-3xl font-semibold text-white sm:text-4xl">
-                Turn supplier credibility into buyer confidence.
+                {t.home.verificationTitle}
               </h2>
               <div className="mt-6 grid gap-3 text-sm text-muted-foreground sm:grid-cols-3">
-                {[
-                  "Export readiness review",
-                  "Certification display",
-                  "Verified badge placement",
-                ].map((item) => (
+                {t.home.verificationItems.map((item) => (
                   <div key={item} className="flex items-center gap-2">
                     <CheckCircle2
                       className="size-4 text-gold-200"
@@ -242,7 +248,7 @@ export default async function HomePage() {
             </div>
             <Button asChild size="lg" variant="outline">
               <Link href="/register">
-                Apply as supplier
+                {t.home.applySupplier}
                 <Building2 aria-hidden="true" />
               </Link>
             </Button>

@@ -6,6 +6,8 @@ import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { getDictionary } from "@/lib/dictionary";
+import { getLocale } from "@/lib/i18n";
 import { getSuppliers } from "@/lib/marketplace";
 import { createMetadata } from "@/lib/seo";
 
@@ -18,7 +20,9 @@ export const metadata: Metadata = createMetadata({
 export const revalidate = 300;
 
 export default async function AdminPage() {
-  const suppliers = await getSuppliers();
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+  const suppliers = await getSuppliers(locale);
   const approvalRows = suppliers.slice(0, 5).map((supplier, index) => ({
     ...supplier,
     status: index % 2 === 0 ? "Verification review" : "Awaiting documents",
@@ -28,15 +32,15 @@ export default async function AdminPage() {
   return (
     <DashboardShell
       admin
-      eyebrow="Admin console"
-      title="Supplier approvals"
-      description="Review supplier applications, verification status, documents, and marketplace readiness."
+      eyebrow={t.admin.eyebrow}
+      title={t.admin.title}
+      description={t.admin.description}
     >
       <div className="grid gap-5 sm:grid-cols-3">
         {[
-          { label: "Pending approvals", value: "14", icon: Clock },
-          { label: "Verified suppliers", value: "328", icon: BadgeCheck },
-          { label: "Queued checks", value: "9", icon: ShieldCheck },
+          { label: t.admin.pendingApprovals, value: "14", icon: Clock },
+          { label: t.admin.verifiedSuppliers, value: "328", icon: BadgeCheck },
+          { label: t.admin.queuedChecks, value: "9", icon: ShieldCheck },
         ].map((metric) => {
           const Icon = metric.icon;
 
@@ -60,25 +64,25 @@ export default async function AdminPage() {
         <CardContent className="p-0">
           <div className="flex items-center justify-between gap-4 border-b border-white/10 p-6">
             <div>
-              <p className="text-sm text-gold-200">Approval table</p>
+              <p className="text-sm text-gold-200">{t.admin.approvalTable}</p>
               <h2 className="mt-2 text-xl font-semibold text-white">
-                Supplier verification queue
+                {t.admin.queue}
               </h2>
             </div>
             <Button variant="outline" size="sm">
-              Export
+              {t.common.export}
             </Button>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-left text-sm">
               <thead className="border-b border-white/10 text-muted-foreground">
                 <tr>
-                  <th className="px-6 py-4 font-medium">Supplier</th>
-                  <th className="px-6 py-4 font-medium">Category</th>
-                  <th className="px-6 py-4 font-medium">Location</th>
-                  <th className="px-6 py-4 font-medium">Status</th>
-                  <th className="px-6 py-4 font-medium">Risk</th>
-                  <th className="px-6 py-4 font-medium">Action</th>
+                  <th className="px-6 py-4 font-medium">{t.admin.supplier}</th>
+                  <th className="px-6 py-4 font-medium">{t.common.category}</th>
+                  <th className="px-6 py-4 font-medium">{t.common.location}</th>
+                  <th className="px-6 py-4 font-medium">{t.common.status}</th>
+                  <th className="px-6 py-4 font-medium">{t.admin.risk}</th>
+                  <th className="px-6 py-4 font-medium">{t.common.action}</th>
                 </tr>
               </thead>
               <tbody>
@@ -127,7 +131,7 @@ export default async function AdminPage() {
                     <td className="px-6 py-4">
                       <Button variant="ghost" size="sm">
                         <UserCheck aria-hidden="true" />
-                        Review
+                        {t.common.review}
                       </Button>
                     </td>
                   </tr>
@@ -141,9 +145,9 @@ export default async function AdminPage() {
       <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <Card className="bg-white/[0.035]">
           <CardContent className="p-6">
-            <p className="text-sm text-gold-200">Verification queue</p>
+            <p className="text-sm text-gold-200">{t.admin.queue}</p>
             <h2 className="mt-2 text-xl font-semibold text-white">
-              Document checks
+              {t.admin.documentChecks}
             </h2>
             <div className="mt-6 grid gap-3">
               {["Tax registration", "Factory audit", "EU references"].map(
@@ -161,13 +165,12 @@ export default async function AdminPage() {
         </Card>
         <Card className="bg-white/[0.035]">
           <CardContent className="p-6">
-            <p className="text-sm text-gold-200">Marketplace controls</p>
+            <p className="text-sm text-gold-200">{t.admin.controls}</p>
             <h2 className="mt-2 text-xl font-semibold text-white">
-              Approval notes
+              {t.admin.notes}
             </h2>
             <p className="mt-5 text-sm leading-7 text-muted-foreground">
-              Keep reviewer notes close to approval decisions, verification
-              evidence, category quality, and supplier readiness signals.
+              {t.admin.notesBody}
             </p>
           </CardContent>
         </Card>

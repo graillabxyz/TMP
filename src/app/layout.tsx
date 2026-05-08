@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { getLocale } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
 
 import "./globals.css";
@@ -11,13 +12,15 @@ export const metadata: Metadata = createMetadata({
   path: "/",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" className="dark">
+    <html lang={locale} className="dark">
       <body>{children}</body>
     </html>
   );

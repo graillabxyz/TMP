@@ -1,17 +1,20 @@
 import Link from "next/link";
 
 import { Logo } from "@/components/logo";
+import { getDictionary } from "@/lib/dictionary";
+import { getLocale } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
 
-const footerLinks = [
-  { label: "Suppliers", href: "/suppliers" },
-  { label: "Request a quote", href: "/rfq" },
-  { label: "Buyer login", href: "/login" },
-  { label: "Supplier onboarding", href: "/register" },
-];
-
 export async function SiteFooter() {
-  const categories = await getCategories();
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+  const categories = await getCategories(locale);
+  const footerLinks = [
+    { label: t.footer.suppliers, href: "/suppliers" },
+    { label: t.footer.rfq, href: "/rfq" },
+    { label: t.footer.buyerLogin, href: "/login" },
+    { label: t.footer.supplierOnboarding, href: "/register" },
+  ];
 
   return (
     <footer className="border-t border-white/10 bg-charcoal-900">
@@ -20,12 +23,13 @@ export async function SiteFooter() {
           <div>
             <Logo />
             <p className="mt-5 max-w-sm text-sm leading-6 text-muted-foreground">
-              TMP helps European buyers discover, compare, and request quotes
-              from export-ready Turkish suppliers.
+              {t.footer.intro}
             </p>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-white">Marketplace</h3>
+            <h3 className="text-sm font-semibold text-white">
+              {t.common.marketplace}
+            </h3>
             <div className="mt-4 grid gap-3">
               {footerLinks.map((link) => (
                 <Link
@@ -39,7 +43,9 @@ export async function SiteFooter() {
             </div>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-white">Categories</h3>
+            <h3 className="text-sm font-semibold text-white">
+              {t.common.categories}
+            </h3>
             <div className="mt-4 grid gap-3">
               {categories.slice(0, 4).map((category) => (
                 <Link
@@ -54,10 +60,8 @@ export async function SiteFooter() {
           </div>
         </div>
         <div className="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 TMP. All rights reserved.</p>
-          <p>
-            Built for sourcing validation, buyer trust, and supplier growth.
-          </p>
+          <p>{t.footer.rights}</p>
+          <p>{t.footer.note}</p>
         </div>
       </div>
     </footer>

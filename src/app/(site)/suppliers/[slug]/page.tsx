@@ -18,6 +18,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { getDictionary } from "@/lib/dictionary";
+import { getLocale } from "@/lib/i18n";
 import { getSupplierBySlug, getSuppliers } from "@/lib/marketplace";
 import { createMetadata } from "@/lib/seo";
 
@@ -28,7 +30,7 @@ type SupplierDetailPageProps = {
 export const revalidate = 300;
 
 export async function generateStaticParams() {
-  const suppliers = await getSuppliers();
+  const suppliers = await getSuppliers("en");
 
   return suppliers.map((supplier) => ({
     slug: supplier.slug,
@@ -39,7 +41,7 @@ export async function generateMetadata({
   params,
 }: SupplierDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const supplier = await getSupplierBySlug(slug);
+  const supplier = await getSupplierBySlug(slug, "en");
 
   if (!supplier) {
     return createMetadata({
@@ -60,7 +62,9 @@ export default async function SupplierDetailPage({
   params,
 }: SupplierDetailPageProps) {
   const { slug } = await params;
-  const supplier = await getSupplierBySlug(slug);
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+  const supplier = await getSupplierBySlug(slug, locale);
 
   if (!supplier) {
     notFound();
@@ -71,7 +75,7 @@ export default async function SupplierDetailPage({
       <Button asChild variant="ghost" className="mb-8">
         <Link href="/suppliers">
           <ArrowLeft aria-hidden="true" />
-          Back to suppliers
+          {t.common.backToSuppliers}
         </Link>
       </Button>
 
@@ -82,7 +86,7 @@ export default async function SupplierDetailPage({
             {supplier.verified && (
               <Badge variant="success">
                 <BadgeCheck className="mr-1 size-3" aria-hidden="true" />
-                Verified supplier
+                {t.common.verifiedSupplier}
               </Badge>
             )}
           </div>
@@ -97,12 +101,28 @@ export default async function SupplierDetailPage({
             {[
               {
                 label: "Founded",
+                localizedLabel: t.supplierDetail.founded,
                 value: supplier.yearFounded,
                 icon: CalendarDays,
               },
-              { label: "Team", value: supplier.employees, icon: Users },
-              { label: "MOQ", value: supplier.moq, icon: Package },
-              { label: "Response", value: supplier.responseTime, icon: Send },
+              {
+                label: "Team",
+                localizedLabel: t.supplierDetail.team,
+                value: supplier.employees,
+                icon: Users,
+              },
+              {
+                label: "MOQ",
+                localizedLabel: t.common.moq,
+                value: supplier.moq,
+                icon: Package,
+              },
+              {
+                label: "Response",
+                localizedLabel: t.common.response,
+                value: supplier.responseTime,
+                icon: Send,
+              },
             ].map((item) => {
               const Icon = item.icon;
 
@@ -113,7 +133,7 @@ export default async function SupplierDetailPage({
                 >
                   <Icon className="size-4 text-gold-200" aria-hidden="true" />
                   <p className="mt-4 text-xs text-muted-foreground">
-                    {item.label}
+                    {item.localizedLabel}
                   </p>
                   <p className="mt-1 font-semibold text-white">{item.value}</p>
                 </div>
@@ -147,7 +167,7 @@ export default async function SupplierDetailPage({
             </div>
             <Button asChild className="mt-6 w-full" size="lg">
               <Link href="/rfq">
-                Request quote
+                {t.common.requestQuote}
                 <Send aria-hidden="true" />
               </Link>
             </Button>
@@ -159,9 +179,11 @@ export default async function SupplierDetailPage({
         <div>
           <div className="flex items-end justify-between gap-4">
             <div>
-              <p className="text-sm text-gold-200">Product catalog</p>
+              <p className="text-sm text-gold-200">
+                {t.supplierDetail.productCatalog}
+              </p>
               <h2 className="mt-3 text-3xl font-semibold text-white">
-                Preview products
+                {t.supplierDetail.previewProducts}
               </h2>
             </div>
           </div>
@@ -186,7 +208,7 @@ export default async function SupplierDetailPage({
                     {product.name}
                   </h3>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    MOQ: {product.moq}
+                    {t.common.moq}: {product.moq}
                   </p>
                 </CardContent>
               </Card>
@@ -204,8 +226,12 @@ export default async function SupplierDetailPage({
                 />
               </div>
               <div>
-                <p className="text-sm text-gold-200">Certifications</p>
-                <h2 className="font-semibold text-white">Licenses & audits</h2>
+                <p className="text-sm text-gold-200">
+                  {t.supplierDetail.certifications}
+                </p>
+                <h2 className="font-semibold text-white">
+                  {t.supplierDetail.licenses}
+                </h2>
               </div>
             </div>
             <div className="mt-6 grid gap-3">
@@ -225,7 +251,7 @@ export default async function SupplierDetailPage({
             <div className="mt-6 rounded-lg border border-white/10 bg-charcoal-800 p-4">
               <div className="flex items-center gap-2 text-sm text-white">
                 <Globe2 className="size-4 text-gold-200" aria-hidden="true" />
-                Export markets
+                {t.supplierDetail.exportMarkets}
               </div>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
                 {supplier.exportMarkets.join(", ")}

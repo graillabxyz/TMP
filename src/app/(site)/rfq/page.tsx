@@ -9,6 +9,8 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { submitRfq } from "@/app/actions/rfq";
+import { getDictionary } from "@/lib/dictionary";
+import { getLocale } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
 import { createMetadata } from "@/lib/seo";
 
@@ -25,24 +27,19 @@ type RFQPageProps = {
   }>;
 };
 
-const statusMessages = {
-  success: "RFQ submitted. Our sourcing team will review it shortly.",
-  missing: "Please add a product request, quantity, and destination country.",
-  config: "Supabase is not configured for this environment yet.",
-  error: "We could not submit the RFQ. Please try again.",
-};
-
 export const revalidate = 300;
 
 export default async function RFQPage({ searchParams }: RFQPageProps) {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
   const [categories, resolvedSearchParams] = await Promise.all([
-    getCategories(),
+    getCategories(locale),
     searchParams,
   ]);
   const status = resolvedSearchParams?.status;
   const statusMessage =
-    status && status in statusMessages
-      ? statusMessages[status as keyof typeof statusMessages]
+    status && status in t.rfq.status
+      ? t.rfq.status[status as keyof typeof t.rfq.status]
       : null;
 
   return (
@@ -52,21 +49,16 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
           <div>
             <Badge>
               <PackageSearch className="mr-1 size-3" aria-hidden="true" />
-              Request for quote
+              {t.rfq.badge}
             </Badge>
             <h1 className="mt-5 text-4xl font-semibold text-white sm:text-5xl">
-              Send one sourcing brief. Reach the right Turkish suppliers.
+              {t.rfq.title}
             </h1>
             <p className="mt-5 text-sm leading-7 text-muted-foreground">
-              Share the details suppliers need to evaluate fit, prepare pricing,
-              and respond with a useful next step.
+              {t.rfq.body}
             </p>
             <div className="mt-8 grid gap-3">
-              {[
-                "Product specifications",
-                "Target quantity and destination",
-                "Optional drawings or reference files",
-              ].map((item) => (
+              {t.rfq.bullets.map((item) => (
                 <div
                   key={item}
                   className="rounded-lg border border-white/10 bg-white/[0.035] px-4 py-3 text-sm text-muted-foreground"
@@ -87,21 +79,21 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
 
               <form action={submitRfq} className="grid gap-5">
                 <div className="grid gap-2">
-                  <Label htmlFor="product">Product request</Label>
+                  <Label htmlFor="product">{t.rfq.productRequest}</Label>
                   <Input
                     id="product"
                     name="product_request"
                     required
-                    placeholder="Organic cotton hoodies, CNC housings..."
+                    placeholder={t.rfq.productPlaceholder}
                   />
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="grid gap-2">
-                    <Label htmlFor="category">Category</Label>
+                    <Label htmlFor="category">{t.common.category}</Label>
                     <Select id="category" name="category_slug" defaultValue="">
                       <option value="" disabled>
-                        Select category
+                        {t.rfq.selectCategory}
                       </option>
                       {categories.map((category) => (
                         <option key={category.slug} value={category.slug}>
@@ -111,19 +103,19 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                     </Select>
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="quantity">Quantity</Label>
+                    <Label htmlFor="quantity">{t.rfq.quantity}</Label>
                     <Input
                       id="quantity"
                       name="quantity"
                       required
-                      placeholder="500 units"
+                      placeholder={t.rfq.quantityPlaceholder}
                     />
                   </div>
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="grid gap-2">
-                    <Label htmlFor="country">Destination country</Label>
+                    <Label htmlFor="country">{t.rfq.destinationCountry}</Label>
                     <Select
                       id="country"
                       name="destination_country"
@@ -131,7 +123,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                       required
                     >
                       <option value="" disabled>
-                        Select country
+                        {t.rfq.selectCountry}
                       </option>
                       {[
                         "Germany",
@@ -148,21 +140,21 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                     </Select>
                   </div>
                   <div className="grid gap-2">
-                    <Label htmlFor="timeline">Target timeline</Label>
+                    <Label htmlFor="timeline">{t.rfq.timeline}</Label>
                     <Input
                       id="timeline"
                       name="target_timeline"
-                      placeholder="Sample in 3 weeks"
+                      placeholder={t.rfq.timelinePlaceholder}
                     />
                   </div>
                 </div>
 
                 <div className="grid gap-2">
-                  <Label htmlFor="notes">Notes / message</Label>
+                  <Label htmlFor="notes">{t.rfq.notes}</Label>
                   <Textarea
                     id="notes"
                     name="notes"
-                    placeholder="Share materials, certifications, packaging, Incoterms, and any existing supplier benchmark."
+                    placeholder={t.rfq.notesPlaceholder}
                   />
                 </div>
 
@@ -172,10 +164,10 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                 >
                   <FileUp className="size-8 text-gold-100" aria-hidden="true" />
                   <span className="mt-3 text-sm font-medium text-white">
-                    Upload attachment
+                    {t.rfq.upload}
                   </span>
                   <span className="mt-1 text-xs text-muted-foreground">
-                    Technical drawings, reference images, or spec sheets
+                    {t.rfq.uploadHelp}
                   </span>
                   <input
                     id="attachment"
@@ -186,7 +178,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                 </label>
 
                 <Button type="submit" size="lg" className="w-full">
-                  Submit RFQ
+                  {t.rfq.submit}
                   <Send aria-hidden="true" />
                 </Button>
               </form>

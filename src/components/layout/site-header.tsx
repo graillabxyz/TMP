@@ -1,17 +1,27 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+import { LanguageToggle } from "@/components/language-toggle";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/lib/constants";
+import { getDictionary } from "@/lib/dictionary";
+import { getLocale } from "@/lib/i18n";
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+  const nav = [
+    { label: t.nav.suppliers, href: "/suppliers" },
+    { label: t.nav.rfq, href: "/rfq" },
+    { label: t.nav.dashboard, href: "/dashboard" },
+  ];
+
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-background/[0.82] backdrop-blur-xl">
       <div className="container flex h-[4.5rem] min-h-[4.5rem] items-center justify-between gap-4 py-4">
         <Logo />
         <nav className="hidden items-center gap-1 md:flex">
-          {siteConfig.nav.map((item) => (
+          {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -23,11 +33,12 @@ export function SiteHeader() {
         </nav>
         <div className="flex items-center gap-2">
           <Button asChild variant="ghost" className="hidden sm:inline-flex">
-            <Link href="/login">Login</Link>
+            <Link href="/login">{t.nav.login}</Link>
           </Button>
+          <LanguageToggle locale={locale} />
           <Button asChild>
             <Link href="/register">
-              Join TMP
+              {t.nav.join}
               <ArrowRight aria-hidden="true" />
             </Link>
           </Button>

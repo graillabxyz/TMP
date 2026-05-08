@@ -12,6 +12,8 @@ import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { getDictionary } from "@/lib/dictionary";
+import { getLocale } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
@@ -20,18 +22,21 @@ export const metadata: Metadata = createMetadata({
   path: "/dashboard",
 });
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
   const metrics = [
-    { label: "Active listings", value: "18", icon: PackagePlus },
-    { label: "Open RFQs", value: "7", icon: Inbox },
-    { label: "Unread messages", value: "12", icon: MessageSquare },
-    { label: "Verification", value: "72%", icon: BadgeCheck },
+    { label: t.dashboard.metrics[0], value: "18", icon: PackagePlus },
+    { label: t.dashboard.metrics[1], value: "7", icon: Inbox },
+    { label: t.dashboard.metrics[2], value: "12", icon: MessageSquare },
+    { label: t.dashboard.metrics[3], value: "72%", icon: BadgeCheck },
   ];
 
   return (
     <DashboardShell
-      title="Dashboard"
-      description="Track supplier visibility, inbound RFQs, buyer conversations, and verification readiness."
+      eyebrow={t.dashboard.eyebrow}
+      title={t.dashboard.title}
+      description={t.dashboard.description}
     >
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {metrics.map((metric) => {
@@ -64,13 +69,13 @@ export default function DashboardPage() {
           <CardContent className="p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-sm text-gold-200">RFQs</p>
+                <p className="text-sm text-gold-200">{t.dashboard.rfqs}</p>
                 <h2 className="mt-2 text-xl font-semibold text-white">
-                  Recent buyer requests
+                  {t.dashboard.recentRequests}
                 </h2>
               </div>
               <Button variant="outline" size="sm">
-                View all
+                {t.dashboard.viewAll}
               </Button>
             </div>
             <div className="mt-6 grid gap-3">
@@ -97,9 +102,9 @@ export default function DashboardPage() {
 
         <Card className="bg-white/[0.035]">
           <CardContent className="p-6">
-            <p className="text-sm text-gold-200">Verification</p>
+            <p className="text-sm text-gold-200">{t.dashboard.verification}</p>
             <h2 className="mt-2 text-xl font-semibold text-white">
-              Profile readiness
+              {t.dashboard.profileReadiness}
             </h2>
             <div className="mt-6 grid gap-4">
               {[
@@ -124,7 +129,7 @@ export default function DashboardPage() {
                   className="size-4 text-gold-200"
                   aria-hidden="true"
                 />
-                Buyer activity
+                {t.dashboard.buyerActivity}
               </div>
               <div className="mt-5 flex h-24 items-end gap-2">
                 {[36, 52, 42, 66, 58, 82, 74].map((height, index) => (
@@ -142,9 +147,9 @@ export default function DashboardPage() {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         {[
-          { title: "Listings", icon: PackagePlus },
-          { title: "Messages", icon: MessageSquare },
-          { title: "Next actions", icon: Clock3 },
+          { title: t.dashboard.listings, icon: PackagePlus },
+          { title: t.dashboard.messages, icon: MessageSquare },
+          { title: t.dashboard.nextActions, icon: Clock3 },
         ].map((section) => {
           const Icon = section.icon;
 
@@ -156,8 +161,7 @@ export default function DashboardPage() {
                   {section.title}
                 </h2>
                 <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                  Keep upcoming work visible as listings, buyer conversations,
-                  and verification tasks move through the pipeline.
+                  {t.dashboard.placeholder}
                 </p>
               </CardContent>
             </Card>
