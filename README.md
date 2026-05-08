@@ -33,6 +33,10 @@ The app reads suppliers, categories, and RFQs from Supabase when environment
 variables are present. Without local Supabase variables, it falls back to the
 seed-like mock data in `src/lib/data.ts` so development still works.
 
+The app intentionally uses the publishable key only. Do not add service-role or
+admin keys to the frontend project; database access should be controlled with
+Supabase Row Level Security policies.
+
 ## Database
 
 Apply the SQL in `supabase/migrations/20260508000000_initial_marketplace_schema.sql`
