@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, BadgeCheck, Building2, ShoppingBag } from "lucide-react";
+import { BadgeCheck } from "lucide-react";
 
+import { OnboardingAuthCard } from "@/components/auth/onboarding-auth-card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select } from "@/components/ui/select";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
@@ -18,9 +13,20 @@ export const metadata: Metadata = createMetadata({
   path: "/register",
 });
 
-export default async function RegisterPage() {
+type RegisterPageProps = {
+  searchParams: Promise<{
+    role?: "buyer" | "supplier";
+    status?: string;
+  }>;
+};
+
+export default async function RegisterPage({
+  searchParams,
+}: RegisterPageProps) {
   const locale = await getLocale();
+  const params = await searchParams;
   const t = getDictionary(locale);
+  const initialRole = params.role === "supplier" ? "supplier" : "buyer";
 
   return (
     <div className="w-full max-w-5xl">
@@ -57,77 +63,33 @@ export default async function RegisterPage() {
           </div>
         </div>
 
-        <Card className="bg-white/[0.035]">
-          <CardContent className="p-6 sm:p-8">
-            <div className="grid gap-3 sm:grid-cols-2">
-              {[
-                { label: t.auth.buyerAccount, icon: ShoppingBag },
-                { label: t.auth.supplierAccount, icon: Building2 },
-              ].map((path) => {
-                const Icon = path.icon;
-
-                return (
-                  <button
-                    type="button"
-                    key={path.label}
-                    className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-4 text-left text-sm text-white transition hover:border-gold-300/[0.35] hover:bg-white/[0.055]"
-                  >
-                    <Icon className="size-5 text-gold-100" aria-hidden="true" />
-                    {path.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            <form className="mt-8 grid gap-5">
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div className="grid gap-2">
-                  <Label htmlFor="name">{t.auth.fullName}</Label>
-                  <Input id="name" placeholder="Aylin Demir" />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="company">{t.auth.company}</Label>
-                  <Input id="company" placeholder="Nordic Retail Group" />
-                </div>
-              </div>
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div className="grid gap-2">
-                  <Label htmlFor="email">{t.auth.workEmail}</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="you@company.com"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="role">{t.auth.primaryRole}</Label>
-                  <Select id="role" defaultValue="">
-                    <option value="" disabled>
-                      {t.auth.selectRole}
-                    </option>
-                    <option value="buyer">{t.auth.buyer}</option>
-                    <option value="supplier">{t.auth.supplier}</option>
-                  </Select>
-                </div>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password">{t.auth.password}</Label>
-                <Input id="password" type="password" placeholder="••••••••" />
-              </div>
-              <Button type="button" size="lg">
-                {t.auth.createAccount}
-                <ArrowRight aria-hidden="true" />
-              </Button>
-            </form>
-
-            <p className="mt-6 text-center text-sm text-muted-foreground">
-              {t.auth.alreadyAccount}{" "}
-              <Link href="/login" className="text-gold-100 hover:text-white">
-                {t.auth.login}
-              </Link>
-            </p>
-          </CardContent>
-        </Card>
+        <OnboardingAuthCard
+          mode="register"
+          initialRole={initialRole}
+          status={params.status}
+          labels={{
+            buyerAccount: t.auth.buyerAccount,
+            supplierAccount: t.auth.supplierAccount,
+            buyerBody: t.auth.buyerPathBody,
+            supplierBody: t.auth.supplierPathBody,
+            fullName: t.auth.fullName,
+            company: t.auth.company,
+            email: t.auth.email,
+            workEmail: t.auth.workEmail,
+            password: t.auth.password,
+            login: t.auth.login,
+            createAccount: t.auth.createAccount,
+            continueWithGoogle: t.auth.continueWithGoogle,
+            googleHelp: t.auth.googleHelp,
+            orEmail: t.auth.orEmail,
+            alreadyAccount: t.auth.alreadyAccount,
+            newToTmp: t.auth.newToTmp,
+            missing: t.auth.status.missing,
+            error: t.auth.status.error,
+            checkEmail: t.auth.status.checkEmail,
+            oauthNotReady: t.auth.status.oauthNotReady,
+          }}
+        />
       </div>
     </div>
   );

@@ -192,7 +192,19 @@ const dictionaries = {
       selectRole: "Select role",
       buyer: "Buyer",
       supplier: "Supplier",
+      continueWithGoogle: "Continue with Google",
+      googleHelp:
+        "Google OAuth is wired for Supabase and will work once the Google provider credentials are added in Supabase.",
+      orEmail: "or continue with email",
       alreadyAccount: "Already have an account?",
+      status: {
+        missing: "Please complete the required fields.",
+        error: "Authentication failed. Please try again.",
+        checkEmail:
+          "Check your email to confirm the account before logging in.",
+        oauthNotReady:
+          "Google sign-in is not ready yet. Add the Google OAuth credentials in Supabase, then try again.",
+      },
     },
     dashboard: {
       eyebrow: "Supplier workspace",
@@ -478,7 +490,19 @@ const dictionaries = {
       selectRole: "Sélectionner un rôle",
       buyer: "Acheteur",
       supplier: "Fournisseur",
+      continueWithGoogle: "Continuer avec Google",
+      googleHelp:
+        "Google OAuth est câblé pour Supabase et fonctionnera dès que les identifiants Google seront ajoutés dans Supabase.",
+      orEmail: "ou continuer avec email",
       alreadyAccount: "Vous avez déjà un compte ?",
+      status: {
+        missing: "Veuillez compléter les champs requis.",
+        error: "L’authentification a échoué. Veuillez réessayer.",
+        checkEmail:
+          "Vérifiez votre email pour confirmer le compte avant de vous connecter.",
+        oauthNotReady:
+          "La connexion Google n’est pas encore prête. Ajoutez les identifiants OAuth Google dans Supabase, puis réessayez.",
+      },
     },
     dashboard: {
       eyebrow: "Espace fournisseur",

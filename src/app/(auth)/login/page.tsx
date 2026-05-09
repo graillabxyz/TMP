@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, Building2, ShoppingBag } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { OnboardingAuthCard } from "@/components/auth/onboarding-auth-card";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
@@ -16,9 +11,18 @@ export const metadata: Metadata = createMetadata({
   path: "/login",
 });
 
-export default async function LoginPage() {
+type LoginPageProps = {
+  searchParams: Promise<{
+    role?: "buyer" | "supplier";
+    status?: string;
+  }>;
+};
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
   const locale = await getLocale();
+  const params = await searchParams;
   const t = getDictionary(locale);
+  const initialRole = params.role === "supplier" ? "supplier" : "buyer";
 
   return (
     <div className="w-full max-w-5xl">
@@ -32,51 +36,33 @@ export default async function LoginPage() {
             {t.auth.loginBody}
           </p>
         </div>
-        <Card className="bg-white/[0.035]">
-          <CardContent className="p-6 sm:p-8">
-            <div className="grid gap-3 sm:grid-cols-2">
-              {[
-                { label: t.auth.buyerLogin, icon: ShoppingBag },
-                { label: t.auth.supplierLogin, icon: Building2 },
-              ].map((path) => {
-                const Icon = path.icon;
-
-                return (
-                  <button
-                    type="button"
-                    key={path.label}
-                    className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-4 text-left text-sm text-white transition hover:border-gold-300/[0.35] hover:bg-white/[0.055]"
-                  >
-                    <Icon className="size-5 text-gold-100" aria-hidden="true" />
-                    {path.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            <form className="mt-8 grid gap-5">
-              <div className="grid gap-2">
-                <Label htmlFor="email">{t.auth.email}</Label>
-                <Input id="email" type="email" placeholder="you@company.com" />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="password">{t.auth.password}</Label>
-                <Input id="password" type="password" placeholder="••••••••" />
-              </div>
-              <Button type="button" size="lg">
-                {t.auth.login}
-                <ArrowRight aria-hidden="true" />
-              </Button>
-            </form>
-
-            <p className="mt-6 text-center text-sm text-muted-foreground">
-              {t.auth.newToTmp}{" "}
-              <Link href="/register" className="text-gold-100 hover:text-white">
-                {t.auth.createAccount}
-              </Link>
-            </p>
-          </CardContent>
-        </Card>
+        <OnboardingAuthCard
+          mode="login"
+          initialRole={initialRole}
+          status={params.status}
+          labels={{
+            buyerAccount: t.auth.buyerLogin,
+            supplierAccount: t.auth.supplierLogin,
+            buyerBody: t.auth.buyerPathBody,
+            supplierBody: t.auth.supplierPathBody,
+            fullName: t.auth.fullName,
+            company: t.auth.company,
+            email: t.auth.email,
+            workEmail: t.auth.workEmail,
+            password: t.auth.password,
+            login: t.auth.login,
+            createAccount: t.auth.createAccount,
+            continueWithGoogle: t.auth.continueWithGoogle,
+            googleHelp: t.auth.googleHelp,
+            orEmail: t.auth.orEmail,
+            alreadyAccount: t.auth.alreadyAccount,
+            newToTmp: t.auth.newToTmp,
+            missing: t.auth.status.missing,
+            error: t.auth.status.error,
+            checkEmail: t.auth.status.checkEmail,
+            oauthNotReady: t.auth.status.oauthNotReady,
+          }}
+        />
       </div>
     </div>
   );

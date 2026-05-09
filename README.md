@@ -50,6 +50,9 @@ Apply the SQL migrations in order from `supabase/migrations/`.
 - `20260508002000_product_marketplace.sql` adds the MVP product marketplace
   tables and policies for supplier-owned product creation plus public product
   discovery.
+- `20260509000000_auth_onboarding.sql` creates onboarding profiles from
+  Supabase Auth users and prepares buyer/supplier role selection for email and
+  Google OAuth sign-ins.
 
 Current RLS stance:
 
@@ -61,3 +64,19 @@ Current RLS stance:
 - Authenticated suppliers can create, update, archive, and delete only products
   connected to their own supplier profile.
 - Supplier approval and verification fields remain admin-only.
+
+## Google OAuth
+
+The app is wired for Supabase Google OAuth, but Google Console credentials still
+need to be created and added in Supabase.
+
+Supabase callback route:
+
+```text
+/auth/callback
+```
+
+When the Google OAuth client is ready, add the client ID/secret in Supabase Auth
+Providers, then configure the Google authorized redirect URI shown by Supabase.
+The app passes the selected onboarding role through the callback and upserts a
+buyer/supplier profile after Supabase exchanges the OAuth code.
