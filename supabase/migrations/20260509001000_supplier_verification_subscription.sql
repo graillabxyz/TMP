@@ -1,3 +1,5 @@
+drop trigger if exists suppliers_prevent_approval_field_changes on public.suppliers;
+
 alter table public.suppliers
   drop constraint if exists suppliers_verification_status_check;
 
@@ -83,7 +85,6 @@ begin
 end;
 $$;
 
-drop trigger if exists suppliers_prevent_approval_field_changes on public.suppliers;
 create trigger suppliers_prevent_approval_field_changes
 before update on public.suppliers
 for each row execute function public.prevent_supplier_billing_field_changes();
