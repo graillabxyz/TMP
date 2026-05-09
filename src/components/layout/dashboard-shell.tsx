@@ -42,7 +42,7 @@ export async function DashboardShell({
     { label: t.dashboard.messages, href: "/dashboard", icon: MessageSquare },
     {
       label: t.dashboard.verification,
-      href: "/dashboard",
+      href: "/dashboard/settings/verification",
       icon: ShieldCheck,
     },
   ];

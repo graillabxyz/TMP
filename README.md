@@ -27,6 +27,9 @@ Copy `.env.example` to `.env.local` when Supabase credentials are ready.
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
 ```
 
 The app reads suppliers, categories, published products, dashboard product
@@ -53,17 +56,39 @@ Apply the SQL migrations in order from `supabase/migrations/`.
 - `20260509000000_auth_onboarding.sql` creates onboarding profiles from
   Supabase Auth users and prepares buyer/supplier role selection for email and
   Google OAuth sign-ins.
+- `20260509001000_supplier_verification_subscription.sql` prepares supplier
+  verification subscriptions, private verification document records, and
+  Stripe-ready billing fields.
 
 Current RLS stance:
 
-- Public can read published categories, approved/published supplier accounts,
-  and published products.
+- Public can read published categories, verified supplier accounts, and
+  published products from verified suppliers.
 - Public can insert RFQs only.
 - Public cannot select, update, or delete RFQs.
 - Public cannot update or delete marketplace records.
 - Authenticated suppliers can create, update, archive, and delete only products
   connected to their own supplier profile.
 - Supplier approval and verification fields remain admin-only.
+- Supplier verification documents are private to the supplier owner and admins.
+
+## Stripe
+
+The supplier verification subscription flow is Stripe-ready but intentionally
+runs in placeholder mode until live credentials are configured.
+
+Prepared routes:
+
+```text
+/api/stripe/create-checkout-session
+/api/stripe/customer-portal
+/api/stripe/webhook
+```
+
+Once Stripe credentials are available, add `STRIPE_SECRET_KEY`,
+`STRIPE_WEBHOOK_SECRET`, and `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` in Vercel.
+The route files are structured for swapping the placeholder JSON responses for
+real Checkout Session, Customer Portal, and webhook event handling.
 
 ## Google OAuth
 

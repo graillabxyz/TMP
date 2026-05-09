@@ -217,6 +217,7 @@ const dictionaries = {
       rfqs: "RFQs",
       messages: "Messages",
       verification: "Verification",
+      verificationSettings: "Verification settings",
       metrics: [
         "Active listings",
         "Open RFQs",
@@ -230,6 +231,10 @@ const dictionaries = {
       nextActions: "Next actions",
       placeholder:
         "Keep upcoming work visible as listings, buyer conversations, and verification tasks move through the pipeline.",
+      upgradeTitle: "Upgrade to Verified Supplier",
+      upgradeBody:
+        "Start the monthly verification subscription and submit documents for admin review.",
+      upgradeCta: "Open verification settings",
       productManager: {
         eyebrow: "Supplier products",
         title: "Products",
@@ -273,6 +278,56 @@ const dictionaries = {
         successArchive: "Product archived.",
         missing: "Please add a title, category, description, and status.",
         error: "We could not save the product. Please try again.",
+      },
+    },
+    verificationSettings: {
+      eyebrow: "Supplier verification",
+      title: "Verification settings",
+      description:
+        "Manage the monthly verification subscription, submit business documents, and prepare your supplier profile for admin approval.",
+      overview: "Verification overview",
+      currentStatus: "Verification status",
+      subscriptionStatus: "Subscription status",
+      benefits: "Verification benefits",
+      benefitItems: [
+        "Verified badge on supplier and product cards",
+        "Increased buyer trust during RFQ review",
+        "Better visibility in marketplace discovery",
+        "Access to future premium supplier features",
+      ],
+      subscription: "Monthly subscription",
+      price: "€49 / month",
+      priceNote:
+        "Stripe checkout is prepared in placeholder mode until live credentials are configured.",
+      subscribe: "Start subscription",
+      manage: "Manage subscription",
+      documents: "Business verification",
+      documentsBody:
+        "Add upload-ready URLs for now. Supabase Storage upload controls can replace these fields later.",
+      businessLicense: "Business license",
+      companyRegistration: "Company registration",
+      certifications: "Certifications",
+      notes: "Notes for review",
+      submitDocuments: "Submit for review",
+      statusSubmitted: "Verification documents submitted for admin review.",
+      statusError:
+        "We could not update verification details. Please try again.",
+      checkoutPlaceholder:
+        "Checkout placeholder opened. Stripe is ready to connect when credentials are added.",
+      portalPlaceholder:
+        "Customer portal placeholder opened. Live portal sessions will work after Stripe is configured.",
+      missingSupplier:
+        "Create or connect a supplier profile before verification.",
+      loginRequired: "Sign in as a supplier to manage verification.",
+      states: {
+        none: "Not started",
+        pending: "Pending review",
+        verified: "Verified",
+        rejected: "Rejected",
+        inactive: "Inactive",
+        active: "Active",
+        past_due: "Past due",
+        canceled: "Canceled",
       },
     },
     admin: {
@@ -515,6 +570,7 @@ const dictionaries = {
       rfqs: "Demandes",
       messages: "Messages",
       verification: "Vérification",
+      verificationSettings: "Paramètres vérification",
       metrics: [
         "Listings actifs",
         "Demandes ouvertes",
@@ -528,6 +584,10 @@ const dictionaries = {
       nextActions: "Prochaines actions",
       placeholder:
         "Gardez les prochains travaux visibles pendant que listings, conversations et vérifications avancent.",
+      upgradeTitle: "Passer en fournisseur vérifié",
+      upgradeBody:
+        "Lancez l’abonnement mensuel de vérification et soumettez vos documents pour revue admin.",
+      upgradeCta: "Ouvrir la vérification",
       productManager: {
         eyebrow: "Produits fournisseur",
         title: "Produits",
@@ -572,6 +632,57 @@ const dictionaries = {
         missing:
           "Veuillez ajouter un titre, une catégorie, une description et un statut.",
         error: "Impossible d’enregistrer le produit. Veuillez réessayer.",
+      },
+    },
+    verificationSettings: {
+      eyebrow: "Vérification fournisseur",
+      title: "Paramètres de vérification",
+      description:
+        "Gérez l’abonnement mensuel de vérification, soumettez les documents d’entreprise et préparez le profil pour l’approbation admin.",
+      overview: "Vue d’ensemble",
+      currentStatus: "Statut de vérification",
+      subscriptionStatus: "Statut d’abonnement",
+      benefits: "Bénéfices de la vérification",
+      benefitItems: [
+        "Badge vérifié sur les cartes fournisseur et produit",
+        "Plus de confiance acheteur pendant la revue RFQ",
+        "Meilleure visibilité dans la découverte marketplace",
+        "Accès aux futures fonctions premium fournisseur",
+      ],
+      subscription: "Abonnement mensuel",
+      price: "49 € / mois",
+      priceNote:
+        "Stripe Checkout est préparé en mode placeholder jusqu’à la configuration des identifiants.",
+      subscribe: "Démarrer l’abonnement",
+      manage: "Gérer l’abonnement",
+      documents: "Vérification entreprise",
+      documentsBody:
+        "Ajoutez des URLs prêtes pour l’upload pour l’instant. Les contrôles Supabase Storage pourront remplacer ces champs plus tard.",
+      businessLicense: "Licence commerciale",
+      companyRegistration: "Immatriculation société",
+      certifications: "Certifications",
+      notes: "Notes pour la revue",
+      submitDocuments: "Soumettre pour revue",
+      statusSubmitted: "Documents soumis pour revue admin.",
+      statusError:
+        "Impossible de mettre à jour les détails de vérification. Veuillez réessayer.",
+      checkoutPlaceholder:
+        "Placeholder Checkout ouvert. Stripe sera connecté dès que les identifiants seront ajoutés.",
+      portalPlaceholder:
+        "Placeholder portail client ouvert. Les sessions live fonctionneront après configuration Stripe.",
+      missingSupplier:
+        "Créez ou connectez un profil fournisseur avant la vérification.",
+      loginRequired:
+        "Connectez-vous comme fournisseur pour gérer la vérification.",
+      states: {
+        none: "Non démarré",
+        pending: "En revue",
+        verified: "Vérifié",
+        rejected: "Rejeté",
+        inactive: "Inactif",
+        active: "Actif",
+        past_due: "En retard",
+        canceled: "Annulé",
       },
     },
     admin: {

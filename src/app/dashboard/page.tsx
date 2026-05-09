@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   BadgeCheck,
   Clock3,
@@ -15,6 +16,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
+import { getVerificationWorkspace } from "@/lib/verification";
 
 export const metadata: Metadata = createMetadata({
   title: "Dashboard | TMP",
@@ -25,6 +27,8 @@ export const metadata: Metadata = createMetadata({
 export default async function DashboardPage() {
   const locale = await getLocale();
   const t = getDictionary(locale);
+  const verificationWorkspace = await getVerificationWorkspace();
+  const verificationSupplier = verificationWorkspace.supplier;
   const metrics = [
     { label: t.dashboard.metrics[0], value: "18", icon: PackagePlus },
     { label: t.dashboard.metrics[1], value: "7", icon: Inbox },
@@ -106,6 +110,46 @@ export default async function DashboardPage() {
             <h2 className="mt-2 text-xl font-semibold text-white">
               {t.dashboard.profileReadiness}
             </h2>
+            {verificationSupplier && (
+              <div className="mt-5 grid gap-3 rounded-lg border border-gold-300/20 bg-gold-300/[0.08] p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <span className="text-sm text-muted-foreground">
+                    {t.verificationSettings.currentStatus}
+                  </span>
+                  <Badge
+                    variant={
+                      verificationSupplier.verificationStatus === "verified"
+                        ? "success"
+                        : "secondary"
+                    }
+                  >
+                    {
+                      t.verificationSettings.states[
+                        verificationSupplier.verificationStatus
+                      ]
+                    }
+                  </Badge>
+                </div>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <span className="text-sm text-muted-foreground">
+                    {t.verificationSettings.subscriptionStatus}
+                  </span>
+                  <Badge
+                    variant={
+                      verificationSupplier.subscriptionStatus === "active"
+                        ? "success"
+                        : "secondary"
+                    }
+                  >
+                    {
+                      t.verificationSettings.states[
+                        verificationSupplier.subscriptionStatus
+                      ]
+                    }
+                  </Badge>
+                </div>
+              </div>
+            )}
             <div className="mt-6 grid gap-4">
               {[
                 ["Company documents", "Complete"],
@@ -140,6 +184,19 @@ export default async function DashboardPage() {
                   />
                 ))}
               </div>
+            </div>
+            <div className="mt-5 rounded-lg border border-white/10 bg-white/[0.035] p-4">
+              <h3 className="font-semibold text-white">
+                {t.dashboard.upgradeTitle}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                {t.dashboard.upgradeBody}
+              </p>
+              <Button asChild className="mt-4 w-full" variant="outline">
+                <Link href="/dashboard/settings/verification">
+                  {t.dashboard.upgradeCta}
+                </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>

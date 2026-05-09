@@ -27,7 +27,7 @@ type PublicProductRow = {
     company_name_fr: string | null;
     slug: string;
     verified: boolean;
-    verification_status: "pending" | "approved" | "published" | "rejected";
+    verification_status: "none" | "pending" | "verified" | "rejected";
   } | null;
 };
 
@@ -75,8 +75,7 @@ function normalizeProduct(
     supplierSlug: product.supplier?.slug ?? "",
     supplierVerified:
       product.supplier?.verified ||
-      product.supplier?.verification_status === "approved" ||
-      product.supplier?.verification_status === "published",
+      product.supplier?.verification_status === "verified",
     priceMin: product.price_min,
     priceMax: product.price_max,
     currency: product.currency,

@@ -50,6 +50,7 @@ type SupplierRow = {
   tags_fr: string[];
   certifications: string[];
   certifications_fr: string[];
+  verification_status: "none" | "pending" | "verified" | "rejected";
   category:
     | { name: string; name_fr: string | null }
     | { name: string; name_fr: string | null }[]
@@ -108,7 +109,7 @@ function normalizeSupplier(row: SupplierRow, locale: Locale): Supplier {
     category: getCategoryName(locale, row.category),
     summary: localizedValue(locale, row.summary, row.summary_fr),
     description: localizedValue(locale, row.description, row.description_fr),
-    verified: row.verified,
+    verified: row.verified || row.verification_status === "verified",
     yearFounded: row.year_founded ?? new Date().getFullYear(),
     employees: row.employees,
     exportMarkets: row.export_markets,
@@ -185,11 +186,12 @@ export async function getSuppliers(
         tags_fr,
         certifications,
         certifications_fr,
+        verification_status,
         category:categories(name, name_fr),
         products:supplier_products(title, title_fr, moq, images, category:categories(name, name_fr))
       `,
     )
-    .in("verification_status", ["approved", "published"])
+    .eq("verification_status", "verified")
     .order("display_order", { ascending: true })
     .limit(3, { referencedTable: "supplier_products" });
 

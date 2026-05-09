@@ -171,11 +171,16 @@ export type Database = {
           tags_fr: string[];
           certifications: string[];
           certifications_fr: string[];
-          verification_status:
-            | "pending"
-            | "approved"
-            | "published"
-            | "rejected";
+          verification_status: "none" | "pending" | "verified" | "rejected";
+          verification_subscription_status:
+            | "inactive"
+            | "active"
+            | "past_due"
+            | "canceled";
+          stripe_customer_id: string | null;
+          stripe_subscription_id: string | null;
+          verification_started_at: string | null;
+          verification_expires_at: string | null;
           logo_url: string | null;
           status: "draft" | "pending" | "published" | "archived";
           display_order: number;
@@ -207,11 +212,16 @@ export type Database = {
           tags_fr?: string[];
           certifications?: string[];
           certifications_fr?: string[];
-          verification_status?:
-            | "pending"
-            | "approved"
-            | "published"
-            | "rejected";
+          verification_status?: "none" | "pending" | "verified" | "rejected";
+          verification_subscription_status?:
+            | "inactive"
+            | "active"
+            | "past_due"
+            | "canceled";
+          stripe_customer_id?: string | null;
+          stripe_subscription_id?: string | null;
+          verification_started_at?: string | null;
+          verification_expires_at?: string | null;
           logo_url?: string | null;
           status?: "draft" | "pending" | "published" | "archived";
           display_order?: number;
@@ -225,6 +235,42 @@ export type Database = {
             columns: ["category_id"];
             isOneToOne: false;
             referencedRelation: "categories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      supplier_verification_documents: {
+        Row: {
+          id: string;
+          supplier_id: string;
+          business_license_url: string | null;
+          company_registration_url: string | null;
+          certifications_url: string | null;
+          notes: string | null;
+          submitted_at: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          supplier_id: string;
+          business_license_url?: string | null;
+          company_registration_url?: string | null;
+          certifications_url?: string | null;
+          notes?: string | null;
+          submitted_at?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<
+          Database["public"]["Tables"]["supplier_verification_documents"]["Insert"]
+        >;
+        Relationships: [
+          {
+            foreignKeyName: "supplier_verification_documents_supplier_id_fkey";
+            columns: ["supplier_id"];
+            isOneToOne: true;
+            referencedRelation: "suppliers";
             referencedColumns: ["id"];
           },
         ];
