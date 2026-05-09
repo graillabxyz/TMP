@@ -3,6 +3,7 @@ import type { Locale } from "@/lib/i18n";
 const dictionaries = {
   en: {
     nav: {
+      products: "Products",
       suppliers: "Suppliers",
       rfq: "RFQ",
       dashboard: "Dashboard",
@@ -27,6 +28,17 @@ const dictionaries = {
       status: "Status",
       action: "Action",
       location: "Location",
+      search: "Search",
+      all: "All",
+      save: "Save",
+      cancel: "Cancel",
+      create: "Create",
+      edit: "Edit",
+      archive: "Archive",
+      price: "Price",
+      leadTime: "Lead time",
+      supplier: "Supplier",
+      product: "Product",
     },
     footer: {
       intro:
@@ -88,6 +100,29 @@ const dictionaries = {
       allCategories: "All categories",
       verification: "Verification",
       checks: ["Verified suppliers", "EU export experience", "Low MOQ"],
+    },
+    products: {
+      badge: "Product discovery",
+      title: "Browse Turkish-made products ready for European sourcing.",
+      body: "Search published supplier listings by product, category, supplier, MOQ, price range, and lead time.",
+      indexed: "published products",
+      filters: "Filters",
+      searchPlaceholder: "Denim jackets, CNC housing, olive oil...",
+      allCategories: "All categories",
+      allSuppliers: "All suppliers",
+      emptyTitle: "No published products found",
+      emptyBody:
+        "Try a broader search or check back as suppliers publish more listings.",
+      verified: "Verified supplier",
+      quote: "Quote",
+      viewProduct: "View product",
+      productDetails: "Product details",
+      supplierInfo: "Supplier information",
+      related: "More from this supplier",
+      requestQuote: "Request quote",
+      backToProducts: "Back to products",
+      notConfigured:
+        "Supabase products are not configured in this environment yet.",
     },
     supplierDetail: {
       founded: "Founded",
@@ -165,6 +200,7 @@ const dictionaries = {
       description:
         "Track supplier visibility, inbound RFQs, buyer conversations, and verification readiness.",
       overview: "Overview",
+      products: "Products",
       listings: "Listings",
       rfqs: "RFQs",
       messages: "Messages",
@@ -182,6 +218,50 @@ const dictionaries = {
       nextActions: "Next actions",
       placeholder:
         "Keep upcoming work visible as listings, buyer conversations, and verification tasks move through the pipeline.",
+      productManager: {
+        eyebrow: "Supplier products",
+        title: "Products",
+        description:
+          "Create, publish, and maintain the product listings buyers discover on TMP.",
+        createProduct: "Create product",
+        editProduct: "Edit product",
+        noProducts: "No supplier products yet",
+        noProductsBody:
+          "Create a first product listing to make it available for marketplace discovery once published.",
+        loginRequired: "Login required",
+        loginRequiredBody:
+          "Sign in as a supplier before managing product listings.",
+        supplierMissing: "Supplier profile needed",
+        supplierMissingBody:
+          "Your user does not have a supplier profile connected yet. Once the supplier account exists, product publishing will unlock here.",
+        productTitle: "Product title",
+        category: "Category",
+        productDescription: "Description",
+        minimumOrderQuantity: "Minimum order quantity",
+        priceMin: "Minimum price",
+        priceMax: "Maximum price",
+        currency: "Currency",
+        leadTime: "Lead time",
+        images: "Images",
+        imagePlaceholder: "Image URL placeholder",
+        imageHelp:
+          "Use a public URL for now. Supabase Storage upload can plug into this field later.",
+        status: "Status",
+        draft: "Draft",
+        published: "Published",
+        archived: "Archived",
+        saveDraft: "Save product",
+        updateProduct: "Update product",
+        tableProduct: "Product",
+        tableCategory: "Category",
+        tablePricing: "Pricing",
+        tableUpdated: "Created",
+        successCreate: "Product created.",
+        successUpdate: "Product updated.",
+        successArchive: "Product archived.",
+        missing: "Please add a title, category, description, and status.",
+        error: "We could not save the product. Please try again.",
+      },
     },
     admin: {
       eyebrow: "Admin console",
@@ -204,6 +284,7 @@ const dictionaries = {
   },
   fr: {
     nav: {
+      products: "Produits",
       suppliers: "Fournisseurs",
       rfq: "Demande",
       dashboard: "Tableau",
@@ -228,6 +309,17 @@ const dictionaries = {
       status: "Statut",
       action: "Action",
       location: "Localisation",
+      search: "Rechercher",
+      all: "Tout",
+      save: "Enregistrer",
+      cancel: "Annuler",
+      create: "Créer",
+      edit: "Modifier",
+      archive: "Archiver",
+      price: "Prix",
+      leadTime: "Délai",
+      supplier: "Fournisseur",
+      product: "Produit",
     },
     footer: {
       intro:
@@ -292,6 +384,30 @@ const dictionaries = {
       allCategories: "Toutes les catégories",
       verification: "Vérification",
       checks: ["Fournisseurs vérifiés", "Expérience export UE", "MOQ faible"],
+    },
+    products: {
+      badge: "Découverte produits",
+      title:
+        "Parcourez des produits fabriqués en Turquie, prêts pour le sourcing européen.",
+      body: "Recherchez les listings publiés par produit, catégorie, fournisseur, MOQ, prix et délai.",
+      indexed: "produits publiés",
+      filters: "Filtres",
+      searchPlaceholder: "Vestes denim, boîtier CNC, huile d’olive...",
+      allCategories: "Toutes les catégories",
+      allSuppliers: "Tous les fournisseurs",
+      emptyTitle: "Aucun produit publié trouvé",
+      emptyBody:
+        "Essayez une recherche plus large ou revenez lorsque les fournisseurs publient plus de listings.",
+      verified: "Fournisseur vérifié",
+      quote: "Devis",
+      viewProduct: "Voir le produit",
+      productDetails: "Détails produit",
+      supplierInfo: "Informations fournisseur",
+      related: "Autres produits du fournisseur",
+      requestQuote: "Demander un devis",
+      backToProducts: "Retour aux produits",
+      notConfigured:
+        "Les produits Supabase ne sont pas encore configurés dans cet environnement.",
     },
     supplierDetail: {
       founded: "Fondée",
@@ -370,6 +486,7 @@ const dictionaries = {
       description:
         "Suivez visibilité, demandes entrantes, conversations acheteurs et préparation à la vérification.",
       overview: "Vue d’ensemble",
+      products: "Produits",
       listings: "Listings",
       rfqs: "Demandes",
       messages: "Messages",
@@ -387,6 +504,51 @@ const dictionaries = {
       nextActions: "Prochaines actions",
       placeholder:
         "Gardez les prochains travaux visibles pendant que listings, conversations et vérifications avancent.",
+      productManager: {
+        eyebrow: "Produits fournisseur",
+        title: "Produits",
+        description:
+          "Créez, publiez et maintenez les listings produits découverts par les acheteurs sur TMP.",
+        createProduct: "Créer un produit",
+        editProduct: "Modifier le produit",
+        noProducts: "Aucun produit fournisseur",
+        noProductsBody:
+          "Créez un premier listing produit pour le rendre découvrable une fois publié.",
+        loginRequired: "Connexion requise",
+        loginRequiredBody:
+          "Connectez-vous comme fournisseur avant de gérer les listings produits.",
+        supplierMissing: "Profil fournisseur requis",
+        supplierMissingBody:
+          "Votre utilisateur n’a pas encore de profil fournisseur connecté. Dès que le compte fournisseur existe, la publication sera disponible ici.",
+        productTitle: "Titre du produit",
+        category: "Catégorie",
+        productDescription: "Description",
+        minimumOrderQuantity: "Quantité minimale",
+        priceMin: "Prix minimum",
+        priceMax: "Prix maximum",
+        currency: "Devise",
+        leadTime: "Délai",
+        images: "Images",
+        imagePlaceholder: "URL d’image temporaire",
+        imageHelp:
+          "Utilisez une URL publique pour l’instant. L’upload Supabase Storage pourra être branché ici plus tard.",
+        status: "Statut",
+        draft: "Brouillon",
+        published: "Publié",
+        archived: "Archivé",
+        saveDraft: "Enregistrer le produit",
+        updateProduct: "Mettre à jour",
+        tableProduct: "Produit",
+        tableCategory: "Catégorie",
+        tablePricing: "Prix",
+        tableUpdated: "Créé",
+        successCreate: "Produit créé.",
+        successUpdate: "Produit mis à jour.",
+        successArchive: "Produit archivé.",
+        missing:
+          "Veuillez ajouter un titre, une catégorie, une description et un statut.",
+        error: "Impossible d’enregistrer le produit. Veuillez réessayer.",
+      },
     },
     admin: {
       eyebrow: "Console admin",

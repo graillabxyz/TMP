@@ -11,6 +11,7 @@ export async function SiteHeader() {
   const locale = await getLocale();
   const t = getDictionary(locale);
   const nav = [
+    { label: t.nav.products, href: "/products" },
     { label: t.nav.suppliers, href: "/suppliers" },
     { label: t.nav.rfq, href: "/rfq" },
     { label: t.nav.dashboard, href: "/dashboard" },

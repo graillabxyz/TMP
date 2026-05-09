@@ -148,13 +148,18 @@ export type Database = {
       suppliers: {
         Row: {
           id: string;
+          owner_id: string | null;
           category_id: string | null;
           slug: string;
+          company_name: string;
+          company_name_fr: string | null;
           name: string;
           city: string;
           country: string;
           summary: string;
+          summary_fr: string | null;
           description: string;
+          description_fr: string | null;
           verified: boolean;
           year_founded: number;
           employees: string;
@@ -163,7 +168,15 @@ export type Database = {
           response_time: string;
           image_url: string;
           tags: string[];
+          tags_fr: string[];
           certifications: string[];
+          certifications_fr: string[];
+          verification_status:
+            | "pending"
+            | "approved"
+            | "published"
+            | "rejected";
+          logo_url: string | null;
           status: "draft" | "pending" | "published" | "archived";
           display_order: number;
           created_at: string;
@@ -171,13 +184,18 @@ export type Database = {
         };
         Insert: {
           id?: string;
+          owner_id?: string | null;
           category_id?: string | null;
           slug: string;
+          company_name?: string;
+          company_name_fr?: string | null;
           name: string;
           city: string;
           country?: string;
           summary: string;
+          summary_fr?: string | null;
           description: string;
+          description_fr?: string | null;
           verified?: boolean;
           year_founded: number;
           employees: string;
@@ -186,7 +204,15 @@ export type Database = {
           response_time: string;
           image_url: string;
           tags?: string[];
+          tags_fr?: string[];
           certifications?: string[];
+          certifications_fr?: string[];
+          verification_status?:
+            | "pending"
+            | "approved"
+            | "published"
+            | "rejected";
+          logo_url?: string | null;
           status?: "draft" | "pending" | "published" | "archived";
           display_order?: number;
           created_at?: string;
@@ -198,7 +224,43 @@ export type Database = {
             foreignKeyName: "suppliers_category_id_fkey";
             columns: ["category_id"];
             isOneToOne: false;
-            referencedRelation: "supplier_categories";
+            referencedRelation: "categories";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      categories: {
+        Row: {
+          id: string;
+          name: string;
+          name_fr: string | null;
+          slug: string;
+          description: string;
+          description_fr: string | null;
+          parent_id: string | null;
+          display_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          name_fr?: string | null;
+          slug: string;
+          description?: string;
+          description_fr?: string | null;
+          parent_id?: string | null;
+          display_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["categories"]["Insert"]>;
+        Relationships: [
+          {
+            foreignKeyName: "categories_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "categories";
             referencedColumns: ["id"];
           },
         ];
@@ -207,32 +269,38 @@ export type Database = {
         Row: {
           id: string;
           supplier_id: string;
+          category_id: string | null;
           title: string;
           title_fr: string | null;
+          slug: string;
           description: string;
           description_fr: string | null;
-          category: string;
-          category_fr: string | null;
-          moq: string;
-          image_url: string;
+          price_min: number | null;
+          price_max: number | null;
+          currency: string;
+          moq: number | null;
+          lead_time: string | null;
+          images: string[];
           status: "draft" | "published" | "archived";
-          display_order: number;
           created_at: string;
           updated_at: string;
         };
         Insert: {
           id?: string;
           supplier_id: string;
+          category_id?: string | null;
           title: string;
           title_fr?: string | null;
-          description?: string;
+          slug: string;
+          description: string;
           description_fr?: string | null;
-          category?: string;
-          category_fr?: string | null;
-          moq?: string;
-          image_url?: string;
+          price_min?: number | null;
+          price_max?: number | null;
+          currency?: string;
+          moq?: number | null;
+          lead_time?: string | null;
+          images?: string[];
           status?: "draft" | "published" | "archived";
-          display_order?: number;
           created_at?: string;
           updated_at?: string;
         };
@@ -244,7 +312,14 @@ export type Database = {
             foreignKeyName: "supplier_products_supplier_id_fkey";
             columns: ["supplier_id"];
             isOneToOne: false;
-            referencedRelation: "supplier_accounts";
+            referencedRelation: "suppliers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "supplier_products_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "categories";
             referencedColumns: ["id"];
           },
         ];

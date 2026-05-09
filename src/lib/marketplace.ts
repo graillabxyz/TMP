@@ -12,21 +12,21 @@ import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import type { Category, ProductPreview, Supplier } from "@/types";
 
 type CategoryRow = {
+  id: string;
   name: string;
   name_fr: string | null;
   slug: string;
   description: string;
   description_fr: string | null;
-  supplier_count: number;
+  supplier_count?: number;
 };
 
 type SupplierProductRow = {
   title: string;
   title_fr: string | null;
-  category: string;
-  category_fr: string | null;
-  moq: string;
-  image_url: string;
+  moq: number | null;
+  images: string[];
+  category: { name: string; name_fr: string | null } | null;
 };
 
 type SupplierRow = {
@@ -59,10 +59,11 @@ type SupplierRow = {
 
 function normalizeCategory(row: CategoryRow, locale: Locale): Category {
   return {
+    id: row.id,
     name: localizedValue(locale, row.name, row.name_fr),
     slug: row.slug,
     description: localizedValue(locale, row.description, row.description_fr),
-    supplierCount: row.supplier_count,
+    supplierCount: row.supplier_count ?? 0,
   };
 }
 
@@ -72,9 +73,11 @@ function normalizeProduct(
 ): ProductPreview {
   return {
     name: localizedValue(locale, row.title, row.title_fr),
-    category: localizedValue(locale, row.category, row.category_fr),
-    moq: row.moq,
-    image: row.image_url,
+    category: row.category
+      ? localizedValue(locale, row.category.name, row.category.name_fr)
+      : "Product",
+    moq: row.moq ? `${row.moq} units` : "On request",
+    image: row.images[0] ?? "/brand/tmp-logo.webp",
   };
 }
 
@@ -134,10 +137,8 @@ export async function getCategories(
   }
 
   const { data, error } = await supabase
-    .from("supplier_categories")
-    .select("name, name_fr, slug, description, description_fr, supplier_count")
-    .eq("is_active", true)
-    .eq("status", "published")
+    .from("categories")
+    .select("id, name, name_fr, slug, description, description_fr")
     .order("display_order", { ascending: true });
 
   if (error || !data?.length) {
@@ -161,7 +162,7 @@ export async function getSuppliers(
   }
 
   const { data, error } = await supabase
-    .from("supplier_accounts")
+    .from("suppliers")
     .select(
       `
         slug,
@@ -184,16 +185,13 @@ export async function getSuppliers(
         tags_fr,
         certifications,
         certifications_fr,
-        category:supplier_categories(name, name_fr),
-        products:supplier_products(title, title_fr, category, category_fr, moq, image_url)
+        category:categories(name, name_fr),
+        products:supplier_products(title, title_fr, moq, images, category:categories(name, name_fr))
       `,
     )
     .in("verification_status", ["approved", "published"])
     .order("display_order", { ascending: true })
-    .order("display_order", {
-      ascending: true,
-      referencedTable: "supplier_products",
-    });
+    .limit(3, { referencedTable: "supplier_products" });
 
   if (error || !data?.length) {
     if (error) {

@@ -4,6 +4,7 @@ import {
   Boxes,
   LayoutDashboard,
   MessageSquare,
+  PackagePlus,
   ShieldCheck,
 } from "lucide-react";
 
@@ -31,6 +32,11 @@ export async function DashboardShell({
   const t = getDictionary(locale);
   const navItems = [
     { label: t.dashboard.overview, href: "/dashboard", icon: LayoutDashboard },
+    {
+      label: t.dashboard.products,
+      href: "/dashboard/products",
+      icon: PackagePlus,
+    },
     { label: t.dashboard.listings, href: "/dashboard", icon: Boxes },
     { label: t.dashboard.rfqs, href: "/dashboard", icon: BadgeCheck },
     { label: t.dashboard.messages, href: "/dashboard", icon: MessageSquare },
@@ -55,7 +61,7 @@ export async function DashboardShell({
                 href={admin ? "/admin" : item.href}
                 className={cn(
                   "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground transition hover:bg-white/[0.08] hover:text-white",
-                  index === 0 && "bg-white/[0.08] text-white",
+                  index === 0 && !admin && "bg-white/[0.08] text-white",
                 )}
               >
                 <Icon className="size-4" aria-hidden="true" />

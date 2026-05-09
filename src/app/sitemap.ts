@@ -2,17 +2,23 @@ import type { MetadataRoute } from "next";
 
 import { siteConfig } from "@/lib/constants";
 import { getSuppliers } from "@/lib/marketplace";
+import { getProducts } from "@/lib/products";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const suppliers = await getSuppliers();
+  const [suppliers, products] = await Promise.all([
+    getSuppliers(),
+    getProducts(),
+  ]);
   const routes = [
     "",
+    "/products",
     "/suppliers",
     "/rfq",
     "/login",
     "/register",
     "/dashboard",
     "/admin",
+    ...products.map((product) => `/products/${product.slug}`),
     ...suppliers.map((supplier) => `/suppliers/${supplier.slug}`),
   ];
 

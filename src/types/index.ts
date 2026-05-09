@@ -26,8 +26,29 @@ export type Supplier = {
 };
 
 export type Category = {
+  id?: string;
   name: string;
   slug: string;
   description: string;
   supplierCount: number;
+};
+
+export type MarketplaceProduct = {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  category: string;
+  categorySlug: string;
+  supplierName: string;
+  supplierSlug: string;
+  supplierVerified: boolean;
+  priceMin: number | null;
+  priceMax: number | null;
+  currency: string;
+  moq: number | null;
+  leadTime: string | null;
+  images: string[];
+  status: "draft" | "published" | "archived";
+  createdAt: string;
 };
