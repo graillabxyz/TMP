@@ -31,6 +31,18 @@ function getRedirectPath(role: AccountRole) {
   return role === "supplier" ? "/dashboard/products" : "/dashboard";
 }
 
+async function getConfiguredSupabase(
+  role: AccountRole,
+  page: "login" | "register",
+) {
+  try {
+    return await createServerSupabaseClient();
+  } catch (error) {
+    console.error("Supabase auth client is not configured", error);
+    redirect(`/${page}?role=${role}&status=error`);
+  }
+}
+
 export async function signUpWithEmail(formData: FormData) {
   const role = getRole(formData);
   const email = getString(formData, "email");
@@ -43,7 +55,7 @@ export async function signUpWithEmail(formData: FormData) {
   }
 
   const origin = await getOrigin();
-  const supabase = await createServerSupabaseClient();
+  const supabase = await getConfiguredSupabase(role, "register");
   const { error } = await supabase.auth.signUp({
     email,
     password,
@@ -76,7 +88,7 @@ export async function signInWithEmail(formData: FormData) {
     redirect(`/login?role=${role}&status=missing`);
   }
 
-  const supabase = await createServerSupabaseClient();
+  const supabase = await getConfiguredSupabase(role, "login");
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -93,7 +105,7 @@ export async function signInWithEmail(formData: FormData) {
 export async function signInWithGoogle(formData: FormData) {
   const role = getRole(formData);
   const origin = await getOrigin();
-  const supabase = await createServerSupabaseClient();
+  const supabase = await getConfiguredSupabase(role, "login");
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {

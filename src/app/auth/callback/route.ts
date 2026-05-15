@@ -9,6 +9,12 @@ type ProfileMutationTable = {
     payload: ProfileInsert,
   ) => Promise<{ error: { message: string } | null }>;
 };
+type SupplierProfileRpcClient = {
+  rpc: (
+    functionName: "ensure_supplier_profile",
+    args: { company: string | null },
+  ) => Promise<{ error: { message: string } | null }>;
+};
 
 function getSafeNextPath(value: string | null) {
   if (!value || !value.startsWith("/") || value.startsWith("//")) {
@@ -20,6 +26,26 @@ function getSafeNextPath(value: string | null) {
 
 function getRole(value: string | null) {
   return value === "supplier" ? "supplier" : "buyer";
+}
+
+function getUserCompany(user: { email?: string; user_metadata?: unknown }) {
+  const metadata =
+    user.user_metadata && typeof user.user_metadata === "object"
+      ? (user.user_metadata as Record<string, unknown>)
+      : {};
+  const metadataCompany =
+    typeof metadata.company === "string" ? metadata.company.trim() : "";
+  const fullName =
+    typeof metadata.full_name === "string" ? metadata.full_name.trim() : "";
+  const name = typeof metadata.name === "string" ? metadata.name.trim() : "";
+
+  return (
+    metadataCompany ||
+    fullName ||
+    name ||
+    user.email?.split("@")[0] ||
+    "Supplier"
+  );
 }
 
 export async function GET(request: NextRequest) {
@@ -61,6 +87,22 @@ export async function GET(request: NextRequest) {
 
     if (profileError) {
       console.error("Unable to upsert OAuth profile", profileError.message);
+    }
+
+    if (role === "supplier") {
+      const supplierProfileRpc =
+        supabase as unknown as SupplierProfileRpcClient;
+      const { error: supplierError } = await supplierProfileRpc.rpc(
+        "ensure_supplier_profile",
+        { company: getUserCompany(user) },
+      );
+
+      if (supplierError) {
+        console.error(
+          "Unable to ensure OAuth supplier profile",
+          supplierError.message,
+        );
+      }
     }
   }
 

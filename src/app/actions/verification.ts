@@ -10,6 +10,8 @@ type VerificationDocumentInsert =
 type VerificationDocumentUpdate =
   Database["public"]["Tables"]["supplier_verification_documents"]["Update"];
 type SupplierUpdate = Database["public"]["Tables"]["suppliers"]["Update"];
+type SupplierVerificationStatus =
+  Database["public"]["Tables"]["suppliers"]["Row"]["verification_status"];
 type MutationError = { message: string } | null;
 type SupplierMutationTable = {
   update: (payload: SupplierUpdate) => {
@@ -35,25 +37,32 @@ async function getSupplierId() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { supabase, supplierId: null };
+    return { supabase, supplierId: null, verificationStatus: null };
   }
 
   const { data, error } = await supabase
     .from("suppliers")
-    .select("id")
+    .select("id, verification_status")
     .eq("owner_id", user.id)
     .maybeSingle();
-  const supplier = data as unknown as { id: string } | null;
+  const supplier = data as unknown as {
+    id: string;
+    verification_status: SupplierVerificationStatus;
+  } | null;
 
   if (error) {
     console.error("Unable to load verification supplier", error.message);
   }
 
-  return { supabase, supplierId: supplier?.id ?? null };
+  return {
+    supabase,
+    supplierId: supplier?.id ?? null,
+    verificationStatus: supplier?.verification_status ?? null,
+  };
 }
 
 export async function submitVerificationDocuments(formData: FormData) {
-  const { supabase, supplierId } = await getSupplierId();
+  const { supabase, supplierId, verificationStatus } = await getSupplierId();
 
   if (!supplierId) {
     redirect("/dashboard/settings/verification?status=supplier-missing");
@@ -80,16 +89,21 @@ export async function submitVerificationDocuments(formData: FormData) {
     redirect("/dashboard/settings/verification?status=error");
   }
 
-  const supplierMutations = supabase.from(
-    "suppliers",
-  ) as unknown as SupplierMutationTable;
-  const { error: supplierError } = await supplierMutations
-    .update({ verification_status: "pending" })
-    .eq("id", supplierId);
+  if (verificationStatus !== "verified") {
+    const supplierMutations = supabase.from(
+      "suppliers",
+    ) as unknown as SupplierMutationTable;
+    const { error: supplierError } = await supplierMutations
+      .update({ verification_status: "pending" })
+      .eq("id", supplierId);
 
-  if (supplierError) {
-    console.error("Unable to mark verification pending", supplierError.message);
-    redirect("/dashboard/settings/verification?status=error");
+    if (supplierError) {
+      console.error(
+        "Unable to mark verification pending",
+        supplierError.message,
+      );
+      redirect("/dashboard/settings/verification?status=error");
+    }
   }
 
   redirect("/dashboard/settings/verification?status=submitted");
