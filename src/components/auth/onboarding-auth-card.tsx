@@ -198,6 +198,7 @@ export function OnboardingAuthCard({
                 <Input
                   id="company"
                   name="company"
+                  required={role === "supplier"}
                   placeholder="Nordic Retail Group"
                 />
               </div>

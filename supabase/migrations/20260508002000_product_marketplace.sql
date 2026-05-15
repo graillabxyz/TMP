@@ -39,6 +39,10 @@ alter table public.suppliers
     check (verification_status in ('pending', 'approved', 'published', 'rejected')),
   add column if not exists logo_url text;
 
+create unique index if not exists suppliers_owner_id_unique_idx
+on public.suppliers (owner_id)
+where owner_id is not null;
+
 update public.suppliers
 set
   company_name = coalesce(company_name, name),

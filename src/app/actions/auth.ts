@@ -38,7 +38,7 @@ export async function signUpWithEmail(formData: FormData) {
   const fullName = getString(formData, "full_name");
   const company = getString(formData, "company");
 
-  if (!email || !password || !fullName) {
+  if (!email || !password || !fullName || (role === "supplier" && !company)) {
     redirect(`/register?role=${role}&status=missing`);
   }
 
