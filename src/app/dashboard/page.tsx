@@ -3,16 +3,19 @@ import Link from "next/link";
 import {
   BadgeCheck,
   Clock3,
+  FileText,
   Inbox,
   LineChart,
   MessageSquare,
   PackagePlus,
+  Search,
 } from "lucide-react";
 
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
@@ -27,23 +30,152 @@ export const metadata: Metadata = createMetadata({
 export default async function DashboardPage() {
   const locale = await getLocale();
   const t = getDictionary(locale);
+  const profile = await getCurrentProfile();
+  const role = profile?.role ?? "buyer";
   const verificationWorkspace = await getVerificationWorkspace();
   const verificationSupplier = verificationWorkspace.supplier;
-  const metrics = [
+  const supplierMetrics = [
     { label: t.dashboard.metrics[0], value: "18", icon: PackagePlus },
     { label: t.dashboard.metrics[1], value: "7", icon: Inbox },
     { label: t.dashboard.metrics[2], value: "12", icon: MessageSquare },
     { label: t.dashboard.metrics[3], value: "72%", icon: BadgeCheck },
   ];
+  const buyerMetrics = [
+    { label: "Open RFQs", value: "3", icon: FileText },
+    { label: "Saved suppliers", value: "8", icon: Search },
+    { label: "Unread messages", value: "2", icon: MessageSquare },
+    { label: "Shortlisted products", value: "14", icon: PackagePlus },
+  ];
+
+  if (role !== "supplier") {
+    return (
+      <DashboardShell
+        eyebrow="Buyer workspace"
+        title={t.dashboard.title}
+        description="Track RFQs, saved suppliers, product shortlists, and buyer conversations."
+        active="overview"
+      >
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
+          {buyerMetrics.map((metric) => {
+            const Icon = metric.icon;
+
+            return (
+              <Card key={metric.label} className="bg-white/[0.035]">
+                <CardContent className="p-5">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground">
+                        {metric.label}
+                      </p>
+                      <p className="mt-3 text-3xl font-semibold text-white">
+                        {metric.value}
+                      </p>
+                    </div>
+                    <div className="flex size-11 items-center justify-center rounded-md border border-gold-300/25 bg-gold-300/10">
+                      <Icon
+                        className="size-5 text-gold-100"
+                        aria-hidden="true"
+                      />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+
+        <div className="mt-6 grid gap-6 xl:grid-cols-[1.1fr_.9fr]">
+          <Card className="bg-white/[0.035]">
+            <CardContent className="p-6">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-sm text-gold-200">RFQs</p>
+                  <h2 className="mt-2 text-xl font-semibold text-white">
+                    Active sourcing requests
+                  </h2>
+                </div>
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/rfq">Create RFQ</Link>
+                </Button>
+              </div>
+              <div className="mt-6 grid gap-3">
+                {[
+                  ["Organic cotton basics", "Matching suppliers", "3 replies"],
+                  ["Rigid cosmetics boxes", "Reviewing quotes", "2 replies"],
+                  ["CNC aluminum housing", "Draft request", "Not sent"],
+                ].map(([request, status, replies]) => (
+                  <div
+                    key={request}
+                    className="grid gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-4 sm:grid-cols-[1fr_160px_120px] sm:items-center"
+                  >
+                    <p className="font-medium text-white">{request}</p>
+                    <p className="text-sm text-muted-foreground">{status}</p>
+                    <Badge variant="secondary">{replies}</Badge>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/[0.035]">
+            <CardContent className="p-6">
+              <p className="text-sm text-gold-200">Supplier discovery</p>
+              <h2 className="mt-2 text-xl font-semibold text-white">
+                Continue sourcing
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                Browse verified Turkish suppliers, compare product listings,
+                and send a structured RFQ when you are ready.
+              </p>
+              <div className="mt-6 grid gap-3">
+                <Button asChild>
+                  <Link href="/products">Browse products</Link>
+                </Button>
+                <Button asChild variant="outline">
+                  <Link href="/suppliers">Explore suppliers</Link>
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="mt-6 grid gap-6 lg:grid-cols-3">
+          {[
+            { title: "Saved suppliers", icon: Search },
+            { title: t.dashboard.messages, icon: MessageSquare },
+            { title: t.dashboard.nextActions, icon: Clock3 },
+          ].map((section) => {
+            const Icon = section.icon;
+
+            return (
+              <Card key={section.title} className="bg-white/[0.035]">
+                <CardContent className="p-6">
+                  <Icon className="size-5 text-gold-100" aria-hidden="true" />
+                  <h2 className="mt-4 font-semibold text-white">
+                    {section.title}
+                  </h2>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                    Buyer workflow placeholders for saved suppliers, messages,
+                    and sourcing follow-ups.
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </DashboardShell>
+    );
+  }
 
   return (
     <DashboardShell
       eyebrow={t.dashboard.eyebrow}
       title={t.dashboard.title}
       description={t.dashboard.description}
+      active="overview"
     >
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-        {metrics.map((metric) => {
+        {supplierMetrics.map((metric) => {
           const Icon = metric.icon;
 
           return (

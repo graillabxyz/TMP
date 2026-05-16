@@ -2,13 +2,16 @@ import Link from "next/link";
 import {
   BadgeCheck,
   Boxes,
+  FileText,
   LayoutDashboard,
   MessageSquare,
   PackagePlus,
+  Search,
   ShieldCheck,
 } from "lucide-react";
 
 import { Logo } from "@/components/logo";
+import { getCurrentProfile, type AccountRole } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -19,6 +22,7 @@ type DashboardShellProps = {
   title: string;
   description: string;
   admin?: boolean;
+  active?: "overview" | "products" | "rfqs" | "messages" | "verification";
 };
 
 export async function DashboardShell({
@@ -27,45 +31,101 @@ export async function DashboardShell({
   title,
   description,
   admin = false,
+  active = "overview",
 }: DashboardShellProps) {
   const locale = await getLocale();
   const t = getDictionary(locale);
-  const navItems = [
-    { label: t.dashboard.overview, href: "/dashboard", icon: LayoutDashboard },
+  const profile = await getCurrentProfile();
+  const role: AccountRole = admin ? "admin" : (profile?.role ?? "buyer");
+  const supplierNavItems = [
     {
+      id: "overview",
+      label: t.dashboard.overview,
+      href: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      id: "products",
       label: t.dashboard.products,
       href: "/dashboard/products",
       icon: PackagePlus,
     },
-    { label: t.dashboard.listings, href: "/dashboard", icon: Boxes },
-    { label: t.dashboard.rfqs, href: "/dashboard", icon: BadgeCheck },
-    { label: t.dashboard.messages, href: "/dashboard", icon: MessageSquare },
+    { id: "rfqs", label: t.dashboard.rfqs, href: "/dashboard", icon: BadgeCheck },
     {
+      id: "messages",
+      label: t.dashboard.messages,
+      href: "/dashboard",
+      icon: MessageSquare,
+    },
+    {
+      id: "verification",
       label: t.dashboard.verification,
       href: "/dashboard/settings/verification",
       icon: ShieldCheck,
     },
   ];
+  const buyerNavItems = [
+    {
+      id: "overview",
+      label: t.dashboard.overview,
+      href: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    { id: "rfqs", label: t.dashboard.rfqs, href: "/dashboard", icon: FileText },
+    {
+      id: "messages",
+      label: t.dashboard.messages,
+      href: "/dashboard",
+      icon: MessageSquare,
+    },
+    {
+      id: "suppliers",
+      label: t.nav.suppliers,
+      href: "/suppliers",
+      icon: Search,
+    },
+  ];
+  const adminNavItems = [
+    {
+      id: "overview",
+      label: t.dashboard.overview,
+      href: "/admin",
+      icon: LayoutDashboard,
+    },
+    { id: "suppliers", label: t.nav.suppliers, href: "/admin", icon: Boxes },
+    {
+      id: "verification",
+      label: t.dashboard.verification,
+      href: "/admin",
+      icon: ShieldCheck,
+    },
+  ];
+  const navItems =
+    role === "admin"
+      ? adminNavItems
+      : role === "supplier"
+        ? supplierNavItems
+        : buyerNavItems;
 
   return (
     <div className="min-h-screen bg-surface-radial">
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-72 border-r border-white/10 bg-charcoal-900/[0.94] p-6 lg:block">
         <Logo />
         <nav className="mt-10 grid gap-1">
-          {navItems.map((item, index) => {
+          {navItems.map((item) => {
             const Icon = item.icon;
 
             return (
               <Link
-                key={`${item.label}-${index}`}
-                href={admin ? "/admin" : item.href}
+                key={item.id}
+                href={item.href}
                 className={cn(
                   "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground transition hover:bg-white/[0.08] hover:text-white",
-                  index === 0 && !admin && "bg-white/[0.08] text-white",
+                  item.id === active && "bg-white/[0.08] text-white",
                 )}
               >
                 <Icon className="size-4" aria-hidden="true" />
-                {admin && index > 1 ? `Admin ${item.label}` : item.label}
+                {item.label}
               </Link>
             );
           })}
@@ -73,7 +133,7 @@ export async function DashboardShell({
       </aside>
       <div className="lg:pl-72">
         <header className="border-b border-white/10 bg-background/80 backdrop-blur-xl">
-          <div className="container flex min-h-20 items-center justify-between gap-4 py-5 lg:px-8">
+          <div className="flex min-h-20 w-full items-center justify-between gap-4 px-4 py-5 sm:px-6 lg:px-8">
             <div className="lg:hidden">
               <Logo compact />
             </div>
@@ -88,7 +148,7 @@ export async function DashboardShell({
             </div>
           </div>
         </header>
-        <main className="container py-8 lg:px-8">{children}</main>
+        <main className="w-full px-4 py-8 sm:px-6 lg:px-8">{children}</main>
       </div>
     </div>
   );

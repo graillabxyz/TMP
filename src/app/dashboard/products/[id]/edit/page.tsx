@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { updateProduct } from "@/app/actions/products";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { ProductForm } from "@/components/product-form";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
@@ -29,6 +33,46 @@ export default async function EditProductPage({
   const [{ id }, query] = await Promise.all([params, searchParams]);
   const t = getDictionary(locale);
   const labels = t.dashboard.productManager;
+  const profile = await getCurrentProfile();
+
+  if (profile?.role !== "supplier") {
+    return (
+      <DashboardShell
+        eyebrow={labels.eyebrow}
+        title={labels.editProduct}
+        description={labels.description}
+        active="products"
+      >
+        <Card className="bg-white/[0.035]">
+          <CardContent className="p-8">
+            <h2 className="text-xl font-semibold text-white">
+              {profile ? "Supplier access required" : labels.loginRequired}
+            </h2>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
+              {profile
+                ? "Buyer accounts cannot edit supplier product listings."
+                : labels.loginRequiredBody}
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              {profile ? (
+                <Button asChild>
+                  <Link href="/products">Browse products</Link>
+                </Button>
+              ) : (
+                <Button asChild>
+                  <Link href="/login?role=supplier">{t.nav.login}</Link>
+                </Button>
+              )}
+              <Button asChild variant="outline">
+                <Link href="/rfq">Create RFQ</Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </DashboardShell>
+    );
+  }
+
   const [categories, product] = await Promise.all([
     getCategories(locale),
     getEditableProduct(id),
@@ -49,6 +93,7 @@ export default async function EditProductPage({
       eyebrow={labels.eyebrow}
       title={labels.editProduct}
       description={labels.description}
+      active="products"
     >
       {statusCopy && (
         <div className="mb-5 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-red-100">

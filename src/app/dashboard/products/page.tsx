@@ -7,6 +7,7 @@ import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { formatPriceRange, getSupplierProductWorkspace } from "@/lib/products";
@@ -41,6 +42,7 @@ export default async function DashboardProductsPage({
   const params = await searchParams;
   const t = getDictionary(locale);
   const labels = t.dashboard.productManager;
+  const profile = await getCurrentProfile();
   const workspace = await getSupplierProductWorkspace(locale);
   const statusCopy =
     params.status === "created"
@@ -58,6 +60,7 @@ export default async function DashboardProductsPage({
       eyebrow={labels.eyebrow}
       title={labels.title}
       description={labels.description}
+      active="products"
     >
       {statusCopy && (
         <div className="mb-5 rounded-lg border border-gold-300/20 bg-gold-300/10 px-4 py-3 text-sm text-gold-50">
@@ -65,7 +68,30 @@ export default async function DashboardProductsPage({
         </div>
       )}
 
-      {workspace.state === "unauthenticated" && (
+      {profile?.role === "buyer" && (
+        <Card className="bg-white/[0.035]">
+          <CardContent className="p-8">
+            <ShieldAlert className="size-8 text-gold-200" aria-hidden="true" />
+            <h2 className="mt-4 text-xl font-semibold text-white">
+              Supplier access required
+            </h2>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
+              Product posting is available to supplier profiles. Buyer accounts
+              can browse products, save suppliers, and submit RFQs.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button asChild>
+                <Link href="/products">Browse products</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link href="/rfq">Create RFQ</Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {profile?.role !== "buyer" && workspace.state === "unauthenticated" && (
         <Card className="bg-white/[0.035]">
           <CardContent className="p-8">
             <ShieldAlert className="size-8 text-gold-200" aria-hidden="true" />
@@ -82,7 +108,7 @@ export default async function DashboardProductsPage({
         </Card>
       )}
 
-      {workspace.state === "missing-supplier" && (
+      {profile?.role !== "buyer" && workspace.state === "missing-supplier" && (
         <Card className="bg-white/[0.035]">
           <CardContent className="p-8">
             <ShieldAlert className="size-8 text-gold-200" aria-hidden="true" />
@@ -96,7 +122,7 @@ export default async function DashboardProductsPage({
         </Card>
       )}
 
-      {workspace.state === "ready" && (
+      {profile?.role !== "buyer" && workspace.state === "ready" && (
         <>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>

@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { BillingActions } from "@/components/verification/billing-actions";
+import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
@@ -55,6 +56,7 @@ export default async function VerificationSettingsPage({
   const params = await searchParams;
   const t = getDictionary(locale);
   const copy = t.verificationSettings;
+  const profile = await getCurrentProfile();
   const workspace = await getVerificationWorkspace();
   const supplier = workspace.supplier;
   const documents = workspace.documents;
@@ -74,33 +76,62 @@ export default async function VerificationSettingsPage({
       eyebrow={copy.eyebrow}
       title={copy.title}
       description={copy.description}
+      active="verification"
     >
-      {statusMessage && (
-        <div className="mb-6 rounded-lg border border-gold-300/20 bg-gold-300/10 px-4 py-3 text-sm text-gold-50">
-          {statusMessage}
-        </div>
-      )}
-
-      {workspace.state !== "ready" && (
+      {profile?.role === "buyer" && (
         <Card className="bg-white/[0.035]">
           <CardContent className="p-8">
             <ShieldCheck className="size-8 text-gold-200" aria-hidden="true" />
             <h2 className="mt-4 text-xl font-semibold text-white">
-              {workspace.state === "unauthenticated"
-                ? copy.loginRequired
-                : copy.missingSupplier}
+              Supplier access required
             </h2>
-            {workspace.state === "unauthenticated" && (
-              <Button asChild className="mt-6">
-                <Link href="/login?role=supplier">{t.nav.login}</Link>
+            <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
+              Verification settings are only available to supplier profiles.
+              Buyer accounts can browse verified suppliers and submit RFQs.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Button asChild>
+                <Link href="/suppliers">Explore suppliers</Link>
               </Button>
-            )}
+              <Button asChild variant="outline">
+                <Link href="/rfq">Create RFQ</Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
       )}
 
-      {workspace.state === "ready" && supplier && (
-        <div className="grid gap-6 xl:grid-cols-[1fr_420px]">
+      {profile?.role !== "buyer" && (
+        <>
+          {statusMessage && (
+            <div className="mb-6 rounded-lg border border-gold-300/20 bg-gold-300/10 px-4 py-3 text-sm text-gold-50">
+              {statusMessage}
+            </div>
+          )}
+
+          {workspace.state !== "ready" && (
+            <Card className="bg-white/[0.035]">
+              <CardContent className="p-8">
+                <ShieldCheck
+                  className="size-8 text-gold-200"
+                  aria-hidden="true"
+                />
+                <h2 className="mt-4 text-xl font-semibold text-white">
+                  {workspace.state === "unauthenticated"
+                    ? copy.loginRequired
+                    : copy.missingSupplier}
+                </h2>
+                {workspace.state === "unauthenticated" && (
+                  <Button asChild className="mt-6">
+                    <Link href="/login?role=supplier">{t.nav.login}</Link>
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          )}
+
+          {workspace.state === "ready" && supplier && (
+            <div className="grid gap-6 xl:grid-cols-[1fr_420px]">
           <div className="grid gap-6">
             <Card className="bg-white/[0.035]">
               <CardHeader>
@@ -270,6 +301,8 @@ export default async function VerificationSettingsPage({
             </Card>
           </aside>
         </div>
+      )}
+        </>
       )}
     </DashboardShell>
   );
