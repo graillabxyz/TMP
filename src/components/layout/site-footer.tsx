@@ -14,6 +14,8 @@ export async function SiteFooter() {
     { label: t.footer.rfq, href: "/rfq" },
     { label: t.footer.buyerLogin, href: "/login" },
     { label: t.footer.supplierOnboarding, href: "/register" },
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
   ];
 
   return (
