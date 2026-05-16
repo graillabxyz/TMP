@@ -95,6 +95,8 @@ real Checkout Session, Customer Portal, and webhook event handling.
 The app is wired for Supabase Google OAuth, but Google Console credentials still
 need to be created and added in Supabase.
 
+Setup checklist: `docs/google-oauth-setup.md`.
+
 Supabase callback route:
 
 ```text
