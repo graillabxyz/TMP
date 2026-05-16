@@ -32,6 +32,7 @@ export default async function DashboardPage() {
   const t = getDictionary(locale);
   const profile = await getCurrentProfile();
   const role = profile?.role ?? "buyer";
+  const buyerCopy = t.dashboard.buyerWorkspace;
   const verificationWorkspace = await getVerificationWorkspace();
   const verificationSupplier = verificationWorkspace.supplier;
   const supplierMetrics = [
@@ -41,18 +42,18 @@ export default async function DashboardPage() {
     { label: t.dashboard.metrics[3], value: "72%", icon: BadgeCheck },
   ];
   const buyerMetrics = [
-    { label: "Open RFQs", value: "3", icon: FileText },
-    { label: "Saved suppliers", value: "8", icon: Search },
-    { label: "Unread messages", value: "2", icon: MessageSquare },
-    { label: "Shortlisted products", value: "14", icon: PackagePlus },
+    { label: buyerCopy.metrics[0], value: "3", icon: FileText },
+    { label: buyerCopy.metrics[1], value: "8", icon: Search },
+    { label: buyerCopy.metrics[2], value: "2", icon: MessageSquare },
+    { label: buyerCopy.metrics[3], value: "14", icon: PackagePlus },
   ];
 
   if (role !== "supplier") {
     return (
       <DashboardShell
-        eyebrow="Buyer workspace"
+        eyebrow={buyerCopy.eyebrow}
         title={t.dashboard.title}
-        description="Track RFQs, saved suppliers, product shortlists, and buyer conversations."
+        description={buyerCopy.description}
         active="overview"
       >
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
@@ -91,19 +92,15 @@ export default async function DashboardPage() {
                 <div>
                   <p className="text-sm text-gold-200">RFQs</p>
                   <h2 className="mt-2 text-xl font-semibold text-white">
-                    Active sourcing requests
+                    {buyerCopy.activeRequests}
                   </h2>
                 </div>
                 <Button asChild variant="outline" size="sm">
-                  <Link href="/rfq">Create RFQ</Link>
+                  <Link href="/rfq">{buyerCopy.createRfq}</Link>
                 </Button>
               </div>
               <div className="mt-6 grid gap-3">
-                {[
-                  ["Organic cotton basics", "Matching suppliers", "3 replies"],
-                  ["Rigid cosmetics boxes", "Reviewing quotes", "2 replies"],
-                  ["CNC aluminum housing", "Draft request", "Not sent"],
-                ].map(([request, status, replies]) => (
+                {buyerCopy.requestRows.map(([request, status, replies]) => (
                   <div
                     key={request}
                     className="grid gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-4 sm:grid-cols-[1fr_160px_120px] sm:items-center"
@@ -119,20 +116,19 @@ export default async function DashboardPage() {
 
           <Card className="bg-white/[0.035]">
             <CardContent className="p-6">
-              <p className="text-sm text-gold-200">Supplier discovery</p>
+              <p className="text-sm text-gold-200">{buyerCopy.discovery}</p>
               <h2 className="mt-2 text-xl font-semibold text-white">
-                Continue sourcing
+                {buyerCopy.continueSourcing}
               </h2>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                Browse verified Turkish suppliers, compare product listings,
-                and send a structured RFQ when you are ready.
+                {buyerCopy.discoveryBody}
               </p>
               <div className="mt-6 grid gap-3">
                 <Button asChild>
-                  <Link href="/products">Browse products</Link>
+                  <Link href="/products">{buyerCopy.browseProducts}</Link>
                 </Button>
                 <Button asChild variant="outline">
-                  <Link href="/suppliers">Explore suppliers</Link>
+                  <Link href="/suppliers">{buyerCopy.exploreSuppliers}</Link>
                 </Button>
               </div>
             </CardContent>
@@ -141,7 +137,7 @@ export default async function DashboardPage() {
 
         <div className="mt-6 grid gap-6 lg:grid-cols-3">
           {[
-            { title: "Saved suppliers", icon: Search },
+            { title: buyerCopy.savedSuppliers, icon: Search },
             { title: t.dashboard.messages, icon: MessageSquare },
             { title: t.dashboard.nextActions, icon: Clock3 },
           ].map((section) => {
@@ -155,8 +151,7 @@ export default async function DashboardPage() {
                     {section.title}
                   </h2>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    Buyer workflow placeholders for saved suppliers, messages,
-                    and sourcing follow-ups.
+                    {buyerCopy.placeholder}
                   </p>
                 </CardContent>
               </Card>

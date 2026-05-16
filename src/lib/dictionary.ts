@@ -235,6 +235,33 @@ const dictionaries = {
       upgradeBody:
         "Start the monthly verification subscription and submit documents for admin review.",
       upgradeCta: "Open verification settings",
+      buyerWorkspace: {
+        eyebrow: "Buyer workspace",
+        description:
+          "Track RFQs, saved suppliers, product shortlists, and buyer conversations.",
+        metrics: [
+          "Open RFQs",
+          "Saved suppliers",
+          "Unread messages",
+          "Shortlisted products",
+        ],
+        activeRequests: "Active sourcing requests",
+        createRfq: "Create RFQ",
+        requestRows: [
+          ["Organic cotton basics", "Matching suppliers", "3 replies"],
+          ["Rigid cosmetics boxes", "Reviewing quotes", "2 replies"],
+          ["CNC aluminum housing", "Draft request", "Not sent"],
+        ],
+        discovery: "Supplier discovery",
+        continueSourcing: "Continue sourcing",
+        discoveryBody:
+          "Browse verified Turkish suppliers, compare product listings, and send a structured RFQ when you are ready.",
+        browseProducts: "Browse products",
+        exploreSuppliers: "Explore suppliers",
+        savedSuppliers: "Saved suppliers",
+        placeholder:
+          "Buyer workflow placeholders for saved suppliers, messages, and sourcing follow-ups.",
+      },
       productManager: {
         eyebrow: "Supplier products",
         title: "Products",
@@ -588,6 +615,33 @@ const dictionaries = {
       upgradeBody:
         "Lancez l’abonnement mensuel de vérification et soumettez vos documents pour revue admin.",
       upgradeCta: "Ouvrir la vérification",
+      buyerWorkspace: {
+        eyebrow: "Espace acheteur",
+        description:
+          "Suivez vos demandes, fournisseurs enregistrés, produits présélectionnés et conversations acheteurs.",
+        metrics: [
+          "Demandes ouvertes",
+          "Fournisseurs enregistrés",
+          "Messages non lus",
+          "Produits présélectionnés",
+        ],
+        activeRequests: "Demandes de sourcing actives",
+        createRfq: "Créer une demande",
+        requestRows: [
+          ["Basiques coton bio", "Fournisseurs en correspondance", "3 réponses"],
+          ["Boîtes cosmétiques rigides", "Devis en revue", "2 réponses"],
+          ["Boîtier aluminium CNC", "Demande brouillon", "Non envoyé"],
+        ],
+        discovery: "Découverte fournisseurs",
+        continueSourcing: "Continuer le sourcing",
+        discoveryBody:
+          "Parcourez les fournisseurs turcs vérifiés, comparez les listings produits et envoyez une demande structurée quand vous êtes prêt.",
+        browseProducts: "Parcourir les produits",
+        exploreSuppliers: "Explorer les fournisseurs",
+        savedSuppliers: "Fournisseurs enregistrés",
+        placeholder:
+          "Espaces réservés au workflow acheteur pour fournisseurs enregistrés, messages et suivis de sourcing.",
+      },
       productManager: {
         eyebrow: "Produits fournisseur",
         title: "Produits",
