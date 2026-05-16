@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 
 type AccountRole = "buyer" | "supplier";
+type AuthMode = "login" | "register";
 
 function getString(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -15,6 +16,12 @@ function getString(formData: FormData, key: string) {
 
 function getRole(formData: FormData): AccountRole {
   return getString(formData, "role") === "supplier" ? "supplier" : "buyer";
+}
+
+function getAuthMode(formData: FormData): AuthMode {
+  return getString(formData, "auth_mode") === "register"
+    ? "register"
+    : "login";
 }
 
 async function getOrigin() {
@@ -104,8 +111,9 @@ export async function signInWithEmail(formData: FormData) {
 
 export async function signInWithGoogle(formData: FormData) {
   const role = getRole(formData);
+  const authMode = getAuthMode(formData);
   const origin = await getOrigin();
-  const supabase = await getConfiguredSupabase(role, "login");
+  const supabase = await getConfiguredSupabase(role, authMode);
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
@@ -124,7 +132,7 @@ export async function signInWithGoogle(formData: FormData) {
       console.error("Unable to start Google OAuth", error.message);
     }
 
-    redirect(`/login?role=${role}&status=oauth-not-ready`);
+    redirect(`/${authMode}?role=${role}&status=oauth-error`);
   }
 
   redirect(data.url);

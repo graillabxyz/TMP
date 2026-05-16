@@ -194,7 +194,7 @@ const dictionaries = {
       supplier: "Supplier",
       continueWithGoogle: "Continue with Google",
       googleHelp:
-        "Google OAuth is wired for Supabase and will work once the Google provider credentials are added in Supabase.",
+        "Use Google to continue, then TMP will route you into the selected buyer or supplier workspace.",
       orEmail: "or continue with email",
       alreadyAccount: "Already have an account?",
       status: {
@@ -203,7 +203,7 @@ const dictionaries = {
         checkEmail:
           "Check your email to confirm the account before logging in.",
         oauthNotReady:
-          "Google sign-in is not ready yet. Add the Google OAuth credentials in Supabase, then try again.",
+          "Google sign-in could not start. Please try again or continue with email.",
       },
     },
     dashboard: {
@@ -547,7 +547,7 @@ const dictionaries = {
       supplier: "Fournisseur",
       continueWithGoogle: "Continuer avec Google",
       googleHelp:
-        "Google OAuth est câblé pour Supabase et fonctionnera dès que les identifiants Google seront ajoutés dans Supabase.",
+        "Utilisez Google pour continuer, puis TMP vous dirigera vers l’espace acheteur ou fournisseur sélectionné.",
       orEmail: "ou continuer avec email",
       alreadyAccount: "Vous avez déjà un compte ?",
       status: {
@@ -556,7 +556,7 @@ const dictionaries = {
         checkEmail:
           "Vérifiez votre email pour confirmer le compte avant de vous connecter.",
         oauthNotReady:
-          "La connexion Google n’est pas encore prête. Ajoutez les identifiants OAuth Google dans Supabase, puis réessayez.",
+          "La connexion Google n’a pas pu démarrer. Réessayez ou continuez avec l’e-mail.",
       },
     },
     dashboard: {

@@ -68,7 +68,7 @@ function getStatusCopy(
     return { tone: "success" as const, copy: labels.checkEmail };
   }
 
-  if (status === "oauth-not-ready") {
+  if (status === "oauth-error" || status === "oauth-not-ready") {
     return { tone: "error" as const, copy: labels.oauthNotReady };
   }
 
@@ -157,6 +157,7 @@ export function OnboardingAuthCard({
 
         <form action={signInWithGoogle} className="mt-8">
           <input type="hidden" name="role" value={role} />
+          <input type="hidden" name="auth_mode" value={mode} />
           <Button
             type="submit"
             size="lg"

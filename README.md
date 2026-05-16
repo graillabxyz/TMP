@@ -92,8 +92,8 @@ real Checkout Session, Customer Portal, and webhook event handling.
 
 ## Google OAuth
 
-The app is wired for Supabase Google OAuth, but Google Console credentials still
-need to be created and added in Supabase.
+The app uses Supabase Google OAuth for login and registration. Google provider
+credentials are configured in Supabase Auth, not in the Next.js environment.
 
 Setup checklist: `docs/google-oauth-setup.md`.
 
@@ -103,7 +103,5 @@ Supabase callback route:
 /auth/callback
 ```
 
-When the Google OAuth client is ready, add the client ID/secret in Supabase Auth
-Providers, then configure the Google authorized redirect URI shown by Supabase.
 The app passes the selected onboarding role through the callback and upserts a
 buyer/supplier profile after Supabase exchanges the OAuth code.
