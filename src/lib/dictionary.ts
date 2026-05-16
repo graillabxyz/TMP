@@ -210,18 +210,18 @@ const dictionaries = {
       eyebrow: "Supplier workspace",
       title: "Dashboard",
       description:
-        "Track supplier visibility, inbound RFQs, buyer conversations, and verification readiness.",
+        "Track supplier visibility, inbound RFQs, product inquiries, and verification readiness.",
       overview: "Overview",
       products: "Products",
       listings: "Listings",
       rfqs: "RFQs",
-      messages: "Messages",
+      productInquiries: "Product inquiries",
       verification: "Verification",
       verificationSettings: "Verification settings",
       metrics: [
         "Active listings",
         "Open RFQs",
-        "Unread messages",
+        "Product inquiries",
         "Verification",
       ],
       recentRequests: "Recent buyer requests",
@@ -230,7 +230,7 @@ const dictionaries = {
       buyerActivity: "Buyer activity",
       nextActions: "Next actions",
       placeholder:
-        "Keep upcoming work visible as listings, buyer conversations, and verification tasks move through the pipeline.",
+        "Keep upcoming work visible as listings, RFQs, product inquiries, and verification tasks move through the pipeline.",
       upgradeTitle: "Upgrade to Verified Supplier",
       upgradeBody:
         "Start the monthly verification subscription and submit documents for admin review.",
@@ -238,11 +238,11 @@ const dictionaries = {
       buyerWorkspace: {
         eyebrow: "Buyer workspace",
         description:
-          "Track RFQs, saved suppliers, product shortlists, and buyer conversations.",
+          "Track RFQs, saved suppliers, product shortlists, and product inquiries.",
         metrics: [
           "Open RFQs",
           "Saved suppliers",
-          "Unread messages",
+          "Product inquiries",
           "Shortlisted products",
         ],
         activeRequests: "Active sourcing requests",
@@ -259,8 +259,9 @@ const dictionaries = {
         browseProducts: "Browse products",
         exploreSuppliers: "Explore suppliers",
         savedSuppliers: "Saved suppliers",
+        productInquiries: "Product inquiries",
         placeholder:
-          "Buyer workflow placeholders for saved suppliers, messages, and sourcing follow-ups.",
+          "Buyer workflow placeholders for saved suppliers, product inquiries, and sourcing follow-ups.",
       },
       productManager: {
         eyebrow: "Supplier products",
@@ -590,18 +591,18 @@ const dictionaries = {
       eyebrow: "Espace fournisseur",
       title: "Tableau de bord",
       description:
-        "Suivez visibilité, demandes entrantes, conversations acheteurs et préparation à la vérification.",
+        "Suivez visibilité, demandes entrantes, demandes produit et préparation à la vérification.",
       overview: "Vue d’ensemble",
       products: "Produits",
       listings: "Listings",
       rfqs: "Demandes",
-      messages: "Messages",
+      productInquiries: "Demandes produit",
       verification: "Vérification",
       verificationSettings: "Paramètres vérification",
       metrics: [
         "Listings actifs",
         "Demandes ouvertes",
-        "Messages non lus",
+        "Demandes produit",
         "Vérification",
       ],
       recentRequests: "Demandes acheteurs récentes",
@@ -610,7 +611,7 @@ const dictionaries = {
       buyerActivity: "Activité acheteur",
       nextActions: "Prochaines actions",
       placeholder:
-        "Gardez les prochains travaux visibles pendant que listings, conversations et vérifications avancent.",
+        "Gardez les prochains travaux visibles pendant que listings, RFQ, demandes produit et vérifications avancent.",
       upgradeTitle: "Passer en fournisseur vérifié",
       upgradeBody:
         "Lancez l’abonnement mensuel de vérification et soumettez vos documents pour revue admin.",
@@ -618,11 +619,11 @@ const dictionaries = {
       buyerWorkspace: {
         eyebrow: "Espace acheteur",
         description:
-          "Suivez vos demandes, fournisseurs enregistrés, produits présélectionnés et conversations acheteurs.",
+          "Suivez vos demandes, fournisseurs enregistrés, produits présélectionnés et demandes produit.",
         metrics: [
           "Demandes ouvertes",
           "Fournisseurs enregistrés",
-          "Messages non lus",
+          "Demandes produit",
           "Produits présélectionnés",
         ],
         activeRequests: "Demandes de sourcing actives",
@@ -639,8 +640,9 @@ const dictionaries = {
         browseProducts: "Parcourir les produits",
         exploreSuppliers: "Explorer les fournisseurs",
         savedSuppliers: "Fournisseurs enregistrés",
+        productInquiries: "Demandes produit",
         placeholder:
-          "Espaces réservés au workflow acheteur pour fournisseurs enregistrés, messages et suivis de sourcing.",
+          "Espaces réservés au workflow acheteur pour fournisseurs enregistrés, demandes produit et suivis de sourcing.",
       },
       productManager: {
         eyebrow: "Produits fournisseur",

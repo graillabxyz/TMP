@@ -4,7 +4,6 @@ import {
   Boxes,
   FileText,
   LayoutDashboard,
-  MessageSquare,
   PackagePlus,
   Search,
   ShieldCheck,
@@ -22,7 +21,7 @@ type DashboardShellProps = {
   title: string;
   description: string;
   admin?: boolean;
-  active?: "overview" | "products" | "rfqs" | "messages" | "verification";
+  active?: "overview" | "products" | "rfqs" | "verification";
 };
 
 export async function DashboardShell({
@@ -52,12 +51,6 @@ export async function DashboardShell({
     },
     { id: "rfqs", label: t.dashboard.rfqs, href: "/dashboard", icon: BadgeCheck },
     {
-      id: "messages",
-      label: t.dashboard.messages,
-      href: "/dashboard",
-      icon: MessageSquare,
-    },
-    {
       id: "verification",
       label: t.dashboard.verification,
       href: "/dashboard/settings/verification",
@@ -72,12 +65,6 @@ export async function DashboardShell({
       icon: LayoutDashboard,
     },
     { id: "rfqs", label: t.dashboard.rfqs, href: "/dashboard", icon: FileText },
-    {
-      id: "messages",
-      label: t.dashboard.messages,
-      href: "/dashboard",
-      icon: MessageSquare,
-    },
     {
       id: "suppliers",
       label: t.nav.suppliers,

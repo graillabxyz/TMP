@@ -6,7 +6,6 @@ import {
   FileText,
   Inbox,
   LineChart,
-  MessageSquare,
   PackagePlus,
   Search,
 } from "lucide-react";
@@ -38,13 +37,13 @@ export default async function DashboardPage() {
   const supplierMetrics = [
     { label: t.dashboard.metrics[0], value: "18", icon: PackagePlus },
     { label: t.dashboard.metrics[1], value: "7", icon: Inbox },
-    { label: t.dashboard.metrics[2], value: "12", icon: MessageSquare },
+    { label: t.dashboard.metrics[2], value: "24", icon: Search },
     { label: t.dashboard.metrics[3], value: "72%", icon: BadgeCheck },
   ];
   const buyerMetrics = [
     { label: buyerCopy.metrics[0], value: "3", icon: FileText },
     { label: buyerCopy.metrics[1], value: "8", icon: Search },
-    { label: buyerCopy.metrics[2], value: "2", icon: MessageSquare },
+    { label: buyerCopy.metrics[2], value: "5", icon: Inbox },
     { label: buyerCopy.metrics[3], value: "14", icon: PackagePlus },
   ];
 
@@ -138,7 +137,7 @@ export default async function DashboardPage() {
         <div className="mt-6 grid gap-6 lg:grid-cols-3">
           {[
             { title: buyerCopy.savedSuppliers, icon: Search },
-            { title: t.dashboard.messages, icon: MessageSquare },
+            { title: buyerCopy.productInquiries, icon: Inbox },
             { title: t.dashboard.nextActions, icon: Clock3 },
           ].map((section) => {
             const Icon = section.icon;
@@ -332,7 +331,7 @@ export default async function DashboardPage() {
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
         {[
           { title: t.dashboard.listings, icon: PackagePlus },
-          { title: t.dashboard.messages, icon: MessageSquare },
+          { title: t.dashboard.productInquiries, icon: Inbox },
           { title: t.dashboard.nextActions, icon: Clock3 },
         ].map((section) => {
           const Icon = section.icon;
