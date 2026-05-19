@@ -41,6 +41,7 @@ export type MarketplaceProduct = {
   category: string;
   categorySlug: string;
   supplierName: string;
+  supplierId: string | null;
   supplierSlug: string;
   supplierVerified: boolean;
   priceMin: number | null;

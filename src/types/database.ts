@@ -373,6 +373,11 @@ export type Database = {
       rfqs: {
         Row: {
           id: string;
+          product_id: string | null;
+          supplier_id: string | null;
+          product_slug: string | null;
+          supplier_slug: string | null;
+          inquiry_type: "general" | "product";
           product_request: string;
           category_slug: string | null;
           quantity: string;
@@ -388,6 +393,11 @@ export type Database = {
         };
         Insert: {
           id?: string;
+          product_id?: string | null;
+          supplier_id?: string | null;
+          product_slug?: string | null;
+          supplier_slug?: string | null;
+          inquiry_type?: "general" | "product";
           product_request: string;
           category_slug?: string | null;
           quantity: string;
@@ -409,6 +419,20 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "supplier_categories";
             referencedColumns: ["slug"];
+          },
+          {
+            foreignKeyName: "rfqs_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "supplier_products";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "rfqs_supplier_id_fkey";
+            columns: ["supplier_id"];
+            isOneToOne: false;
+            referencedRelation: "suppliers";
+            referencedColumns: ["id"];
           },
         ];
       };

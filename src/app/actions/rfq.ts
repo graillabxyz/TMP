@@ -30,7 +30,7 @@ export async function submitRfq(formData: FormData) {
   const attachmentFile =
     attachment instanceof File && attachment.size > 0 ? attachment : null;
 
-  const payload: Database["public"]["Tables"]["rfqs"]["Insert"] = {
+  const basePayload: Database["public"]["Tables"]["rfqs"]["Insert"] = {
     product_request: productRequest,
     category_slug: getString(formData, "category_slug") || null,
     quantity,
@@ -41,10 +41,34 @@ export async function submitRfq(formData: FormData) {
     attachment_size: attachmentFile?.size ?? null,
     attachment_type: attachmentFile?.type ?? null,
   };
+  const payload: Database["public"]["Tables"]["rfqs"]["Insert"] = {
+    ...basePayload,
+    product_id: getString(formData, "product_id") || null,
+    supplier_id: getString(formData, "supplier_id") || null,
+    product_slug: getString(formData, "product_slug") || null,
+    supplier_slug: getString(formData, "supplier_slug") || null,
+    inquiry_type: getString(formData, "inquiry_type") === "product"
+      ? "product"
+      : "general",
+  };
 
   const { error } = await supabase.from("rfqs").insert(payload);
 
   if (error) {
+    if (
+      error.message.includes("product_id") ||
+      error.message.includes("inquiry_type") ||
+      error.message.includes("supplier_id")
+    ) {
+      const { error: fallbackError } = await supabase
+        .from("rfqs")
+        .insert(basePayload);
+
+      if (!fallbackError) {
+        redirect("/rfq?status=success");
+      }
+    }
+
     console.error("Unable to submit RFQ", error.message);
     redirect("/rfq?status=error");
   }

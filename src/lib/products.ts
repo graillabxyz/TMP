@@ -24,6 +24,7 @@ type PublicProductRow = {
   created_at: string;
   category: { name: string; name_fr: string | null; slug: string } | null;
   supplier: {
+    id: string;
     company_name: string;
     company_name_fr: string | null;
     slug: string;
@@ -73,6 +74,7 @@ function normalizeProduct(
           product.supplier.company_name_fr,
         )
       : "Supplier",
+    supplierId: product.supplier?.id ?? null,
     supplierSlug: product.supplier?.slug ?? "",
     supplierVerified:
       product.supplier?.verified ||
@@ -145,7 +147,7 @@ export async function getProducts({
         status,
         created_at,
         category:categories(name, name_fr, slug),
-        supplier:suppliers(company_name, company_name_fr, slug, verified, verification_status)
+        supplier:suppliers(id, company_name, company_name_fr, slug, verified, verification_status)
       `,
     )
     .eq("status", "published")

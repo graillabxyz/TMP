@@ -12,6 +12,7 @@ import { submitRfq } from "@/app/actions/rfq";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
+import { getProductBySlug } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
@@ -24,6 +25,8 @@ export const metadata: Metadata = createMetadata({
 type RFQPageProps = {
   searchParams?: Promise<{
     status?: string;
+    product?: string;
+    supplier?: string;
   }>;
 };
 
@@ -37,6 +40,10 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
     searchParams,
   ]);
   const status = resolvedSearchParams?.status;
+  const productSlug = resolvedSearchParams?.product;
+  const prefillProduct = productSlug
+    ? await getProductBySlug(productSlug, locale)
+    : null;
   const statusMessage =
     status && status in t.rfq.status
       ? t.rfq.status[status as keyof typeof t.rfq.status]
@@ -78,12 +85,48 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
               )}
 
               <form action={submitRfq} className="grid gap-5">
+                {prefillProduct && (
+                  <div className="rounded-lg border border-gold-300/25 bg-gold-300/[0.08] p-4 text-sm">
+                    <p className="font-medium text-white">
+                      {prefillProduct.title}
+                    </p>
+                    <p className="mt-1 text-muted-foreground">
+                      {prefillProduct.supplierName}
+                    </p>
+                  </div>
+                )}
+                <input
+                  type="hidden"
+                  name="inquiry_type"
+                  value={prefillProduct ? "product" : "general"}
+                />
+                <input
+                  type="hidden"
+                  name="product_id"
+                  value={prefillProduct?.id ?? ""}
+                />
+                <input
+                  type="hidden"
+                  name="supplier_slug"
+                  value={prefillProduct?.supplierSlug ?? ""}
+                />
+                <input
+                  type="hidden"
+                  name="supplier_id"
+                  value={prefillProduct?.supplierId ?? ""}
+                />
+                <input
+                  type="hidden"
+                  name="product_slug"
+                  value={prefillProduct?.slug ?? productSlug ?? ""}
+                />
                 <div className="grid gap-2">
                   <Label htmlFor="product">{t.rfq.productRequest}</Label>
                   <Input
                     id="product"
                     name="product_request"
                     required
+                    defaultValue={prefillProduct?.title ?? ""}
                     placeholder={t.rfq.productPlaceholder}
                   />
                 </div>
@@ -91,7 +134,11 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div className="grid gap-2">
                     <Label htmlFor="category">{t.common.category}</Label>
-                    <Select id="category" name="category_slug" defaultValue="">
+                    <Select
+                      id="category"
+                      name="category_slug"
+                      defaultValue={prefillProduct?.categorySlug ?? ""}
+                    >
                       <option value="" disabled>
                         {t.rfq.selectCategory}
                       </option>

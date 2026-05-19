@@ -154,7 +154,17 @@ export default async function ProductDetailPage({
               </div>
 
               <Button asChild className="mt-7 w-full">
-                <Link href="/rfq">{t.products.requestQuote}</Link>
+                <Link
+                  href={{
+                    pathname: "/rfq",
+                    query: {
+                      product: product.slug,
+                      supplier: product.supplierSlug,
+                    },
+                  }}
+                >
+                  {t.products.requestQuote}
+                </Link>
               </Button>
             </CardContent>
           </Card>
