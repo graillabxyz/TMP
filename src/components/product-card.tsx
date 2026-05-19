@@ -1,8 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, BadgeCheck, Clock3, Package } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BadgeCheck,
+  Clock3,
+  Package,
+} from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatPriceRange } from "@/lib/products";
 import type { MarketplaceProduct } from "@/types";
@@ -16,6 +23,7 @@ type ProductCardProps = {
     leadTime: string;
     viewProduct: string;
     quote: string;
+    requestQuote: string;
   };
 };
 
@@ -88,6 +96,21 @@ export function ProductCard({ product, labels }: ProductCardProps) {
           )}
           {product.leadTime ?? labels.leadTime}
         </div>
+
+        <Button asChild className="mt-5 w-full" variant="outline">
+          <Link
+            href={{
+              pathname: "/rfq",
+              query: {
+                product: product.slug,
+                supplier: product.supplierSlug,
+              },
+            }}
+          >
+            {labels.requestQuote}
+            <ArrowRight aria-hidden="true" />
+          </Link>
+        </Button>
       </CardContent>
     </Card>
   );

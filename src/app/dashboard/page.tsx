@@ -22,7 +22,7 @@ import { getVerificationWorkspace } from "@/lib/verification";
 
 export const metadata: Metadata = createMetadata({
   title: "Dashboard | TMP",
-  description: "TMP supplier dashboard placeholder.",
+  description: "TMP workspace for RFQs, product discovery, and supplier tools.",
   path: "/dashboard",
 });
 
@@ -45,6 +45,52 @@ export default async function DashboardPage() {
     { label: buyerCopy.metrics[1], value: "8", icon: Search },
     { label: buyerCopy.metrics[2], value: "5", icon: Inbox },
     { label: buyerCopy.metrics[3], value: "14", icon: PackagePlus },
+  ];
+  const buyerSections = [
+    {
+      title: buyerCopy.savedSuppliers,
+      body: buyerCopy.savedSuppliersBody,
+      icon: Search,
+      href: "/suppliers",
+      cta: buyerCopy.exploreSuppliers,
+    },
+    {
+      title: buyerCopy.productInquiries,
+      body: buyerCopy.productInquiriesBody,
+      icon: Inbox,
+      href: "/products",
+      cta: buyerCopy.browseProducts,
+    },
+    {
+      title: t.dashboard.nextActions,
+      body: buyerCopy.nextActionsBody,
+      icon: Clock3,
+      href: "/rfq",
+      cta: buyerCopy.createRfq,
+    },
+  ];
+  const supplierSections = [
+    {
+      title: t.dashboard.listings,
+      body: t.dashboard.listingsBody,
+      icon: PackagePlus,
+      href: "/dashboard/products",
+      cta: t.dashboard.manageProducts,
+    },
+    {
+      title: t.dashboard.productInquiries,
+      body: t.dashboard.productInquiriesBody,
+      icon: Inbox,
+      href: "/dashboard/products",
+      cta: t.dashboard.reviewProducts,
+    },
+    {
+      title: t.dashboard.nextActions,
+      body: t.dashboard.nextActionsBody,
+      icon: Clock3,
+      href: "/dashboard/settings/verification",
+      cta: t.dashboard.upgradeCta,
+    },
   ];
 
   if (role !== "supplier") {
@@ -135,11 +181,7 @@ export default async function DashboardPage() {
         </div>
 
         <div className="mt-6 grid gap-6 lg:grid-cols-3">
-          {[
-            { title: buyerCopy.savedSuppliers, icon: Search },
-            { title: buyerCopy.productInquiries, icon: Inbox },
-            { title: t.dashboard.nextActions, icon: Clock3 },
-          ].map((section) => {
+          {buyerSections.map((section) => {
             const Icon = section.icon;
 
             return (
@@ -150,8 +192,11 @@ export default async function DashboardPage() {
                     {section.title}
                   </h2>
                   <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    {buyerCopy.placeholder}
+                    {section.body}
                   </p>
+                  <Button asChild className="mt-5 w-full" variant="outline">
+                    <Link href={section.href}>{section.cta}</Link>
+                  </Button>
                 </CardContent>
               </Card>
             );
@@ -204,9 +249,6 @@ export default async function DashboardPage() {
                   {t.dashboard.recentRequests}
                 </h2>
               </div>
-              <Button variant="outline" size="sm">
-                {t.dashboard.viewAll}
-              </Button>
             </div>
             <div className="mt-6 grid gap-3">
               {[
@@ -329,11 +371,7 @@ export default async function DashboardPage() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-3">
-        {[
-          { title: t.dashboard.listings, icon: PackagePlus },
-          { title: t.dashboard.productInquiries, icon: Inbox },
-          { title: t.dashboard.nextActions, icon: Clock3 },
-        ].map((section) => {
+        {supplierSections.map((section) => {
           const Icon = section.icon;
 
           return (
@@ -344,8 +382,11 @@ export default async function DashboardPage() {
                   {section.title}
                 </h2>
                 <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                  {t.dashboard.placeholder}
+                  {section.body}
                 </p>
+                <Button asChild className="mt-5 w-full" variant="outline">
+                  <Link href={section.href}>{section.cta}</Link>
+                </Button>
               </CardContent>
             </Card>
           );

@@ -138,6 +138,7 @@ export default async function ProductsPage({
                   leadTime: t.common.leadTime,
                   viewProduct: t.products.viewProduct,
                   quote: t.products.quote,
+                  requestQuote: t.products.requestQuote,
                 }}
               />
             ))}

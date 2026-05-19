@@ -225,12 +225,17 @@ const dictionaries = {
         "Verification",
       ],
       recentRequests: "Recent buyer requests",
-      viewAll: "View all",
       profileReadiness: "Profile readiness",
       buyerActivity: "Buyer activity",
       nextActions: "Next actions",
-      placeholder:
-        "Keep upcoming work visible as listings, RFQs, product inquiries, and verification tasks move through the pipeline.",
+      manageProducts: "Manage products",
+      reviewProducts: "Review listings",
+      listingsBody:
+        "Keep published products accurate with MOQ, price range, lead time, and category details.",
+      productInquiriesBody:
+        "Product inquiries will appear beside the listings they came from once supplier RFQ routing is enabled.",
+      nextActionsBody:
+        "Prepare verification and product quality signals before buyer traffic increases.",
       upgradeTitle: "Upgrade to Verified Supplier",
       upgradeBody:
         "Start the monthly verification subscription and submit documents for admin review.",
@@ -260,8 +265,12 @@ const dictionaries = {
         exploreSuppliers: "Explore suppliers",
         savedSuppliers: "Saved suppliers",
         productInquiries: "Product inquiries",
-        placeholder:
-          "Buyer workflow placeholders for saved suppliers, product inquiries, and sourcing follow-ups.",
+        savedSuppliersBody:
+          "Compare trusted suppliers by category, location, MOQ, and response speed.",
+        productInquiriesBody:
+          "Browse published products and start a quote request from the exact item you need.",
+        nextActionsBody:
+          "Create a structured RFQ with quantity, destination, timing, and sourcing notes.",
       },
       productManager: {
         eyebrow: "Supplier products",
@@ -606,12 +615,17 @@ const dictionaries = {
         "Vérification",
       ],
       recentRequests: "Demandes acheteurs récentes",
-      viewAll: "Tout voir",
       profileReadiness: "Préparation du profil",
       buyerActivity: "Activité acheteur",
       nextActions: "Prochaines actions",
-      placeholder:
-        "Gardez les prochains travaux visibles pendant que listings, RFQ, demandes produit et vérifications avancent.",
+      manageProducts: "Gérer les produits",
+      reviewProducts: "Revoir les listings",
+      listingsBody:
+        "Gardez les produits publiés à jour avec MOQ, prix, délai et catégorie.",
+      productInquiriesBody:
+        "Les demandes produit apparaîtront près des listings associés une fois le routage fournisseur activé.",
+      nextActionsBody:
+        "Préparez les signaux de vérification et de qualité avant l’augmentation du trafic acheteur.",
       upgradeTitle: "Passer en fournisseur vérifié",
       upgradeBody:
         "Lancez l’abonnement mensuel de vérification et soumettez vos documents pour revue admin.",
@@ -641,8 +655,12 @@ const dictionaries = {
         exploreSuppliers: "Explorer les fournisseurs",
         savedSuppliers: "Fournisseurs enregistrés",
         productInquiries: "Demandes produit",
-        placeholder:
-          "Espaces réservés au workflow acheteur pour fournisseurs enregistrés, demandes produit et suivis de sourcing.",
+        savedSuppliersBody:
+          "Comparez les fournisseurs fiables par catégorie, localisation, MOQ et vitesse de réponse.",
+        productInquiriesBody:
+          "Parcourez les produits publiés et lancez une demande depuis l’article exact recherché.",
+        nextActionsBody:
+          "Créez une RFQ structurée avec quantité, destination, calendrier et notes de sourcing.",
       },
       productManager: {
         eyebrow: "Produits fournisseur",

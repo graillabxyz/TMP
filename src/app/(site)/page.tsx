@@ -63,7 +63,10 @@ export default async function HomePage() {
               {t.home.subtitle}
             </p>
 
-            <div className="mt-9 max-w-4xl rounded-lg border border-white/[0.15] bg-black/[0.42] p-3 shadow-premium backdrop-blur-xl">
+            <form
+              action="/products"
+              className="mt-9 max-w-4xl rounded-lg border border-white/[0.15] bg-black/[0.42] p-3 shadow-premium backdrop-blur-xl"
+            >
               <div className="grid gap-3 md:grid-cols-[1fr_180px_auto]">
                 <div className="relative">
                   <Search
@@ -71,26 +74,25 @@ export default async function HomePage() {
                     aria-hidden="true"
                   />
                   <Input
+                    name="q"
                     className="pl-10"
                     placeholder={t.home.searchPlaceholder}
                   />
                 </div>
-                <Select defaultValue="all">
-                  <option value="all">{t.home.allCategories}</option>
+                <Select name="category" defaultValue="">
+                  <option value="">{t.home.allCategories}</option>
                   {categories.map((category) => (
                     <option key={category.slug} value={category.slug}>
                       {category.name}
                     </option>
                   ))}
                 </Select>
-                <Button asChild size="lg">
-                  <Link href="/rfq">
-                    {t.home.startSourcing}
-                    <ArrowRight aria-hidden="true" />
-                  </Link>
+                <Button type="submit" size="lg">
+                  {t.home.startSourcing}
+                  <ArrowRight aria-hidden="true" />
                 </Button>
               </div>
-            </div>
+            </form>
 
             <div className="mt-9 grid max-w-3xl grid-cols-3 gap-3">
               {trustMetrics.map((metric, index) => (
@@ -156,7 +158,7 @@ export default async function HomePage() {
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((category) => (
               <Link
-                href="/suppliers"
+                href={`/products?category=${category.slug}`}
                 key={category.slug}
                 className="group rounded-lg border border-white/10 bg-card p-5 transition duration-300 hover:-translate-y-1 hover:border-gold-300/[0.35] hover:bg-white/[0.055]"
               >
