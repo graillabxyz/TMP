@@ -1,7 +1,6 @@
 import Link from "next/link";
 import {
   BadgeCheck,
-  Boxes,
   FileText,
   LayoutDashboard,
   PackagePlus,
@@ -20,7 +19,6 @@ type DashboardShellProps = {
   eyebrow: string;
   title: string;
   description: string;
-  admin?: boolean;
   active?: "overview" | "products" | "rfqs" | "verification";
 };
 
@@ -29,13 +27,12 @@ export async function DashboardShell({
   eyebrow,
   title,
   description,
-  admin = false,
   active = "overview",
 }: DashboardShellProps) {
   const locale = await getLocale();
   const t = getDictionary(locale);
   const profile = await getCurrentProfile();
-  const role: AccountRole = admin ? "admin" : (profile?.role ?? "buyer");
+  const role: AccountRole = profile?.role ?? "buyer";
   const supplierNavItems = [
     {
       id: "overview",
@@ -72,27 +69,7 @@ export async function DashboardShell({
       icon: Search,
     },
   ];
-  const adminNavItems = [
-    {
-      id: "overview",
-      label: t.dashboard.overview,
-      href: "/admin",
-      icon: LayoutDashboard,
-    },
-    { id: "suppliers", label: t.nav.suppliers, href: "/admin", icon: Boxes },
-    {
-      id: "verification",
-      label: t.dashboard.verification,
-      href: "/admin",
-      icon: ShieldCheck,
-    },
-  ];
-  const navItems =
-    role === "admin"
-      ? adminNavItems
-      : role === "supplier"
-        ? supplierNavItems
-        : buyerNavItems;
+  const navItems = role === "supplier" ? supplierNavItems : buyerNavItems;
 
   return (
     <div className="min-h-screen bg-surface-radial">
