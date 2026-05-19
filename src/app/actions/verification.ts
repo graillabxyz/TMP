@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 
+import { getDemoRole } from "@/lib/demo-session";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database";
 
@@ -62,6 +63,10 @@ async function getSupplierId() {
 }
 
 export async function submitVerificationDocuments(formData: FormData) {
+  if ((await getDemoRole()) === "supplier") {
+    redirect("/dashboard/settings/verification?status=submitted");
+  }
+
   const { supabase, supplierId, verificationStatus } = await getSupplierId();
 
   if (!supplierId) {

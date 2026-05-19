@@ -1,4 +1,5 @@
 import { defaultLocale, localizedValue, type Locale } from "@/lib/i18n";
+import { getDemoRole } from "@/lib/demo-session";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import type { MarketplaceProduct } from "@/types";
@@ -198,6 +199,41 @@ export async function getRelatedProducts(
 }
 
 export async function getSupplierProductWorkspace(locale: Locale) {
+  const demoRole = await getDemoRole();
+
+  if (demoRole === "supplier") {
+    return {
+      state: "ready" as const,
+      supplier: {
+        id: "demo-supplier",
+        name: "TMP Demo Supplier",
+        slug: "tmp-demo-supplier",
+      },
+      products: [
+        {
+          id: "demo-product-1",
+          slug: "demo-organic-cotton-hoodie",
+          title: localizedValue(
+            locale,
+            "Demo organic cotton hoodie",
+            "Sweat à capuche coton bio démo",
+          ),
+          status: "published" as const,
+          categoryName: localizedValue(
+            locale,
+            "Textiles & Apparel",
+            "Textiles et habillement",
+          ),
+          moq: 250,
+          priceMin: 18,
+          priceMax: 32,
+          currency: "EUR",
+          createdAt: new Date().toISOString(),
+        },
+      ],
+    };
+  }
+
   let supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
   try {
@@ -318,6 +354,30 @@ export async function getSupplierProductWorkspace(locale: Locale) {
 }
 
 export async function getEditableProduct(productId: string) {
+  const demoRole = await getDemoRole();
+
+  if (demoRole === "supplier") {
+    return {
+      id: productId,
+      supplier_id: "demo-supplier",
+      category_id: null,
+      title: "Demo organic cotton hoodie",
+      title_fr: "Sweat à capuche coton bio démo",
+      slug: "demo-organic-cotton-hoodie",
+      description: "Demo product listing for supplier workflow testing.",
+      description_fr: "Listing produit démo pour tester le workflow fournisseur.",
+      price_min: 18,
+      price_max: 32,
+      currency: "EUR",
+      moq: 250,
+      lead_time: "3-5 weeks",
+      images: [],
+      status: "published",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    } satisfies Database["public"]["Tables"]["supplier_products"]["Row"];
+  }
+
   let supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
   try {

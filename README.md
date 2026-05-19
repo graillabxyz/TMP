@@ -27,6 +27,8 @@ Copy `.env.example` to `.env.local` when Supabase credentials are ready.
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+TMP_DEMO_AUTH_BYPASS=false
+TMP_DEMO_AUTH_TOKEN=
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
@@ -41,6 +43,28 @@ expects Supabase data.
 The app intentionally uses the publishable key only. Do not add service-role or
 admin keys to the frontend project; database access should be controlled with
 Supabase Row Level Security policies.
+
+## Demo Auth Bypass
+
+Temporary UI testing can be enabled with a server-side token. Keep this disabled
+outside short testing windows.
+
+```bash
+TMP_DEMO_AUTH_BYPASS=true
+TMP_DEMO_AUTH_TOKEN=replace-with-a-long-random-token
+```
+
+Demo entry URLs:
+
+```text
+/api/demo/start?role=buyer&token=TOKEN
+/api/demo/start?role=supplier&token=TOKEN&next=/dashboard/products
+/api/demo/end
+```
+
+Demo supplier mode uses mock dashboard/product/verification data and short-circuits
+supplier mutations to success redirects. It does not create real Supabase Auth
+sessions, bypass RLS, or persist supplier product changes.
 
 ## Database
 

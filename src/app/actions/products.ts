@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 
+import { getDemoRole } from "@/lib/demo-session";
 import { slugify } from "@/lib/slug";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import type { ProductInsert, ProductUpdate } from "@/lib/products";
@@ -83,6 +84,10 @@ export async function createProduct(formData: FormData) {
     redirect("/dashboard/products/new?status=missing");
   }
 
+  if ((await getDemoRole()) === "supplier") {
+    redirect("/dashboard/products?status=created");
+  }
+
   const { supabase, supplierId } = await getCurrentSupplierId();
 
   if (!supplierId) {
@@ -128,6 +133,10 @@ export async function updateProduct(formData: FormData) {
     redirect(`/dashboard/products/${productId}/edit?status=missing`);
   }
 
+  if ((await getDemoRole()) === "supplier") {
+    redirect("/dashboard/products?status=updated");
+  }
+
   const { supabase, supplierId } = await getCurrentSupplierId();
 
   if (!supplierId) {
@@ -166,6 +175,11 @@ export async function updateProduct(formData: FormData) {
 
 export async function archiveProduct(formData: FormData) {
   const productId = getString(formData, "id");
+
+  if ((await getDemoRole()) === "supplier") {
+    redirect("/dashboard/products?status=archived");
+  }
+
   const { supabase, supplierId } = await getCurrentSupplierId();
 
   if (!productId || !supplierId) {

@@ -1,4 +1,5 @@
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
+import { getDemoRole } from "@/lib/demo-session";
 
 export type VerificationStatus = "none" | "pending" | "verified" | "rejected";
 export type VerificationSubscriptionStatus =
@@ -44,6 +45,23 @@ type DocumentRow = {
 };
 
 export async function getVerificationWorkspace(): Promise<VerificationWorkspace> {
+  const demoRole = await getDemoRole();
+
+  if (demoRole === "supplier") {
+    return {
+      state: "ready",
+      supplier: {
+        id: "demo-supplier",
+        name: "TMP Demo Supplier",
+        verificationStatus: "pending",
+        subscriptionStatus: "inactive",
+        verificationStartedAt: null,
+        verificationExpiresAt: null,
+      },
+      documents: null,
+    };
+  }
+
   let supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
   try {
