@@ -351,8 +351,17 @@ const dictionaries = {
         "We could not update verification details. Please try again.",
       checkoutPlaceholder:
         "Checkout placeholder opened. Stripe is ready to connect when credentials are added.",
+      checkoutSuccess:
+        "Checkout completed. Stripe will confirm the subscription by webhook.",
+      checkoutCancelled: "Checkout cancelled. No subscription was started.",
+      checkoutError:
+        "Stripe checkout could not be created. Check the subscription environment variables.",
       portalPlaceholder:
         "Customer portal placeholder opened. Live portal sessions will work after Stripe is configured.",
+      portalMissingCustomer:
+        "Start a verification subscription before opening the customer portal.",
+      portalError:
+        "Stripe customer portal could not be opened. Please try again.",
       missingSupplier:
         "Create or connect a supplier profile before verification.",
       loginRequired: "Sign in as a supplier to manage verification.",
@@ -742,8 +751,17 @@ const dictionaries = {
         "Impossible de mettre à jour les détails de vérification. Veuillez réessayer.",
       checkoutPlaceholder:
         "Placeholder Checkout ouvert. Stripe sera connecté dès que les identifiants seront ajoutés.",
+      checkoutSuccess:
+        "Checkout terminé. Stripe confirmera l’abonnement via webhook.",
+      checkoutCancelled: "Checkout annulé. Aucun abonnement n’a été lancé.",
+      checkoutError:
+        "Impossible de créer le checkout Stripe. Vérifiez les variables d’environnement.",
       portalPlaceholder:
         "Placeholder portail client ouvert. Les sessions live fonctionneront après configuration Stripe.",
+      portalMissingCustomer:
+        "Lancez un abonnement de vérification avant d’ouvrir le portail client.",
+      portalError:
+        "Impossible d’ouvrir le portail client Stripe. Veuillez réessayer.",
       missingSupplier:
         "Créez ou connectez un profil fournisseur avant la vérification.",
       loginRequired:

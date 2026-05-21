@@ -67,9 +67,19 @@ export default async function VerificationSettingsPage({
         ? copy.statusError
         : params.checkout === "placeholder"
           ? copy.checkoutPlaceholder
+          : params.checkout === "success"
+            ? copy.checkoutSuccess
+            : params.checkout === "cancelled"
+              ? copy.checkoutCancelled
+              : params.checkout === "error"
+                ? copy.checkoutError
           : params.portal === "placeholder"
             ? copy.portalPlaceholder
-            : "";
+            : params.portal === "missing-customer"
+              ? copy.portalMissingCustomer
+              : params.portal === "error"
+                ? copy.portalError
+                : "";
 
   return (
     <DashboardShell

@@ -31,6 +31,7 @@ TMP_DEMO_AUTH_BYPASS=false
 TMP_DEMO_AUTH_TOKEN=
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
+STRIPE_VERIFICATION_PRICE_ID=
 STRIPE_WEBHOOK_SECRET=
 ```
 
@@ -98,8 +99,9 @@ Current RLS stance:
 
 ## Stripe
 
-The supplier verification subscription flow is Stripe-ready but intentionally
-runs in placeholder mode until live credentials are configured.
+The supplier verification subscription flow creates live Stripe Checkout
+Sessions when server-side Stripe variables are configured. Keep all Stripe
+secrets in Vercel or `.env.local`; never commit live keys.
 
 Prepared routes:
 
@@ -109,10 +111,20 @@ Prepared routes:
 /api/stripe/webhook
 ```
 
-Once Stripe credentials are available, add `STRIPE_SECRET_KEY`,
-`STRIPE_WEBHOOK_SECRET`, and `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` in Vercel.
-The route files are structured for swapping the placeholder JSON responses for
-real Checkout Session, Customer Portal, and webhook event handling.
+Required Vercel variables:
+
+```bash
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+STRIPE_SECRET_KEY=
+STRIPE_VERIFICATION_PRICE_ID=
+STRIPE_WEBHOOK_SECRET=
+```
+
+`STRIPE_VERIFICATION_PRICE_ID` should be the recurring monthly Price ID for the
+Verified Supplier subscription. The webhook route verifies Stripe signatures and
+is ready for subscription event handling. Persisting subscription status back to
+Supabase still needs a secure write path that does not expose service-role keys
+to the application.
 
 ## Google OAuth
 

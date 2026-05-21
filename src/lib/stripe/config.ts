@@ -2,6 +2,7 @@ export function getStripeConfig() {
   return {
     publishableKey: process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY ?? "",
     secretKey: process.env.STRIPE_SECRET_KEY ?? "",
+    verificationPriceId: process.env.STRIPE_VERIFICATION_PRICE_ID ?? "",
     webhookSecret: process.env.STRIPE_WEBHOOK_SECRET ?? "",
   };
 }
@@ -9,5 +10,5 @@ export function getStripeConfig() {
 export function isStripeServerConfigured() {
   const config = getStripeConfig();
 
-  return Boolean(config.secretKey);
+  return Boolean(config.secretKey && config.verificationPriceId);
 }
