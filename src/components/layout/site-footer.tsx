@@ -13,7 +13,7 @@ export async function SiteFooter() {
     { label: t.footer.suppliers, href: "/suppliers" },
     { label: t.footer.rfq, href: "/rfq" },
     { label: t.footer.buyerLogin, href: "/login" },
-    { label: t.footer.supplierOnboarding, href: "/register" },
+    { label: t.footer.supplierOnboarding, href: "/register?role=supplier" },
     { label: "Privacy", href: "/privacy" },
     { label: "Terms", href: "/terms" },
   ];

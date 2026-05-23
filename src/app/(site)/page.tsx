@@ -249,7 +249,7 @@ export default async function HomePage() {
               </div>
             </div>
             <Button asChild size="lg" variant="outline">
-              <Link href="/register">
+              <Link href="/register?role=supplier">
                 {t.home.applySupplier}
                 <Building2 aria-hidden="true" />
               </Link>

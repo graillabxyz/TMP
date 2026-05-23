@@ -17,7 +17,9 @@ export function GET(request: NextRequest) {
   const nextPath =
     url.searchParams.get("next")?.startsWith("/") === true
       ? url.searchParams.get("next")
-      : "/dashboard";
+      : role === "supplier"
+        ? "/dashboard/settings/verification"
+        : "/dashboard";
 
   if (!isDemoAuthEnabled() || !isValidDemoToken(token)) {
     return NextResponse.redirect(new URL("/login?status=auth-error", url));

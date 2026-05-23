@@ -35,7 +35,9 @@ async function getOrigin() {
 }
 
 function getRedirectPath(role: AccountRole) {
-  return role === "supplier" ? "/dashboard/products" : "/dashboard";
+  return role === "supplier"
+    ? "/dashboard/settings/verification"
+    : "/dashboard";
 }
 
 async function getConfiguredSupabase(

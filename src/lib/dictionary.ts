@@ -169,7 +169,7 @@ const dictionaries = {
       welcomeBack: "Welcome back",
       loginTitle: "Continue sourcing with a clearer supplier pipeline.",
       loginBody:
-        "Buyers manage RFQs and saved suppliers. Suppliers track profile readiness, inbound requests, and verification progress.",
+        "Buyers manage RFQs and saved suppliers. Suppliers start verification, activate the monthly plan, then publish marketplace-ready products.",
       buyerLogin: "Buyer login",
       supplierLogin: "Supplier login",
       email: "Email",
@@ -182,7 +182,8 @@ const dictionaries = {
       buyerPath: "Buyer path",
       buyerPathBody: "Send RFQs and shortlist suppliers.",
       supplierPath: "Supplier path",
-      supplierPathBody: "Publish products and prepare verification.",
+      supplierPathBody:
+        "Start verification, activate the monthly plan, then publish products.",
       buyerAccount: "Buyer account",
       supplierAccount: "Supplier account",
       fullName: "Full name",
@@ -194,7 +195,7 @@ const dictionaries = {
       supplier: "Supplier",
       continueWithGoogle: "Continue with Google",
       googleHelp:
-        "Use Google to continue, then TMP will route you into the selected buyer or supplier workspace.",
+        "Use Google to continue. Supplier accounts go directly to verification and billing setup.",
       orEmail: "or continue with email",
       alreadyAccount: "Already have an account?",
       status: {
@@ -333,9 +334,9 @@ const dictionaries = {
         "Access to future premium supplier features",
       ],
       subscription: "Monthly subscription",
-      price: "€49 / month",
+      price: "€1 / month",
       priceNote:
-        "Stripe checkout is prepared in placeholder mode until live credentials are configured.",
+        "Introductory monthly verification subscription for distributor onboarding and Stripe testing.",
       subscribe: "Start subscription",
       manage: "Manage subscription",
       documents: "Business verification",
@@ -567,7 +568,7 @@ const dictionaries = {
       welcomeBack: "Bon retour",
       loginTitle: "Continuez votre sourcing avec un pipeline plus clair.",
       loginBody:
-        "Les acheteurs gèrent les RFQ et fournisseurs favoris. Les fournisseurs suivent profil, demandes et vérification.",
+        "Les acheteurs gèrent les RFQ et fournisseurs favoris. Les fournisseurs lancent la vérification, activent l’abonnement mensuel puis publient leurs produits.",
       buyerLogin: "Connexion acheteur",
       supplierLogin: "Connexion fournisseur",
       email: "Email",
@@ -581,7 +582,8 @@ const dictionaries = {
       buyerPath: "Parcours acheteur",
       buyerPathBody: "Envoyez des demandes et sélectionnez des fournisseurs.",
       supplierPath: "Parcours fournisseur",
-      supplierPathBody: "Publiez des produits et préparez la vérification.",
+      supplierPathBody:
+        "Lancez la vérification, activez l’abonnement mensuel puis publiez vos produits.",
       buyerAccount: "Compte acheteur",
       supplierAccount: "Compte fournisseur",
       fullName: "Nom complet",
@@ -593,7 +595,7 @@ const dictionaries = {
       supplier: "Fournisseur",
       continueWithGoogle: "Continuer avec Google",
       googleHelp:
-        "Utilisez Google pour continuer, puis TMP vous dirigera vers l’espace acheteur ou fournisseur sélectionné.",
+        "Utilisez Google pour continuer. Les comptes fournisseurs arrivent directement sur vérification et facturation.",
       orEmail: "ou continuer avec email",
       alreadyAccount: "Vous avez déjà un compte ?",
       status: {
@@ -733,9 +735,9 @@ const dictionaries = {
         "Accès aux futures fonctions premium fournisseur",
       ],
       subscription: "Abonnement mensuel",
-      price: "49 € / mois",
+      price: "1 € / mois",
       priceNote:
-        "Stripe Checkout est préparé en mode placeholder jusqu’à la configuration des identifiants.",
+        "Abonnement mensuel de lancement pour l’onboarding distributeur et le test Stripe.",
       subscribe: "Démarrer l’abonnement",
       manage: "Gérer l’abonnement",
       documents: "Vérification entreprise",

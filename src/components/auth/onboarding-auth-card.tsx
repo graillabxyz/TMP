@@ -184,7 +184,12 @@ export function OnboardingAuthCard({
         >
           <input type="hidden" name="role" value={role} />
           {mode === "register" && (
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div
+              className={cn(
+                "grid gap-5",
+                role === "supplier" && "sm:grid-cols-2",
+              )}
+            >
               <div className="grid gap-2">
                 <Label htmlFor="full_name">{labels.fullName}</Label>
                 <Input
@@ -194,15 +199,17 @@ export function OnboardingAuthCard({
                   placeholder="Aylin Demir"
                 />
               </div>
-              <div className="grid gap-2">
-                <Label htmlFor="company">{labels.company}</Label>
-                <Input
-                  id="company"
-                  name="company"
-                  required={role === "supplier"}
-                  placeholder="Nordic Retail Group"
-                />
-              </div>
+              {role === "supplier" && (
+                <div className="grid gap-2">
+                  <Label htmlFor="company">{labels.company}</Label>
+                  <Input
+                    id="company"
+                    name="company"
+                    required
+                    placeholder="Anatolia Distribution"
+                  />
+                </div>
+              )}
             </div>
           )}
 
