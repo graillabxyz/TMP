@@ -102,7 +102,7 @@ export default async function DashboardProductsPage({
               {labels.loginRequiredBody}
             </p>
             <Button asChild className="mt-6">
-              <Link href="/login">{t.nav.login}</Link>
+              <Link href="/login?role=supplier">{t.nav.login}</Link>
             </Button>
           </CardContent>
         </Card>

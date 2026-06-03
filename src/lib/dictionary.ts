@@ -357,6 +357,8 @@ const dictionaries = {
       checkoutCancelled: "Checkout cancelled. No subscription was started.",
       checkoutError:
         "Stripe checkout could not be created. Check the subscription environment variables.",
+      billingActionError:
+        "Stripe billing could not be opened. Please try again in a moment.",
       portalPlaceholder:
         "Customer portal placeholder opened. Live portal sessions will work after Stripe is configured.",
       portalMissingCustomer:
@@ -758,6 +760,8 @@ const dictionaries = {
       checkoutCancelled: "Checkout annulé. Aucun abonnement n’a été lancé.",
       checkoutError:
         "Impossible de créer le checkout Stripe. Vérifiez les variables d’environnement.",
+      billingActionError:
+        "Impossible d’ouvrir la facturation Stripe. Veuillez réessayer dans un instant.",
       portalPlaceholder:
         "Placeholder portail client ouvert. Les sessions live fonctionneront après configuration Stripe.",
       portalMissingCustomer:

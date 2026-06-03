@@ -5,7 +5,15 @@ import type { AccountRole, CurrentProfile } from "@/lib/account";
 const demoCookieName = "tmp-demo-role";
 
 export function isDemoAuthEnabled() {
-  return process.env.TMP_DEMO_AUTH_BYPASS === "true";
+  if (process.env.TMP_DEMO_AUTH_BYPASS !== "true") {
+    return false;
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    return process.env.TMP_DEMO_AUTH_ALLOW_PRODUCTION === "true";
+  }
+
+  return true;
 }
 
 export function isValidDemoToken(token: string | null) {

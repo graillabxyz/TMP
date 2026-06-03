@@ -25,10 +25,12 @@ Open `http://localhost:3000`.
 Copy `.env.example` to `.env.local` when Supabase credentials are ready.
 
 ```bash
+NEXT_PUBLIC_SITE_URL=
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 TMP_DEMO_AUTH_BYPASS=false
 TMP_DEMO_AUTH_TOKEN=
+TMP_DEMO_AUTH_ALLOW_PRODUCTION=false
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
 STRIPE_VERIFICATION_PRICE_ID=
@@ -53,19 +55,23 @@ outside short testing windows.
 ```bash
 TMP_DEMO_AUTH_BYPASS=true
 TMP_DEMO_AUTH_TOKEN=replace-with-a-long-random-token
+TMP_DEMO_AUTH_ALLOW_PRODUCTION=false
 ```
 
 Demo entry URLs:
 
 ```text
 /api/demo/start?role=buyer&token=TOKEN
-/api/demo/start?role=supplier&token=TOKEN&next=/dashboard/products
+/api/demo/start?role=supplier&token=TOKEN
 /api/demo/end
 ```
 
 Demo supplier mode uses mock dashboard/product/verification data and short-circuits
 supplier mutations to success redirects. It does not create real Supabase Auth
 sessions, bypass RLS, or persist supplier product changes.
+
+Production demo bypass also requires `TMP_DEMO_AUTH_ALLOW_PRODUCTION=true`.
+Leave it unset or false unless a short, supervised production test is underway.
 
 ## Database
 
@@ -84,6 +90,8 @@ Apply the SQL migrations in order from `supabase/migrations/`.
 - `20260509001000_supplier_verification_subscription.sql` prepares supplier
   verification subscriptions, private verification document records, and
   Stripe-ready billing fields.
+- `20260603000000_stripe_subscription_sync_rpc.sql` adds the narrow Stripe
+  webhook RPC that syncs subscription status after a verified Stripe event.
 
 Current RLS stance:
 
@@ -122,9 +130,18 @@ STRIPE_WEBHOOK_SECRET=
 
 `STRIPE_VERIFICATION_PRICE_ID` should be the recurring monthly Price ID for the
 Verified Supplier subscription. The webhook route verifies Stripe signatures and
-is ready for subscription event handling. Persisting subscription status back to
-Supabase still needs a secure write path that does not expose service-role keys
-to the application.
+syncs subscription status back to Supabase through a narrow security-definer
+RPC. No Supabase service-role key is required.
+
+After applying the Stripe sync migration, set the same webhook secret in
+Supabase before testing live webhooks:
+
+```sql
+insert into public.app_settings (key, value)
+values ('stripe_webhook_secret', 'whsec_replace_with_your_real_webhook_secret')
+on conflict (key)
+do update set value = excluded.value, updated_at = now();
+```
 
 ## Google OAuth
 
@@ -141,3 +158,7 @@ Supabase callback route:
 
 The app passes the selected onboarding role through the callback and upserts a
 buyer/supplier profile after Supabase exchanges the OAuth code.
+
+## Launch
+
+Public launch checklist: `docs/launch-readiness.md`.

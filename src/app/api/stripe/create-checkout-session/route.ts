@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { getAppOrigin, isAllowedAppOrigin } from "@/lib/app-url";
 import { createVerificationCheckoutSession } from "@/lib/stripe/api";
 import { isStripeServerConfigured } from "@/lib/stripe/config";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
@@ -7,7 +8,16 @@ import { createClient as createServerSupabaseClient } from "@/lib/supabase/serve
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
-  const origin = request.headers.get("origin") ?? request.nextUrl.origin;
+  const origin = getAppOrigin(request.nextUrl.origin);
+
+  if (
+    !isAllowedAppOrigin(request.headers.get("origin"), request.nextUrl.origin)
+  ) {
+    return NextResponse.json(
+      { error: "Invalid request origin." },
+      { status: 403 },
+    );
+  }
 
   if (!isStripeServerConfigured()) {
     return NextResponse.json({

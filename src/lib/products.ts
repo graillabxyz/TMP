@@ -50,6 +50,16 @@ function fallbackImage(images: string[]) {
   return images.length > 0 ? images : ["/brand/tmp-logo.webp"];
 }
 
+function getSafeSearchPattern(query?: string) {
+  const cleanQuery = query
+    ?.trim()
+    .replace(/[,%_.*()[\]{}]/g, " ")
+    .replace(/\s+/g, " ")
+    .slice(0, 80);
+
+  return cleanQuery ? `%${cleanQuery}%` : "";
+}
+
 function normalizeProduct(
   product: PublicProductRow,
   locale: Locale,
@@ -153,11 +163,11 @@ export async function getProducts({
     .eq("status", "published")
     .order("created_at", { ascending: false });
 
-  const cleanQuery = query?.trim().replaceAll(",", " ");
+  const searchPattern = getSafeSearchPattern(query);
 
-  if (cleanQuery) {
+  if (searchPattern) {
     request = request.or(
-      `title.ilike.%${cleanQuery}%,description.ilike.%${cleanQuery}%`,
+      `title.ilike.${searchPattern},description.ilike.${searchPattern}`,
     );
   }
 

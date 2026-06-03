@@ -220,6 +220,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                     id="attachment"
                     name="attachment"
                     type="file"
+                    accept=".pdf,.png,.jpg,.jpeg,.webp"
                     className="sr-only"
                   />
                 </label>

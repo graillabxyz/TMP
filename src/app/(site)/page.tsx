@@ -12,6 +12,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
+import { JsonLd } from "@/components/seo/json-ld";
 import { SupplierCard } from "@/components/supplier-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,6 +23,7 @@ import { heroImage, trustMetrics } from "@/lib/data";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { getCategories, getSuppliers } from "@/lib/marketplace";
+import { getOrganizationJsonLd, getWebsiteJsonLd } from "@/lib/structured-data";
 
 export const revalidate = 300;
 
@@ -38,6 +40,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <JsonLd data={[getOrganizationJsonLd(), getWebsiteJsonLd()]} />
       <section className="relative isolate overflow-hidden">
         <Image
           src={heroImage}
@@ -50,7 +53,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/80 via-black/70 to-background" />
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_30%_20%,rgba(216,174,70,0.22),transparent_32rem)]" />
 
-        <div className="container flex min-h-[88svh] flex-col justify-center py-16 sm:py-20">
+        <div className="container flex min-h-[72svh] flex-col justify-center py-12 sm:min-h-[76svh] sm:py-16 lg:min-h-[calc(100svh-10rem)]">
           <div className="max-w-4xl animate-fade-up">
             <Badge>
               <Sparkles className="mr-1 size-3" aria-hidden="true" />

@@ -3,6 +3,7 @@ import { createHmac, timingSafeEqual } from "node:crypto";
 import { getStripeConfig } from "@/lib/stripe/config";
 
 const STRIPE_API_BASE = "https://api.stripe.com/v1";
+const WEBHOOK_TOLERANCE_SECONDS = 300;
 
 type StripeCheckoutSessionResponse = {
   id: string;
@@ -22,7 +23,7 @@ type StripeSubscriptionResponse = {
     supplier_id?: string;
     owner_id?: string;
   };
-  customer?: string;
+  customer?: string | { id?: string };
 };
 
 type StripeApiError = {
@@ -142,6 +143,15 @@ export function verifyStripeWebhookSignature(input: {
   const signatures = parts.v1 ?? [];
 
   if (!timestamp || signatures.length === 0) {
+    return false;
+  }
+
+  const timestampSeconds = Number(timestamp);
+
+  if (
+    !Number.isFinite(timestampSeconds) ||
+    Math.abs(Date.now() / 1000 - timestampSeconds) > WEBHOOK_TOLERANCE_SECONDS
+  ) {
     return false;
   }
 

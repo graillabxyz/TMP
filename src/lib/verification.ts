@@ -15,6 +15,7 @@ export type VerificationWorkspace = {
     name: string;
     verificationStatus: VerificationStatus;
     subscriptionStatus: VerificationSubscriptionStatus;
+    stripeCustomerId: string | null;
     verificationStartedAt: string | null;
     verificationExpiresAt: string | null;
   } | null;
@@ -32,6 +33,7 @@ type SupplierRow = {
   company_name: string;
   verification_status: VerificationStatus;
   verification_subscription_status: VerificationSubscriptionStatus;
+  stripe_customer_id: string | null;
   verification_started_at: string | null;
   verification_expires_at: string | null;
 };
@@ -55,6 +57,7 @@ export async function getVerificationWorkspace(): Promise<VerificationWorkspace>
         name: "TMP Demo Supplier",
         verificationStatus: "pending",
         subscriptionStatus: "inactive",
+        stripeCustomerId: null,
         verificationStartedAt: null,
         verificationExpiresAt: null,
       },
@@ -83,7 +86,7 @@ export async function getVerificationWorkspace(): Promise<VerificationWorkspace>
   const { data: supplierData, error: supplierError } = await supabase
     .from("suppliers")
     .select(
-      "id, company_name, verification_status, verification_subscription_status, verification_started_at, verification_expires_at",
+      "id, company_name, verification_status, verification_subscription_status, stripe_customer_id, verification_started_at, verification_expires_at",
     )
     .eq("owner_id", user.id)
     .maybeSingle();
@@ -123,6 +126,7 @@ export async function getVerificationWorkspace(): Promise<VerificationWorkspace>
       name: supplier.company_name,
       verificationStatus: supplier.verification_status,
       subscriptionStatus: supplier.verification_subscription_status,
+      stripeCustomerId: supplier.stripe_customer_id,
       verificationStartedAt: supplier.verification_started_at,
       verificationExpiresAt: supplier.verification_expires_at,
     },

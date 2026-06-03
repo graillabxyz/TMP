@@ -1,9 +1,17 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default async function AuthLayout({
   children,

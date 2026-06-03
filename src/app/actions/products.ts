@@ -18,6 +18,8 @@ type SupplierProductsMutationTable = {
   update: (payload: ProductUpdate) => FilterBuilder;
 };
 
+const allowedCurrencies = new Set(["EUR", "USD", "GBP", "TRY"]);
+
 function getString(formData: FormData, key: string) {
   const value = formData.get(key);
 
@@ -34,6 +36,62 @@ function getNumber(formData: FormData, key: string) {
   const numeric = Number(value);
 
   return Number.isFinite(numeric) ? numeric : null;
+}
+
+function hasInvalidNumber(
+  formData: FormData,
+  key: string,
+  options: { integer?: boolean; min?: number } = {},
+) {
+  const value = getString(formData, key);
+
+  if (!value) {
+    return false;
+  }
+
+  const numeric = Number(value);
+
+  return (
+    !Number.isFinite(numeric) ||
+    numeric < (options.min ?? Number.NEGATIVE_INFINITY) ||
+    Boolean(options.integer && !Number.isInteger(numeric))
+  );
+}
+
+function getCurrency(formData: FormData) {
+  const currency = getString(formData, "currency") || "EUR";
+
+  return allowedCurrencies.has(currency) ? currency : null;
+}
+
+function hasInvalidUrl(formData: FormData, key: string) {
+  const value = getString(formData, key);
+
+  if (!value) {
+    return false;
+  }
+
+  try {
+    const url = new URL(value);
+
+    return url.protocol !== "https:" && url.protocol !== "http:";
+  } catch {
+    return true;
+  }
+}
+
+function hasInvalidProductDetails(formData: FormData) {
+  const priceMin = getNumber(formData, "price_min");
+  const priceMax = getNumber(formData, "price_max");
+
+  return (
+    hasInvalidNumber(formData, "moq", { integer: true, min: 1 }) ||
+    hasInvalidNumber(formData, "price_min", { min: 0 }) ||
+    hasInvalidNumber(formData, "price_max", { min: 0 }) ||
+    (priceMin !== null && priceMax !== null && priceMin > priceMax) ||
+    getCurrency(formData) === null ||
+    hasInvalidUrl(formData, "image_url")
+  );
 }
 
 function getStatus(formData: FormData): ProductStatus | null {
@@ -79,8 +137,16 @@ export async function createProduct(formData: FormData) {
   const categoryId = getString(formData, "category_id");
   const description = getString(formData, "description");
   const status = getStatus(formData);
+  const currency = getCurrency(formData);
 
-  if (!title || !categoryId || !description || !status) {
+  if (
+    !title ||
+    !categoryId ||
+    !description ||
+    !status ||
+    !currency ||
+    hasInvalidProductDetails(formData)
+  ) {
     redirect("/dashboard/products/new?status=missing");
   }
 
@@ -102,7 +168,7 @@ export async function createProduct(formData: FormData) {
     description,
     price_min: getNumber(formData, "price_min"),
     price_max: getNumber(formData, "price_max"),
-    currency: getString(formData, "currency") || "EUR",
+    currency,
     moq: getNumber(formData, "moq"),
     lead_time: getString(formData, "lead_time") || null,
     images: getImages(formData),
@@ -128,8 +194,17 @@ export async function updateProduct(formData: FormData) {
   const categoryId = getString(formData, "category_id");
   const description = getString(formData, "description");
   const status = getStatus(formData);
+  const currency = getCurrency(formData);
 
-  if (!productId || !title || !categoryId || !description || !status) {
+  if (
+    !productId ||
+    !title ||
+    !categoryId ||
+    !description ||
+    !status ||
+    !currency ||
+    hasInvalidProductDetails(formData)
+  ) {
     redirect(`/dashboard/products/${productId}/edit?status=missing`);
   }
 
@@ -149,7 +224,7 @@ export async function updateProduct(formData: FormData) {
     description,
     price_min: getNumber(formData, "price_min"),
     price_max: getNumber(formData, "price_max"),
-    currency: getString(formData, "currency") || "EUR",
+    currency,
     moq: getNumber(formData, "moq"),
     lead_time: getString(formData, "lead_time") || null,
     images: getImages(formData),

@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { getAppOrigin } from "@/lib/app-url";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 
 type AccountRole = "buyer" | "supplier";
@@ -27,11 +28,7 @@ function getAuthMode(formData: FormData): AuthMode {
 async function getOrigin() {
   const headerStore = await headers();
 
-  return (
-    headerStore.get("origin") ??
-    process.env.NEXT_PUBLIC_SITE_URL ??
-    "http://localhost:3000"
-  );
+  return getAppOrigin(headerStore.get("origin"));
 }
 
 function getRedirectPath(role: AccountRole) {

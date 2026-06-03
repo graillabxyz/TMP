@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import {
   BadgeCheck,
   Clock3,
@@ -30,7 +31,12 @@ export default async function DashboardPage() {
   const locale = await getLocale();
   const t = getDictionary(locale);
   const profile = await getCurrentProfile();
-  const role = profile?.role ?? "buyer";
+
+  if (!profile) {
+    redirect("/login?role=buyer&status=auth-required");
+  }
+
+  const role = profile.role;
   const buyerCopy = t.dashboard.buyerWorkspace;
   const verificationWorkspace = await getVerificationWorkspace();
   const verificationSupplier = verificationWorkspace.supplier;

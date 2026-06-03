@@ -299,7 +299,8 @@ export default async function VerificationSettingsPage({
                 <BillingActions
                   subscribeLabel={copy.subscribe}
                   manageLabel={copy.manage}
-                  subscriptionActive={supplier.subscriptionStatus === "active"}
+                  canManageSubscription={Boolean(supplier.stripeCustomerId)}
+                  errorLabel={copy.billingActionError}
                 />
                 <div className="mt-5 rounded-lg border border-white/10 bg-charcoal-800 p-4 text-sm leading-6 text-muted-foreground">
                   {copy.subscriptionStatus}:{" "}
