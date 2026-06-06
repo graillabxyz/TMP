@@ -8,6 +8,7 @@ import {
   UserRound,
 } from "lucide-react";
 
+import { CategoriesDropdown } from "@/components/layout/categories-dropdown";
 import { LanguageToggle } from "@/components/language-toggle";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -118,33 +119,10 @@ export async function SiteHeader() {
       <div className="hidden border-t border-white/10 bg-black/20 md:block">
         <div className="container flex min-h-10 items-center justify-between gap-4 py-1.5">
           <nav className="flex items-center gap-1" aria-label="Marketplace">
-            <details className="group relative">
-              <summary className="inline-flex cursor-pointer list-none items-center rounded-md px-3 py-2 text-sm font-medium text-gold-50 transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden">
-                {t.common.categories}
-              </summary>
-              <div className="absolute left-0 top-full z-50 mt-2 w-[340px] overflow-hidden rounded-lg border border-white/10 bg-charcoal-900 shadow-premium">
-                <div className="grid max-h-[70vh] gap-1 overflow-y-auto p-2">
-                  {categories.map((category) => (
-                    <Link
-                      key={category.slug}
-                      href={`/products?category=${category.slug}`}
-                      className="group/item grid gap-1 rounded-md px-3 py-2.5 transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                    >
-                      <span className="flex items-center justify-between gap-3 text-sm font-medium text-white">
-                        {category.name}
-                        <ArrowRight
-                          className="size-4 text-gold-200 opacity-0 transition group-hover/item:opacity-100"
-                          aria-hidden="true"
-                        />
-                      </span>
-                      <span className="line-clamp-2 text-xs leading-5 text-muted-foreground">
-                        {category.description}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </details>
+            <CategoriesDropdown
+              categories={categories}
+              label={t.common.categories}
+            />
             {primaryNav.map((item) => (
               <Link
                 key={item.href}
