@@ -56,6 +56,7 @@ export async function SiteHeader() {
           </Button>
         </form>
         <div className="flex items-center gap-2">
+          <LanguageToggle locale={locale} />
           {profile ? (
             <details className="group relative">
               <summary className="inline-flex h-11 cursor-pointer list-none items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden">
@@ -88,7 +89,6 @@ export async function SiteHeader() {
               <Link href="/login">{t.nav.login}</Link>
             </Button>
           )}
-          <LanguageToggle locale={locale} />
           {!profile && (
             <Button asChild>
               <Link href="/register">
