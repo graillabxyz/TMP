@@ -1,9 +1,7 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  ChevronDown,
   Factory,
-  Menu,
   Search,
   ShieldCheck,
   Target,
@@ -90,13 +88,8 @@ export async function SiteHeader() {
         <div className="container flex min-h-10 items-center justify-between gap-4 py-1.5">
           <nav className="flex items-center gap-1" aria-label="Marketplace">
             <details className="group relative">
-              <summary className="inline-flex cursor-pointer list-none items-center gap-2 rounded-md border border-gold-300/[0.18] bg-gold-300/[0.08] px-3 py-2 text-sm font-medium text-gold-50 transition hover:border-gold-300/35 hover:bg-gold-300/[0.12] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden">
-                <Menu className="size-4" aria-hidden="true" />
+              <summary className="inline-flex cursor-pointer list-none items-center rounded-md px-3 py-2 text-sm font-medium text-gold-50 transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden">
                 {t.common.categories}
-                <ChevronDown
-                  className="size-4 transition group-open:rotate-180"
-                  aria-hidden="true"
-                />
               </summary>
               <div className="absolute left-0 top-full z-50 mt-2 w-[340px] overflow-hidden rounded-lg border border-white/10 bg-charcoal-900 shadow-premium">
                 <div className="grid max-h-[70vh] gap-1 overflow-y-auto p-2">
