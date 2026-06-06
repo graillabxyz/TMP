@@ -51,11 +51,12 @@ export function BillingActions({
   }
 
   return (
-    <div className="grid gap-3">
-      <div className="grid gap-3 sm:grid-cols-2">
+    <div className="grid min-w-0 gap-3">
+      <div className="grid min-w-0 gap-3 md:grid-cols-2">
         <Button
           type="button"
           size="lg"
+          className="min-w-0 whitespace-normal text-center leading-5"
           disabled={loading !== null}
           onClick={() =>
             openBilling("/api/stripe/create-checkout-session", "checkout")
@@ -68,6 +69,7 @@ export function BillingActions({
           type="button"
           size="lg"
           variant="outline"
+          className="min-w-0 whitespace-normal text-center leading-5"
           disabled={loading !== null || !canManageSubscription}
           onClick={() => openBilling("/api/stripe/customer-portal", "portal")}
         >

@@ -129,7 +129,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                   {verificationCopy.priceNote}
                 </p>
               </div>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <div className="mt-5 grid gap-3">
                 {supplier ? (
                   <BillingActions
                     subscribeLabel={verificationCopy.subscribe}
@@ -143,7 +143,11 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                     {verificationCopy.subscribe}
                   </Button>
                 )}
-                <Button asChild variant="outline">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full whitespace-normal text-center leading-5"
+                >
                   <Link href="/dashboard/settings/verification">
                     {copy.verificationSettings}
                   </Link>
