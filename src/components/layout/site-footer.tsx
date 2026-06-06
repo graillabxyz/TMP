@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Logo } from "@/components/logo";
+import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
@@ -8,14 +9,20 @@ import { getCategories } from "@/lib/marketplace";
 export async function SiteFooter() {
   const locale = await getLocale();
   const t = getDictionary(locale);
-  const categories = await getCategories(locale);
+  const [categories, profile] = await Promise.all([
+    getCategories(locale),
+    getCurrentProfile(),
+  ]);
+  const supplierUpgradeHref = profile
+    ? "/dashboard/profile"
+    : "/register?next=/dashboard/profile";
   const footerLinks = [
     { label: t.footer.suppliers, href: "/suppliers" },
     { label: t.footer.rfq, href: "/rfq" },
     { label: t.footer.buyerLogin, href: "/login" },
     {
       label: t.footer.supplierOnboarding,
-      href: "/register?intent=supplier&next=/dashboard/settings/verification",
+      href: supplierUpgradeHref,
     },
     { label: "Privacy", href: "/privacy" },
     { label: "Terms", href: "/terms" },

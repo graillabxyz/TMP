@@ -6,6 +6,7 @@ import {
   PackagePlus,
   Search,
   ShieldCheck,
+  UserRound,
 } from "lucide-react";
 
 import { Logo } from "@/components/logo";
@@ -20,7 +21,7 @@ type DashboardShellProps = {
   eyebrow: string;
   title: string;
   description: string;
-  active?: "overview" | "products" | "rfqs" | "verification";
+  active?: "overview" | "products" | "rfqs" | "profile" | "verification";
 };
 
 export async function DashboardShell({
@@ -54,6 +55,12 @@ export async function DashboardShell({
       icon: BadgeCheck,
     },
     {
+      id: "profile",
+      label: t.dashboard.profile,
+      href: "/dashboard/profile",
+      icon: UserRound,
+    },
+    {
       id: "verification",
       label: t.dashboard.verification,
       href: "/dashboard/settings/verification",
@@ -78,6 +85,12 @@ export async function DashboardShell({
       label: t.nav.suppliers,
       href: "/suppliers",
       icon: Search,
+    },
+    {
+      id: "profile",
+      label: t.dashboard.profile,
+      href: "/dashboard/profile",
+      icon: UserRound,
     },
   ];
   const navItems = role === "supplier" ? supplierNavItems : buyerNavItems;
@@ -109,9 +122,44 @@ export async function DashboardShell({
             <Button asChild variant="ghost" className="hidden sm:inline-flex">
               <Link href="/products">{t.nav.products}</Link>
             </Button>
-            <Button asChild variant="ghost">
-              <Link href="/dashboard">{t.nav.dashboard}</Link>
-            </Button>
+            {profile ? (
+              <details className="group relative">
+                <summary className="inline-flex h-11 cursor-pointer list-none items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden">
+                  <UserRound
+                    className="size-4 text-gold-200"
+                    aria-hidden="true"
+                  />
+                  {t.dashboard.profile}
+                </summary>
+                <div className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-lg border border-white/10 bg-charcoal-900 p-2 shadow-premium">
+                  <p className="truncate px-3 py-2 text-xs text-muted-foreground">
+                    {profile.email}
+                  </p>
+                  <Link
+                    href="/dashboard/profile"
+                    className="block rounded-md px-3 py-2 text-sm text-white transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    {t.dashboard.profile}
+                  </Link>
+                  <Link
+                    href="/dashboard"
+                    className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    {t.nav.dashboard}
+                  </Link>
+                  <Link
+                    href="/dashboard/settings/verification"
+                    className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    {t.verificationSettings.subscription}
+                  </Link>
+                </div>
+              </details>
+            ) : (
+              <Button asChild variant="ghost">
+                <Link href="/login">{t.nav.login}</Link>
+              </Button>
+            )}
           </div>
         </div>
         <form action="/products" className="container flex pb-3 md:hidden">

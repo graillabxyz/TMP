@@ -43,6 +43,14 @@ function getString(formData: FormData, key: string) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function getReturnPath(formData: FormData) {
+  const value = getString(formData, "return_to");
+
+  return value.startsWith("/") && !value.startsWith("//")
+    ? value
+    : "/dashboard/settings/verification";
+}
+
 async function getSupplierId() {
   const supabase = await createServerSupabaseClient();
   const {
@@ -75,14 +83,16 @@ async function getSupplierId() {
 }
 
 export async function startSupplierProfile(formData: FormData) {
+  const returnPath = getReturnPath(formData);
+
   if ((await getDemoRole()) === "supplier") {
-    redirect("/dashboard/settings/verification?status=supplier-started");
+    redirect(`${returnPath}?status=supplier-started`);
   }
 
   const company = getString(formData, "company");
 
   if (!company) {
-    redirect("/dashboard/settings/verification?status=missing-company");
+    redirect(`${returnPath}?status=missing-company`);
   }
 
   const supabase = await createServerSupabaseClient();
@@ -91,9 +101,7 @@ export async function startSupplierProfile(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(
-      "/login?intent=supplier&next=/dashboard/settings/verification&status=missing",
-    );
+    redirect(`/login?next=${encodeURIComponent(returnPath)}&status=missing`);
   }
 
   const profileMutations = supabase.from(
@@ -108,7 +116,7 @@ export async function startSupplierProfile(formData: FormData) {
       "Unable to upgrade profile to supplier",
       profileError.message,
     );
-    redirect("/dashboard/settings/verification?status=error");
+    redirect(`${returnPath}?status=error`);
   }
 
   const supplierProfileRpc = supabase as unknown as SupplierProfileRpcClient;
@@ -119,10 +127,10 @@ export async function startSupplierProfile(formData: FormData) {
 
   if (supplierError) {
     console.error("Unable to start supplier profile", supplierError.message);
-    redirect("/dashboard/settings/verification?status=error");
+    redirect(`${returnPath}?status=error`);
   }
 
-  redirect("/dashboard/settings/verification?status=supplier-started");
+  redirect(`${returnPath}?status=supplier-started`);
 }
 
 export async function submitVerificationDocuments(formData: FormData) {

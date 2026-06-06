@@ -5,6 +5,7 @@ import {
   Search,
   ShieldCheck,
   Target,
+  UserRound,
 } from "lucide-react";
 
 import { LanguageToggle } from "@/components/language-toggle";
@@ -27,6 +28,9 @@ export async function SiteHeader() {
     { label: t.nav.suppliers, href: "/suppliers" },
   ];
   const mobileNav = [...primaryNav, { label: t.nav.rfq, href: "/rfq" }];
+  const supplierUpgradeHref = profile
+    ? "/dashboard/profile"
+    : "/register?next=/dashboard/profile";
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-charcoal-900/[0.94] shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
@@ -51,11 +55,38 @@ export async function SiteHeader() {
           </Button>
         </form>
         <div className="flex items-center gap-2">
-          <Button asChild variant="ghost" className="hidden sm:inline-flex">
-            <Link href={profile ? "/dashboard" : "/login"}>
-              {profile ? t.nav.dashboard : t.nav.login}
-            </Link>
-          </Button>
+          {profile ? (
+            <details className="group relative">
+              <summary className="inline-flex h-11 cursor-pointer list-none items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden">
+                <UserRound
+                  className="size-4 text-gold-200"
+                  aria-hidden="true"
+                />
+                {t.dashboard.profile}
+              </summary>
+              <div className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-lg border border-white/10 bg-charcoal-900 p-2 shadow-premium">
+                <p className="truncate px-3 py-2 text-xs text-muted-foreground">
+                  {profile.email}
+                </p>
+                <Link
+                  href="/dashboard/profile"
+                  className="block rounded-md px-3 py-2 text-sm text-white transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  {t.dashboard.profile}
+                </Link>
+                <Link
+                  href="/dashboard"
+                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                >
+                  {t.nav.dashboard}
+                </Link>
+              </div>
+            </details>
+          ) : (
+            <Button asChild variant="ghost" className="hidden sm:inline-flex">
+              <Link href="/login">{t.nav.login}</Link>
+            </Button>
+          )}
           <LanguageToggle locale={locale} />
           {!profile && (
             <Button asChild>
@@ -145,13 +176,15 @@ export async function SiteHeader() {
               />
               {t.common.verifiedSupplier}
             </Link>
-            <Link
-              href="/register?intent=supplier&next=/dashboard/settings/verification"
-              className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-            >
-              <Factory className="size-4 text-gold-200" aria-hidden="true" />
-              {t.home.applySupplier}
-            </Link>
+            {!profile && (
+              <Link
+                href={supplierUpgradeHref}
+                className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                <Factory className="size-4 text-gold-200" aria-hidden="true" />
+                {t.home.applySupplier}
+              </Link>
+            )}
           </nav>
         </div>
       </div>

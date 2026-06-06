@@ -25,7 +25,7 @@ function getSafeNextPath(value: string | undefined, supplierIntent: boolean) {
     return value;
   }
 
-  return supplierIntent ? "/dashboard/settings/verification" : "/dashboard";
+  return supplierIntent ? "/dashboard/profile" : "/dashboard";
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
@@ -42,10 +42,10 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         <div>
           <p className="text-sm text-gold-200">{t.auth.welcomeBack}</p>
           <h1 className="mt-4 text-4xl font-semibold text-white sm:text-5xl">
-            {t.auth.loginTitle}
+            {supplierIntent ? t.auth.supplierLoginTitle : t.auth.loginTitle}
           </h1>
           <p className="mt-5 text-sm leading-7 text-muted-foreground">
-            {t.auth.loginBody}
+            {supplierIntent ? t.auth.supplierLoginBody : t.auth.loginBody}
           </p>
         </div>
         <OnboardingAuthCard
@@ -58,14 +58,20 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             accountBody: t.auth.accountBody,
             supplierIntentTitle: t.auth.supplierIntentTitle,
             supplierIntentBody: t.auth.supplierIntentBody,
+            supplierAccountTitle: t.auth.supplierAccountTitle,
+            supplierAccountBody: t.auth.supplierAccountBody,
             fullName: t.auth.fullName,
             email: t.auth.email,
             workEmail: t.auth.workEmail,
             password: t.auth.password,
             login: t.auth.login,
             createAccount: t.auth.createAccount,
+            supplierLogin: t.auth.supplierLoginCta,
+            supplierCreateAccount: t.auth.supplierCreateAccount,
             continueWithGoogle: t.auth.continueWithGoogle,
+            supplierContinueWithGoogle: t.auth.supplierContinueWithGoogle,
             googleHelp: t.auth.googleHelp,
+            supplierGoogleHelp: t.auth.supplierGoogleHelp,
             orEmail: t.auth.orEmail,
             alreadyAccount: t.auth.alreadyAccount,
             newToTmp: t.auth.newToTmp,

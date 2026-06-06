@@ -8,10 +8,7 @@ import {
   Sparkles,
 } from "lucide-react";
 
-import {
-  startSupplierProfile,
-  submitVerificationDocuments,
-} from "@/app/actions/verification";
+import { submitVerificationDocuments } from "@/app/actions/verification";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -100,26 +97,16 @@ export default async function VerificationSettingsPage({
           <CardContent className="p-8">
             <ShieldCheck className="size-8 text-gold-200" aria-hidden="true" />
             <h2 className="mt-4 text-xl font-semibold text-white">
-              {copy.supplierAccessTitle}
+              {t.profileSettings.supplierUpgradeTitle}
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
-              {copy.supplierAccessBody}
+              {t.profileSettings.verifiedLockedBody}
             </p>
-            <form
-              action={startSupplierProfile}
-              className="mt-6 grid max-w-xl gap-4 sm:grid-cols-[1fr_auto] sm:items-end"
-            >
-              <div className="grid gap-2">
-                <Label htmlFor="company">{copy.supplierCompany}</Label>
-                <Input
-                  id="company"
-                  name="company"
-                  required
-                  placeholder="Anatolia Distribution"
-                />
-              </div>
-              <Button type="submit">{copy.startSupplierProfile}</Button>
-            </form>
+            <Button asChild className="mt-6">
+              <Link href="/dashboard/profile">
+                {t.profileSettings.startSupplierUpgrade}
+              </Link>
+            </Button>
           </CardContent>
         </Card>
       )}
@@ -146,7 +133,7 @@ export default async function VerificationSettingsPage({
                 </h2>
                 {workspace.state === "unauthenticated" && (
                   <Button asChild className="mt-6">
-                    <Link href="/login?intent=supplier&next=/dashboard/settings/verification">
+                    <Link href="/login?next=/dashboard/settings/verification">
                       {t.nav.login}
                     </Link>
                   </Button>

@@ -201,21 +201,35 @@ const dictionaries = {
       loginTitle: "Continue with your TMP account.",
       loginBody:
         "One account lets you source as a buyer, manage RFQs, and add a supplier profile when you are ready to sell on TMP.",
+      supplierLoginTitle: "Sign in to start your supplier upgrade.",
+      supplierLoginBody:
+        "Use your existing TMP account to add company details, activate the monthly verification subscription, and unlock supplier tools.",
       buyerLogin: "Buyer login",
       supplierLogin: "Supplier login",
       email: "Email",
       password: "Password",
       login: "Login",
+      supplierLoginCta: "Continue to supplier upgrade",
       newToTmp: "New to TMP?",
       createAccount: "Create an account",
+      supplierCreateAccount: "Create account and continue",
       onboarding: "TMP onboarding",
       registerTitle: "Create one TMP account. Add supplier access when ready.",
+      supplierRegisterTitle: "Create your TMP account to start selling.",
+      supplierRegisterBody:
+        "Next you will add your supplier profile, start verification, and activate the monthly subscription from the same account.",
       accountPath: "One TMP account",
       accountPathBody:
         "Browse suppliers, send RFQs, and manage sourcing from one login.",
       supplierUpgradePath: "Supplier profile upgrade",
       supplierUpgradePathBody:
         "After creating an account, add company details, verification, and product publishing.",
+      supplierStepAccount: "1. Create or sign in",
+      supplierStepAccountBody:
+        "Use one TMP login for buying, sourcing, and supplier tools.",
+      supplierStepUpgrade: "2. Add supplier upgrade",
+      supplierStepUpgradeBody:
+        "Add company details, activate the monthly verification subscription, then publish products.",
       buyerPath: "Buyer path",
       buyerPathBody: "Send RFQs and shortlist suppliers.",
       supplierPath: "Supplier path",
@@ -224,9 +238,12 @@ const dictionaries = {
       accountTitle: "TMP account",
       accountBody:
         "Buyer sourcing is included by default. Supplier access can be added from the same account.",
-      supplierIntentTitle: "Supplier profile next",
+      supplierAccountTitle: "Step 1: TMP account",
+      supplierAccountBody:
+        "Create or sign in to the same account you will use for sourcing and supplier tools.",
+      supplierIntentTitle: "Step 2: Supplier upgrade",
       supplierIntentBody:
-        "After sign-in, continue to verification to add company details and supplier capabilities.",
+        "After sign-in, add company details and activate the monthly verification subscription.",
       buyerAccount: "Buyer account",
       supplierAccount: "Supplier profile",
       fullName: "Full name",
@@ -237,8 +254,11 @@ const dictionaries = {
       buyer: "Buyer",
       supplier: "Supplier",
       continueWithGoogle: "Continue with Google",
+      supplierContinueWithGoogle: "Continue with Google",
       googleHelp:
         "Use Google to continue with one TMP account. Supplier setup happens after sign-in.",
+      supplierGoogleHelp:
+        "Continue with one TMP account. Supplier profile and monthly subscription setup happen next.",
       orEmail: "or continue with email",
       alreadyAccount: "Already have an account?",
       status: {
@@ -260,6 +280,7 @@ const dictionaries = {
         "Dashboard counts and rows are staged examples until live RFQs and supplier analytics are connected.",
       overview: "Overview",
       products: "Products",
+      profile: "Profile",
       listings: "Listings",
       rfqs: "RFQs",
       productInquiries: "Product inquiries",
@@ -334,7 +355,7 @@ const dictionaries = {
           "Sign in to your TMP account and add a supplier profile before managing product listings.",
         supplierMissing: "Supplier profile needed",
         supplierMissingBody:
-          "Your TMP account does not have a supplier profile connected yet. Start supplier verification to unlock product publishing.",
+          "Your TMP account does not have supplier tools enabled yet. Upgrade from Profile to unlock product publishing.",
         productTitle: "Product title",
         category: "Category",
         productDescription: "Description",
@@ -364,6 +385,33 @@ const dictionaries = {
         error: "We could not save the product. Please try again.",
       },
     },
+    profileSettings: {
+      eyebrow: "Account profile",
+      title: "Profile",
+      description:
+        "Manage your TMP account, supplier upgrade, and verified badge membership.",
+      accountTitle: "Account",
+      email: "Email",
+      accountType: "Account type",
+      buyerAccount: "Buyer account",
+      supplierAccount: "Supplier account",
+      supplierEnabled: "Supplier tools enabled",
+      supplierUpgradeTitle: "Upgrade to supplier",
+      supplierUpgradeBody:
+        "Add basic business details to unlock supplier tools. This does not charge you or add a verified badge.",
+      businessName: "Business name",
+      startSupplierUpgrade: "Upgrade to supplier",
+      supplierReadyTitle: "Supplier profile",
+      supplierReadyBody:
+        "Your account has supplier tools enabled. You can manage product listings and choose whether to pay for verification.",
+      verifiedTitle: "Verified badge membership",
+      verifiedBody:
+        "The verified badge is a paid monthly membership. Start or manage the subscription when you want the badge and verification review.",
+      verifiedLockedBody:
+        "First upgrade to a supplier by adding your business name. Then you can start the paid membership for a verified badge.",
+      verificationSettings: "Verification settings",
+      manageProducts: "Manage products",
+    },
     verificationSettings: {
       eyebrow: "Supplier verification",
       title: "Verification settings",
@@ -390,9 +438,9 @@ const dictionaries = {
         "Add upload-ready URLs for now. Supabase Storage upload controls can replace these fields later.",
       supplierAccessTitle: "Add a supplier profile",
       supplierAccessBody:
-        "Your TMP account can source as a buyer by default. Add company details to unlock supplier verification, billing, and product publishing.",
+        "Your TMP account can source as a buyer by default. Add company details, then activate the monthly verification subscription to unlock supplier tools.",
       supplierCompany: "Supplier company",
-      startSupplierProfile: "Start supplier profile",
+      startSupplierProfile: "Start supplier upgrade",
       businessLicense: "Business license",
       companyRegistration: "Company registration",
       certifications: "Certifications",
@@ -655,22 +703,38 @@ const dictionaries = {
       loginTitle: "Continuez avec votre compte TMP.",
       loginBody:
         "Un seul compte permet de sourcer comme acheteur, gérer les demandes et ajouter un profil fournisseur quand vous êtes prêt à vendre sur TMP.",
+      supplierLoginTitle:
+        "Connectez-vous pour lancer l’upgrade fournisseur.",
+      supplierLoginBody:
+        "Utilisez votre compte TMP pour ajouter la société, activer l’abonnement mensuel de vérification et débloquer les outils fournisseur.",
       buyerLogin: "Connexion acheteur",
       supplierLogin: "Connexion fournisseur",
       email: "Email",
       password: "Mot de passe",
       login: "Connexion",
+      supplierLoginCta: "Continuer vers l’upgrade fournisseur",
       newToTmp: "Nouveau sur TMP ?",
       createAccount: "Créer un compte",
+      supplierCreateAccount: "Créer le compte et continuer",
       onboarding: "Onboarding TMP",
       registerTitle:
         "Créez un compte TMP. Ajoutez l’accès fournisseur quand vous êtes prêt.",
+      supplierRegisterTitle:
+        "Créez votre compte TMP pour commencer à vendre.",
+      supplierRegisterBody:
+        "Ensuite, ajoutez votre profil fournisseur, lancez la vérification et activez l’abonnement mensuel depuis le même compte.",
       accountPath: "Un compte TMP",
       accountPathBody:
         "Parcourez les fournisseurs, envoyez des demandes et gérez le sourcing depuis une seule connexion.",
       supplierUpgradePath: "Profil fournisseur",
       supplierUpgradePathBody:
         "Après création du compte, ajoutez société, vérification et publication produits.",
+      supplierStepAccount: "1. Créer ou se connecter",
+      supplierStepAccountBody:
+        "Utilisez une seule connexion TMP pour acheter, sourcer et gérer les outils fournisseur.",
+      supplierStepUpgrade: "2. Ajouter l’upgrade fournisseur",
+      supplierStepUpgradeBody:
+        "Ajoutez la société, activez l’abonnement mensuel de vérification puis publiez vos produits.",
       buyerPath: "Parcours acheteur",
       buyerPathBody: "Envoyez des demandes et sélectionnez des fournisseurs.",
       supplierPath: "Parcours fournisseur",
@@ -679,9 +743,12 @@ const dictionaries = {
       accountTitle: "Compte TMP",
       accountBody:
         "Le sourcing acheteur est inclus par défaut. L’accès fournisseur s’ajoute au même compte.",
-      supplierIntentTitle: "Profil fournisseur ensuite",
+      supplierAccountTitle: "Étape 1 : compte TMP",
+      supplierAccountBody:
+        "Créez ou connectez-vous au même compte utilisé pour le sourcing et les outils fournisseur.",
+      supplierIntentTitle: "Étape 2 : upgrade fournisseur",
       supplierIntentBody:
-        "Après connexion, continuez vers la vérification pour ajouter société et capacités fournisseur.",
+        "Après connexion, ajoutez la société et activez l’abonnement mensuel de vérification.",
       buyerAccount: "Compte acheteur",
       supplierAccount: "Profil fournisseur",
       fullName: "Nom complet",
@@ -692,8 +759,11 @@ const dictionaries = {
       buyer: "Acheteur",
       supplier: "Fournisseur",
       continueWithGoogle: "Continuer avec Google",
+      supplierContinueWithGoogle: "Continuer avec Google",
       googleHelp:
         "Utilisez Google pour continuer avec un seul compte TMP. Le profil fournisseur se configure après connexion.",
+      supplierGoogleHelp:
+        "Continuez avec un seul compte TMP. Le profil fournisseur et l’abonnement mensuel se configurent ensuite.",
       orEmail: "ou continuer avec email",
       alreadyAccount: "Vous avez déjà un compte ?",
       status: {
@@ -715,6 +785,7 @@ const dictionaries = {
         "Les compteurs et lignes du dashboard sont des exemples tant que les RFQ et analytics fournisseurs ne sont pas connectes.",
       overview: "Vue d’ensemble",
       products: "Produits",
+      profile: "Profil",
       listings: "Listings",
       rfqs: "Demandes",
       productInquiries: "Demandes produit",
@@ -793,7 +864,7 @@ const dictionaries = {
           "Connectez-vous à votre compte TMP et ajoutez un profil fournisseur avant de gérer les listings produits.",
         supplierMissing: "Profil fournisseur requis",
         supplierMissingBody:
-          "Votre compte TMP n’a pas encore de profil fournisseur connecté. Lancez la vérification fournisseur pour activer la publication.",
+          "Votre compte TMP n’a pas encore les outils fournisseur activés. Passez par le profil pour débloquer la publication.",
         productTitle: "Titre du produit",
         category: "Catégorie",
         productDescription: "Description",
@@ -824,6 +895,33 @@ const dictionaries = {
         error: "Impossible d’enregistrer le produit. Veuillez réessayer.",
       },
     },
+    profileSettings: {
+      eyebrow: "Profil du compte",
+      title: "Profil",
+      description:
+        "Gérez votre compte TMP, l’upgrade fournisseur et l’abonnement au badge vérifié.",
+      accountTitle: "Compte",
+      email: "Email",
+      accountType: "Type de compte",
+      buyerAccount: "Compte acheteur",
+      supplierAccount: "Compte fournisseur",
+      supplierEnabled: "Outils fournisseur activés",
+      supplierUpgradeTitle: "Passer en fournisseur",
+      supplierUpgradeBody:
+        "Ajoutez les informations de base de l’entreprise pour débloquer les outils fournisseur. Cela ne vous facture pas et n’ajoute pas de badge vérifié.",
+      businessName: "Nom de l’entreprise",
+      startSupplierUpgrade: "Passer en fournisseur",
+      supplierReadyTitle: "Profil fournisseur",
+      supplierReadyBody:
+        "Votre compte a les outils fournisseur activés. Vous pouvez gérer les listings produits et choisir de payer pour la vérification.",
+      verifiedTitle: "Abonnement badge vérifié",
+      verifiedBody:
+        "Le badge vérifié est un abonnement mensuel payant. Lancez ou gérez l’abonnement quand vous voulez le badge et la revue de vérification.",
+      verifiedLockedBody:
+        "Passez d’abord en fournisseur en ajoutant le nom de l’entreprise. Vous pourrez ensuite démarrer l’abonnement payant pour le badge vérifié.",
+      verificationSettings: "Paramètres de vérification",
+      manageProducts: "Gérer les produits",
+    },
     verificationSettings: {
       eyebrow: "Vérification fournisseur",
       title: "Paramètres de vérification",
@@ -850,9 +948,9 @@ const dictionaries = {
         "Ajoutez des URLs prêtes pour l’upload pour l’instant. Les contrôles Supabase Storage pourront remplacer ces champs plus tard.",
       supplierAccessTitle: "Ajouter un profil fournisseur",
       supplierAccessBody:
-        "Votre compte TMP permet le sourcing acheteur par défaut. Ajoutez les détails société pour activer vérification, facturation et publication produits.",
+        "Votre compte TMP permet le sourcing acheteur par défaut. Ajoutez la société, puis activez l’abonnement mensuel de vérification pour débloquer les outils fournisseur.",
       supplierCompany: "Société fournisseur",
-      startSupplierProfile: "Démarrer le profil fournisseur",
+      startSupplierProfile: "Démarrer l’upgrade fournisseur",
       businessLicense: "Licence commerciale",
       companyRegistration: "Immatriculation société",
       certifications: "Certifications",

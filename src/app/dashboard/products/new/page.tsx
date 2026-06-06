@@ -63,14 +63,14 @@ export default async function NewProductPage({
                 </Button>
               ) : (
                 <Button asChild>
-                  <Link href="/login?intent=supplier&next=/dashboard/products/new">
+                  <Link href="/login?next=/dashboard/products/new">
                     {t.nav.login}
                   </Link>
                 </Button>
               )}
               <Button asChild variant="outline">
-                <Link href="/dashboard/settings/verification">
-                  Add supplier profile
+                <Link href="/dashboard/profile">
+                  Go to profile
                 </Link>
               </Button>
             </div>

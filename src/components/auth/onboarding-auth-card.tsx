@@ -27,14 +27,20 @@ type OnboardingAuthCardProps = {
     accountBody: string;
     supplierIntentTitle: string;
     supplierIntentBody: string;
+    supplierAccountTitle: string;
+    supplierAccountBody: string;
     fullName: string;
     email: string;
     workEmail: string;
     password: string;
     login: string;
     createAccount: string;
+    supplierLogin: string;
+    supplierCreateAccount: string;
     continueWithGoogle: string;
+    supplierContinueWithGoogle: string;
     googleHelp: string;
+    supplierGoogleHelp: string;
     orEmail: string;
     alreadyAccount: string;
     newToTmp: string;
@@ -80,7 +86,25 @@ export function OnboardingAuthCard({
     [labels, status],
   );
   const nextQuery = encodeURIComponent(nextPath);
-  const intentQuery = supplierIntent ? "&intent=supplier" : "";
+  const accountTitle = supplierIntent
+    ? labels.supplierAccountTitle
+    : labels.accountTitle;
+  const accountBody = supplierIntent
+    ? labels.supplierAccountBody
+    : labels.accountBody;
+  const googleLabel = supplierIntent
+    ? labels.supplierContinueWithGoogle
+    : labels.continueWithGoogle;
+  const googleHelp = supplierIntent
+    ? labels.supplierGoogleHelp
+    : labels.googleHelp;
+  const submitLabel = supplierIntent
+    ? mode === "register"
+      ? labels.supplierCreateAccount
+      : labels.supplierLogin
+    : mode === "register"
+      ? labels.createAccount
+      : labels.login;
 
   return (
     <Card className="bg-white/[0.035]">
@@ -92,9 +116,9 @@ export function OnboardingAuthCard({
               aria-hidden="true"
             />
             <span>
-              <span className="block font-medium">{labels.accountTitle}</span>
+              <span className="block font-medium">{accountTitle}</span>
               <span className="mt-1 block text-xs leading-5 text-muted-foreground">
-                {labels.accountBody}
+                {accountBody}
               </span>
             </span>
             <span className="text-charcoal-950 absolute right-3 top-3 flex size-5 items-center justify-center rounded-full bg-gold-300">
@@ -143,10 +167,10 @@ export function OnboardingAuthCard({
             className="w-full"
           >
             <Chrome aria-hidden="true" />
-            {labels.continueWithGoogle}
+            {googleLabel}
           </Button>
           <p className="mt-3 text-center text-xs leading-5 text-muted-foreground">
-            {labels.googleHelp}
+            {googleHelp}
           </p>
         </form>
 
@@ -201,7 +225,7 @@ export function OnboardingAuthCard({
           </div>
 
           <Button type="submit" size="lg">
-            {mode === "register" ? labels.createAccount : labels.login}
+            {submitLabel}
             <ArrowRight aria-hidden="true" />
           </Button>
         </form>
@@ -211,8 +235,8 @@ export function OnboardingAuthCard({
           <Link
             href={
               mode === "register"
-                ? `/login?next=${nextQuery}${intentQuery}`
-                : `/register?next=${nextQuery}${intentQuery}`
+                ? `/login?next=${nextQuery}`
+                : `/register?next=${nextQuery}`
             }
             className="rounded-sm text-gold-100 underline-offset-4 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >

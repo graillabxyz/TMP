@@ -27,7 +27,7 @@ function getSafeNextPath(value: string | undefined, supplierIntent: boolean) {
     return value;
   }
 
-  return supplierIntent ? "/dashboard/settings/verification" : "/dashboard";
+  return supplierIntent ? "/dashboard/profile" : "/dashboard";
 }
 
 export default async function RegisterPage({
@@ -49,19 +49,37 @@ export default async function RegisterPage({
             {t.auth.onboarding}
           </Badge>
           <h1 className="mt-5 text-4xl font-semibold text-white sm:text-5xl">
-            {t.auth.registerTitle}
+            {supplierIntent
+              ? t.auth.supplierRegisterTitle
+              : t.auth.registerTitle}
           </h1>
+          {supplierIntent && (
+            <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">
+              {t.auth.supplierRegisterBody}
+            </p>
+          )}
           <div className="mt-8 grid gap-3">
-            {[
-              {
-                label: t.auth.accountPath,
-                body: t.auth.accountPathBody,
-              },
-              {
-                label: t.auth.supplierUpgradePath,
-                body: t.auth.supplierUpgradePathBody,
-              },
-            ].map((item) => (
+            {(supplierIntent
+              ? [
+                  {
+                    label: t.auth.supplierStepAccount,
+                    body: t.auth.supplierStepAccountBody,
+                  },
+                  {
+                    label: t.auth.supplierStepUpgrade,
+                    body: t.auth.supplierStepUpgradeBody,
+                  },
+                ]
+              : [
+                  {
+                    label: t.auth.accountPath,
+                    body: t.auth.accountPathBody,
+                  },
+                  {
+                    label: t.auth.supplierUpgradePath,
+                    body: t.auth.supplierUpgradePathBody,
+                  },
+                ]).map((item) => (
               <div
                 key={item.label}
                 className="rounded-lg border border-white/10 bg-white/[0.035] p-4"
@@ -85,14 +103,20 @@ export default async function RegisterPage({
             accountBody: t.auth.accountBody,
             supplierIntentTitle: t.auth.supplierIntentTitle,
             supplierIntentBody: t.auth.supplierIntentBody,
+            supplierAccountTitle: t.auth.supplierAccountTitle,
+            supplierAccountBody: t.auth.supplierAccountBody,
             fullName: t.auth.fullName,
             email: t.auth.email,
             workEmail: t.auth.workEmail,
             password: t.auth.password,
             login: t.auth.login,
             createAccount: t.auth.createAccount,
+            supplierLogin: t.auth.supplierLoginCta,
+            supplierCreateAccount: t.auth.supplierCreateAccount,
             continueWithGoogle: t.auth.continueWithGoogle,
+            supplierContinueWithGoogle: t.auth.supplierContinueWithGoogle,
             googleHelp: t.auth.googleHelp,
+            supplierGoogleHelp: t.auth.supplierGoogleHelp,
             orEmail: t.auth.orEmail,
             alreadyAccount: t.auth.alreadyAccount,
             newToTmp: t.auth.newToTmp,

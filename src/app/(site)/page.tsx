@@ -31,6 +31,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
+import { getCurrentProfile } from "@/lib/account";
 import { heroImage, trustMetrics } from "@/lib/data";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
@@ -44,10 +45,14 @@ export default async function HomePage() {
   const locale = await getLocale();
   const t = getDictionary(locale);
   const activity = getPlatformActivity(locale);
-  const [categories, suppliers] = await Promise.all([
+  const [categories, suppliers, profile] = await Promise.all([
     getCategories(locale),
     getSuppliers(locale),
+    getCurrentProfile(),
   ]);
+  const supplierUpgradeHref = profile
+    ? "/dashboard/profile"
+    : "/register?next=/dashboard/profile";
   const featuredSuppliers = suppliers
     .filter((supplier) => supplier.verified)
     .slice(0, 3);
@@ -615,7 +620,7 @@ export default async function HomePage() {
               </div>
             </div>
             <Button asChild size="lg" variant="outline">
-              <Link href="/register?intent=supplier&next=/dashboard/settings/verification">
+              <Link href={supplierUpgradeHref}>
                 {t.home.applySupplier}
                 <Building2 aria-hidden="true" />
               </Link>

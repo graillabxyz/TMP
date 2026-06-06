@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({
         mode: "auth-required",
-        url: `${origin}/login?intent=supplier&next=/dashboard/settings/verification`,
+        url: `${origin}/login?next=/dashboard/profile`,
       });
     }
 

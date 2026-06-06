@@ -85,8 +85,8 @@ export default async function DashboardProductsPage({
                 <Link href="/products">Browse products</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/dashboard/settings/verification">
-                  Add supplier profile
+                <Link href="/dashboard/profile">
+                  Go to profile
                 </Link>
               </Button>
             </div>
@@ -105,7 +105,7 @@ export default async function DashboardProductsPage({
               {labels.loginRequiredBody}
             </p>
             <Button asChild className="mt-6">
-              <Link href="/login?intent=supplier&next=/dashboard/products">
+              <Link href="/login?next=/dashboard/products">
                 {t.nav.login}
               </Link>
             </Button>
