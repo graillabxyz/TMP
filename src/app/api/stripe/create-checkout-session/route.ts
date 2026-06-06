@@ -7,6 +7,12 @@ import { createClient as createServerSupabaseClient } from "@/lib/supabase/serve
 
 export const dynamic = "force-dynamic";
 
+type CheckoutSupplierRow = {
+  id: string;
+  owner_id: string | null;
+  stripe_customer_id: string | null;
+};
+
 export async function POST(request: NextRequest) {
   const origin = getAppOrigin(request.nextUrl.origin);
 
@@ -37,15 +43,16 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({
         mode: "auth-required",
-        url: `${origin}/login?role=supplier`,
+        url: `${origin}/login?intent=supplier&next=/dashboard/settings/verification`,
       });
     }
 
-    const { data: supplier, error } = await supabase
+    const { data: supplierData, error } = await supabase
       .from("suppliers")
       .select("id, owner_id, stripe_customer_id")
       .eq("owner_id", user.id)
       .maybeSingle();
+    const supplier = supplierData as unknown as CheckoutSupplierRow | null;
 
     if (error || !supplier) {
       return NextResponse.json({

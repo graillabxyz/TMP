@@ -11,6 +11,7 @@ type VerificationDocumentInsert =
 type VerificationDocumentUpdate =
   Database["public"]["Tables"]["supplier_verification_documents"]["Update"];
 type SupplierUpdate = Database["public"]["Tables"]["suppliers"]["Update"];
+type ProfileUpdate = Database["public"]["Tables"]["profiles"]["Update"];
 type SupplierVerificationStatus =
   Database["public"]["Tables"]["suppliers"]["Row"]["verification_status"];
 type MutationError = { message: string } | null;
@@ -19,9 +20,20 @@ type SupplierMutationTable = {
     eq: (column: string, value: string) => Promise<{ error: MutationError }>;
   };
 };
+type ProfileMutationTable = {
+  update: (payload: ProfileUpdate) => {
+    eq: (column: string, value: string) => Promise<{ error: MutationError }>;
+  };
+};
 type DocumentMutationTable = {
   upsert: (
     payload: VerificationDocumentInsert & VerificationDocumentUpdate,
+  ) => Promise<{ error: MutationError }>;
+};
+type SupplierProfileRpcClient = {
+  rpc: (
+    functionName: "ensure_supplier_profile",
+    args: { company: string | null },
   ) => Promise<{ error: MutationError }>;
 };
 
@@ -60,6 +72,57 @@ async function getSupplierId() {
     supplierId: supplier?.id ?? null,
     verificationStatus: supplier?.verification_status ?? null,
   };
+}
+
+export async function startSupplierProfile(formData: FormData) {
+  if ((await getDemoRole()) === "supplier") {
+    redirect("/dashboard/settings/verification?status=supplier-started");
+  }
+
+  const company = getString(formData, "company");
+
+  if (!company) {
+    redirect("/dashboard/settings/verification?status=missing-company");
+  }
+
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect(
+      "/login?intent=supplier&next=/dashboard/settings/verification&status=missing",
+    );
+  }
+
+  const profileMutations = supabase.from(
+    "profiles",
+  ) as unknown as ProfileMutationTable;
+  const { error: profileError } = await profileMutations
+    .update({ role: "supplier" })
+    .eq("id", user.id);
+
+  if (profileError) {
+    console.error(
+      "Unable to upgrade profile to supplier",
+      profileError.message,
+    );
+    redirect("/dashboard/settings/verification?status=error");
+  }
+
+  const supplierProfileRpc = supabase as unknown as SupplierProfileRpcClient;
+  const { error: supplierError } = await supplierProfileRpc.rpc(
+    "ensure_supplier_profile",
+    { company },
+  );
+
+  if (supplierError) {
+    console.error("Unable to start supplier profile", supplierError.message);
+    redirect("/dashboard/settings/verification?status=error");
+  }
+
+  redirect("/dashboard/settings/verification?status=supplier-started");
 }
 
 export async function submitVerificationDocuments(formData: FormData) {

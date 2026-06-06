@@ -217,7 +217,7 @@ export const suppliers: Supplier[] = [
         category: "Packaging",
         moq: "1,000 units",
         image:
-          "https://images.unsplash.com/photo-1607344645866-009c320f75c4?auto=format&fit=crop&w=900&q=80",
+          "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=80",
       },
       {
         name: "Ecommerce mailer set",

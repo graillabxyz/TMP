@@ -2,7 +2,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { ArrowLeft, BadgeCheck, Clock3, Factory, Package } from "lucide-react";
+import {
+  ArrowLeft,
+  BadgeCheck,
+  Clock3,
+  Factory,
+  FileText,
+  Package,
+  TrendingUp,
+} from "lucide-react";
 
 import { ProductCard } from "@/components/product-card";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -11,6 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
+import { getPlatformActivity } from "@/lib/platform-activity";
 import {
   formatPriceRange,
   getProductBySlug,
@@ -69,6 +78,7 @@ export default async function ProductDetailPage({
   const locale = await getLocale();
   const { slug } = await params;
   const t = getDictionary(locale);
+  const activity = getPlatformActivity(locale);
   const product = await getProductBySlug(slug, locale);
 
   if (!product) {
@@ -76,6 +86,12 @@ export default async function ProductDetailPage({
   }
 
   const related = await getRelatedProducts(product, locale);
+  const relevantBriefs = activity.activeBriefs
+    .filter((brief) => brief.categorySlug === product.categorySlug)
+    .slice(0, 2);
+  const demandBriefs = relevantBriefs.length
+    ? relevantBriefs
+    : activity.activeBriefs.slice(0, 2);
 
   return (
     <>
@@ -199,6 +215,47 @@ export default async function ProductDetailPage({
                     {t.products.requestQuote}
                   </Link>
                 </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/[0.035]">
+              <CardContent className="p-5">
+                <div className="flex items-center gap-2 text-sm font-medium text-white">
+                  <TrendingUp
+                    className="size-4 text-gold-200"
+                    aria-hidden="true"
+                  />
+                  {activity.productDemandTitle}
+                </div>
+                <div className="mt-4 grid gap-3">
+                  {demandBriefs.map((brief) => (
+                    <div
+                      key={`${brief.title}-${brief.market}`}
+                      className="rounded-md border border-white/10 bg-white/[0.035] p-3"
+                    >
+                      <div className="flex items-start gap-3">
+                        <FileText
+                          className="mt-0.5 size-4 shrink-0 text-gold-200"
+                          aria-hidden="true"
+                        />
+                        <div>
+                          <p className="text-sm font-medium leading-5 text-white">
+                            {brief.title}
+                          </p>
+                          <p className="mt-2 text-xs text-muted-foreground">
+                            {brief.market} / {brief.quantity}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mt-3 flex items-center justify-between gap-3">
+                        <span className="text-xs text-gold-200">
+                          {brief.updated}
+                        </span>
+                        <Badge variant="secondary">{brief.stage}</Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
 

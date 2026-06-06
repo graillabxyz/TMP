@@ -20,7 +20,7 @@ export function LanguageToggle({ locale }: LanguageToggleProps) {
           name="locale"
           value={option}
           className={cn(
-            "rounded-sm px-2.5 py-1 text-xs font-medium uppercase text-muted-foreground transition hover:text-white",
+            "min-h-8 rounded-sm px-2.5 py-1 text-xs font-medium uppercase text-muted-foreground transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
             locale === option && "bg-gold-300 text-charcoal-900",
           )}
           aria-pressed={locale === option}

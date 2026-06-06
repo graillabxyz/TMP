@@ -29,6 +29,7 @@ const dictionaries = {
       action: "Action",
       location: "Location",
       search: "Search",
+      clearFilters: "Clear filters",
       all: "All",
       save: "Save",
       cancel: "Cancel",
@@ -56,8 +57,27 @@ const dictionaries = {
       subtitle:
         "Source textiles, machinery, food, home goods, automotive parts, and packaging from export-ready Turkish suppliers.",
       searchPlaceholder: "Search product, category, or supplier",
+      headerSearchPlaceholder: "Search products or suppliers",
       allCategories: "All categories",
       startSourcing: "Start sourcing",
+      popularSearches: "Popular searches",
+      liveBoard: "Live sourcing board",
+      marketplaceWelcome: "Welcome to TMP",
+      categoriesForYou: "Categories for you",
+      frequentlySearched: "Frequently searched",
+      recommendedForBusiness: "Recommended for your business",
+      businessTools: [
+        "Request for quotation",
+        "Verified manufacturers",
+        "Fast customization",
+      ],
+      guaranteedTitle: "TMP Guaranteed",
+      guaranteedItems: [
+        "Structured RFQs",
+        "Verified supplier signals",
+        "Quote follow-up support",
+      ],
+      exploreNow: "Explore now",
       featuredSuppliers: "Featured suppliers",
       featuredTitle: "Export-ready partners with visible credibility.",
       exploreSuppliers: "Explore suppliers",
@@ -94,18 +114,24 @@ const dictionaries = {
       title: "Search Turkish suppliers built for European sourcing teams.",
       body: "Compare verified status, categories, export markets, minimum order quantities, and response speed before sending an RFQ.",
       indexed: "suppliers indexed",
+      indexedSingular: "supplier indexed",
       filters: "Filters",
       search: "Search",
       searchPlaceholder: "Textile, CNC, packaging",
       allCategories: "All categories",
       verification: "Verification",
       checks: ["Verified suppliers", "EU export experience", "Low MOQ"],
+      viewSupplier: "View supplier",
+      emptyTitle: "No suppliers match these filters",
+      emptyBody:
+        "Try a broader search, clear a filter, or browse the full supplier directory.",
     },
     products: {
       badge: "Product discovery",
       title: "Browse Turkish-made products ready for European sourcing.",
       body: "Search published supplier listings by product, category, supplier, MOQ, price range, and lead time.",
       indexed: "published products",
+      indexedSingular: "published product",
       filters: "Filters",
       searchPlaceholder: "Denim jackets, CNC housing, olive oil...",
       allCategories: "All categories",
@@ -142,8 +168,11 @@ const dictionaries = {
         "Target quantity and destination",
         "Optional drawings or reference files",
       ],
-      productRequest: "Product request",
-      productPlaceholder: "Organic cotton hoodies, CNC housings...",
+      productRequest: "Product specification",
+      productPlaceholder:
+        "Organic cotton hoodie, 320gsm fleece, OEKO-TEX, 500 pcs",
+      productHelp:
+        'Include product type, material or spec, certification need, and target quantity. Vague requests like "hoodies" or "boxes" are hard to route.',
       selectCategory: "Select category",
       quantity: "Quantity",
       quantityPlaceholder: "500 units",
@@ -161,15 +190,17 @@ const dictionaries = {
         success: "RFQ submitted. Our sourcing team will review it shortly.",
         missing:
           "Please add a product request, quantity, and destination country.",
+        specific:
+          "Please make the product request more specific with material, spec, certification, or target quantity.",
         config: "Supabase is not configured for this environment yet.",
         error: "We could not submit the RFQ. Please try again.",
       },
     },
     auth: {
       welcomeBack: "Welcome back",
-      loginTitle: "Continue sourcing with a clearer supplier pipeline.",
+      loginTitle: "Continue with your TMP account.",
       loginBody:
-        "Buyers manage RFQs and saved suppliers. Suppliers start verification, activate the monthly plan, then publish marketplace-ready products.",
+        "One account lets you source as a buyer, manage RFQs, and add a supplier profile when you are ready to sell on TMP.",
       buyerLogin: "Buyer login",
       supplierLogin: "Supplier login",
       email: "Email",
@@ -178,14 +209,26 @@ const dictionaries = {
       newToTmp: "New to TMP?",
       createAccount: "Create an account",
       onboarding: "TMP onboarding",
-      registerTitle: "Join as a buyer or build a verified supplier profile.",
+      registerTitle: "Create one TMP account. Add supplier access when ready.",
+      accountPath: "One TMP account",
+      accountPathBody:
+        "Browse suppliers, send RFQs, and manage sourcing from one login.",
+      supplierUpgradePath: "Supplier profile upgrade",
+      supplierUpgradePathBody:
+        "After creating an account, add company details, verification, and product publishing.",
       buyerPath: "Buyer path",
       buyerPathBody: "Send RFQs and shortlist suppliers.",
       supplierPath: "Supplier path",
       supplierPathBody:
-        "Start verification, activate the monthly plan, then publish products.",
+        "Add a supplier profile, start verification, then publish products.",
+      accountTitle: "TMP account",
+      accountBody:
+        "Buyer sourcing is included by default. Supplier access can be added from the same account.",
+      supplierIntentTitle: "Supplier profile next",
+      supplierIntentBody:
+        "After sign-in, continue to verification to add company details and supplier capabilities.",
       buyerAccount: "Buyer account",
-      supplierAccount: "Supplier account",
+      supplierAccount: "Supplier profile",
       fullName: "Full name",
       company: "Company",
       workEmail: "Work email",
@@ -195,7 +238,7 @@ const dictionaries = {
       supplier: "Supplier",
       continueWithGoogle: "Continue with Google",
       googleHelp:
-        "Use Google to continue. Supplier accounts go directly to verification and billing setup.",
+        "Use Google to continue with one TMP account. Supplier setup happens after sign-in.",
       orEmail: "or continue with email",
       alreadyAccount: "Already have an account?",
       status: {
@@ -212,6 +255,9 @@ const dictionaries = {
       title: "Dashboard",
       description:
         "Track supplier visibility, inbound RFQs, product inquiries, and verification readiness.",
+      previewData: "Preview pipeline",
+      previewBody:
+        "Dashboard counts and rows are staged examples until live RFQs and supplier analytics are connected.",
       overview: "Overview",
       products: "Products",
       listings: "Listings",
@@ -285,10 +331,10 @@ const dictionaries = {
           "Create a first product listing to make it available for marketplace discovery once published.",
         loginRequired: "Login required",
         loginRequiredBody:
-          "Sign in as a supplier before managing product listings.",
+          "Sign in to your TMP account and add a supplier profile before managing product listings.",
         supplierMissing: "Supplier profile needed",
         supplierMissingBody:
-          "Your user does not have a supplier profile connected yet. Once the supplier account exists, product publishing will unlock here.",
+          "Your TMP account does not have a supplier profile connected yet. Start supplier verification to unlock product publishing.",
         productTitle: "Product title",
         category: "Category",
         productDescription: "Description",
@@ -342,12 +388,20 @@ const dictionaries = {
       documents: "Business verification",
       documentsBody:
         "Add upload-ready URLs for now. Supabase Storage upload controls can replace these fields later.",
+      supplierAccessTitle: "Add a supplier profile",
+      supplierAccessBody:
+        "Your TMP account can source as a buyer by default. Add company details to unlock supplier verification, billing, and product publishing.",
+      supplierCompany: "Supplier company",
+      startSupplierProfile: "Start supplier profile",
       businessLicense: "Business license",
       companyRegistration: "Company registration",
       certifications: "Certifications",
       notes: "Notes for review",
       submitDocuments: "Submit for review",
       statusSubmitted: "Verification documents submitted for admin review.",
+      statusSupplierStarted:
+        "Supplier profile started. Continue with verification and billing setup.",
+      statusMissingCompany: "Please add a supplier company name.",
       statusError:
         "We could not update verification details. Please try again.",
       checkoutPlaceholder:
@@ -367,7 +421,7 @@ const dictionaries = {
         "Stripe customer portal could not be opened. Please try again.",
       missingSupplier:
         "Create or connect a supplier profile before verification.",
-      loginRequired: "Sign in as a supplier to manage verification.",
+      loginRequired: "Sign in to add or manage a supplier profile.",
       states: {
         none: "Not started",
         pending: "Pending review",
@@ -426,6 +480,7 @@ const dictionaries = {
       action: "Action",
       location: "Localisation",
       search: "Rechercher",
+      clearFilters: "Effacer les filtres",
       all: "Tout",
       save: "Enregistrer",
       cancel: "Annuler",
@@ -454,8 +509,27 @@ const dictionaries = {
         "Sourcez textiles, machines, produits alimentaires, maison, pièces automobiles et emballages auprès de fournisseurs turcs prêts pour l’export.",
       searchPlaceholder:
         "Rechercher un produit, une catégorie ou un fournisseur",
+      headerSearchPlaceholder: "Rechercher produits ou fournisseurs",
       allCategories: "Toutes les catégories",
       startSourcing: "Lancer le sourcing",
+      popularSearches: "Recherches populaires",
+      liveBoard: "Tableau sourcing live",
+      marketplaceWelcome: "Bienvenue sur TMP",
+      categoriesForYou: "Catégories pour vous",
+      frequentlySearched: "Souvent recherché",
+      recommendedForBusiness: "Recommandé pour votre activité",
+      businessTools: [
+        "Demande de devis",
+        "Fabricants vérifiés",
+        "Personnalisation rapide",
+      ],
+      guaranteedTitle: "TMP Guaranteed",
+      guaranteedItems: [
+        "Demandes structurées",
+        "Signaux fournisseur vérifiés",
+        "Suivi des devis",
+      ],
+      exploreNow: "Explorer",
       featuredSuppliers: "Fournisseurs à la une",
       featuredTitle: "Des partenaires export avec une crédibilité visible.",
       exploreSuppliers: "Explorer les fournisseurs",
@@ -494,12 +568,17 @@ const dictionaries = {
         "Recherchez des fournisseurs turcs conçus pour les équipes sourcing européennes.",
       body: "Comparez statut vérifié, catégories, marchés export, quantités minimales et vitesse de réponse avant d’envoyer une demande.",
       indexed: "fournisseurs indexés",
+      indexedSingular: "fournisseur indexé",
       filters: "Filtres",
       search: "Recherche",
       searchPlaceholder: "Textile, CNC, emballage",
       allCategories: "Toutes les catégories",
       verification: "Vérification",
       checks: ["Fournisseurs vérifiés", "Expérience export UE", "MOQ faible"],
+      viewSupplier: "Voir le fournisseur",
+      emptyTitle: "Aucun fournisseur ne correspond à ces filtres",
+      emptyBody:
+        "Essayez une recherche plus large, effacez un filtre ou parcourez tout l’annuaire fournisseur.",
     },
     products: {
       badge: "Découverte produits",
@@ -507,6 +586,7 @@ const dictionaries = {
         "Parcourez des produits fabriqués en Turquie, prêts pour le sourcing européen.",
       body: "Recherchez les listings publiés par produit, catégorie, fournisseur, MOQ, prix et délai.",
       indexed: "produits publiés",
+      indexedSingular: "produit publié",
       filters: "Filtres",
       searchPlaceholder: "Vestes denim, boîtier CNC, huile d’olive...",
       allCategories: "Toutes les catégories",
@@ -543,8 +623,10 @@ const dictionaries = {
         "Quantité cible et destination",
         "Plans ou fichiers de référence optionnels",
       ],
-      productRequest: "Demande produit",
-      productPlaceholder: "Sweats coton bio, boîtiers CNC...",
+      productRequest: "Specification produit",
+      productPlaceholder: "Sweat coton bio, molleton 320gsm, OEKO-TEX, 500 pcs",
+      productHelp:
+        'Ajoutez le type de produit, la matiere ou specification, la certification souhaitee et la quantite cible. Les demandes vagues comme "sweats" ou "boites" sont difficiles a router.',
       selectCategory: "Sélectionner une catégorie",
       quantity: "Quantité",
       quantityPlaceholder: "500 unités",
@@ -562,15 +644,17 @@ const dictionaries = {
         success: "Demande envoyée. Notre équipe sourcing va l’examiner.",
         missing:
           "Veuillez ajouter une demande produit, une quantité et un pays de destination.",
+        specific:
+          "Veuillez preciser la demande produit avec matiere, specification, certification ou quantite cible.",
         config: "Supabase n’est pas encore configuré pour cet environnement.",
         error: "Impossible d’envoyer la demande. Veuillez réessayer.",
       },
     },
     auth: {
       welcomeBack: "Bon retour",
-      loginTitle: "Continuez votre sourcing avec un pipeline plus clair.",
+      loginTitle: "Continuez avec votre compte TMP.",
       loginBody:
-        "Les acheteurs gèrent les RFQ et fournisseurs favoris. Les fournisseurs lancent la vérification, activent l’abonnement mensuel puis publient leurs produits.",
+        "Un seul compte permet de sourcer comme acheteur, gérer les demandes et ajouter un profil fournisseur quand vous êtes prêt à vendre sur TMP.",
       buyerLogin: "Connexion acheteur",
       supplierLogin: "Connexion fournisseur",
       email: "Email",
@@ -580,14 +664,26 @@ const dictionaries = {
       createAccount: "Créer un compte",
       onboarding: "Onboarding TMP",
       registerTitle:
-        "Rejoignez comme acheteur ou créez un profil fournisseur vérifié.",
+        "Créez un compte TMP. Ajoutez l’accès fournisseur quand vous êtes prêt.",
+      accountPath: "Un compte TMP",
+      accountPathBody:
+        "Parcourez les fournisseurs, envoyez des demandes et gérez le sourcing depuis une seule connexion.",
+      supplierUpgradePath: "Profil fournisseur",
+      supplierUpgradePathBody:
+        "Après création du compte, ajoutez société, vérification et publication produits.",
       buyerPath: "Parcours acheteur",
       buyerPathBody: "Envoyez des demandes et sélectionnez des fournisseurs.",
       supplierPath: "Parcours fournisseur",
       supplierPathBody:
-        "Lancez la vérification, activez l’abonnement mensuel puis publiez vos produits.",
+        "Ajoutez un profil fournisseur, lancez la vérification puis publiez vos produits.",
+      accountTitle: "Compte TMP",
+      accountBody:
+        "Le sourcing acheteur est inclus par défaut. L’accès fournisseur s’ajoute au même compte.",
+      supplierIntentTitle: "Profil fournisseur ensuite",
+      supplierIntentBody:
+        "Après connexion, continuez vers la vérification pour ajouter société et capacités fournisseur.",
       buyerAccount: "Compte acheteur",
-      supplierAccount: "Compte fournisseur",
+      supplierAccount: "Profil fournisseur",
       fullName: "Nom complet",
       company: "Entreprise",
       workEmail: "Email professionnel",
@@ -597,7 +693,7 @@ const dictionaries = {
       supplier: "Fournisseur",
       continueWithGoogle: "Continuer avec Google",
       googleHelp:
-        "Utilisez Google pour continuer. Les comptes fournisseurs arrivent directement sur vérification et facturation.",
+        "Utilisez Google pour continuer avec un seul compte TMP. Le profil fournisseur se configure après connexion.",
       orEmail: "ou continuer avec email",
       alreadyAccount: "Vous avez déjà un compte ?",
       status: {
@@ -614,6 +710,9 @@ const dictionaries = {
       title: "Tableau de bord",
       description:
         "Suivez visibilité, demandes entrantes, demandes produit et préparation à la vérification.",
+      previewData: "Pipeline preview",
+      previewBody:
+        "Les compteurs et lignes du dashboard sont des exemples tant que les RFQ et analytics fournisseurs ne sont pas connectes.",
       overview: "Vue d’ensemble",
       products: "Produits",
       listings: "Listings",
@@ -656,7 +755,11 @@ const dictionaries = {
         activeRequests: "Demandes de sourcing actives",
         createRfq: "Créer une demande",
         requestRows: [
-          ["Basiques coton bio", "Fournisseurs en correspondance", "3 réponses"],
+          [
+            "Basiques coton bio",
+            "Fournisseurs en correspondance",
+            "3 réponses",
+          ],
           ["Boîtes cosmétiques rigides", "Devis en revue", "2 réponses"],
           ["Boîtier aluminium CNC", "Demande brouillon", "Non envoyé"],
         ],
@@ -687,10 +790,10 @@ const dictionaries = {
           "Créez un premier listing produit pour le rendre découvrable une fois publié.",
         loginRequired: "Connexion requise",
         loginRequiredBody:
-          "Connectez-vous comme fournisseur avant de gérer les listings produits.",
+          "Connectez-vous à votre compte TMP et ajoutez un profil fournisseur avant de gérer les listings produits.",
         supplierMissing: "Profil fournisseur requis",
         supplierMissingBody:
-          "Votre utilisateur n’a pas encore de profil fournisseur connecté. Dès que le compte fournisseur existe, la publication sera disponible ici.",
+          "Votre compte TMP n’a pas encore de profil fournisseur connecté. Lancez la vérification fournisseur pour activer la publication.",
         productTitle: "Titre du produit",
         category: "Catégorie",
         productDescription: "Description",
@@ -745,12 +848,21 @@ const dictionaries = {
       documents: "Vérification entreprise",
       documentsBody:
         "Ajoutez des URLs prêtes pour l’upload pour l’instant. Les contrôles Supabase Storage pourront remplacer ces champs plus tard.",
+      supplierAccessTitle: "Ajouter un profil fournisseur",
+      supplierAccessBody:
+        "Votre compte TMP permet le sourcing acheteur par défaut. Ajoutez les détails société pour activer vérification, facturation et publication produits.",
+      supplierCompany: "Société fournisseur",
+      startSupplierProfile: "Démarrer le profil fournisseur",
       businessLicense: "Licence commerciale",
       companyRegistration: "Immatriculation société",
       certifications: "Certifications",
       notes: "Notes pour la revue",
       submitDocuments: "Soumettre pour revue",
       statusSubmitted: "Documents soumis pour revue admin.",
+      statusSupplierStarted:
+        "Profil fournisseur démarré. Continuez avec la vérification et la facturation.",
+      statusMissingCompany:
+        "Veuillez ajouter le nom de la société fournisseur.",
       statusError:
         "Impossible de mettre à jour les détails de vérification. Veuillez réessayer.",
       checkoutPlaceholder:
@@ -771,7 +883,7 @@ const dictionaries = {
       missingSupplier:
         "Créez ou connectez un profil fournisseur avant la vérification.",
       loginRequired:
-        "Connectez-vous comme fournisseur pour gérer la vérification.",
+        "Connectez-vous pour ajouter ou gérer un profil fournisseur.",
       states: {
         none: "Non démarré",
         pending: "En revue",

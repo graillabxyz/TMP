@@ -5,14 +5,22 @@ import type { Database } from "@/types/database";
 
 type ProfileInsert = Database["public"]["Tables"]["profiles"]["Insert"];
 type ProfileMutationTable = {
-  upsert: (
+  select: (columns: string) => {
+    eq: (
+      column: string,
+      value: string,
+    ) => {
+      maybeSingle: () => Promise<{
+        data: { id: string } | null;
+        error: { message: string } | null;
+      }>;
+    };
+  };
+  insert: (
     payload: ProfileInsert,
   ) => Promise<{ error: { message: string } | null }>;
-};
-type SupplierProfileRpcClient = {
-  rpc: (
-    functionName: "ensure_supplier_profile",
-    args: { company: string | null },
+  upsert: (
+    payload: ProfileInsert,
   ) => Promise<{ error: { message: string } | null }>;
 };
 
@@ -24,35 +32,10 @@ function getSafeNextPath(value: string | null) {
   return value;
 }
 
-function getRole(value: string | null) {
-  return value === "supplier" ? "supplier" : "buyer";
-}
-
-function getUserCompany(user: { email?: string; user_metadata?: unknown }) {
-  const metadata =
-    user.user_metadata && typeof user.user_metadata === "object"
-      ? (user.user_metadata as Record<string, unknown>)
-      : {};
-  const metadataCompany =
-    typeof metadata.company === "string" ? metadata.company.trim() : "";
-  const fullName =
-    typeof metadata.full_name === "string" ? metadata.full_name.trim() : "";
-  const name = typeof metadata.name === "string" ? metadata.name.trim() : "";
-
-  return (
-    metadataCompany ||
-    fullName ||
-    name ||
-    user.email?.split("@")[0] ||
-    "Supplier"
-  );
-}
-
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const next = getSafeNextPath(url.searchParams.get("next"));
-  const role = getRole(url.searchParams.get("role"));
   const redirectUrl = new URL(next, url.origin);
 
   if (!code) {
@@ -79,29 +62,22 @@ export async function GET(request: NextRequest) {
     const profileMutations = supabase.from(
       "profiles",
     ) as unknown as ProfileMutationTable;
-    const { error: profileError } = await profileMutations.upsert({
-      id: user.id,
-      email: user.email ?? "",
-      role,
-    });
+    const { data: existingProfile, error: profileReadError } =
+      await profileMutations.select("id").eq("id", user.id).maybeSingle();
 
-    if (profileError) {
-      console.error("Unable to upsert OAuth profile", profileError.message);
+    if (profileReadError) {
+      console.error("Unable to read OAuth profile", profileReadError.message);
     }
 
-    if (role === "supplier") {
-      const supplierProfileRpc =
-        supabase as unknown as SupplierProfileRpcClient;
-      const { error: supplierError } = await supplierProfileRpc.rpc(
-        "ensure_supplier_profile",
-        { company: getUserCompany(user) },
-      );
+    if (!existingProfile) {
+      const { error: profileError } = await profileMutations.insert({
+        id: user.id,
+        email: user.email ?? "",
+        role: "buyer",
+      });
 
-      if (supplierError) {
-        console.error(
-          "Unable to ensure OAuth supplier profile",
-          supplierError.message,
-        );
+      if (profileError) {
+        console.error("Unable to insert OAuth profile", profileError.message);
       }
     }
   }

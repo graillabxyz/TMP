@@ -76,15 +76,18 @@ export default async function DashboardProductsPage({
               Supplier access required
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
-              Product posting is available to supplier profiles. Buyer accounts
-              can browse products, save suppliers, and submit RFQs.
+              Product posting is available after adding a supplier profile. Your
+              TMP account can still browse products, save suppliers, and submit
+              RFQs.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button asChild>
                 <Link href="/products">Browse products</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/rfq">Create RFQ</Link>
+                <Link href="/dashboard/settings/verification">
+                  Add supplier profile
+                </Link>
               </Button>
             </div>
           </CardContent>
@@ -102,7 +105,9 @@ export default async function DashboardProductsPage({
               {labels.loginRequiredBody}
             </p>
             <Button asChild className="mt-6">
-              <Link href="/login?role=supplier">{t.nav.login}</Link>
+              <Link href="/login?intent=supplier&next=/dashboard/products">
+                {t.nav.login}
+              </Link>
             </Button>
           </CardContent>
         </Card>

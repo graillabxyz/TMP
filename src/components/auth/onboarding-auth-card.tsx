@@ -1,14 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
-import {
-  ArrowRight,
-  Building2,
-  Check,
-  Chrome,
-  ShoppingBag,
-} from "lucide-react";
+import { ArrowRight, Building2, Check, Chrome, UserRound } from "lucide-react";
 
 import {
   signInWithEmail,
@@ -21,20 +15,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-type AccountRole = "buyer" | "supplier";
 type AuthMode = "login" | "register";
 
 type OnboardingAuthCardProps = {
   mode: AuthMode;
-  initialRole?: AccountRole;
+  supplierIntent?: boolean;
+  nextPath?: string;
   status?: string;
   labels: {
-    buyerAccount: string;
-    supplierAccount: string;
-    buyerBody: string;
-    supplierBody: string;
+    accountTitle: string;
+    accountBody: string;
+    supplierIntentTitle: string;
+    supplierIntentBody: string;
     fullName: string;
-    company: string;
     email: string;
     workEmail: string;
     password: string;
@@ -77,69 +70,54 @@ function getStatusCopy(
 
 export function OnboardingAuthCard({
   mode,
-  initialRole = "buyer",
+  supplierIntent = false,
+  nextPath = "/dashboard",
   status,
   labels,
 }: OnboardingAuthCardProps) {
-  const [role, setRole] = useState<AccountRole>(initialRole);
   const statusMessage = useMemo(
     () => getStatusCopy(status, labels),
     [labels, status],
   );
-  const roleOptions = [
-    {
-      value: "buyer" as const,
-      label: labels.buyerAccount,
-      body: labels.buyerBody,
-      icon: ShoppingBag,
-    },
-    {
-      value: "supplier" as const,
-      label: labels.supplierAccount,
-      body: labels.supplierBody,
-      icon: Building2,
-    },
-  ];
+  const nextQuery = encodeURIComponent(nextPath);
+  const intentQuery = supplierIntent ? "&intent=supplier" : "";
 
   return (
     <Card className="bg-white/[0.035]">
       <CardContent className="p-6 sm:p-8">
-        <div className="grid gap-3 sm:grid-cols-2">
-          {roleOptions.map((option) => {
-            const Icon = option.icon;
-            const selected = role === option.value;
+        <div className="grid gap-3">
+          <div className="relative flex items-start gap-3 rounded-lg border border-gold-300/[0.45] bg-gold-300/[0.1] p-4 text-sm text-white shadow-glow">
+            <UserRound
+              className="mt-0.5 size-5 text-gold-100"
+              aria-hidden="true"
+            />
+            <span>
+              <span className="block font-medium">{labels.accountTitle}</span>
+              <span className="mt-1 block text-xs leading-5 text-muted-foreground">
+                {labels.accountBody}
+              </span>
+            </span>
+            <span className="text-charcoal-950 absolute right-3 top-3 flex size-5 items-center justify-center rounded-full bg-gold-300">
+              <Check className="size-3" aria-hidden="true" />
+            </span>
+          </div>
 
-            return (
-              <button
-                type="button"
-                key={option.value}
-                onClick={() => setRole(option.value)}
-                aria-pressed={selected}
-                className={cn(
-                  "relative flex min-h-28 items-start gap-3 rounded-lg border p-4 text-left text-sm transition",
-                  selected
-                    ? "border-gold-300/[0.55] bg-gold-300/[0.12] text-white shadow-glow"
-                    : "border-white/10 bg-white/[0.035] text-white hover:border-gold-300/[0.35] hover:bg-white/[0.055]",
-                )}
-              >
-                <Icon
-                  className="mt-0.5 size-5 text-gold-100"
-                  aria-hidden="true"
-                />
-                <span>
-                  <span className="block font-medium">{option.label}</span>
-                  <span className="mt-1 block text-xs leading-5 text-muted-foreground">
-                    {option.body}
-                  </span>
+          {supplierIntent && (
+            <div className="flex items-start gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-4 text-sm text-white">
+              <Building2
+                className="mt-0.5 size-5 text-gold-100"
+                aria-hidden="true"
+              />
+              <span>
+                <span className="block font-medium">
+                  {labels.supplierIntentTitle}
                 </span>
-                {selected && (
-                  <span className="text-charcoal-950 absolute right-3 top-3 flex size-5 items-center justify-center rounded-full bg-gold-300">
-                    <Check className="size-3" aria-hidden="true" />
-                  </span>
-                )}
-              </button>
-            );
-          })}
+                <span className="mt-1 block text-xs leading-5 text-muted-foreground">
+                  {labels.supplierIntentBody}
+                </span>
+              </span>
+            </div>
+          )}
         </div>
 
         {statusMessage && (
@@ -156,8 +134,8 @@ export function OnboardingAuthCard({
         )}
 
         <form action={signInWithGoogle} className="mt-8">
-          <input type="hidden" name="role" value={role} />
           <input type="hidden" name="auth_mode" value={mode} />
+          <input type="hidden" name="next" value={nextPath} />
           <Button
             type="submit"
             size="lg"
@@ -182,14 +160,9 @@ export function OnboardingAuthCard({
           action={mode === "register" ? signUpWithEmail : signInWithEmail}
           className="grid gap-5"
         >
-          <input type="hidden" name="role" value={role} />
+          <input type="hidden" name="next" value={nextPath} />
           {mode === "register" && (
-            <div
-              className={cn(
-                "grid gap-5",
-                role === "supplier" && "sm:grid-cols-2",
-              )}
-            >
+            <div className="grid gap-5">
               <div className="grid gap-2">
                 <Label htmlFor="full_name">{labels.fullName}</Label>
                 <Input
@@ -199,17 +172,6 @@ export function OnboardingAuthCard({
                   placeholder="Aylin Demir"
                 />
               </div>
-              {role === "supplier" && (
-                <div className="grid gap-2">
-                  <Label htmlFor="company">{labels.company}</Label>
-                  <Input
-                    id="company"
-                    name="company"
-                    required
-                    placeholder="Anatolia Distribution"
-                  />
-                </div>
-              )}
             </div>
           )}
 
@@ -249,10 +211,10 @@ export function OnboardingAuthCard({
           <Link
             href={
               mode === "register"
-                ? `/login?role=${role}`
-                : `/register?role=${role}`
+                ? `/login?next=${nextQuery}${intentQuery}`
+                : `/register?next=${nextQuery}${intentQuery}`
             }
-            className="text-gold-100 hover:text-white"
+            className="rounded-sm text-gold-100 underline-offset-4 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {mode === "register" ? labels.login : labels.createAccount}
           </Link>

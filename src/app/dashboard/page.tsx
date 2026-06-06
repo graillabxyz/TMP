@@ -33,7 +33,7 @@ export default async function DashboardPage() {
   const profile = await getCurrentProfile();
 
   if (!profile) {
-    redirect("/login?role=buyer&status=auth-required");
+    redirect("/login?status=auth-required");
   }
 
   const role = profile.role;
@@ -107,6 +107,12 @@ export default async function DashboardPage() {
         description={buyerCopy.description}
         active="overview"
       >
+        <div className="mb-5 rounded-lg border border-white/10 bg-white/[0.035] px-4 py-3 text-sm leading-6 text-muted-foreground">
+          <Badge className="mr-2 align-middle" variant="outline">
+            {t.dashboard.previewData}
+          </Badge>
+          {t.dashboard.previewBody}
+        </div>
         <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
           {buyerMetrics.map((metric) => {
             const Icon = metric.icon;
@@ -137,7 +143,7 @@ export default async function DashboardPage() {
         </div>
 
         <div className="mt-6 grid gap-6 xl:grid-cols-[1.1fr_.9fr]">
-          <Card className="bg-white/[0.035]">
+          <Card id="rfqs" className="scroll-mt-24 bg-white/[0.035]">
             <CardContent className="p-6">
               <div className="flex items-start justify-between gap-4">
                 <div>
@@ -219,6 +225,12 @@ export default async function DashboardPage() {
       description={t.dashboard.description}
       active="overview"
     >
+      <div className="mb-5 rounded-lg border border-white/10 bg-white/[0.035] px-4 py-3 text-sm leading-6 text-muted-foreground">
+        <Badge className="mr-2 align-middle" variant="outline">
+          {t.dashboard.previewData}
+        </Badge>
+        {t.dashboard.previewBody}
+      </div>
       <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
         {supplierMetrics.map((metric) => {
           const Icon = metric.icon;
@@ -246,7 +258,7 @@ export default async function DashboardPage() {
       </div>
 
       <div className="mt-6 grid gap-6 xl:grid-cols-[1.15fr_.85fr]">
-        <Card className="bg-white/[0.035]">
+        <Card id="rfqs" className="scroll-mt-24 bg-white/[0.035]">
           <CardContent className="p-6">
             <div className="flex items-start justify-between gap-4">
               <div>

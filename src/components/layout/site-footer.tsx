@@ -13,7 +13,10 @@ export async function SiteFooter() {
     { label: t.footer.suppliers, href: "/suppliers" },
     { label: t.footer.rfq, href: "/rfq" },
     { label: t.footer.buyerLogin, href: "/login" },
-    { label: t.footer.supplierOnboarding, href: "/register?role=supplier" },
+    {
+      label: t.footer.supplierOnboarding,
+      href: "/register?intent=supplier&next=/dashboard/settings/verification",
+    },
     { label: "Privacy", href: "/privacy" },
     { label: "Terms", href: "/terms" },
   ];
@@ -37,7 +40,7 @@ export async function SiteFooter() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-muted-foreground transition hover:text-gold-100"
+                  className="rounded-sm text-sm text-muted-foreground transition hover:text-gold-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   {link.label}
                 </Link>
@@ -52,8 +55,8 @@ export async function SiteFooter() {
               {categories.slice(0, 4).map((category) => (
                 <Link
                   key={category.slug}
-                  href="/suppliers"
-                  className="text-sm text-muted-foreground transition hover:text-gold-100"
+                  href={`/suppliers?category=${category.slug}`}
+                  className="rounded-sm text-sm text-muted-foreground transition hover:text-gold-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   {category.name}
                 </Link>

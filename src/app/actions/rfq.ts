@@ -21,6 +21,22 @@ function isValidOptionalSlug(value: string) {
   return !value || /^[a-z0-9-]{1,120}$/.test(value);
 }
 
+function hasSpecificProductDetail(value: string, hasCatalogProduct: boolean) {
+  const words = value
+    .split(/\s+/)
+    .filter((word) => /[a-z0-9]/i.test(word) && word.length > 2);
+  const hasSpecSignal =
+    /[,/()+-]|\b(gsm|mm|cm|kg|pcs|units|oeko|iso|fsc|ce|cotton|aluminum|steel|paper|private label|packaging)\b/i.test(
+      value,
+    );
+
+  if (hasCatalogProduct) {
+    return value.length >= 12 && words.length >= 2;
+  }
+
+  return value.length >= 24 && words.length >= 4 && hasSpecSignal;
+}
+
 export async function submitRfq(formData: FormData) {
   const productRequest = getString(formData, "product_request");
   const categorySlug = getString(formData, "category_slug");
@@ -30,6 +46,9 @@ export async function submitRfq(formData: FormData) {
   const notes = getString(formData, "notes");
   const productSlug = getString(formData, "product_slug");
   const supplierSlug = getString(formData, "supplier_slug");
+  const hasCatalogProduct = Boolean(
+    productSlug || getString(formData, "product_id"),
+  );
 
   if (
     !productRequest ||
@@ -45,6 +64,10 @@ export async function submitRfq(formData: FormData) {
     !isValidOptionalSlug(supplierSlug)
   ) {
     redirect("/rfq?status=missing");
+  }
+
+  if (!hasSpecificProductDetail(productRequest, hasCatalogProduct)) {
+    redirect("/rfq?status=specific");
   }
 
   const supabase = createPublicSupabaseClient();
@@ -78,9 +101,8 @@ export async function submitRfq(formData: FormData) {
     supplier_id: getString(formData, "supplier_id") || null,
     product_slug: productSlug || null,
     supplier_slug: supplierSlug || null,
-    inquiry_type: getString(formData, "inquiry_type") === "product"
-      ? "product"
-      : "general",
+    inquiry_type:
+      getString(formData, "inquiry_type") === "product" ? "product" : "general",
   };
 
   const { error } = await supabase.from("rfqs").insert(payload);

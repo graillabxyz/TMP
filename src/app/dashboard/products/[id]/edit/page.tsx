@@ -50,7 +50,7 @@ export default async function EditProductPage({
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
               {profile
-                ? "Buyer accounts cannot edit supplier product listings."
+                ? "Add a supplier profile before editing supplier product listings."
                 : labels.loginRequiredBody}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
@@ -60,11 +60,15 @@ export default async function EditProductPage({
                 </Button>
               ) : (
                 <Button asChild>
-                  <Link href="/login?role=supplier">{t.nav.login}</Link>
+                  <Link href="/login?intent=supplier&next=/dashboard/products">
+                    {t.nav.login}
+                  </Link>
                 </Button>
               )}
               <Button asChild variant="outline">
-                <Link href="/rfq">Create RFQ</Link>
+                <Link href="/dashboard/settings/verification">
+                  Add supplier profile
+                </Link>
               </Button>
             </div>
           </CardContent>

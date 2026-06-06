@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { FileUp, PackageSearch, Send } from "lucide-react";
+import { CheckCircle2, FileUp, PackageSearch, Send } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { submitRfq } from "@/app/actions/rfq";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
+import { getPlatformActivity } from "@/lib/platform-activity";
 import { getProductBySlug } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
 
@@ -35,6 +36,7 @@ export const revalidate = 300;
 export default async function RFQPage({ searchParams }: RFQPageProps) {
   const locale = await getLocale();
   const t = getDictionary(locale);
+  const activity = getPlatformActivity(locale);
   const [categories, resolvedSearchParams] = await Promise.all([
     getCategories(locale),
     searchParams,
@@ -74,6 +76,30 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                 </div>
               ))}
             </div>
+            <Card className="mt-6 bg-white/[0.035]">
+              <CardContent className="p-5">
+                <p className="text-sm text-gold-200">
+                  {activity.rfqExamplesTitle}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  {activity.rfqExamplesBody}
+                </p>
+                <div className="mt-4 grid gap-3">
+                  {activity.rfqExamples.map((example) => (
+                    <div
+                      key={example}
+                      className="flex gap-3 rounded-md border border-white/10 bg-white/[0.035] p-3 text-sm leading-6 text-muted-foreground"
+                    >
+                      <CheckCircle2
+                        className="mt-1 size-4 shrink-0 text-gold-200"
+                        aria-hidden="true"
+                      />
+                      {example}
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           <Card className="bg-white/[0.035]">
@@ -126,9 +152,18 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                     id="product"
                     name="product_request"
                     required
+                    minLength={18}
+                    maxLength={180}
+                    aria-describedby="product-request-help"
                     defaultValue={prefillProduct?.title ?? ""}
                     placeholder={t.rfq.productPlaceholder}
                   />
+                  <p
+                    id="product-request-help"
+                    className="text-xs leading-5 text-muted-foreground"
+                  >
+                    {t.rfq.productHelp}
+                  </p>
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
@@ -207,7 +242,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
 
                 <label
                   htmlFor="attachment"
-                  className="flex cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-gold-300/30 bg-gold-300/[0.05] px-6 py-8 text-center transition hover:bg-gold-300/[0.08]"
+                  className="flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-gold-300/30 bg-gold-300/[0.05] px-6 py-8 text-center transition focus-within:border-gold-300/60 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background hover:border-gold-300/50 hover:bg-gold-300/[0.08]"
                 >
                   <FileUp className="size-8 text-gold-100" aria-hidden="true" />
                   <span className="mt-3 text-sm font-medium text-white">

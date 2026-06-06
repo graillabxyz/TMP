@@ -7,22 +7,34 @@ import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
   title: "Login | TMP",
-  description: "Access your TMP buyer or supplier workspace.",
+  description: "Access your TMP account.",
   path: "/login",
 });
 
 type LoginPageProps = {
   searchParams: Promise<{
-    role?: "buyer" | "supplier";
+    intent?: "supplier";
+    next?: string;
+    role?: "supplier";
     status?: string;
   }>;
 };
+
+function getSafeNextPath(value: string | undefined, supplierIntent: boolean) {
+  if (value?.startsWith("/") && !value.startsWith("//")) {
+    return value;
+  }
+
+  return supplierIntent ? "/dashboard/settings/verification" : "/dashboard";
+}
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const locale = await getLocale();
   const params = await searchParams;
   const t = getDictionary(locale);
-  const initialRole = params.role === "supplier" ? "supplier" : "buyer";
+  const supplierIntent =
+    params.intent === "supplier" || params.role === "supplier";
+  const nextPath = getSafeNextPath(params.next, supplierIntent);
 
   return (
     <div className="w-full max-w-5xl">
@@ -38,15 +50,15 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         </div>
         <OnboardingAuthCard
           mode="login"
-          initialRole={initialRole}
+          supplierIntent={supplierIntent}
+          nextPath={nextPath}
           status={params.status}
           labels={{
-            buyerAccount: t.auth.buyerLogin,
-            supplierAccount: t.auth.supplierLogin,
-            buyerBody: t.auth.buyerPathBody,
-            supplierBody: t.auth.supplierPathBody,
+            accountTitle: t.auth.accountTitle,
+            accountBody: t.auth.accountBody,
+            supplierIntentTitle: t.auth.supplierIntentTitle,
+            supplierIntentBody: t.auth.supplierIntentBody,
             fullName: t.auth.fullName,
-            company: t.auth.company,
             email: t.auth.email,
             workEmail: t.auth.workEmail,
             password: t.auth.password,

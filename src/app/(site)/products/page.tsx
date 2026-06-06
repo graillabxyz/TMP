@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { PackageSearch, Search, SlidersHorizontal } from "lucide-react";
+import Link from "next/link";
+import {
+  PackageSearch,
+  Search,
+  SlidersHorizontal,
+  TrendingUp,
+} from "lucide-react";
 
 import { ProductCard } from "@/components/product-card";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -12,6 +18,7 @@ import { Select } from "@/components/ui/select";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { getCategories, getSuppliers } from "@/lib/marketplace";
+import { getPlatformActivity } from "@/lib/platform-activity";
 import { getProducts } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
 import { getProductCollectionJsonLd } from "@/lib/structured-data";
@@ -46,6 +53,7 @@ export default async function ProductsPage({
   const locale = await getLocale();
   const params = await searchParams;
   const t = getDictionary(locale);
+  const activity = getPlatformActivity(locale);
   const query = params.q ?? "";
   const category = params.category ?? "";
   const supplier = params.supplier ?? "";
@@ -71,13 +79,15 @@ export default async function ProductsPage({
           </div>
           <div className="rounded-lg border border-white/10 bg-white/[0.035] px-4 py-3 text-sm text-muted-foreground">
             <span className="font-semibold text-white">{products.length}</span>{" "}
-            {t.products.indexed}
+            {products.length === 1
+              ? t.products.indexedSingular
+              : t.products.indexed}
           </div>
         </div>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-[300px_1fr]">
-          <aside>
-            <Card className="sticky top-24 bg-white/[0.035]">
+          <aside className="grid gap-4 self-start lg:sticky lg:top-24">
+            <Card className="bg-white/[0.035]">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                   <SlidersHorizontal
@@ -138,8 +148,46 @@ export default async function ProductsPage({
                     </Select>
                   </div>
 
-                  <Button type="submit">{t.common.search}</Button>
+                  <div className="grid gap-3">
+                    <Button type="submit">{t.common.search}</Button>
+                    <Button asChild variant="ghost">
+                      <Link href="/products">{t.common.clearFilters}</Link>
+                    </Button>
+                  </div>
                 </form>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/[0.035]">
+              <CardContent className="p-5">
+                <div className="flex items-center gap-2 text-sm font-medium text-white">
+                  <TrendingUp
+                    className="size-4 text-gold-200"
+                    aria-hidden="true"
+                  />
+                  {activity.demandTitle}
+                </div>
+                <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                  {activity.demandBody}
+                </p>
+                <div className="mt-5 grid gap-3">
+                  {activity.categoryDemand.map((item) => (
+                    <Link
+                      key={item.categorySlug}
+                      href={`/products?category=${item.categorySlug}`}
+                      className="rounded-md border border-white/10 bg-white/[0.035] p-3 transition hover:border-gold-300/35 hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-sm font-medium text-white">
+                          {item.label}
+                        </span>
+                        <Badge variant="secondary">{item.value}</Badge>
+                      </div>
+                      <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                        {item.detail}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </aside>
@@ -175,6 +223,9 @@ export default async function ProductsPage({
                 <p className="mt-3 max-w-md text-sm leading-6 text-muted-foreground">
                   {t.products.emptyBody}
                 </p>
+                <Button asChild className="mt-6" variant="outline">
+                  <Link href="/products">{t.common.clearFilters}</Link>
+                </Button>
               </CardContent>
             </Card>
           )}

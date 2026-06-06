@@ -181,10 +181,12 @@ export function ProductForm({
             </Select>
           </div>
 
-          <div className="flex flex-col gap-3 pt-2 sm:flex-row">
-            <Button type="submit">{labels.submit}</Button>
-            <Button asChild variant="outline">
+          <div className="flex flex-col-reverse gap-3 border-t border-white/10 pt-5 sm:flex-row sm:justify-end">
+            <Button asChild variant="outline" className="sm:min-w-32">
               <Link href="/dashboard/products">{labels.cancel}</Link>
+            </Button>
+            <Button type="submit" className="sm:min-w-36">
+              {labels.submit}
             </Button>
           </div>
         </form>

@@ -46,7 +46,12 @@ export async function DashboardShell({
       href: "/dashboard/products",
       icon: PackagePlus,
     },
-    { id: "rfqs", label: t.dashboard.rfqs, href: "/dashboard", icon: BadgeCheck },
+    {
+      id: "rfqs",
+      label: t.dashboard.rfqs,
+      href: "/dashboard#rfqs",
+      icon: BadgeCheck,
+    },
     {
       id: "verification",
       label: t.dashboard.verification,
@@ -61,7 +66,12 @@ export async function DashboardShell({
       href: "/dashboard",
       icon: LayoutDashboard,
     },
-    { id: "rfqs", label: t.dashboard.rfqs, href: "/dashboard", icon: FileText },
+    {
+      id: "rfqs",
+      label: t.dashboard.rfqs,
+      href: "/dashboard#rfqs",
+      icon: FileText,
+    },
     {
       id: "suppliers",
       label: t.nav.suppliers,
@@ -83,8 +93,9 @@ export async function DashboardShell({
               <Link
                 key={item.id}
                 href={item.href}
+                aria-current={item.id === active ? "page" : undefined}
                 className={cn(
-                  "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground transition hover:bg-white/[0.08] hover:text-white",
+                  "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground transition hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                   item.id === active && "bg-white/[0.08] text-white",
                 )}
               >
@@ -112,7 +123,9 @@ export async function DashboardShell({
             </div>
           </div>
         </header>
-        <main className="w-full px-4 py-8 sm:px-6 lg:px-8">{children}</main>
+        <main className="w-full px-4 py-8 sm:px-6 lg:px-8 xl:py-10">
+          {children}
+        </main>
       </div>
     </div>
   );

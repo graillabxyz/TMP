@@ -9,16 +9,26 @@ import { createMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createMetadata({
   title: "Register | TMP",
-  description: "Create a buyer or supplier account on TMP.",
+  description: "Create one TMP account for sourcing and supplier setup.",
   path: "/register",
 });
 
 type RegisterPageProps = {
   searchParams: Promise<{
-    role?: "buyer" | "supplier";
+    intent?: "supplier";
+    next?: string;
+    role?: "supplier";
     status?: string;
   }>;
 };
+
+function getSafeNextPath(value: string | undefined, supplierIntent: boolean) {
+  if (value?.startsWith("/") && !value.startsWith("//")) {
+    return value;
+  }
+
+  return supplierIntent ? "/dashboard/settings/verification" : "/dashboard";
+}
 
 export default async function RegisterPage({
   searchParams,
@@ -26,7 +36,9 @@ export default async function RegisterPage({
   const locale = await getLocale();
   const params = await searchParams;
   const t = getDictionary(locale);
-  const initialRole = params.role === "supplier" ? "supplier" : "buyer";
+  const supplierIntent =
+    params.intent === "supplier" || params.role === "supplier";
+  const nextPath = getSafeNextPath(params.next, supplierIntent);
 
   return (
     <div className="w-full max-w-5xl">
@@ -42,12 +54,12 @@ export default async function RegisterPage({
           <div className="mt-8 grid gap-3">
             {[
               {
-                label: t.auth.buyerPath,
-                body: t.auth.buyerPathBody,
+                label: t.auth.accountPath,
+                body: t.auth.accountPathBody,
               },
               {
-                label: t.auth.supplierPath,
-                body: t.auth.supplierPathBody,
+                label: t.auth.supplierUpgradePath,
+                body: t.auth.supplierUpgradePathBody,
               },
             ].map((item) => (
               <div
@@ -65,15 +77,15 @@ export default async function RegisterPage({
 
         <OnboardingAuthCard
           mode="register"
-          initialRole={initialRole}
+          supplierIntent={supplierIntent}
+          nextPath={nextPath}
           status={params.status}
           labels={{
-            buyerAccount: t.auth.buyerAccount,
-            supplierAccount: t.auth.supplierAccount,
-            buyerBody: t.auth.buyerPathBody,
-            supplierBody: t.auth.supplierPathBody,
+            accountTitle: t.auth.accountTitle,
+            accountBody: t.auth.accountBody,
+            supplierIntentTitle: t.auth.supplierIntentTitle,
+            supplierIntentBody: t.auth.supplierIntentBody,
             fullName: t.auth.fullName,
-            company: t.auth.company,
             email: t.auth.email,
             workEmail: t.auth.workEmail,
             password: t.auth.password,

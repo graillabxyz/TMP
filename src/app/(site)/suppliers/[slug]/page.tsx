@@ -11,6 +11,7 @@ import {
   FileCheck2,
   Globe2,
   Package,
+  Radio,
   Send,
   Users,
 } from "lucide-react";
@@ -22,7 +23,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { getSupplierBySlug, getSuppliers } from "@/lib/marketplace";
+import { getPlatformActivity } from "@/lib/platform-activity";
 import { createMetadata } from "@/lib/seo";
+import { slugify } from "@/lib/slug";
 import { getBreadcrumbJsonLd, getSupplierJsonLd } from "@/lib/structured-data";
 
 type SupplierDetailPageProps = {
@@ -75,11 +78,20 @@ export default async function SupplierDetailPage({
   const { slug } = await params;
   const locale = await getLocale();
   const t = getDictionary(locale);
+  const activity = getPlatformActivity(locale);
   const supplier = await getSupplierBySlug(slug, locale);
 
   if (!supplier) {
     notFound();
   }
+
+  const supplierCategorySlug = slugify(supplier.category);
+  const relevantBriefs = activity.activeBriefs
+    .filter((brief) => brief.categorySlug === supplierCategorySlug)
+    .slice(0, 2);
+  const visibleBriefs = relevantBriefs.length
+    ? relevantBriefs
+    : activity.activeBriefs.slice(0, 2);
 
   return (
     <>
@@ -271,6 +283,33 @@ export default async function SupplierDetailPage({
                     {certification}
                   </div>
                 ))}
+              </div>
+              <div className="mt-6 rounded-lg border border-white/10 bg-white/[0.035] p-4">
+                <div className="flex items-center gap-2 text-sm text-white">
+                  <Radio className="size-4 text-gold-200" aria-hidden="true" />
+                  {activity.supplierSignalsTitle}
+                </div>
+                <div className="mt-4 grid gap-3">
+                  {visibleBriefs.map((brief) => (
+                    <div
+                      key={`${brief.title}-${brief.market}`}
+                      className="rounded-md border border-white/10 bg-charcoal-800 p-3"
+                    >
+                      <p className="text-sm font-medium leading-5 text-white">
+                        {brief.title}
+                      </p>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        {brief.market} / {brief.quantity}
+                      </p>
+                      <div className="mt-3 flex items-center justify-between gap-3">
+                        <span className="text-xs text-gold-200">
+                          {brief.updated}
+                        </span>
+                        <Badge variant="secondary">{brief.stage}</Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="mt-6 rounded-lg border border-white/10 bg-charcoal-800 p-4">
                 <div className="flex items-center gap-2 text-sm text-white">

@@ -53,7 +53,7 @@ export default async function NewProductPage({
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
               {profile
-                ? "Buyer accounts cannot create supplier product listings. Continue browsing products or submit a sourcing request instead."
+                ? "Add a supplier profile before creating supplier product listings. You can keep browsing products or submit a sourcing request from the same account."
                 : labels.loginRequiredBody}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
@@ -63,11 +63,15 @@ export default async function NewProductPage({
                 </Button>
               ) : (
                 <Button asChild>
-                  <Link href="/login?role=supplier">{t.nav.login}</Link>
+                  <Link href="/login?intent=supplier&next=/dashboard/products/new">
+                    {t.nav.login}
+                  </Link>
                 </Button>
               )}
               <Button asChild variant="outline">
-                <Link href="/rfq">Create RFQ</Link>
+                <Link href="/dashboard/settings/verification">
+                  Add supplier profile
+                </Link>
               </Button>
             </div>
           </CardContent>

@@ -1,12 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  BadgeCheck,
-  Clock3,
-  Package,
-} from "lucide-react";
+import { ArrowRight, BadgeCheck } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -28,10 +22,16 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product, labels }: ProductCardProps) {
+  const price = formatPriceRange(product, labels.quote);
+  const moq = product.moq ? `${product.moq} units` : "On request";
+
   return (
-    <Card className="group overflow-hidden bg-white/[0.035] transition duration-300 hover:-translate-y-1 hover:border-gold-300/30 hover:bg-white/[0.055]">
-      <Link href={`/products/${product.slug}`} className="block">
-        <div className="relative aspect-[4/3] overflow-hidden bg-charcoal-800">
+    <Card className="group overflow-hidden bg-white/[0.035] transition duration-300 focus-within:border-gold-300/45 hover:-translate-y-1 hover:border-gold-300/30 hover:bg-white/[0.055]">
+      <Link
+        href={`/products/${product.slug}`}
+        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      >
+        <div className="relative aspect-[1.08] overflow-hidden bg-charcoal-800">
           <Image
             src={product.images[0] ?? "/brand/tmp-logo.webp"}
             alt={product.title}
@@ -43,61 +43,53 @@ export function ProductCard({ product, labels }: ProductCardProps) {
           <Badge className="absolute left-4 top-4" variant="secondary">
             {product.category}
           </Badge>
+          {product.supplierVerified && (
+            <Badge className="absolute right-4 top-4" variant="success">
+              <BadgeCheck className="mr-1 size-3" aria-hidden="true" />
+              {labels.verified}
+            </Badge>
+          )}
         </div>
       </Link>
       <CardContent className="p-5">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-xs text-gold-200">{product.supplierName}</p>
-            <h3 className="mt-2 line-clamp-2 min-h-12 text-lg font-semibold leading-6 text-white">
-              {product.title}
-            </h3>
-          </div>
+        <p className="line-clamp-1 text-xs text-gold-200">
+          {product.supplierName}
+        </p>
+        <h3 className="mt-2 min-h-12 text-lg font-semibold leading-6 text-white">
           <Link
             href={`/products/${product.slug}`}
-            aria-label={`${labels.viewProduct}: ${product.title}`}
-            className="shrink-0 rounded-md border border-white/10 p-2 text-muted-foreground transition hover:border-gold-300/40 hover:text-gold-100"
+            className="line-clamp-2 rounded-sm underline-offset-4 transition hover:text-gold-100 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
-            <ArrowUpRight className="size-4" aria-hidden="true" />
+            {product.title}
           </Link>
+        </h3>
+
+        <div className="mt-4 rounded-md border border-gold-300/20 bg-gold-300/[0.08] p-3">
+          <p className="text-xs text-muted-foreground">{labels.price}</p>
+          <p className="mt-1 text-2xl font-semibold text-gold-100">{price}</p>
+          <p className="mt-1 text-xs text-white/70">
+            {labels.moq}: {moq}
+          </p>
         </div>
 
         <p className="mt-3 line-clamp-2 text-sm leading-6 text-muted-foreground">
           {product.description}
         </p>
 
-        {product.supplierVerified && (
-          <Badge className="mt-4" variant="success">
-            <BadgeCheck className="mr-1 size-3" aria-hidden="true" />
-            {labels.verified}
-          </Badge>
-        )}
-
         <div className="mt-5 grid grid-cols-2 gap-3 border-t border-white/10 pt-4 text-sm">
           <div>
             <p className="text-muted-foreground">{labels.moq}</p>
-            <p className="mt-1 font-medium text-white">
-              {product.moq ? `${product.moq} units` : "On request"}
-            </p>
+            <p className="mt-1 font-medium text-white">{moq}</p>
           </div>
           <div>
-            <p className="text-muted-foreground">{labels.price}</p>
+            <p className="text-muted-foreground">{labels.leadTime}</p>
             <p className="mt-1 font-medium text-white">
-              {formatPriceRange(product, labels.quote)}
+              {product.leadTime ?? labels.leadTime}
             </p>
           </div>
         </div>
 
-        <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
-          {product.leadTime ? (
-            <Clock3 className="size-4 text-gold-200" aria-hidden="true" />
-          ) : (
-            <Package className="size-4 text-gold-200" aria-hidden="true" />
-          )}
-          {product.leadTime ?? labels.leadTime}
-        </div>
-
-        <Button asChild className="mt-5 w-full" variant="outline">
+        <Button asChild className="mt-5 w-full">
           <Link
             href={{
               pathname: "/rfq",

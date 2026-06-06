@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import { getAppOrigin } from "@/lib/app-url";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 
-type AccountRole = "buyer" | "supplier";
 type AuthMode = "login" | "register";
 
 function getString(formData: FormData, key: string) {
@@ -15,14 +14,18 @@ function getString(formData: FormData, key: string) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-function getRole(formData: FormData): AccountRole {
-  return getString(formData, "role") === "supplier" ? "supplier" : "buyer";
+function getAuthMode(formData: FormData): AuthMode {
+  return getString(formData, "auth_mode") === "register" ? "register" : "login";
 }
 
-function getAuthMode(formData: FormData): AuthMode {
-  return getString(formData, "auth_mode") === "register"
-    ? "register"
-    : "login";
+function getSafeNextPath(formData: FormData) {
+  const next = getString(formData, "next");
+
+  if (!next || !next.startsWith("/") || next.startsWith("//")) {
+    return "/dashboard";
+  }
+
+  return next;
 }
 
 async function getOrigin() {
@@ -31,70 +34,59 @@ async function getOrigin() {
   return getAppOrigin(headerStore.get("origin"));
 }
 
-function getRedirectPath(role: AccountRole) {
-  return role === "supplier"
-    ? "/dashboard/settings/verification"
-    : "/dashboard";
-}
-
-async function getConfiguredSupabase(
-  role: AccountRole,
-  page: "login" | "register",
-) {
+async function getConfiguredSupabase(page: "login" | "register") {
   try {
     return await createServerSupabaseClient();
   } catch (error) {
     console.error("Supabase auth client is not configured", error);
-    redirect(`/${page}?role=${role}&status=error`);
+    redirect(`/${page}?status=error`);
   }
 }
 
 export async function signUpWithEmail(formData: FormData) {
-  const role = getRole(formData);
   const email = getString(formData, "email");
   const password = getString(formData, "password");
   const fullName = getString(formData, "full_name");
-  const company = getString(formData, "company");
+  const nextPath = getSafeNextPath(formData);
 
-  if (!email || !password || !fullName || (role === "supplier" && !company)) {
-    redirect(`/register?role=${role}&status=missing`);
+  if (!email || !password || !fullName) {
+    redirect(`/register?status=missing&next=${encodeURIComponent(nextPath)}`);
   }
 
   const origin = await getOrigin();
-  const supabase = await getConfiguredSupabase(role, "register");
+  const supabase = await getConfiguredSupabase("register");
   const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       emailRedirectTo: `${origin}/auth/callback?next=${encodeURIComponent(
-        getRedirectPath(role),
-      )}&role=${role}`,
+        nextPath,
+      )}`,
       data: {
-        role,
+        role: "buyer",
         full_name: fullName,
-        company,
       },
     },
   });
 
   if (error) {
     console.error("Unable to sign up", error.message);
-    redirect(`/register?role=${role}&status=error`);
+    redirect(`/register?status=error&next=${encodeURIComponent(nextPath)}`);
   }
 
-  redirect(`/login?role=${role}&status=check-email`);
+  redirect(`/login?status=check-email&next=${encodeURIComponent(nextPath)}`);
 }
 
 export async function signInWithEmail(formData: FormData) {
-  const role = getRole(formData);
   const email = getString(formData, "email");
   const password = getString(formData, "password");
+  const nextPath = getSafeNextPath(formData);
 
   if (!email || !password) {
-    redirect(`/login?role=${role}&status=missing`);
+    redirect(`/login?status=missing&next=${encodeURIComponent(nextPath)}`);
   }
 
-  const supabase = await getConfiguredSupabase(role, "login");
+  const supabase = await getConfiguredSupabase("login");
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -102,23 +94,23 @@ export async function signInWithEmail(formData: FormData) {
 
   if (error) {
     console.error("Unable to sign in", error.message);
-    redirect(`/login?role=${role}&status=error`);
+    redirect(`/login?status=error&next=${encodeURIComponent(nextPath)}`);
   }
 
-  redirect(getRedirectPath(role));
+  redirect(nextPath);
 }
 
 export async function signInWithGoogle(formData: FormData) {
-  const role = getRole(formData);
   const authMode = getAuthMode(formData);
+  const nextPath = getSafeNextPath(formData);
   const origin = await getOrigin();
-  const supabase = await getConfiguredSupabase(role, authMode);
+  const supabase = await getConfiguredSupabase(authMode);
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
       redirectTo: `${origin}/auth/callback?next=${encodeURIComponent(
-        getRedirectPath(role),
-      )}&role=${role}`,
+        nextPath,
+      )}`,
       queryParams: {
         access_type: "offline",
         prompt: "consent",
@@ -131,7 +123,9 @@ export async function signInWithGoogle(formData: FormData) {
       console.error("Unable to start Google OAuth", error.message);
     }
 
-    redirect(`/${authMode}?role=${role}&status=oauth-error`);
+    redirect(
+      `/${authMode}?status=oauth-error&next=${encodeURIComponent(nextPath)}`,
+    );
   }
 
   redirect(data.url);
