@@ -197,6 +197,84 @@ const platformActivity: Record<Locale, PlatformActivity> = {
     productDemandTitle: "Signaux de demande",
     supplierSignalsTitle: "Signaux fournisseur",
   },
+  tr: {
+    pulseEyebrow: "Pazar yeri nabzı",
+    pulseTitle: "TMP masasında ilerleyen aktif sourcing brief'leri.",
+    pulseBody:
+      "Yapılandırılmış talepler tedarikçi eşleştirmeden numune görüşmelerine ve teklif takibine ilerler; alıcılar brief'ten kısa listeye daha net bir yol izler.",
+    stats: [
+      { label: "Açık alıcı brief'i", value: "28", detail: "bu hafta +6" },
+      { label: "Tedarikçi yanıtı", value: "74", detail: "son 7 gün" },
+      {
+        label: "Ort. ilk yanıt",
+        value: "16s",
+        detail: "doğrulanmış ağ",
+      },
+    ],
+    activeBriefsTitle: "Son alıcı brief'leri",
+    activeBriefs: [
+      {
+        title: "Organik pamuk hoodie, 320gsm polar",
+        market: "Almanya",
+        quantity: "500-1.200 adet",
+        stage: "Tedarikçi eşleştirme",
+        updated: "Bugün",
+        categorySlug: "textiles-apparel",
+        tags: ["OEKO-TEX", "Private label"],
+      },
+      {
+        title: "Mat laminasyonlu FSC sert kozmetik kutusu",
+        market: "Fransa",
+        quantity: "2.000 adet",
+        stage: "Numune istendi",
+        updated: "Dün",
+        categorySlug: "packaging",
+        tags: ["FSC kağıt", "Düşük MOQ"],
+      },
+      {
+        title: "CNC alüminyum gövde, siyah anodize",
+        market: "İtalya",
+        quantity: "100 adet",
+        stage: "Teklif inceleme",
+        updated: "2 gün önce",
+        categorySlug: "machinery-components",
+        tags: ["6061-T6", "Çizim eklendi"],
+      },
+    ],
+    demandTitle: "Alıcı talebi",
+    demandBody:
+      "Malzeme, miktar, hedef pazar ve sertifika ihtiyaçlarını içeren brief'ler şu anda en güçlü talepler.",
+    categoryDemand: [
+      {
+        categorySlug: "textiles-apparel",
+        label: "Tekstil",
+        value: "9 brief",
+        detail: "private label, OEKO-TEX, hızlı numune",
+      },
+      {
+        categorySlug: "packaging",
+        label: "Ambalaj",
+        value: "6 brief",
+        detail: "FSC kartonlar, etiketler, e-ticaret kargo poşetleri",
+      },
+      {
+        categorySlug: "machinery-components",
+        label: "Komponentler",
+        value: "5 brief",
+        detail: "CNC, sac metal, montaj programları",
+      },
+    ],
+    rfqExamplesTitle: "Güçlü talep örnekleri",
+    rfqExamplesBody:
+      "Spesifik brief'ler daha hızlı yönlendirilir çünkü tedarikçiler uygunluğu hemen değerlendirebilir.",
+    rfqExamples: [
+      "Organik pamuk hoodie, 320gsm polar, OEKO-TEX, private label, 500 adet",
+      "CNC alüminyum gövde, 6061-T6, siyah anodize, çizim eklendi, 100 adet",
+      "FSC sert kozmetik kutusu, 2.000 adet, mat laminasyon, Fransa teslimat",
+    ],
+    productDemandTitle: "Talep sinyalleri",
+    supplierSignalsTitle: "Tedarikçi sinyalleri",
+  },
 };
 
 export function getPlatformActivity(locale: Locale) {

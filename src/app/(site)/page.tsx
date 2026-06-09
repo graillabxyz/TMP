@@ -5,7 +5,6 @@ import {
   ArrowRight,
   BadgeCheck,
   Building2,
-  Car,
   CheckCircle2,
   ChevronRight,
   Cog,
@@ -61,7 +60,7 @@ export default async function HomePage() {
     "machinery-components": Cog,
     "home-living": Building2,
     "food-ingredients": Utensils,
-    "automotive-parts": Car,
+    "building-materials": Building2,
     packaging: Package,
   };
   const previewProducts = suppliers.flatMap((supplier) =>

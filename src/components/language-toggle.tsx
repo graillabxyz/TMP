@@ -10,10 +10,10 @@ export function LanguageToggle({ locale }: LanguageToggleProps) {
   return (
     <form
       action={setLocale}
-      className="grid grid-cols-2 rounded-md border border-white/10 bg-white/[0.04] p-1"
+      className="grid grid-cols-3 rounded-md border border-white/10 bg-white/[0.04] p-1"
       aria-label="Language"
     >
-      {(["en", "fr"] as const).map((option) => (
+      {(["en", "fr", "tr"] as const).map((option) => (
         <button
           key={option}
           type="submit"

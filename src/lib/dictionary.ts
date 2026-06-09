@@ -55,7 +55,7 @@ const dictionaries = {
       badge: "Verified Turkish supply network for Europe",
       title: "Turkiye Market Place",
       subtitle:
-        "Source textiles, machinery, food, home goods, automotive parts, and packaging from export-ready Turkish suppliers.",
+        "Source textiles, machinery, food, home goods, building materials, and packaging from export-ready Turkish suppliers.",
       searchPlaceholder: "Search product, category, or supplier",
       headerSearchPlaceholder: "Search products or suppliers",
       allCategories: "All categories",
@@ -554,7 +554,7 @@ const dictionaries = {
       badge: "Réseau de fournisseurs turcs vérifiés pour l’Europe",
       title: "Turkiye Market Place",
       subtitle:
-        "Sourcez textiles, machines, produits alimentaires, maison, pièces automobiles et emballages auprès de fournisseurs turcs prêts pour l’export.",
+        "Sourcez textiles, machines, produits alimentaires, maison, matériaux de bâtiments et emballages auprès de fournisseurs turcs prêts pour l’export.",
       searchPlaceholder:
         "Rechercher un produit, une catégorie ou un fournisseur",
       headerSearchPlaceholder: "Rechercher produits ou fournisseurs",
@@ -1014,6 +1014,513 @@ const dictionaries = {
   },
 } as const;
 
+const turkishDictionary = {
+  nav: {
+    products: "Ürünler",
+    suppliers: "Tedarikçiler",
+    rfq: "Teklif Talebi",
+    dashboard: "Panel",
+    login: "Giriş",
+    join: "TMP'ye Katıl",
+    backHome: "Ana sayfaya dön",
+  },
+  common: {
+    verified: "Doğrulandı",
+    verifiedSupplier: "Doğrulanmış tedarikçi",
+    moq: "Minimum sipariş",
+    response: "Yanıt",
+    requestQuote: "Teklif iste",
+    backToSuppliers: "Tedarikçilere dön",
+    category: "Kategori",
+    categories: "Kategoriler",
+    marketplace: "Pazar yeri",
+    complete: "Tamamlandı",
+    pending: "Beklemede",
+    review: "İnceleme",
+    export: "İhracat",
+    status: "Durum",
+    action: "İşlem",
+    location: "Konum",
+    search: "Ara",
+    clearFilters: "Filtreleri temizle",
+    all: "Tümü",
+    save: "Kaydet",
+    cancel: "İptal",
+    create: "Oluştur",
+    edit: "Düzenle",
+    archive: "Arşivle",
+    price: "Fiyat",
+    leadTime: "Teslim süresi",
+    supplier: "Tedarikçi",
+    product: "Ürün",
+  },
+  footer: {
+    intro:
+      "TMP, Avrupalı alıcıların ihracata hazır Türk tedarikçileri keşfetmesine, karşılaştırmasına ve teklif istemesine yardımcı olur.",
+    suppliers: "Tedarikçiler",
+    rfq: "Teklif iste",
+    buyerLogin: "Alıcı girişi",
+    supplierOnboarding: "Tedarikçi başvurusu",
+    rights: "© 2026 TMP. Tüm hakları saklıdır.",
+    note: "Sourcing doğrulaması, alıcı güveni ve tedarikçi büyümesi için geliştirildi.",
+  },
+  home: {
+    badge: "Avrupa için doğrulanmış Türk tedarik ağı",
+    title: "Turkiye Market Place",
+    subtitle:
+      "İhracata hazır Türk tedarikçilerden tekstil, makine, gıda, ev ürünleri, yapı malzemeleri ve ambalaj tedarik edin.",
+    searchPlaceholder: "Ürün, kategori veya tedarikçi ara",
+    headerSearchPlaceholder: "Ürün veya tedarikçi ara",
+    allCategories: "Tüm kategoriler",
+    startSourcing: "Tedarike başla",
+    popularSearches: "Popüler aramalar",
+    liveBoard: "Canlı sourcing panosu",
+    marketplaceWelcome: "TMP'ye hoş geldiniz",
+    categoriesForYou: "Sizin için kategoriler",
+    frequentlySearched: "Sık aranan",
+    recommendedForBusiness: "İşletmeniz için önerilenler",
+    businessTools: [
+      "Teklif talebi",
+      "Doğrulanmış üreticiler",
+      "Hızlı özelleştirme",
+    ],
+    guaranteedTitle: "TMP Güvencesi",
+    guaranteedItems: [
+      "Yapılandırılmış teklif talepleri",
+      "Doğrulanmış tedarikçi sinyalleri",
+      "Teklif takip desteği",
+    ],
+    exploreNow: "Keşfet",
+    featuredSuppliers: "Öne çıkan tedarikçiler",
+    featuredTitle: "Güven sinyalleri görünür olan ihracata hazır iş ortakları.",
+    exploreSuppliers: "Tedarikçileri keşfet",
+    featuredCategories: "Öne çıkan kategoriler",
+    categoriesTitle:
+      "Avrupalı alıcıların Türkiye'den halihazırda tedarik ettiği kategoriler etrafında kuruldu.",
+    categoriesBody:
+      "Kategori uyumu, kapasite, sertifikalar, ihracat pazarları ve yanıt hızı gibi pratik alıcı sinyalleriyle şekillenen odaklı bir tedarikçi ağını inceleyin.",
+    benefitVerificationTitle: "Doğrulama odaklı profiller",
+    benefitVerificationBody:
+      "Sertifikalar, ihracat pazarları, yanıt hızı ve tedarikçi hazırlığı her teklif talebi yolculuğunda görünür kalır.",
+    benefitEuropeTitle: "AB sourcing ekipleri için tasarlandı",
+    benefitEuropeBody:
+      "Alıcılar kategori, minimum sipariş, private label kapasitesi ve ülke bazlı ihracat deneyimini karşılaştırabilir.",
+    benefitGrowthTitle: "Tedarikçi büyüme motoru",
+    benefitGrowthBody:
+      "Türk üreticiler, alıcı güveni ve dönüşüm için tasarlanmış premium bir dijital vitrin kazanır.",
+    verificationBadge: "Tedarikçi doğrulaması",
+    verificationTitle: "Tedarikçi güvenilirliğini alıcı güvenine dönüştürün.",
+    verificationItems: [
+      "İhracat hazırlığı incelemesi",
+      "Sertifika gösterimi",
+      "Doğrulanmış rozet yerleşimi",
+    ],
+    trustMetrics: [
+      "Tedarikçi kategorileri",
+      "AB alıcı pazarları",
+      "Ortalama RFQ yanıtı",
+    ],
+    applySupplier: "Tedarikçi olarak başvur",
+  },
+  suppliers: {
+    badge: "Tedarikçi rehberi",
+    title: "Avrupa sourcing ekipleri için hazırlanmış Türk tedarikçileri arayın.",
+    body: "Teklif talebi göndermeden önce doğrulama durumunu, kategorileri, ihracat pazarlarını, minimum siparişleri ve yanıt hızını karşılaştırın.",
+    indexed: "tedarikçi listeleniyor",
+    indexedSingular: "tedarikçi listeleniyor",
+    filters: "Filtreler",
+    search: "Ara",
+    searchPlaceholder: "Tekstil, CNC, ambalaj",
+    allCategories: "Tüm kategoriler",
+    verification: "Doğrulama",
+    checks: ["Doğrulanmış tedarikçiler", "AB ihracat deneyimi", "Düşük minimum sipariş"],
+    viewSupplier: "Tedarikçiyi görüntüle",
+    emptyTitle: "Bu filtrelerle eşleşen tedarikçi yok",
+    emptyBody:
+      "Daha geniş bir arama deneyin, filtreyi temizleyin veya tüm tedarikçi rehberine göz atın.",
+  },
+  products: {
+    badge: "Ürün keşfi",
+    title: "Avrupa sourcing için hazır Türk üretimi ürünleri inceleyin.",
+    body: "Yayınlanan tedarikçi ilanlarını ürün, kategori, tedarikçi, minimum sipariş, fiyat aralığı ve teslim süresine göre arayın.",
+    indexed: "yayınlanmış ürün",
+    indexedSingular: "yayınlanmış ürün",
+    filters: "Filtreler",
+    searchPlaceholder: "Denim ceket, CNC gövde, zeytinyağı...",
+    allCategories: "Tüm kategoriler",
+    allSuppliers: "Tüm tedarikçiler",
+    emptyTitle: "Yayınlanmış ürün bulunamadı",
+    emptyBody:
+      "Daha geniş bir arama deneyin veya tedarikçiler daha fazla ürün yayınladığında tekrar kontrol edin.",
+    verified: "Doğrulanmış tedarikçi",
+    quote: "Teklif",
+    viewProduct: "Ürünü görüntüle",
+    productDetails: "Ürün detayları",
+    supplierInfo: "Tedarikçi bilgileri",
+    related: "Bu tedarikçiden diğer ürünler",
+    requestQuote: "Teklif iste",
+    backToProducts: "Ürünlere dön",
+    notConfigured:
+      "Supabase ürünleri bu ortamda henüz yapılandırılmadı.",
+  },
+  supplierDetail: {
+    founded: "Kuruluş",
+    team: "Ekip",
+    productCatalog: "Ürün kataloğu",
+    previewProducts: "Ürün önizlemesi",
+    certifications: "Sertifikalar",
+    licenses: "Lisanslar ve denetimler",
+    exportMarkets: "İhracat pazarları",
+  },
+  rfq: {
+    badge: "Teklif talebi",
+    title: "Tek bir sourcing brief'i gönderin. Doğru Türk tedarikçilere ulaşın.",
+    body: "Tedarikçilerin uygunluğu değerlendirmesi, fiyat hazırlaması ve faydalı bir sonraki adımla yanıt vermesi için gereken detayları paylaşın.",
+    bullets: [
+      "Ürün özellikleri",
+      "Hedef miktar ve varış ülkesi",
+      "İsteğe bağlı çizim veya referans dosyaları",
+    ],
+    productRequest: "Ürün spesifikasyonu",
+    productPlaceholder:
+      "Organik pamuk hoodie, 320gsm polar, OEKO-TEX, 500 adet",
+    productHelp:
+      'Ürün türünü, malzemeyi veya teknik özelliği, sertifika ihtiyacını ve hedef miktarı ekleyin. "Hoodie" veya "kutu" gibi belirsiz talepler yönlendirmeyi zorlaştırır.',
+    selectCategory: "Kategori seç",
+    quantity: "Miktar",
+    quantityPlaceholder: "500 adet",
+    destinationCountry: "Varış ülkesi",
+    selectCountry: "Ülke seç",
+    timeline: "Hedef zamanlama",
+    timelinePlaceholder: "3 hafta içinde numune",
+    notes: "Notlar / mesaj",
+    notesPlaceholder:
+      "Malzeme, sertifika, ambalaj, Incoterms ve mevcut tedarikçi kıyaslarını paylaşın.",
+    upload: "Ek yükle",
+    uploadHelp: "Teknik çizimler, referans görselleri veya teknik föyler",
+    submit: "Teklif talebini gönder",
+    status: {
+      success: "Teklif talebi gönderildi. Sourcing ekibimiz kısa süre içinde inceleyecek.",
+      missing: "Lütfen ürün talebi, miktar ve varış ülkesini ekleyin.",
+      specific:
+        "Lütfen ürün talebini malzeme, teknik özellik, sertifika veya hedef miktarla daha belirgin hale getirin.",
+      config: "Supabase bu ortam için henüz yapılandırılmadı.",
+      error: "Teklif talebi gönderilemedi. Lütfen tekrar deneyin.",
+    },
+  },
+  auth: {
+    welcomeBack: "Tekrar hoş geldiniz",
+    loginTitle: "TMP hesabınızla devam edin.",
+    loginBody:
+      "Tek hesapla alıcı olarak tedarik yapabilir, RFQ'ları yönetebilir ve hazır olduğunuzda tedarikçi profili ekleyebilirsiniz.",
+    supplierLoginTitle: "Tedarikçi yükseltmesini başlatmak için giriş yapın.",
+    supplierLoginBody:
+      "Şirket bilgilerini eklemek, aylık doğrulama aboneliğini başlatmak ve tedarikçi araçlarını açmak için mevcut TMP hesabınızı kullanın.",
+    buyerLogin: "Alıcı girişi",
+    supplierLogin: "Tedarikçi girişi",
+    email: "E-posta",
+    password: "Şifre",
+    login: "Giriş",
+    supplierLoginCta: "Tedarikçi yükseltmesine devam et",
+    newToTmp: "TMP'de yeni misiniz?",
+    createAccount: "Hesap oluştur",
+    supplierCreateAccount: "Hesap oluştur ve devam et",
+    onboarding: "TMP onboarding",
+    registerTitle: "Tek TMP hesabı oluşturun. Hazır olduğunuzda tedarikçi erişimi ekleyin.",
+    supplierRegisterTitle: "Satışa başlamak için TMP hesabınızı oluşturun.",
+    supplierRegisterBody:
+      "Sonraki adımda tedarikçi profilinizi ekler, doğrulamayı başlatır ve aylık aboneliği aynı hesaptan etkinleştirirsiniz.",
+    accountPath: "Tek TMP hesabı",
+    accountPathBody:
+      "Tedarikçileri inceleyin, teklif talepleri gönderin ve sourcing sürecini tek girişle yönetin.",
+    supplierUpgradePath: "Tedarikçi profili yükseltmesi",
+    supplierUpgradePathBody:
+      "Hesap oluşturduktan sonra şirket bilgileri, doğrulama ve ürün yayınlama adımlarını ekleyin.",
+    supplierStepAccount: "1. Oluştur veya giriş yap",
+    supplierStepAccountBody:
+      "Satın alma, sourcing ve tedarikçi araçları için tek TMP girişini kullanın.",
+    supplierStepUpgrade: "2. Tedarikçi yükseltmesi ekle",
+    supplierStepUpgradeBody:
+      "Şirket bilgilerini ekleyin, aylık doğrulama aboneliğini başlatın ve ürünleri yayınlayın.",
+    buyerPath: "Alıcı yolu",
+    buyerPathBody: "Teklif talepleri gönderin ve tedarikçileri kısa listeye alın.",
+    supplierPath: "Tedarikçi yolu",
+    supplierPathBody:
+      "Tedarikçi profili ekleyin, doğrulamayı başlatın ve ürünleri yayınlayın.",
+    accountTitle: "TMP hesabı",
+    accountBody:
+      "Alıcı sourcing varsayılan olarak dahildir. Tedarikçi erişimi aynı hesaba eklenebilir.",
+    supplierAccountTitle: "Adım 1: TMP hesabı",
+    supplierAccountBody:
+      "Sourcing ve tedarikçi araçları için kullanacağınız aynı hesaba giriş yapın veya hesap oluşturun.",
+    supplierIntentTitle: "Adım 2: Tedarikçi yükseltmesi",
+    supplierIntentBody:
+      "Girişten sonra şirket bilgilerini ekleyin ve aylık doğrulama aboneliğini başlatın.",
+    buyerAccount: "Alıcı hesabı",
+    supplierAccount: "Tedarikçi profili",
+    fullName: "Ad soyad",
+    company: "Şirket",
+    workEmail: "İş e-postası",
+    primaryRole: "Ana rol",
+    selectRole: "Rol seç",
+    buyer: "Alıcı",
+    supplier: "Tedarikçi",
+    continueWithGoogle: "Google ile devam et",
+    supplierContinueWithGoogle: "Google ile devam et",
+    googleHelp:
+      "Tek TMP hesabıyla devam etmek için Google kullanın. Tedarikçi kurulumu girişten sonra yapılır.",
+    supplierGoogleHelp:
+      "Tek TMP hesabıyla devam edin. Tedarikçi profili ve aylık abonelik kurulumu sonraki adımda yapılır.",
+    orEmail: "veya e-posta ile devam et",
+    alreadyAccount: "Zaten hesabınız var mı?",
+    status: {
+      missing: "Lütfen zorunlu alanları tamamlayın.",
+      error: "Kimlik doğrulama başarısız oldu. Lütfen tekrar deneyin.",
+      checkEmail:
+        "Giriş yapmadan önce hesabı onaylamak için e-postanızı kontrol edin.",
+      oauthNotReady:
+        "Google girişi başlatılamadı. Lütfen tekrar deneyin veya e-posta ile devam edin.",
+    },
+  },
+  dashboard: {
+    eyebrow: "Tedarikçi çalışma alanı",
+    title: "Panel",
+    description:
+      "Tedarikçi görünürlüğünü, gelen RFQ'ları, ürün taleplerini ve doğrulama hazırlığını takip edin.",
+    previewData: "Önizleme hattı",
+    previewBody:
+      "Canlı RFQ'lar ve tedarikçi analitiği bağlanana kadar panel sayıları ve satırları örnek veridir.",
+    overview: "Genel bakış",
+    products: "Ürünler",
+    profile: "Profil",
+    listings: "İlanlar",
+    rfqs: "RFQ'lar",
+    productInquiries: "Ürün talepleri",
+    verification: "Doğrulama",
+    verificationSettings: "Doğrulama ayarları",
+    metrics: [
+      "Aktif ilanlar",
+      "Açık RFQ'lar",
+      "Ürün talepleri",
+      "Doğrulama",
+    ],
+    recentRequests: "Son alıcı talepleri",
+    profileReadiness: "Profil hazırlığı",
+    buyerActivity: "Alıcı aktivitesi",
+    nextActions: "Sonraki adımlar",
+    manageProducts: "Ürünleri yönet",
+    reviewProducts: "İlanları incele",
+    listingsBody:
+      "Yayınlanan ürünleri minimum sipariş, fiyat aralığı, teslim süresi ve kategori detaylarıyla güncel tutun.",
+    productInquiriesBody:
+      "Tedarikçi RFQ yönlendirmesi etkinleştiğinde ürün talepleri geldikleri ilanların yanında görünür.",
+    nextActionsBody:
+      "Alıcı trafiği artmadan önce doğrulama ve ürün kalite sinyallerini hazırlayın.",
+    upgradeTitle: "Doğrulanmış tedarikçiye yükselt",
+    upgradeBody:
+      "Aylık doğrulama aboneliğini başlatın ve belgeleri yönetici incelemesine gönderin.",
+    upgradeCta: "Doğrulama ayarlarını aç",
+    buyerWorkspace: {
+      eyebrow: "Alıcı çalışma alanı",
+      description:
+        "RFQ'ları, kaydedilen tedarikçileri, ürün kısa listelerini ve ürün taleplerini takip edin.",
+      metrics: [
+        "Açık RFQ'lar",
+        "Kaydedilen tedarikçiler",
+        "Ürün talepleri",
+        "Kısa listedeki ürünler",
+      ],
+      activeRequests: "Aktif sourcing talepleri",
+      createRfq: "RFQ oluştur",
+      requestRows: [
+        ["Organik pamuk basics", "Tedarikçiler eşleştiriliyor", "3 yanıt"],
+        ["Sert kozmetik kutuları", "Teklifler inceleniyor", "2 yanıt"],
+        ["CNC alüminyum gövde", "Taslak talep", "Gönderilmedi"],
+      ],
+      discovery: "Tedarikçi keşfi",
+      continueSourcing: "Sourcing'e devam et",
+      discoveryBody:
+        "Doğrulanmış Türk tedarikçileri inceleyin, ürün ilanlarını karşılaştırın ve hazır olduğunuzda yapılandırılmış RFQ gönderin.",
+      browseProducts: "Ürünlere göz at",
+      exploreSuppliers: "Tedarikçileri keşfet",
+      savedSuppliers: "Kaydedilen tedarikçiler",
+      productInquiries: "Ürün talepleri",
+      savedSuppliersBody:
+        "Güvenilir tedarikçileri kategori, konum, minimum sipariş ve yanıt hızına göre karşılaştırın.",
+      productInquiriesBody:
+        "Yayınlanan ürünleri inceleyin ve tam ihtiyaç duyduğunuz üründen teklif talebi başlatın.",
+      nextActionsBody:
+        "Miktar, varış ülkesi, zamanlama ve sourcing notlarıyla yapılandırılmış RFQ oluşturun.",
+    },
+    productManager: {
+      eyebrow: "Tedarikçi ürünleri",
+      title: "Ürünler",
+      description:
+        "Alıcıların TMP'de keşfettiği ürün ilanlarını oluşturun, yayınlayın ve yönetin.",
+      createProduct: "Ürün oluştur",
+      editProduct: "Ürünü düzenle",
+      noProducts: "Henüz tedarikçi ürünü yok",
+      noProductsBody:
+        "Yayınlandığında pazar yerinde görünmesi için ilk ürün ilanını oluşturun.",
+      loginRequired: "Giriş gerekli",
+      loginRequiredBody:
+        "Ürün ilanlarını yönetmeden önce TMP hesabınıza giriş yapın ve tedarikçi profili ekleyin.",
+      supplierMissing: "Tedarikçi profili gerekli",
+      supplierMissingBody:
+        "TMP hesabınızda tedarikçi araçları henüz etkin değil. Ürün yayınlamayı açmak için Profil'den yükseltin.",
+      productTitle: "Ürün başlığı",
+      category: "Kategori",
+      productDescription: "Açıklama",
+      minimumOrderQuantity: "Minimum sipariş miktarı",
+      priceMin: "Minimum fiyat",
+      priceMax: "Maksimum fiyat",
+      currency: "Para birimi",
+      leadTime: "Teslim süresi",
+      images: "Görseller",
+      imagePlaceholder: "Görsel URL yer tutucusu",
+      imageHelp:
+        "Şimdilik herkese açık bir URL kullanın. Supabase Storage yükleme alanı daha sonra bu alana bağlanabilir.",
+      status: "Durum",
+      draft: "Taslak",
+      published: "Yayında",
+      archived: "Arşivlendi",
+      saveDraft: "Ürünü kaydet",
+      updateProduct: "Ürünü güncelle",
+      tableProduct: "Ürün",
+      tableCategory: "Kategori",
+      tablePricing: "Fiyatlandırma",
+      tableUpdated: "Oluşturulma",
+      successCreate: "Ürün oluşturuldu.",
+      successUpdate: "Ürün güncellendi.",
+      successArchive: "Ürün arşivlendi.",
+      missing: "Lütfen başlık, kategori, açıklama ve durum ekleyin.",
+      error: "Ürün kaydedilemedi. Lütfen tekrar deneyin.",
+    },
+  },
+  profileSettings: {
+    eyebrow: "Hesap profili",
+    title: "Profil",
+    description:
+      "TMP hesabınızı, tedarikçi yükseltmesini ve doğrulanmış rozet üyeliğini yönetin.",
+    accountTitle: "Hesap",
+    email: "E-posta",
+    accountType: "Hesap türü",
+    buyerAccount: "Alıcı hesabı",
+    supplierAccount: "Tedarikçi hesabı",
+    supplierEnabled: "Tedarikçi araçları etkin",
+    supplierUpgradeTitle: "Tedarikçiye yükselt",
+    supplierUpgradeBody:
+      "Tedarikçi araçlarını açmak için temel işletme bilgilerini ekleyin. Bu işlem ücret almaz ve doğrulanmış rozet eklemez.",
+    businessName: "İşletme adı",
+    startSupplierUpgrade: "Tedarikçiye yükselt",
+    supplierReadyTitle: "Tedarikçi profili",
+    supplierReadyBody:
+      "Hesabınızda tedarikçi araçları etkin. Ürün ilanlarını yönetebilir ve doğrulama için ödeme yapıp yapmamayı seçebilirsiniz.",
+    verifiedTitle: "Doğrulanmış rozet üyeliği",
+    verifiedBody:
+      "Doğrulanmış rozet ücretli aylık üyelikle verilir. Rozet ve doğrulama incelemesi istediğinizde aboneliği başlatın veya yönetin.",
+    verifiedLockedBody:
+      "Önce işletme adınızı ekleyerek tedarikçiye yükseltin. Ardından doğrulanmış rozet için ücretli üyeliği başlatabilirsiniz.",
+    verificationSettings: "Doğrulama ayarları",
+    manageProducts: "Ürünleri yönet",
+  },
+  verificationSettings: {
+    eyebrow: "Tedarikçi doğrulaması",
+    title: "Doğrulama ayarları",
+    description:
+      "Aylık doğrulama aboneliğini yönetin, işletme belgelerini gönderin ve tedarikçi profilinizi yönetici onayına hazırlayın.",
+    overview: "Doğrulama özeti",
+    currentStatus: "Doğrulama durumu",
+    subscriptionStatus: "Abonelik durumu",
+    benefits: "Doğrulama avantajları",
+    benefitItems: [
+      "Tedarikçi ve ürün kartlarında doğrulanmış rozet",
+      "RFQ incelemesi sırasında daha yüksek alıcı güveni",
+      "Pazar yeri keşfinde daha iyi görünürlük",
+      "Gelecekteki premium tedarikçi özelliklerine erişim",
+    ],
+    subscription: "Aylık abonelik",
+    price: "€1 / ay",
+    priceNote:
+      "Distribütör onboarding'i ve Stripe testi için tanıtım amaçlı aylık doğrulama aboneliği.",
+    subscribe: "Aboneliği başlat",
+    manage: "Aboneliği yönet",
+    documents: "İşletme doğrulaması",
+    documentsBody:
+      "Şimdilik yüklemeye hazır URL'ler ekleyin. Supabase Storage yükleme kontrolleri daha sonra bu alanların yerini alabilir.",
+    supplierAccessTitle: "Tedarikçi profili ekle",
+    supplierAccessBody:
+      "TMP hesabınız varsayılan olarak alıcı sourcing yapabilir. Tedarikçi araçlarını açmak için şirket bilgilerini ekleyin, ardından aylık doğrulama aboneliğini etkinleştirin.",
+    supplierCompany: "Tedarikçi şirketi",
+    startSupplierProfile: "Tedarikçi yükseltmesini başlat",
+    businessLicense: "İşletme lisansı",
+    companyRegistration: "Şirket kaydı",
+    certifications: "Sertifikalar",
+    notes: "İnceleme notları",
+    submitDocuments: "İncelemeye gönder",
+    statusSubmitted: "Doğrulama belgeleri yönetici incelemesine gönderildi.",
+    statusSupplierStarted:
+      "Tedarikçi profili başlatıldı. Doğrulama ve faturalandırma kurulumuyla devam edin.",
+    statusMissingCompany: "Lütfen tedarikçi şirket adını ekleyin.",
+    statusError:
+      "Doğrulama detayları güncellenemedi. Lütfen tekrar deneyin.",
+    checkoutPlaceholder:
+      "Checkout yer tutucusu açıldı. Kimlik bilgileri eklendiğinde Stripe bağlanmaya hazır.",
+    checkoutSuccess:
+      "Checkout tamamlandı. Stripe aboneliği webhook ile onaylayacak.",
+    checkoutCancelled: "Checkout iptal edildi. Abonelik başlatılmadı.",
+    checkoutError:
+      "Stripe checkout oluşturulamadı. Abonelik ortam değişkenlerini kontrol edin.",
+    billingActionError:
+      "Stripe faturalandırma açılamadı. Lütfen birazdan tekrar deneyin.",
+    portalPlaceholder:
+      "Müşteri portalı yer tutucusu açıldı. Canlı portal oturumları Stripe yapılandırıldıktan sonra çalışır.",
+    portalMissingCustomer:
+      "Müşteri portalını açmadan önce doğrulama aboneliği başlatın.",
+    portalError:
+      "Stripe müşteri portalı açılamadı. Lütfen tekrar deneyin.",
+    missingSupplier:
+      "Doğrulamadan önce tedarikçi profili oluşturun veya bağlayın.",
+    loginRequired: "Tedarikçi profili eklemek veya yönetmek için giriş yapın.",
+    states: {
+      none: "Başlamadı",
+      pending: "İncelemede",
+      verified: "Doğrulandı",
+      rejected: "Reddedildi",
+      inactive: "Pasif",
+      active: "Aktif",
+      past_due: "Gecikmiş",
+      canceled: "İptal edildi",
+    },
+  },
+  admin: {
+    eyebrow: "Yönetici konsolu",
+    title: "Tedarikçi onayları",
+    description:
+      "Tedarikçi başvurularını, doğrulama durumunu, belgeleri ve pazar yeri hazırlığını inceleyin.",
+    pendingApprovals: "Bekleyen onaylar",
+    verifiedSuppliers: "Doğrulanmış tedarikçiler",
+    queuedChecks: "Sıradaki kontroller",
+    approvalTable: "Onay tablosu",
+    queue: "Tedarikçi doğrulama kuyruğu",
+    supplier: "Tedarikçi",
+    risk: "Risk",
+    documentChecks: "Belge kontrolleri",
+    controls: "Pazar yeri kontrolleri",
+    notes: "Onay notları",
+    notesBody:
+      "İnceleyici notlarını onay kararları, doğrulama kanıtları, kategori kalitesi ve tedarikçi hazırlık sinyallerinin yanında tutun.",
+  },
+};
+
 export function getDictionary(locale: Locale) {
-  return dictionaries[locale];
+  if (locale === "fr") {
+    return dictionaries.fr;
+  }
+
+  if (locale === "tr") {
+    return turkishDictionary;
+  }
+
+  return dictionaries.en;
 }

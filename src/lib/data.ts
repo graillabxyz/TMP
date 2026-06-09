@@ -155,37 +155,37 @@ export const suppliers: Supplier[] = [
     ],
   },
   {
-    slug: "bursa-auto-systems",
-    name: "Bursa Auto Systems",
+    slug: "bursa-building-materials",
+    name: "Bursa Building Materials",
     city: "Bursa",
     country: "Turkiye",
-    category: "Automotive Parts",
+    category: "Building Materials",
     summary:
-      "Aftermarket parts, wiring assemblies, and tier supplier capacity.",
+      "Facade systems, insulation, fixtures, and fit-out material supply.",
     description:
-      "Automotive supplier with strong Bursa-region capacity for wiring, rubber parts, and precision aftermarket component programs.",
+      "Building materials supplier with Bursa-region capacity for aluminum profiles, insulation boards, hardware, and export-ready fit-out programs.",
     verified: true,
     yearFounded: 2006,
     employees: "250-500",
     exportMarkets: ["Romania", "Germany", "Hungary"],
-    moq: "Program based",
+    moq: "1 container",
     responseTime: "Under 24h",
     image:
       "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=1200&q=80",
-    tags: ["IATF path", "Aftermarket", "Assemblies"],
-    certifications: ["ISO 9001", "IATF 16949 roadmap", "PPAP support"],
+    tags: ["Facade systems", "Fit-out supply", "Container loads"],
+    certifications: ["ISO 9001", "CE marked lines", "Fire-rated options"],
     products: [
       {
-        name: "Wiring harness assemblies",
-        category: "Automotive",
-        moq: "500 units",
+        name: "Aluminum window profile sets",
+        category: "Building Materials",
+        moq: "1 container",
         image:
           "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=900&q=80",
       },
       {
-        name: "Rubber vibration mounts",
-        category: "Parts",
-        moq: "1,000 units",
+        name: "Thermal insulation boards",
+        category: "Construction",
+        moq: "20 pallets",
         image:
           "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=900&q=80",
       },
@@ -256,9 +256,9 @@ export const categories: Category[] = [
     supplierCount: 68,
   },
   {
-    name: "Automotive Parts",
-    slug: "automotive-parts",
-    description: "Aftermarket components, assemblies, and production programs.",
+    name: "Building Materials",
+    slug: "building-materials",
+    description: "Construction materials, fixtures, surfaces, and fit-out supply.",
     supplierCount: 46,
   },
   {
