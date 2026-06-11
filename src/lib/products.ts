@@ -3,6 +3,11 @@ import { getDemoRole } from "@/lib/demo-session";
 import { getDictionary } from "@/lib/dictionary";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
+import {
+  getCategoryOverride,
+  getProductOverride,
+  getSupplierNameOverride,
+} from "@/lib/translation-overrides";
 import type { MarketplaceProduct } from "@/types";
 import type { Database } from "@/types/database";
 
@@ -66,26 +71,31 @@ function normalizeProduct(
   locale: Locale,
 ): MarketplaceProduct {
   const t = getDictionary(locale);
+  const productOverride = getProductOverride(locale, product.slug);
+  const categoryOverride = getCategoryOverride(locale, product.category?.slug);
 
   return {
     id: product.id,
     slug: product.slug,
-    title: localizedValue(locale, product.title, product.title_fr),
-    description: localizedValue(
-      locale,
-      product.description,
-      product.description_fr,
-    ),
+    title:
+      productOverride?.title ??
+      localizedValue(locale, product.title, product.title_fr),
+    description:
+      productOverride?.description ??
+      localizedValue(locale, product.description, product.description_fr),
     category: product.category
-      ? localizedValue(locale, product.category.name, product.category.name_fr)
+      ? (productOverride?.category ??
+          categoryOverride?.name ??
+          localizedValue(locale, product.category.name, product.category.name_fr))
       : t.common.uncategorized,
     categorySlug: product.category?.slug ?? "",
     supplierName: product.supplier
-      ? localizedValue(
-          locale,
-          product.supplier.company_name,
-          product.supplier.company_name_fr,
-        )
+      ? (getSupplierNameOverride(locale, product.supplier.slug) ??
+          localizedValue(
+            locale,
+            product.supplier.company_name,
+            product.supplier.company_name_fr,
+          ))
       : t.common.supplier,
     supplierId: product.supplier?.id ?? null,
     supplierSlug: product.supplier?.slug ?? "",
@@ -320,7 +330,7 @@ export async function getSupplierProductWorkspace(locale: Locale) {
         price_max,
         currency,
         created_at,
-        category:categories(name, name_fr)
+        category:categories(name, name_fr, slug)
       `,
     )
     .eq("supplier_id", supplier.id)
@@ -353,19 +363,22 @@ export async function getSupplierProductWorkspace(locale: Locale) {
         price_max: number | null;
         currency: string;
         created_at: string;
-        category: { name: string; name_fr: string | null } | null;
+        category: { name: string; name_fr: string | null; slug: string } | null;
       }>
     ).map((product) => ({
       id: product.id,
       slug: product.slug,
-      title: localizedValue(locale, product.title, product.title_fr),
+      title:
+        getProductOverride(locale, product.slug)?.title ??
+        localizedValue(locale, product.title, product.title_fr),
       status: product.status,
       categoryName: product.category
-        ? localizedValue(
-            locale,
-            product.category.name,
-            product.category.name_fr,
-          )
+        ? (getCategoryOverride(locale, product.category.slug)?.name ??
+            localizedValue(
+              locale,
+              product.category.name,
+              product.category.name_fr,
+            ))
         : t.common.uncategorized,
       moq: product.moq,
       priceMin: product.price_min,

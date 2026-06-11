@@ -60,6 +60,7 @@ export default async function HomePage() {
     "machinery-components": Cog,
     "home-living": Building2,
     "food-ingredients": Utensils,
+    "automotive-parts": Building2,
     "building-materials": Building2,
     packaging: Package,
   };

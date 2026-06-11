@@ -10,6 +10,11 @@ import {
   defaultLocale,
 } from "@/lib/i18n";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
+import {
+  getCategoryOverride,
+  getProductOverride,
+  getSupplierNameOverride,
+} from "@/lib/translation-overrides";
 import type { Category, ProductPreview, Supplier } from "@/types";
 
 type CategoryRow = {
@@ -25,9 +30,10 @@ type CategoryRow = {
 type SupplierProductRow = {
   title: string;
   title_fr: string | null;
+  slug: string | null;
   moq: number | null;
   images: string[];
-  category: { name: string; name_fr: string | null } | null;
+  category: { name: string; name_fr: string | null; slug: string } | null;
 };
 
 type SupplierRow = {
@@ -53,37 +59,10 @@ type SupplierRow = {
   certifications_fr: string[];
   verification_status: "none" | "pending" | "verified" | "rejected";
   category:
-    | { name: string; name_fr: string | null }
-    | { name: string; name_fr: string | null }[]
+    | { name: string; name_fr: string | null; slug: string }
+    | { name: string; name_fr: string | null; slug: string }[]
     | null;
   products: SupplierProductRow[] | null;
-};
-
-const trCategoryCopy: Record<string, Pick<Category, "name" | "description">> = {
-  "textiles-apparel": {
-    name: "Tekstil ve Giyim",
-    description: "Private label giyim, kumaşlar ve ev tekstili.",
-  },
-  "machinery-components": {
-    name: "Makine ve Komponentler",
-    description: "CNC, sac metal, makine parçaları ve kalıp takımı iş ortakları.",
-  },
-  "home-living": {
-    name: "Ev ve Yaşam",
-    description: "Seramik, dekor, mobilya ve hospitality odaklı ürünler.",
-  },
-  "food-ingredients": {
-    name: "Gıda ve İçerikler",
-    description: "Akdeniz gıdaları, kuru ürünler ve private label paketler.",
-  },
-  "building-materials": {
-    name: "Yapı Malzemeleri",
-    description: "İnşaat malzemeleri, armatürler, yüzeyler ve fit-out tedariki.",
-  },
-  packaging: {
-    name: "Ambalaj",
-    description: "Perakende kutuları, kargo paketleri, etiketler ve markalı ambalaj.",
-  },
 };
 
 const trSupplierCopy: Record<
@@ -250,6 +229,35 @@ const trSupplierCopy: Record<
       },
     ],
   },
+  "bursa-auto-systems": {
+    name: "Bursa Yapı Malzemeleri",
+    country: "Türkiye",
+    category: "Yapı Malzemeleri",
+    summary: "Cephe sistemleri, yalıtım, armatürler ve fit-out malzeme tedariki.",
+    description:
+      "Alüminyum profiller, yalıtım levhaları, hırdavat ve ihracata hazır fit-out programları için Bursa bölgesi kapasitesine sahip yapı malzemeleri tedarikçisi.",
+    exportMarkets: ["Romanya", "Almanya", "Macaristan"],
+    moq: "1 konteyner",
+    responseTime: "24 saatten kısa",
+    tags: ["Cephe sistemleri", "Fit-out tedariki", "Konteyner yükleri"],
+    certifications: ["ISO 9001", "CE işaretli hatlar", "Yangına dayanımlı seçenekler"],
+    products: [
+      {
+        name: "Alüminyum pencere profil setleri",
+        category: "Yapı Malzemeleri",
+        moq: "1 konteyner",
+        image:
+          "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=900&q=80",
+      },
+      {
+        name: "Isı yalıtım levhaları",
+        category: "İnşaat",
+        moq: "20 palet",
+        image:
+          "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=900&q=80",
+      },
+    ],
+  },
   "istanbul-packaging-lab": {
     name: "İstanbul Ambalaj Laboratuvarı",
     country: "Türkiye",
@@ -282,13 +290,9 @@ const trSupplierCopy: Record<
 };
 
 function localizeMockCategories(locale: Locale) {
-  if (locale !== "tr") {
-    return mockCategories;
-  }
-
   return mockCategories.map((category) => ({
     ...category,
-    ...trCategoryCopy[category.slug],
+    ...getCategoryOverride(locale, category.slug),
   }));
 }
 
@@ -305,11 +309,15 @@ function localizeMockSuppliers(locale: Locale) {
 }
 
 function normalizeCategory(row: CategoryRow, locale: Locale): Category {
+  const override = getCategoryOverride(locale, row.slug);
+
   return {
     id: row.id,
-    name: localizedValue(locale, row.name, row.name_fr),
+    name: override?.name ?? localizedValue(locale, row.name, row.name_fr),
     slug: row.slug,
-    description: localizedValue(locale, row.description, row.description_fr),
+    description:
+      override?.description ??
+      localizedValue(locale, row.description, row.description_fr),
     supplierCount: row.supplier_count ?? 0,
   };
 }
@@ -319,11 +327,16 @@ function normalizeProduct(
   locale: Locale,
 ): ProductPreview {
   const t = getDictionary(locale);
+  const productOverride = getProductOverride(locale, row.slug);
+  const categoryOverride = getCategoryOverride(locale, row.category?.slug);
 
   return {
-    name: localizedValue(locale, row.title, row.title_fr),
+    name:
+      productOverride?.title ?? localizedValue(locale, row.title, row.title_fr),
     category: row.category
-      ? localizedValue(locale, row.category.name, row.category.name_fr)
+      ? (productOverride?.category ??
+          categoryOverride?.name ??
+          localizedValue(locale, row.category.name, row.category.name_fr))
       : t.common.product,
     moq: row.moq ? `${row.moq} ${t.common.units}` : t.common.onRequest,
     image: row.images[0] ?? "/brand/tmp-logo.webp",
@@ -339,19 +352,23 @@ function getCategoryName(
     const firstCategory = category[0];
 
     return firstCategory
-      ? localizedValue(locale, firstCategory.name, firstCategory.name_fr)
+      ? (getCategoryOverride(locale, firstCategory.slug)?.name ??
+          localizedValue(locale, firstCategory.name, firstCategory.name_fr))
       : fallback;
   }
 
   return category
-    ? localizedValue(locale, category.name, category.name_fr)
+    ? (getCategoryOverride(locale, category.slug)?.name ??
+        localizedValue(locale, category.name, category.name_fr))
     : fallback;
 }
 
 function normalizeSupplier(row: SupplierRow, locale: Locale): Supplier {
-  return {
+  const supplier = {
     slug: row.slug,
-    name: localizedValue(locale, row.company_name, row.company_name_fr),
+    name:
+      getSupplierNameOverride(locale, row.slug) ??
+      localizedValue(locale, row.company_name, row.company_name_fr),
     city: row.city,
     country: row.country,
     category: getCategoryName(locale, row.category),
@@ -374,6 +391,16 @@ function normalizeSupplier(row: SupplierRow, locale: Locale): Supplier {
       normalizeProduct(product, locale),
     ),
   };
+
+  if (locale === "tr" && trSupplierCopy[row.slug]) {
+    return {
+      ...supplier,
+      ...trSupplierCopy[row.slug],
+      products: trSupplierCopy[row.slug]?.products ?? supplier.products,
+    };
+  }
+
+  return supplier;
 }
 
 export async function getCategories(
@@ -435,8 +462,8 @@ export async function getSuppliers(
         certifications,
         certifications_fr,
         verification_status,
-        category:categories(name, name_fr),
-        products:supplier_products(title, title_fr, moq, images, category:categories(name, name_fr))
+        category:categories(name, name_fr, slug),
+        products:supplier_products(title, title_fr, slug, moq, images, category:categories(name, name_fr, slug))
       `,
     )
     .eq("verification_status", "verified")
