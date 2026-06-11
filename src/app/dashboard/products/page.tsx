@@ -17,11 +17,16 @@ type DashboardProductsPageProps = {
   searchParams: Promise<{ status?: string }>;
 };
 
-export const metadata: Metadata = createMetadata({
-  title: "Supplier Products | TMP",
-  description: "Create and manage TMP supplier product listings.",
-  path: "/dashboard/products",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
+  return createMetadata({
+    title: t.dashboard.productMetadataTitle,
+    description: t.dashboard.productMetadataDescription,
+    path: "/dashboard/products",
+  });
+}
 
 function statusVariant(status: string) {
   if (status === "published") {
@@ -73,21 +78,17 @@ export default async function DashboardProductsPage({
           <CardContent className="p-8">
             <ShieldAlert className="size-8 text-gold-200" aria-hidden="true" />
             <h2 className="mt-4 text-xl font-semibold text-white">
-              Supplier access required
+              {labels.supplierAccessRequired}
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
-              Product posting is available after adding a supplier profile. Your
-              TMP account can still browse products, save suppliers, and submit
-              RFQs.
+              {labels.supplierAccessBody}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button asChild>
-                <Link href="/products">Browse products</Link>
+                <Link href="/products">{labels.browseProducts}</Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/dashboard/profile">
-                  Go to profile
-                </Link>
+                <Link href="/dashboard/profile">{t.common.goToProfile}</Link>
               </Button>
             </div>
           </CardContent>
@@ -182,11 +183,11 @@ export default async function DashboardProductsPage({
                           {product.categoryName}
                         </td>
                         <td className="px-5 py-4 text-white">
-                          {formatPriceRange(product)}
+                          {formatPriceRange(product, t.products.quote)}
                         </td>
                         <td className="px-5 py-4">
                           <Badge variant={statusVariant(product.status)}>
-                            {product.status}
+                            {labels[product.status]}
                           </Badge>
                         </td>
                         <td className="px-5 py-4">

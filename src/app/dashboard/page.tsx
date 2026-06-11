@@ -21,11 +21,16 @@ import { getLocale } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
 import { getVerificationWorkspace } from "@/lib/verification";
 
-export const metadata: Metadata = createMetadata({
-  title: "Dashboard | TMP",
-  description: "TMP workspace for RFQs, product discovery, and supplier tools.",
-  path: "/dashboard",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
+  return createMetadata({
+    title: t.dashboard.metadataTitle,
+    description: t.dashboard.metadataDescription,
+    path: "/dashboard",
+  });
+}
 
 export default async function DashboardPage() {
   const locale = await getLocale();
@@ -147,7 +152,7 @@ export default async function DashboardPage() {
             <CardContent className="p-6">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <p className="text-sm text-gold-200">RFQs</p>
+                  <p className="text-sm text-gold-200">{t.dashboard.rfqs}</p>
                   <h2 className="mt-2 text-xl font-semibold text-white">
                     {buyerCopy.activeRequests}
                   </h2>
@@ -269,23 +274,23 @@ export default async function DashboardPage() {
               </div>
             </div>
             <div className="mt-6 grid gap-3">
-              {[
-                ["Organic cotton basics", "Germany", "500 units", "New"],
-                ["Rigid cosmetics boxes", "France", "2,000 units", "Review"],
-                ["CNC aluminum housing", "Italy", "100 units", "Quoted"],
-              ].map(([product, country, quantity, status]) => (
-                <div
-                  key={product}
-                  className="grid gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-4 sm:grid-cols-[1fr_120px_120px_auto] sm:items-center"
-                >
-                  <p className="font-medium text-white">{product}</p>
-                  <p className="text-sm text-muted-foreground">{country}</p>
-                  <p className="text-sm text-muted-foreground">{quantity}</p>
-                  <Badge variant={status === "New" ? "default" : "secondary"}>
-                    {status}
-                  </Badge>
-                </div>
-              ))}
+              {t.dashboard.supplierRequestRows.map(
+                ([product, country, quantity, status], index) => (
+                  <div
+                    key={product}
+                    className="grid gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-4 sm:grid-cols-[1fr_120px_120px_auto] sm:items-center"
+                  >
+                    <p className="font-medium text-white">{product}</p>
+                    <p className="text-sm text-muted-foreground">{country}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {quantity}
+                    </p>
+                    <Badge variant={index === 0 ? "default" : "secondary"}>
+                      {status}
+                    </Badge>
+                  </div>
+                ),
+              )}
             </div>
           </CardContent>
         </Card>
@@ -337,16 +342,13 @@ export default async function DashboardPage() {
               </div>
             )}
             <div className="mt-6 grid gap-4">
-              {[
-                ["Company documents", "Complete"],
-                ["Certifications", "Needs review"],
-                ["Factory photos", "Complete"],
-                ["Export references", "Pending"],
-              ].map(([item, status]) => (
+              {t.dashboard.readinessRows.map(([item, status], index) => (
                 <div key={item} className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">{item}</span>
                   <Badge
-                    variant={status === "Complete" ? "success" : "secondary"}
+                    variant={
+                      index === 0 || index === 2 ? "success" : "secondary"
+                    }
                   >
                     {status}
                   </Badge>

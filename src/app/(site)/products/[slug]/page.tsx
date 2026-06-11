@@ -37,31 +37,32 @@ export async function generateMetadata({
   params,
 }: ProductDetailPageProps): Promise<Metadata> {
   const locale = await getLocale();
+  const t = getDictionary(locale);
   const { slug } = await params;
   const product = await getProductBySlug(slug, locale);
 
   if (!product) {
     return createMetadata({
-      title: "Product | TMP",
-      description: "TMP product detail.",
+      title: t.products.detailFallbackTitle,
+      description: t.products.detailFallbackDescription,
       path: `/products/${slug}`,
     });
   }
 
   return createMetadata({
-    title: `${product.title} from ${product.supplierName} | TMP`,
-    description: `${product.description} MOQ: ${
-      product.moq ? `${product.moq} units` : "on request"
-    }. Supplier: ${product.supplierName}.`,
+    title: `${product.title} ${t.products.metadataFromSupplier} ${product.supplierName} | TMP`,
+    description: `${product.description} ${t.products.metadataMoq}: ${
+      product.moq
+        ? `${product.moq} ${t.common.units}`
+        : t.common.onRequest.toLowerCase()
+    }. ${t.common.supplier}: ${product.supplierName}.`,
     path: `/products/${product.slug}`,
     image: product.images[0],
     keywords: [
       product.title,
       product.category,
       product.supplierName,
-      "Turkish supplier product",
-      "B2B RFQ",
-      "Turkey export sourcing",
+      ...t.products.detailSeoKeywords,
     ],
   });
 }
@@ -99,8 +100,8 @@ export default async function ProductDetailPage({
         data={[
           getProductJsonLd(product),
           getBreadcrumbJsonLd([
-            { name: "Home", path: "/" },
-            { name: "Products", path: "/products" },
+            { name: t.common.home, path: "/" },
+            { name: t.nav.products, path: "/products" },
             { name: product.title, path: `/products/${product.slug}` },
           ]),
         ]}
@@ -173,7 +174,9 @@ export default async function ProductDetailPage({
                       {t.common.moq}
                     </span>
                     <span className="font-medium text-white">
-                      {product.moq ? `${product.moq} units` : "On request"}
+                      {product.moq
+                        ? `${product.moq} ${t.common.units}`
+                        : t.common.onRequest}
                     </span>
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -189,7 +192,7 @@ export default async function ProductDetailPage({
                       {t.common.leadTime}
                     </span>
                     <span className="font-medium text-white">
-                      {product.leadTime ?? "On request"}
+                      {product.leadTime ?? t.common.onRequest}
                     </span>
                   </div>
                   <div className="flex items-center justify-between gap-4">
@@ -295,6 +298,8 @@ export default async function ProductDetailPage({
                     viewProduct: t.products.viewProduct,
                     quote: t.products.quote,
                     requestQuote: t.products.requestQuote,
+                    units: t.common.units,
+                    onRequest: t.common.onRequest,
                   }}
                 />
               ))}

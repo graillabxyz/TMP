@@ -16,11 +16,16 @@ type NewProductPageProps = {
   searchParams: Promise<{ status?: string }>;
 };
 
-export const metadata: Metadata = createMetadata({
-  title: "Create Product | TMP",
-  description: "Create a supplier product listing on TMP.",
-  path: "/dashboard/products/new",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
+  return createMetadata({
+    title: t.dashboard.createProductMetadataTitle,
+    description: t.dashboard.createProductMetadataDescription,
+    path: "/dashboard/products/new",
+  });
+}
 
 export default async function NewProductPage({
   searchParams,
@@ -49,17 +54,15 @@ export default async function NewProductPage({
         <Card className="bg-white/[0.035]">
           <CardContent className="p-8">
             <h2 className="text-xl font-semibold text-white">
-              {profile ? "Supplier access required" : labels.loginRequired}
+              {profile ? labels.supplierAccessRequired : labels.loginRequired}
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
-              {profile
-                ? "Add a supplier profile before creating supplier product listings. You can keep browsing products or submit a sourcing request from the same account."
-                : labels.loginRequiredBody}
+              {profile ? labels.supplierAccessCreateBody : labels.loginRequiredBody}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               {profile ? (
                 <Button asChild>
-                  <Link href="/products">Browse products</Link>
+                  <Link href="/products">{labels.browseProducts}</Link>
                 </Button>
               ) : (
                 <Button asChild>
@@ -69,9 +72,7 @@ export default async function NewProductPage({
                 </Button>
               )}
               <Button asChild variant="outline">
-                <Link href="/dashboard/profile">
-                  Go to profile
-                </Link>
+                <Link href="/dashboard/profile">{t.common.goToProfile}</Link>
               </Button>
             </div>
           </CardContent>
@@ -96,6 +97,7 @@ export default async function NewProductPage({
               priceMax: labels.priceMax,
               currency: labels.currency,
               leadTime: labels.leadTime,
+              leadTimePlaceholder: labels.leadTimePlaceholder,
               images: labels.images,
               imagePlaceholder: labels.imagePlaceholder,
               imageHelp: labels.imageHelp,

@@ -1,5 +1,6 @@
 import { defaultLocale, localizedValue, type Locale } from "@/lib/i18n";
 import { getDemoRole } from "@/lib/demo-session";
+import { getDictionary } from "@/lib/dictionary";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import type { MarketplaceProduct } from "@/types";
@@ -64,6 +65,8 @@ function normalizeProduct(
   product: PublicProductRow,
   locale: Locale,
 ): MarketplaceProduct {
+  const t = getDictionary(locale);
+
   return {
     id: product.id,
     slug: product.slug,
@@ -75,7 +78,7 @@ function normalizeProduct(
     ),
     category: product.category
       ? localizedValue(locale, product.category.name, product.category.name_fr)
-      : "Uncategorized",
+      : t.common.uncategorized,
     categorySlug: product.category?.slug ?? "",
     supplierName: product.supplier
       ? localizedValue(
@@ -83,7 +86,7 @@ function normalizeProduct(
           product.supplier.company_name,
           product.supplier.company_name_fr,
         )
-      : "Supplier",
+      : t.common.supplier,
     supplierId: product.supplier?.id ?? null,
     supplierSlug: product.supplier?.slug ?? "",
     supplierVerified:
@@ -211,6 +214,7 @@ export async function getRelatedProducts(
 }
 
 export async function getSupplierProductWorkspace(locale: Locale) {
+  const t = getDictionary(locale);
   const demoRole = await getDemoRole();
 
   if (demoRole === "supplier") {
@@ -218,7 +222,12 @@ export async function getSupplierProductWorkspace(locale: Locale) {
       state: "ready" as const,
       supplier: {
         id: "demo-supplier",
-        name: "TMP Demo Supplier",
+        name: localizedValue(
+          locale,
+          "TMP Demo Supplier",
+          "Fournisseur démo TMP",
+          "TMP Demo Tedarikçi",
+        ),
         slug: "tmp-demo-supplier",
       },
       products: [
@@ -357,7 +366,7 @@ export async function getSupplierProductWorkspace(locale: Locale) {
             product.category.name,
             product.category.name_fr,
           )
-        : "Uncategorized",
+        : t.common.uncategorized,
       moq: product.moq,
       priceMin: product.price_min,
       priceMax: product.price_max,
@@ -367,7 +376,10 @@ export async function getSupplierProductWorkspace(locale: Locale) {
   };
 }
 
-export async function getEditableProduct(productId: string) {
+export async function getEditableProduct(
+  productId: string,
+  locale: Locale = defaultLocale,
+) {
   const demoRole = await getDemoRole();
 
   if (demoRole === "supplier") {
@@ -375,10 +387,20 @@ export async function getEditableProduct(productId: string) {
       id: productId,
       supplier_id: "demo-supplier",
       category_id: null,
-      title: "Demo organic cotton hoodie",
+      title: localizedValue(
+        locale,
+        "Demo organic cotton hoodie",
+        "Sweat à capuche coton bio démo",
+        "Demo organik pamuk hoodie",
+      ),
       title_fr: "Sweat à capuche coton bio démo",
       slug: "demo-organic-cotton-hoodie",
-      description: "Demo product listing for supplier workflow testing.",
+      description: localizedValue(
+        locale,
+        "Demo product listing for supplier workflow testing.",
+        "Listing produit démo pour tester le workflow fournisseur.",
+        "Tedarikçi iş akışını test etmek için demo ürün ilanı.",
+      ),
       description_fr: "Listing produit démo pour tester le workflow fournisseur.",
       price_min: 18,
       price_max: 32,

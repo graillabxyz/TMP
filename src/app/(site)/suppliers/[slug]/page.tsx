@@ -45,29 +45,29 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: SupplierDetailPageProps): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
   const { slug } = await params;
-  const supplier = await getSupplierBySlug(slug, "en");
+  const supplier = await getSupplierBySlug(slug, locale);
 
   if (!supplier) {
     return createMetadata({
-      title: "Supplier not found | TMP",
-      description: "This supplier profile is not available.",
+      title: t.supplierDetail.metadataNotFoundTitle,
+      description: t.supplierDetail.metadataNotFoundDescription,
       path: "/suppliers",
     });
   }
 
   return createMetadata({
-    title: `${supplier.name} | Verified Turkish Supplier | TMP`,
-    description: `${supplier.summary} Based in ${supplier.city}, ${supplier.country}. Category: ${supplier.category}.`,
+    title: `${supplier.name} | ${t.supplierDetail.metadataVerifiedTitle} | TMP`,
+    description: `${supplier.summary} ${t.supplierDetail.metadataBasedIn}: ${supplier.city}, ${supplier.country}. ${t.supplierDetail.metadataCategory}: ${supplier.category}.`,
     path: `/suppliers/${supplier.slug}`,
     image: supplier.image,
     keywords: [
       supplier.name,
       supplier.category,
-      `${supplier.city} supplier`,
-      "verified Turkish supplier",
-      "Turkey manufacturer",
-      "B2B sourcing",
+      `${supplier.city} ${t.common.supplier}`,
+      ...t.supplierDetail.seoKeywords,
     ],
   });
 }
@@ -99,8 +99,8 @@ export default async function SupplierDetailPage({
         data={[
           getSupplierJsonLd(supplier),
           getBreadcrumbJsonLd([
-            { name: "Home", path: "/" },
-            { name: "Suppliers", path: "/suppliers" },
+            { name: t.common.home, path: "/" },
+            { name: t.nav.suppliers, path: "/suppliers" },
             { name: supplier.name, path: `/suppliers/${supplier.slug}` },
           ]),
         ]}

@@ -19,11 +19,16 @@ type EditProductPageProps = {
   searchParams: Promise<{ status?: string }>;
 };
 
-export const metadata: Metadata = createMetadata({
-  title: "Edit Product | TMP",
-  description: "Edit a TMP supplier product listing.",
-  path: "/dashboard/products",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
+  return createMetadata({
+    title: t.dashboard.editProductMetadataTitle,
+    description: t.dashboard.editProductMetadataDescription,
+    path: "/dashboard/products",
+  });
+}
 
 export default async function EditProductPage({
   params,
@@ -46,17 +51,15 @@ export default async function EditProductPage({
         <Card className="bg-white/[0.035]">
           <CardContent className="p-8">
             <h2 className="text-xl font-semibold text-white">
-              {profile ? "Supplier access required" : labels.loginRequired}
+              {profile ? labels.supplierAccessRequired : labels.loginRequired}
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
-              {profile
-                ? "Add a supplier profile before editing supplier product listings."
-                : labels.loginRequiredBody}
+              {profile ? labels.supplierAccessEditBody : labels.loginRequiredBody}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               {profile ? (
                 <Button asChild>
-                  <Link href="/products">Browse products</Link>
+                  <Link href="/products">{labels.browseProducts}</Link>
                 </Button>
               ) : (
                 <Button asChild>
@@ -66,9 +69,7 @@ export default async function EditProductPage({
                 </Button>
               )}
               <Button asChild variant="outline">
-                <Link href="/dashboard/profile">
-                  Go to profile
-                </Link>
+                <Link href="/dashboard/profile">{t.common.goToProfile}</Link>
               </Button>
             </div>
           </CardContent>
@@ -79,7 +80,7 @@ export default async function EditProductPage({
 
   const [categories, product] = await Promise.all([
     getCategories(locale),
-    getEditableProduct(id),
+    getEditableProduct(id, locale),
   ]);
   const statusCopy =
     query.status === "missing"
@@ -118,6 +119,7 @@ export default async function EditProductPage({
           priceMax: labels.priceMax,
           currency: labels.currency,
           leadTime: labels.leadTime,
+          leadTimePlaceholder: labels.leadTimePlaceholder,
           images: labels.images,
           imagePlaceholder: labels.imagePlaceholder,
           imageHelp: labels.imageHelp,

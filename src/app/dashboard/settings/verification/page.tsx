@@ -31,11 +31,16 @@ type VerificationPageProps = {
   }>;
 };
 
-export const metadata: Metadata = createMetadata({
-  title: "Verification Settings | TMP",
-  description: "Manage TMP supplier verification and billing settings.",
-  path: "/dashboard/settings/verification",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
+  return createMetadata({
+    title: t.verificationSettings.metadataTitle,
+    description: t.verificationSettings.metadataDescription,
+    path: "/dashboard/settings/verification",
+  });
+}
 
 function badgeVariant(status: string) {
   if (status === "verified" || status === "active") {
@@ -303,6 +308,8 @@ export default async function VerificationSettingsPage({
                     <BillingActions
                       subscribeLabel={copy.subscribe}
                       manageLabel={copy.manage}
+                      preparingLabel={copy.preparing}
+                      openingLabel={copy.opening}
                       canManageSubscription={Boolean(supplier.stripeCustomerId)}
                       errorLabel={copy.billingActionError}
                     />

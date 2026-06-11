@@ -21,11 +21,16 @@ type ProfilePageProps = {
   searchParams: Promise<{ status?: string }>;
 };
 
-export const metadata: Metadata = createMetadata({
-  title: "Profile | TMP",
-  description: "Manage your TMP profile, supplier upgrade, and verification.",
-  path: "/dashboard/profile",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
+  return createMetadata({
+    title: t.profileSettings.metadataTitle,
+    description: t.profileSettings.metadataDescription,
+    path: "/dashboard/profile",
+  });
+}
 
 export default async function ProfilePage({ searchParams }: ProfilePageProps) {
   const locale = await getLocale();
@@ -134,6 +139,8 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                   <BillingActions
                     subscribeLabel={verificationCopy.subscribe}
                     manageLabel={verificationCopy.manage}
+                    preparingLabel={verificationCopy.preparing}
+                    openingLabel={verificationCopy.opening}
                     canManageSubscription={Boolean(supplier.stripeCustomerId)}
                     errorLabel={verificationCopy.billingActionError}
                   />
@@ -202,7 +209,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                     id="company"
                     name="company"
                     required
-                    placeholder="Anatolia Distribution"
+                    placeholder={copy.businessNamePlaceholder}
                   />
                 </div>
                 <Button type="submit">{copy.startSupplierUpgrade}</Button>

@@ -7,11 +7,16 @@ import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = createMetadata({
-  title: "Register | TMP",
-  description: "Create one TMP account for sourcing and supplier setup.",
-  path: "/register",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
+  return createMetadata({
+    title: t.metadata.registerTitle,
+    description: t.metadata.registerDescription,
+    path: "/register",
+  });
+}
 
 type RegisterPageProps = {
   searchParams: Promise<{

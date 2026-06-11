@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 type BillingActionsProps = {
   subscribeLabel: string;
   manageLabel: string;
+  preparingLabel: string;
+  openingLabel: string;
   canManageSubscription: boolean;
   errorLabel: string;
 };
@@ -32,6 +34,8 @@ async function postAndRedirect(path: string) {
 export function BillingActions({
   subscribeLabel,
   manageLabel,
+  preparingLabel,
+  openingLabel,
   canManageSubscription,
   errorLabel,
 }: BillingActionsProps) {
@@ -63,7 +67,7 @@ export function BillingActions({
           }
         >
           <CreditCard aria-hidden="true" />
-          {loading === "checkout" ? "Preparing..." : subscribeLabel}
+          {loading === "checkout" ? preparingLabel : subscribeLabel}
         </Button>
         <Button
           type="button"
@@ -74,7 +78,7 @@ export function BillingActions({
           onClick={() => openBilling("/api/stripe/customer-portal", "portal")}
         >
           <ExternalLink aria-hidden="true" />
-          {loading === "portal" ? "Opening..." : manageLabel}
+          {loading === "portal" ? openingLabel : manageLabel}
         </Button>
       </div>
       {error && (

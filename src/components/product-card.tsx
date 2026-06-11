@@ -18,12 +18,14 @@ type ProductCardProps = {
     viewProduct: string;
     quote: string;
     requestQuote: string;
+    units: string;
+    onRequest: string;
   };
 };
 
 export function ProductCard({ product, labels }: ProductCardProps) {
   const price = formatPriceRange(product, labels.quote);
-  const moq = product.moq ? `${product.moq} units` : "On request";
+  const moq = product.moq ? `${product.moq} ${labels.units}` : labels.onRequest;
 
   return (
     <Card className="group overflow-hidden bg-white/[0.035] transition duration-300 focus-within:border-gold-300/45 hover:-translate-y-1 hover:border-gold-300/30 hover:bg-white/[0.055]">
@@ -84,7 +86,7 @@ export function ProductCard({ product, labels }: ProductCardProps) {
           <div>
             <p className="text-muted-foreground">{labels.leadTime}</p>
             <p className="mt-1 font-medium text-white">
-              {product.leadTime ?? labels.leadTime}
+              {product.leadTime ?? labels.onRequest}
             </p>
           </div>
         </div>

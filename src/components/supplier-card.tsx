@@ -9,29 +9,21 @@ import type { Supplier } from "@/types";
 
 type SupplierCardProps = {
   supplier: Supplier;
-  labels?: {
+  labels: {
     verified: string;
     moq: string;
     response: string;
-    viewSupplier?: string;
+    viewSupplier: string;
   };
 };
 
 export function SupplierCard({ supplier, labels }: SupplierCardProps) {
-  const copy = {
-    verified: "Verified",
-    moq: "MOQ",
-    response: "Response",
-    viewSupplier: "View supplier",
-    ...labels,
-  };
-
   return (
     <Card className="group overflow-hidden bg-white/[0.035] transition duration-300 focus-within:border-gold-300/45 hover:-translate-y-1 hover:border-gold-300/30 hover:bg-white/[0.055]">
       <Link
         href={`/suppliers/${supplier.slug}`}
         className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        aria-label={`${copy.viewSupplier}: ${supplier.name}`}
+        aria-label={`${labels.viewSupplier}: ${supplier.name}`}
       >
         <div className="relative aspect-[16/10] overflow-hidden">
           <Image
@@ -45,7 +37,7 @@ export function SupplierCard({ supplier, labels }: SupplierCardProps) {
           {supplier.verified && (
             <Badge className="absolute left-4 top-4" variant="success">
               <BadgeCheck className="mr-1 size-3" aria-hidden="true" />
-              {copy.verified}
+              {labels.verified}
             </Badge>
           )}
         </div>
@@ -80,11 +72,11 @@ export function SupplierCard({ supplier, labels }: SupplierCardProps) {
         </div>
         <div className="mt-5 grid grid-cols-2 gap-3 border-t border-white/10 pt-4 text-sm">
           <div>
-            <p className="text-muted-foreground">{copy.moq}</p>
+            <p className="text-muted-foreground">{labels.moq}</p>
             <p className="mt-1 font-medium text-white">{supplier.moq}</p>
           </div>
           <div>
-            <p className="text-muted-foreground">{copy.response}</p>
+            <p className="text-muted-foreground">{labels.response}</p>
             <p className="mt-1 font-medium text-white">
               {supplier.responseTime}
             </p>
@@ -92,7 +84,7 @@ export function SupplierCard({ supplier, labels }: SupplierCardProps) {
         </div>
         <Button asChild className="mt-5 w-full" variant="outline">
           <Link href={`/suppliers/${supplier.slug}`}>
-            {copy.viewSupplier}
+            {labels.viewSupplier}
             <ArrowRight aria-hidden="true" />
           </Link>
         </Button>

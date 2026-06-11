@@ -29,19 +29,17 @@ type SuppliersPageProps = {
   }>;
 };
 
-export const metadata: Metadata = createMetadata({
-  title: "Verified Turkish Suppliers | TMP",
-  description:
-    "Browse export-ready Turkish suppliers by category, verification status, MOQ, and European export experience.",
-  path: "/suppliers",
-  keywords: [
-    "verified Turkish suppliers",
-    "Turkey manufacturers",
-    "B2B supplier directory",
-    "export-ready suppliers",
-    "European sourcing Turkey",
-  ],
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
+  return createMetadata({
+    title: t.suppliers.title,
+    description: t.suppliers.body,
+    path: "/suppliers",
+    keywords: t.supplierDetail.seoKeywords,
+  });
+}
 
 export const revalidate = 300;
 
@@ -93,7 +91,14 @@ export default async function SuppliersPage({
     const matchesEuExport = !euExportOnly || supplier.exportMarkets.length > 0;
     const matchesLowMoq =
       !lowMoqOnly ||
-      supplier.tags.some((tag) => tag.toLowerCase().includes("low moq"));
+      supplier.tags.some((tag) => {
+        const normalizedTag = tag.toLowerCase();
+
+        return (
+          normalizedTag.includes("low moq") ||
+          normalizedTag.includes("düşük moq")
+        );
+      });
 
     return (
       supplierMatchesQuery(supplier, normalizedQuery) &&

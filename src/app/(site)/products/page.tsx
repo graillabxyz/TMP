@@ -31,19 +31,17 @@ type ProductsPageProps = {
   }>;
 };
 
-export const metadata: Metadata = createMetadata({
-  title: "Product Discovery | TMP",
-  description:
-    "Browse published Turkish supplier products by search, category, supplier, MOQ, price range, and lead time.",
-  path: "/products",
-  keywords: [
-    "Turkish products",
-    "B2B product sourcing",
-    "supplier products",
-    "Turkey export products",
-    "European sourcing",
-  ],
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
+  return createMetadata({
+    title: t.products.metadataTitle,
+    description: t.products.metadataDescription,
+    path: "/products",
+    keywords: t.products.seoKeywords,
+  });
+}
 
 export const revalidate = 120;
 
@@ -206,6 +204,8 @@ export default async function ProductsPage({
                     viewProduct: t.products.viewProduct,
                     quote: t.products.quote,
                     requestQuote: t.products.requestQuote,
+                    units: t.common.units,
+                    onRequest: t.common.onRequest,
                   }}
                 />
               ))}

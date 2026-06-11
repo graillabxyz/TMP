@@ -40,6 +40,14 @@ const dictionaries = {
       leadTime: "Lead time",
       supplier: "Supplier",
       product: "Product",
+      units: "units",
+      onRequest: "On request",
+      uncategorized: "Uncategorized",
+      generalSourcing: "General sourcing",
+      home: "Home",
+      privacy: "Privacy",
+      terms: "Terms",
+      goToProfile: "Go to profile",
     },
     footer: {
       intro:
@@ -48,6 +56,8 @@ const dictionaries = {
       rfq: "Request a quote",
       buyerLogin: "Buyer login",
       supplierOnboarding: "Supplier onboarding",
+      privacy: "Privacy",
+      terms: "Terms",
       rights: "© 2026 TMP. All rights reserved.",
       note: "Built for sourcing validation, buyer trust, and supplier growth.",
     },
@@ -149,6 +159,25 @@ const dictionaries = {
       backToProducts: "Back to products",
       notConfigured:
         "Supabase products are not configured in this environment yet.",
+      metadataTitle: "Product Discovery | TMP",
+      metadataDescription:
+        "Browse published Turkish supplier products by search, category, supplier, MOQ, price range, and lead time.",
+      detailFallbackTitle: "Product | TMP",
+      detailFallbackDescription: "TMP product detail.",
+      metadataFromSupplier: "from",
+      metadataMoq: "MOQ",
+      seoKeywords: [
+        "Turkish products",
+        "B2B product sourcing",
+        "supplier products",
+        "Turkey export products",
+        "European sourcing",
+      ],
+      detailSeoKeywords: [
+        "Turkish supplier product",
+        "B2B RFQ",
+        "Turkey export sourcing",
+      ],
     },
     supplierDetail: {
       founded: "Founded",
@@ -158,6 +187,17 @@ const dictionaries = {
       certifications: "Certifications",
       licenses: "Licenses & audits",
       exportMarkets: "Export markets",
+      metadataNotFoundTitle: "Supplier not found | TMP",
+      metadataNotFoundDescription:
+        "This supplier profile is not available.",
+      metadataVerifiedTitle: "Verified Turkish Supplier",
+      metadataBasedIn: "Based in",
+      metadataCategory: "Category",
+      seoKeywords: [
+        "verified Turkish supplier",
+        "Turkey manufacturer",
+        "B2B sourcing",
+      ],
     },
     rfq: {
       badge: "Request for quote",
@@ -178,6 +218,14 @@ const dictionaries = {
       quantityPlaceholder: "500 units",
       destinationCountry: "Destination country",
       selectCountry: "Select country",
+      destinationCountries: [
+        "Germany",
+        "Netherlands",
+        "France",
+        "Spain",
+        "Italy",
+        "United Kingdom",
+      ],
       timeline: "Target timeline",
       timelinePlaceholder: "Sample in 3 weeks",
       notes: "Notes / message",
@@ -195,6 +243,9 @@ const dictionaries = {
         config: "Supabase is not configured for this environment yet.",
         error: "We could not submit the RFQ. Please try again.",
       },
+      metadataTitle: "Submit an RFQ | TMP",
+      metadataDescription:
+        "Send a structured sourcing request to Turkish suppliers with product, quantity, destination country, and attachment details.",
     },
     auth: {
       welcomeBack: "Welcome back",
@@ -292,6 +343,17 @@ const dictionaries = {
         "Product inquiries",
         "Verification",
       ],
+      supplierRequestRows: [
+        ["Organic cotton basics", "Germany", "500 units", "New"],
+        ["Rigid cosmetics boxes", "France", "2,000 units", "Review"],
+        ["CNC aluminum housing", "Italy", "100 units", "Quoted"],
+      ],
+      readinessRows: [
+        ["Company documents", "Complete"],
+        ["Certifications", "Needs review"],
+        ["Factory photos", "Complete"],
+        ["Export references", "Pending"],
+      ],
       recentRequests: "Recent buyer requests",
       profileReadiness: "Profile readiness",
       buyerActivity: "Buyer activity",
@@ -366,6 +428,7 @@ const dictionaries = {
         leadTime: "Lead time",
         images: "Images",
         imagePlaceholder: "Image URL placeholder",
+        leadTimePlaceholder: "2-4 weeks",
         imageHelp:
           "Use a public URL for now. Supabase Storage upload can plug into this field later.",
         status: "Status",
@@ -378,12 +441,31 @@ const dictionaries = {
         tableCategory: "Category",
         tablePricing: "Pricing",
         tableUpdated: "Created",
+        supplierAccessRequired: "Supplier access required",
+        supplierAccessCreateBody:
+          "Add a supplier profile before creating supplier product listings. You can keep browsing products or submit a sourcing request from the same account.",
+        supplierAccessEditBody:
+          "Add a supplier profile before editing supplier product listings.",
+        supplierAccessBody:
+          "Product posting is available after adding a supplier profile. Your TMP account can still browse products, save suppliers, and submit RFQs.",
+        browseProducts: "Browse products",
         successCreate: "Product created.",
         successUpdate: "Product updated.",
         successArchive: "Product archived.",
         missing: "Please add a title, category, description, and status.",
         error: "We could not save the product. Please try again.",
       },
+      metadataTitle: "Dashboard | TMP",
+      metadataDescription:
+        "TMP workspace for RFQs, product discovery, and supplier tools.",
+      productMetadataTitle: "Supplier Products | TMP",
+      productMetadataDescription:
+        "Create and manage TMP supplier product listings.",
+      createProductMetadataTitle: "Create Product | TMP",
+      createProductMetadataDescription:
+        "Create a supplier product listing on TMP.",
+      editProductMetadataTitle: "Edit Product | TMP",
+      editProductMetadataDescription: "Edit a TMP supplier product listing.",
     },
     profileSettings: {
       eyebrow: "Account profile",
@@ -411,6 +493,10 @@ const dictionaries = {
         "First upgrade to a supplier by adding your business name. Then you can start the paid membership for a verified badge.",
       verificationSettings: "Verification settings",
       manageProducts: "Manage products",
+      businessNamePlaceholder: "Anatolia Distribution",
+      metadataTitle: "Profile | TMP",
+      metadataDescription:
+        "Manage your TMP profile, supplier upgrade, and verification.",
     },
     verificationSettings: {
       eyebrow: "Supplier verification",
@@ -461,6 +547,8 @@ const dictionaries = {
         "Stripe checkout could not be created. Check the subscription environment variables.",
       billingActionError:
         "Stripe billing could not be opened. Please try again in a moment.",
+      preparing: "Preparing...",
+      opening: "Opening...",
       portalPlaceholder:
         "Customer portal placeholder opened. Live portal sessions will work after Stripe is configured.",
       portalMissingCustomer:
@@ -480,6 +568,9 @@ const dictionaries = {
         past_due: "Past due",
         canceled: "Canceled",
       },
+      metadataTitle: "Verification Settings | TMP",
+      metadataDescription:
+        "Manage TMP supplier verification and billing settings.",
     },
     admin: {
       eyebrow: "Admin console",
@@ -498,6 +589,100 @@ const dictionaries = {
       notes: "Approval notes",
       notesBody:
         "Keep reviewer notes close to approval decisions, verification evidence, category quality, and supplier readiness signals.",
+    },
+    legal: {
+      lastUpdated: "Last updated: May 16, 2026.",
+      privacyBadge: "Privacy",
+      privacyTitle: "Privacy Policy",
+      privacyIntro:
+        "This policy explains how TMP handles information while building a trusted B2B sourcing marketplace.",
+      privacyMetadataTitle: "Privacy Policy | TMP",
+      privacyMetadataDescription:
+        "Privacy policy for TMP, a B2B sourcing marketplace connecting European buyers with Turkish suppliers.",
+      privacySections: [
+        [
+          "Information We Collect",
+          "TMP may collect account details, company information, RFQ submissions, supplier profile content, product listings, verification materials, contact details, and basic usage data needed to operate the marketplace.",
+        ],
+        [
+          "How We Use Information",
+          "We use information to provide marketplace access, route RFQs, manage supplier listings, support verification workflows, improve the product, prevent abuse, and communicate service updates.",
+        ],
+        [
+          "Authentication",
+          "TMP uses Supabase Auth and may offer Google sign-in. When you authenticate with Google, we receive the account information required to create or access your TMP profile, such as email address and basic profile details.",
+        ],
+        [
+          "Suppliers And Buyers",
+          "Published supplier and product information may be visible publicly. RFQs and verification documents are intended to remain private and are protected by database access controls.",
+        ],
+        [
+          "Service Providers",
+          "We use third-party providers such as Supabase, Vercel, Google, and future payment providers to host, authenticate, secure, analyze, and operate the service.",
+        ],
+        [
+          "Data Retention",
+          "We keep information while it is needed for marketplace operations, legal requirements, security, and legitimate business purposes. Users may request updates or deletion where applicable.",
+        ],
+        [
+          "Contact",
+          "For privacy questions or data requests, contact the TMP team through the official marketplace contact channel. A dedicated privacy inbox may be added as the company setup matures.",
+        ],
+      ],
+      termsBadge: "Terms",
+      termsTitle: "Terms of Service",
+      termsIntro:
+        "These terms outline the baseline rules for using TMP during the marketplace MVP and validation phase.",
+      termsMetadataTitle: "Terms of Service | TMP",
+      termsMetadataDescription:
+        "Terms of service for TMP, a B2B sourcing marketplace for European buyers and Turkish suppliers.",
+      termsSections: [
+        [
+          "Marketplace Role",
+          "TMP provides a digital marketplace for sourcing discovery, RFQ submission, supplier profiles, and product listings. TMP is not automatically a party to buyer-supplier transactions unless a separate written agreement says otherwise.",
+        ],
+        [
+          "Accounts",
+          "Users are responsible for accurate account information, authorized access to their company profile, and keeping login credentials secure. Buyer and supplier access may differ based on role and verification status.",
+        ],
+        [
+          "Supplier Listings",
+          "Suppliers are responsible for keeping product listings, company details, certifications, pricing ranges, lead times, and minimum order quantities accurate and lawful.",
+        ],
+        [
+          "RFQs",
+          "Buyers are responsible for submitting accurate sourcing requirements. RFQ responses, pricing, samples, contracts, logistics, customs, and payments are handled between the buyer and supplier unless TMP later offers managed services.",
+        ],
+        [
+          "Verification",
+          "Verification features are designed to increase buyer trust, but they do not guarantee supplier performance, product quality, regulatory compliance, or transaction outcomes. Final verification decisions remain subject to TMP review.",
+        ],
+        [
+          "Acceptable Use",
+          "Users may not submit fraudulent, illegal, infringing, abusive, misleading, or harmful content, and may not attempt to bypass marketplace security, Row Level Security, or access controls.",
+        ],
+        [
+          "Changes",
+          "TMP may update these terms as the marketplace evolves. Continued use of the service after updates means the user accepts the updated terms.",
+        ],
+      ],
+    },
+    notFound: {
+      metadataTitle: "Page Not Found | TMP",
+      title: "This route is still being sourced.",
+      body:
+        "The page may have moved, or it is waiting for the next marketplace sprint.",
+      cta: "Return home",
+    },
+    metadata: {
+      rootTitle: "TMP | Turkiye Market Place",
+      rootDescription:
+        "A premium B2B sourcing marketplace connecting European buyers with verified Turkish suppliers.",
+      loginTitle: "Login | TMP",
+      loginDescription: "Access your TMP account.",
+      registerTitle: "Register | TMP",
+      registerDescription:
+        "Create one TMP account for sourcing and supplier setup.",
     },
   },
   fr: {
@@ -539,6 +724,14 @@ const dictionaries = {
       leadTime: "Délai",
       supplier: "Fournisseur",
       product: "Produit",
+      units: "unités",
+      onRequest: "Sur demande",
+      uncategorized: "Non catégorisé",
+      generalSourcing: "Sourcing général",
+      home: "Accueil",
+      privacy: "Confidentialité",
+      terms: "Conditions",
+      goToProfile: "Aller au profil",
     },
     footer: {
       intro:
@@ -547,6 +740,8 @@ const dictionaries = {
       rfq: "Demander un devis",
       buyerLogin: "Connexion acheteur",
       supplierOnboarding: "Inscription fournisseur",
+      privacy: "Confidentialité",
+      terms: "Conditions",
       rights: "© 2026 TMP. Tous droits réservés.",
       note: "Conçu pour valider le sourcing, renforcer la confiance et accélérer la croissance fournisseur.",
     },
@@ -652,6 +847,25 @@ const dictionaries = {
       backToProducts: "Retour aux produits",
       notConfigured:
         "Les produits Supabase ne sont pas encore configurés dans cet environnement.",
+      metadataTitle: "Découverte produits | TMP",
+      metadataDescription:
+        "Parcourez les produits publiés de fournisseurs turcs par recherche, catégorie, fournisseur, MOQ, prix et délai.",
+      detailFallbackTitle: "Produit | TMP",
+      detailFallbackDescription: "Détail produit TMP.",
+      metadataFromSupplier: "par",
+      metadataMoq: "MOQ",
+      seoKeywords: [
+        "produits turcs",
+        "sourcing produit B2B",
+        "produits fournisseurs",
+        "produits export Turquie",
+        "sourcing européen",
+      ],
+      detailSeoKeywords: [
+        "produit fournisseur turc",
+        "RFQ B2B",
+        "sourcing export Turquie",
+      ],
     },
     supplierDetail: {
       founded: "Fondée",
@@ -661,6 +875,17 @@ const dictionaries = {
       certifications: "Certifications",
       licenses: "Licences et audits",
       exportMarkets: "Marchés export",
+      metadataNotFoundTitle: "Fournisseur introuvable | TMP",
+      metadataNotFoundDescription:
+        "Ce profil fournisseur n’est pas disponible.",
+      metadataVerifiedTitle: "Fournisseur turc vérifié",
+      metadataBasedIn: "Basé à",
+      metadataCategory: "Catégorie",
+      seoKeywords: [
+        "fournisseur turc vérifié",
+        "fabricant Turquie",
+        "sourcing B2B",
+      ],
     },
     rfq: {
       badge: "Demande de devis",
@@ -680,6 +905,14 @@ const dictionaries = {
       quantityPlaceholder: "500 unités",
       destinationCountry: "Pays de destination",
       selectCountry: "Sélectionner un pays",
+      destinationCountries: [
+        "Allemagne",
+        "Pays-Bas",
+        "France",
+        "Espagne",
+        "Italie",
+        "Royaume-Uni",
+      ],
       timeline: "Calendrier cible",
       timelinePlaceholder: "Échantillon sous 3 semaines",
       notes: "Notes / message",
@@ -697,6 +930,9 @@ const dictionaries = {
         config: "Supabase n’est pas encore configuré pour cet environnement.",
         error: "Impossible d’envoyer la demande. Veuillez réessayer.",
       },
+      metadataTitle: "Envoyer une RFQ | TMP",
+      metadataDescription:
+        "Envoyez une demande de sourcing structurée aux fournisseurs turcs avec produit, quantité, pays de destination et pièces jointes.",
     },
     auth: {
       welcomeBack: "Bon retour",
@@ -797,6 +1033,17 @@ const dictionaries = {
         "Demandes produit",
         "Vérification",
       ],
+      supplierRequestRows: [
+        ["Basiques coton bio", "Allemagne", "500 unités", "Nouveau"],
+        ["Boîtes cosmétiques rigides", "France", "2 000 unités", "Revue"],
+        ["Boîtier aluminium CNC", "Italie", "100 unités", "Devis reçu"],
+      ],
+      readinessRows: [
+        ["Documents société", "Complet"],
+        ["Certifications", "À revoir"],
+        ["Photos usine", "Complet"],
+        ["Références export", "En attente"],
+      ],
       recentRequests: "Demandes acheteurs récentes",
       profileReadiness: "Préparation du profil",
       buyerActivity: "Activité acheteur",
@@ -875,6 +1122,7 @@ const dictionaries = {
         leadTime: "Délai",
         images: "Images",
         imagePlaceholder: "URL d’image temporaire",
+        leadTimePlaceholder: "2-4 semaines",
         imageHelp:
           "Utilisez une URL publique pour l’instant. L’upload Supabase Storage pourra être branché ici plus tard.",
         status: "Statut",
@@ -887,6 +1135,14 @@ const dictionaries = {
         tableCategory: "Catégorie",
         tablePricing: "Prix",
         tableUpdated: "Créé",
+        supplierAccessRequired: "Accès fournisseur requis",
+        supplierAccessCreateBody:
+          "Ajoutez un profil fournisseur avant de créer des listings produits. Vous pouvez continuer à parcourir les produits ou envoyer une demande de sourcing avec le même compte.",
+        supplierAccessEditBody:
+          "Ajoutez un profil fournisseur avant de modifier les listings produits.",
+        supplierAccessBody:
+          "La publication produit est disponible après ajout d’un profil fournisseur. Votre compte TMP peut toujours parcourir les produits, enregistrer des fournisseurs et envoyer des demandes.",
+        browseProducts: "Parcourir les produits",
         successCreate: "Produit créé.",
         successUpdate: "Produit mis à jour.",
         successArchive: "Produit archivé.",
@@ -894,6 +1150,18 @@ const dictionaries = {
           "Veuillez ajouter un titre, une catégorie, une description et un statut.",
         error: "Impossible d’enregistrer le produit. Veuillez réessayer.",
       },
+      metadataTitle: "Tableau de bord | TMP",
+      metadataDescription:
+        "Espace TMP pour les RFQ, la découverte produit et les outils fournisseur.",
+      productMetadataTitle: "Produits fournisseur | TMP",
+      productMetadataDescription:
+        "Créez et gérez les listings produits fournisseur TMP.",
+      createProductMetadataTitle: "Créer un produit | TMP",
+      createProductMetadataDescription:
+        "Créez un listing produit fournisseur sur TMP.",
+      editProductMetadataTitle: "Modifier le produit | TMP",
+      editProductMetadataDescription:
+        "Modifiez un listing produit fournisseur TMP.",
     },
     profileSettings: {
       eyebrow: "Profil du compte",
@@ -921,6 +1189,10 @@ const dictionaries = {
         "Passez d’abord en fournisseur en ajoutant le nom de l’entreprise. Vous pourrez ensuite démarrer l’abonnement payant pour le badge vérifié.",
       verificationSettings: "Paramètres de vérification",
       manageProducts: "Gérer les produits",
+      businessNamePlaceholder: "Anatolia Distribution",
+      metadataTitle: "Profil | TMP",
+      metadataDescription:
+        "Gérez votre profil TMP, l’upgrade fournisseur et la vérification.",
     },
     verificationSettings: {
       eyebrow: "Vérification fournisseur",
@@ -972,6 +1244,8 @@ const dictionaries = {
         "Impossible de créer le checkout Stripe. Vérifiez les variables d’environnement.",
       billingActionError:
         "Impossible d’ouvrir la facturation Stripe. Veuillez réessayer dans un instant.",
+      preparing: "Préparation...",
+      opening: "Ouverture...",
       portalPlaceholder:
         "Placeholder portail client ouvert. Les sessions live fonctionneront après configuration Stripe.",
       portalMissingCustomer:
@@ -992,6 +1266,9 @@ const dictionaries = {
         past_due: "En retard",
         canceled: "Annulé",
       },
+      metadataTitle: "Paramètres de vérification | TMP",
+      metadataDescription:
+        "Gérez la vérification fournisseur TMP et les paramètres de facturation.",
     },
     admin: {
       eyebrow: "Console admin",
@@ -1010,6 +1287,100 @@ const dictionaries = {
       notes: "Notes d’approbation",
       notesBody:
         "Gardez les notes reviewer proches des décisions, preuves, qualité catégorie et signaux de maturité.",
+    },
+    legal: {
+      lastUpdated: "Dernière mise à jour : 16 mai 2026.",
+      privacyBadge: "Confidentialité",
+      privacyTitle: "Politique de confidentialité",
+      privacyIntro:
+        "Cette politique explique comment TMP traite les informations pendant la construction d’une marketplace B2B de sourcing fiable.",
+      privacyMetadataTitle: "Politique de confidentialité | TMP",
+      privacyMetadataDescription:
+        "Politique de confidentialité de TMP, marketplace B2B reliant les acheteurs européens aux fournisseurs turcs.",
+      privacySections: [
+        [
+          "Informations collectées",
+          "TMP peut collecter les informations de compte, données d’entreprise, soumissions RFQ, contenus de profil fournisseur, listings produits, documents de vérification, coordonnées et données d’usage de base nécessaires au fonctionnement de la marketplace.",
+        ],
+        [
+          "Utilisation des informations",
+          "Nous utilisons les informations pour fournir l’accès marketplace, router les RFQ, gérer les listings fournisseurs, soutenir les workflows de vérification, améliorer le produit, prévenir les abus et communiquer les mises à jour du service.",
+        ],
+        [
+          "Authentification",
+          "TMP utilise Supabase Auth et peut proposer la connexion Google. Lorsque vous vous authentifiez avec Google, nous recevons les informations nécessaires pour créer ou accéder à votre profil TMP, comme l’adresse e-mail et les détails de base du profil.",
+        ],
+        [
+          "Fournisseurs et acheteurs",
+          "Les informations fournisseur et produit publiées peuvent être visibles publiquement. Les RFQ et documents de vérification sont destinés à rester privés et sont protégés par les contrôles d’accès de la base de données.",
+        ],
+        [
+          "Prestataires",
+          "Nous utilisons des prestataires tiers comme Supabase, Vercel, Google et de futurs fournisseurs de paiement pour héberger, authentifier, sécuriser, analyser et opérer le service.",
+        ],
+        [
+          "Conservation des données",
+          "Nous conservons les informations tant qu’elles sont nécessaires aux opérations marketplace, aux exigences légales, à la sécurité et aux intérêts commerciaux légitimes. Les utilisateurs peuvent demander des mises à jour ou suppressions lorsque cela s’applique.",
+        ],
+        [
+          "Contact",
+          "Pour les questions de confidentialité ou les demandes liées aux données, contactez l’équipe TMP via le canal officiel de la marketplace. Une boîte de réception dédiée pourra être ajoutée à mesure que la structure mûrit.",
+        ],
+      ],
+      termsBadge: "Conditions",
+      termsTitle: "Conditions d’utilisation",
+      termsIntro:
+        "Ces conditions définissent les règles de base d’utilisation de TMP pendant la phase MVP et validation de la marketplace.",
+      termsMetadataTitle: "Conditions d’utilisation | TMP",
+      termsMetadataDescription:
+        "Conditions d’utilisation de TMP, marketplace B2B pour acheteurs européens et fournisseurs turcs.",
+      termsSections: [
+        [
+          "Rôle de la marketplace",
+          "TMP fournit une marketplace digitale pour la découverte sourcing, la soumission RFQ, les profils fournisseurs et les listings produits. TMP n’est pas automatiquement partie aux transactions acheteur-fournisseur sauf accord écrit séparé.",
+        ],
+        [
+          "Comptes",
+          "Les utilisateurs sont responsables de l’exactitude des informations de compte, de l’accès autorisé à leur profil entreprise et de la sécurité des identifiants. Les accès acheteur et fournisseur peuvent varier selon le rôle et le statut de vérification.",
+        ],
+        [
+          "Listings fournisseurs",
+          "Les fournisseurs sont responsables de maintenir exacts et conformes leurs listings produits, informations entreprise, certifications, fourchettes de prix, délais et quantités minimales.",
+        ],
+        [
+          "RFQ",
+          "Les acheteurs sont responsables de soumettre des besoins sourcing exacts. Les réponses RFQ, prix, échantillons, contrats, logistique, douanes et paiements sont gérés entre acheteur et fournisseur sauf si TMP propose ultérieurement des services managés.",
+        ],
+        [
+          "Vérification",
+          "Les fonctions de vérification visent à renforcer la confiance acheteur, mais ne garantissent pas la performance fournisseur, la qualité produit, la conformité réglementaire ou les résultats transactionnels. Les décisions finales restent soumises à la revue TMP.",
+        ],
+        [
+          "Usage acceptable",
+          "Les utilisateurs ne peuvent pas soumettre de contenu frauduleux, illégal, contrefaisant, abusif, trompeur ou nuisible, ni tenter de contourner la sécurité marketplace, Row Level Security ou les contrôles d’accès.",
+        ],
+        [
+          "Évolutions",
+          "TMP peut mettre à jour ces conditions à mesure que la marketplace évolue. L’utilisation continue du service après mise à jour vaut acceptation des nouvelles conditions.",
+        ],
+      ],
+    },
+    notFound: {
+      metadataTitle: "Page introuvable | TMP",
+      title: "Cette route est encore en cours de sourcing.",
+      body:
+        "La page a peut-être été déplacée ou attend le prochain sprint marketplace.",
+      cta: "Retour à l’accueil",
+    },
+    metadata: {
+      rootTitle: "TMP | Turkiye Market Place",
+      rootDescription:
+        "Marketplace B2B premium reliant les acheteurs européens aux fournisseurs turcs vérifiés.",
+      loginTitle: "Connexion | TMP",
+      loginDescription: "Accédez à votre compte TMP.",
+      registerTitle: "Inscription | TMP",
+      registerDescription:
+        "Créez un compte TMP unique pour le sourcing et la configuration fournisseur.",
     },
   },
 } as const;
@@ -1053,6 +1424,14 @@ const turkishDictionary = {
     leadTime: "Teslim süresi",
     supplier: "Tedarikçi",
     product: "Ürün",
+    units: "adet",
+    onRequest: "Talep üzerine",
+    uncategorized: "Kategorisiz",
+    generalSourcing: "Genel sourcing",
+    home: "Ana sayfa",
+    privacy: "Gizlilik",
+    terms: "Şartlar",
+    goToProfile: "Profile git",
   },
   footer: {
     intro:
@@ -1061,6 +1440,8 @@ const turkishDictionary = {
     rfq: "Teklif iste",
     buyerLogin: "Alıcı girişi",
     supplierOnboarding: "Tedarikçi başvurusu",
+    privacy: "Gizlilik",
+    terms: "Şartlar",
     rights: "© 2026 TMP. Tüm hakları saklıdır.",
     note: "Sourcing doğrulaması, alıcı güveni ve tedarikçi büyümesi için geliştirildi.",
   },
@@ -1162,6 +1543,25 @@ const turkishDictionary = {
     backToProducts: "Ürünlere dön",
     notConfigured:
       "Supabase ürünleri bu ortamda henüz yapılandırılmadı.",
+    metadataTitle: "Ürün Keşfi | TMP",
+    metadataDescription:
+      "Yayınlanmış Türk tedarikçi ürünlerini arama, kategori, tedarikçi, MOQ, fiyat aralığı ve teslim süresine göre inceleyin.",
+    detailFallbackTitle: "Ürün | TMP",
+    detailFallbackDescription: "TMP ürün detayı.",
+    metadataFromSupplier: "tedarikçisinden",
+    metadataMoq: "MOQ",
+    seoKeywords: [
+      "Türk ürünleri",
+      "B2B ürün sourcing",
+      "tedarikçi ürünleri",
+      "Türkiye ihracat ürünleri",
+      "Avrupa sourcing",
+    ],
+    detailSeoKeywords: [
+      "Türk tedarikçi ürünü",
+      "B2B RFQ",
+      "Türkiye ihracat sourcing",
+    ],
   },
   supplierDetail: {
     founded: "Kuruluş",
@@ -1171,6 +1571,16 @@ const turkishDictionary = {
     certifications: "Sertifikalar",
     licenses: "Lisanslar ve denetimler",
     exportMarkets: "İhracat pazarları",
+    metadataNotFoundTitle: "Tedarikçi bulunamadı | TMP",
+    metadataNotFoundDescription: "Bu tedarikçi profili mevcut değil.",
+    metadataVerifiedTitle: "Doğrulanmış Türk Tedarikçi",
+    metadataBasedIn: "Konum",
+    metadataCategory: "Kategori",
+    seoKeywords: [
+      "doğrulanmış Türk tedarikçi",
+      "Türkiye üreticisi",
+      "B2B sourcing",
+    ],
   },
   rfq: {
     badge: "Teklif talebi",
@@ -1191,6 +1601,14 @@ const turkishDictionary = {
     quantityPlaceholder: "500 adet",
     destinationCountry: "Varış ülkesi",
     selectCountry: "Ülke seç",
+    destinationCountries: [
+      "Almanya",
+      "Hollanda",
+      "Fransa",
+      "İspanya",
+      "İtalya",
+      "Birleşik Krallık",
+    ],
     timeline: "Hedef zamanlama",
     timelinePlaceholder: "3 hafta içinde numune",
     notes: "Notlar / mesaj",
@@ -1207,6 +1625,9 @@ const turkishDictionary = {
       config: "Supabase bu ortam için henüz yapılandırılmadı.",
       error: "Teklif talebi gönderilemedi. Lütfen tekrar deneyin.",
     },
+    metadataTitle: "RFQ Gönder | TMP",
+    metadataDescription:
+      "Ürün, miktar, varış ülkesi ve ek detaylarıyla Türk tedarikçilere yapılandırılmış sourcing talebi gönderin.",
   },
   auth: {
     welcomeBack: "Tekrar hoş geldiniz",
@@ -1304,6 +1725,17 @@ const turkishDictionary = {
       "Ürün talepleri",
       "Doğrulama",
     ],
+    supplierRequestRows: [
+      ["Organik pamuk basics", "Almanya", "500 adet", "Yeni"],
+      ["Sert kozmetik kutuları", "Fransa", "2.000 adet", "İnceleme"],
+      ["CNC alüminyum gövde", "İtalya", "100 adet", "Tekliflendi"],
+    ],
+    readinessRows: [
+      ["Şirket belgeleri", "Tamamlandı"],
+      ["Sertifikalar", "İnceleme gerekli"],
+      ["Fabrika fotoğrafları", "Tamamlandı"],
+      ["İhracat referansları", "Beklemede"],
+    ],
     recentRequests: "Son alıcı talepleri",
     profileReadiness: "Profil hazırlığı",
     buyerActivity: "Alıcı aktivitesi",
@@ -1378,6 +1810,7 @@ const turkishDictionary = {
       leadTime: "Teslim süresi",
       images: "Görseller",
       imagePlaceholder: "Görsel URL yer tutucusu",
+      leadTimePlaceholder: "2-4 hafta",
       imageHelp:
         "Şimdilik herkese açık bir URL kullanın. Supabase Storage yükleme alanı daha sonra bu alana bağlanabilir.",
       status: "Durum",
@@ -1390,12 +1823,31 @@ const turkishDictionary = {
       tableCategory: "Kategori",
       tablePricing: "Fiyatlandırma",
       tableUpdated: "Oluşturulma",
+      supplierAccessRequired: "Tedarikçi erişimi gerekli",
+      supplierAccessCreateBody:
+        "Tedarikçi ürün ilanları oluşturmadan önce tedarikçi profili ekleyin. Aynı hesaptan ürünleri incelemeye veya sourcing talebi göndermeye devam edebilirsiniz.",
+      supplierAccessEditBody:
+        "Tedarikçi ürün ilanlarını düzenlemeden önce tedarikçi profili ekleyin.",
+      supplierAccessBody:
+        "Ürün yayınlama, tedarikçi profili eklendikten sonra kullanılabilir. TMP hesabınız yine ürünleri inceleyebilir, tedarikçileri kaydedebilir ve RFQ gönderebilir.",
+      browseProducts: "Ürünlere göz at",
       successCreate: "Ürün oluşturuldu.",
       successUpdate: "Ürün güncellendi.",
       successArchive: "Ürün arşivlendi.",
       missing: "Lütfen başlık, kategori, açıklama ve durum ekleyin.",
       error: "Ürün kaydedilemedi. Lütfen tekrar deneyin.",
     },
+    metadataTitle: "Panel | TMP",
+    metadataDescription:
+      "RFQ'lar, ürün keşfi ve tedarikçi araçları için TMP çalışma alanı.",
+    productMetadataTitle: "Tedarikçi Ürünleri | TMP",
+    productMetadataDescription:
+      "TMP tedarikçi ürün ilanlarını oluşturun ve yönetin.",
+    createProductMetadataTitle: "Ürün Oluştur | TMP",
+    createProductMetadataDescription:
+      "TMP'de tedarikçi ürün ilanı oluşturun.",
+    editProductMetadataTitle: "Ürünü Düzenle | TMP",
+    editProductMetadataDescription: "TMP tedarikçi ürün ilanını düzenleyin.",
   },
   profileSettings: {
     eyebrow: "Hesap profili",
@@ -1423,6 +1875,10 @@ const turkishDictionary = {
       "Önce işletme adınızı ekleyerek tedarikçiye yükseltin. Ardından doğrulanmış rozet için ücretli üyeliği başlatabilirsiniz.",
     verificationSettings: "Doğrulama ayarları",
     manageProducts: "Ürünleri yönet",
+    businessNamePlaceholder: "Anatolia Distribution",
+    metadataTitle: "Profil | TMP",
+    metadataDescription:
+      "TMP profilinizi, tedarikçi yükseltmesini ve doğrulamayı yönetin.",
   },
   verificationSettings: {
     eyebrow: "Tedarikçi doğrulaması",
@@ -1479,6 +1935,8 @@ const turkishDictionary = {
       "Müşteri portalını açmadan önce doğrulama aboneliği başlatın.",
     portalError:
       "Stripe müşteri portalı açılamadı. Lütfen tekrar deneyin.",
+    preparing: "Hazırlanıyor...",
+    opening: "Açılıyor...",
     missingSupplier:
       "Doğrulamadan önce tedarikçi profili oluşturun veya bağlayın.",
     loginRequired: "Tedarikçi profili eklemek veya yönetmek için giriş yapın.",
@@ -1492,6 +1950,9 @@ const turkishDictionary = {
       past_due: "Gecikmiş",
       canceled: "İptal edildi",
     },
+    metadataTitle: "Doğrulama Ayarları | TMP",
+    metadataDescription:
+      "TMP tedarikçi doğrulamasını ve faturalandırma ayarlarını yönetin.",
   },
   admin: {
     eyebrow: "Yönetici konsolu",
@@ -1510,6 +1971,100 @@ const turkishDictionary = {
     notes: "Onay notları",
     notesBody:
       "İnceleyici notlarını onay kararları, doğrulama kanıtları, kategori kalitesi ve tedarikçi hazırlık sinyallerinin yanında tutun.",
+  },
+  legal: {
+    lastUpdated: "Son güncelleme: 16 Mayıs 2026.",
+    privacyBadge: "Gizlilik",
+    privacyTitle: "Gizlilik Politikası",
+    privacyIntro:
+      "Bu politika, TMP'nin güvenilir bir B2B sourcing pazar yeri oluştururken bilgileri nasıl işlediğini açıklar.",
+    privacyMetadataTitle: "Gizlilik Politikası | TMP",
+    privacyMetadataDescription:
+      "Avrupalı alıcıları Türk tedarikçilerle buluşturan B2B sourcing pazar yeri TMP için gizlilik politikası.",
+    privacySections: [
+      [
+        "Topladığımız bilgiler",
+        "TMP, pazar yerini işletmek için gerekli hesap bilgileri, şirket bilgileri, RFQ gönderimleri, tedarikçi profil içeriği, ürün ilanları, doğrulama materyalleri, iletişim bilgileri ve temel kullanım verilerini toplayabilir.",
+      ],
+      [
+        "Bilgileri nasıl kullanırız",
+        "Bilgileri pazar yeri erişimi sağlamak, RFQ'ları yönlendirmek, tedarikçi ilanlarını yönetmek, doğrulama iş akışlarını desteklemek, ürünü geliştirmek, kötüye kullanımı önlemek ve hizmet güncellemelerini iletmek için kullanırız.",
+      ],
+      [
+        "Kimlik doğrulama",
+        "TMP, Supabase Auth kullanır ve Google ile giriş sunabilir. Google ile doğrulama yaptığınızda, e-posta adresi ve temel profil detayları gibi TMP profilinizi oluşturmak veya profilinize erişmek için gereken hesap bilgilerini alırız.",
+      ],
+      [
+        "Tedarikçiler ve alıcılar",
+        "Yayınlanan tedarikçi ve ürün bilgileri herkese açık görünebilir. RFQ'lar ve doğrulama belgeleri özel kalmak üzere tasarlanmıştır ve veritabanı erişim kontrolleriyle korunur.",
+      ],
+      [
+        "Hizmet sağlayıcılar",
+        "Hizmeti barındırmak, kimlik doğrulamak, güvenceye almak, analiz etmek ve işletmek için Supabase, Vercel, Google ve gelecekteki ödeme sağlayıcıları gibi üçüncü taraf sağlayıcılar kullanırız.",
+      ],
+      [
+        "Veri saklama",
+        "Bilgileri pazar yeri operasyonları, yasal gereklilikler, güvenlik ve meşru ticari amaçlar için gerektiği sürece saklarız. Kullanıcılar uygun durumlarda güncelleme veya silme talep edebilir.",
+      ],
+      [
+        "İletişim",
+        "Gizlilik soruları veya veri talepleri için resmi pazar yeri iletişim kanalı üzerinden TMP ekibiyle iletişime geçin. Şirket yapısı olgunlaştıkça özel bir gizlilik gelen kutusu eklenebilir.",
+      ],
+    ],
+    termsBadge: "Şartlar",
+    termsTitle: "Hizmet Şartları",
+    termsIntro:
+      "Bu şartlar, pazar yeri MVP ve doğrulama aşamasında TMP kullanımının temel kurallarını açıklar.",
+    termsMetadataTitle: "Hizmet Şartları | TMP",
+    termsMetadataDescription:
+      "Avrupalı alıcılar ve Türk tedarikçiler için B2B sourcing pazar yeri TMP'nin hizmet şartları.",
+    termsSections: [
+      [
+        "Pazar yerinin rolü",
+        "TMP, sourcing keşfi, RFQ gönderimi, tedarikçi profilleri ve ürün ilanları için dijital bir pazar yeri sağlar. Ayrı bir yazılı anlaşma olmadıkça TMP, alıcı-tedarikçi işlemlerinin otomatik tarafı değildir.",
+      ],
+      [
+        "Hesaplar",
+        "Kullanıcılar doğru hesap bilgilerinden, şirket profiline yetkili erişimden ve giriş bilgilerinin güvenli tutulmasından sorumludur. Alıcı ve tedarikçi erişimi rol ve doğrulama durumuna göre farklılık gösterebilir.",
+      ],
+      [
+        "Tedarikçi ilanları",
+        "Tedarikçiler ürün ilanlarını, şirket bilgilerini, sertifikaları, fiyat aralıklarını, teslim sürelerini ve minimum sipariş miktarlarını doğru ve yasal tutmaktan sorumludur.",
+      ],
+      [
+        "RFQ'lar",
+        "Alıcılar doğru sourcing gereksinimleri göndermekten sorumludur. RFQ yanıtları, fiyatlandırma, numuneler, sözleşmeler, lojistik, gümrük ve ödemeler, TMP ileride yönetilen hizmetler sunmadıkça alıcı ve tedarikçi arasında yürütülür.",
+      ],
+      [
+        "Doğrulama",
+        "Doğrulama özellikleri alıcı güvenini artırmak için tasarlanmıştır; ancak tedarikçi performansını, ürün kalitesini, mevzuat uyumunu veya işlem sonuçlarını garanti etmez. Nihai doğrulama kararları TMP incelemesine tabidir.",
+      ],
+      [
+        "Kabul edilebilir kullanım",
+        "Kullanıcılar hileli, yasa dışı, hak ihlal eden, kötüye kullanım içeren, yanıltıcı veya zararlı içerik gönderemez; pazar yeri güvenliğini, Row Level Security'yi veya erişim kontrollerini aşmaya çalışamaz.",
+      ],
+      [
+        "Değişiklikler",
+        "TMP, pazar yeri geliştikçe bu şartları güncelleyebilir. Güncellemelerden sonra hizmetin kullanılmaya devam edilmesi, güncellenmiş şartların kabul edildiği anlamına gelir.",
+      ],
+    ],
+  },
+  notFound: {
+    metadataTitle: "Sayfa Bulunamadı | TMP",
+    title: "Bu rota hâlâ tedarik ediliyor.",
+    body:
+      "Sayfa taşınmış olabilir veya bir sonraki pazar yeri sprintini bekliyor olabilir.",
+    cta: "Ana sayfaya dön",
+  },
+  metadata: {
+    rootTitle: "TMP | Turkiye Market Place",
+    rootDescription:
+      "Avrupalı alıcıları doğrulanmış Türk tedarikçilerle buluşturan premium B2B sourcing pazar yeri.",
+    loginTitle: "Giriş | TMP",
+    loginDescription: "TMP hesabınıza erişin.",
+    registerTitle: "Kayıt | TMP",
+    registerDescription:
+      "Sourcing ve tedarikçi kurulumu için tek TMP hesabı oluşturun.",
   },
 };
 

@@ -2,6 +2,7 @@ import {
   categories as mockCategories,
   suppliers as mockSuppliers,
 } from "@/lib/data";
+import { getDictionary } from "@/lib/dictionary";
 import {
   localizedArray,
   localizedValue,
@@ -317,12 +318,14 @@ function normalizeProduct(
   row: SupplierProductRow,
   locale: Locale,
 ): ProductPreview {
+  const t = getDictionary(locale);
+
   return {
     name: localizedValue(locale, row.title, row.title_fr),
     category: row.category
       ? localizedValue(locale, row.category.name, row.category.name_fr)
-      : "Product",
-    moq: row.moq ? `${row.moq} units` : "On request",
+      : t.common.product,
+    moq: row.moq ? `${row.moq} ${t.common.units}` : t.common.onRequest,
     image: row.images[0] ?? "/brand/tmp-logo.webp",
   };
 }
@@ -330,7 +333,7 @@ function normalizeProduct(
 function getCategoryName(
   locale: Locale,
   category: SupplierRow["category"],
-  fallback = "General sourcing",
+  fallback = getDictionary(locale).common.generalSourcing,
 ) {
   if (Array.isArray(category)) {
     const firstCategory = category[0];

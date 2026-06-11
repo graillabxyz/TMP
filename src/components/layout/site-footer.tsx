@@ -24,8 +24,8 @@ export async function SiteFooter() {
       label: t.footer.supplierOnboarding,
       href: supplierUpgradeHref,
     },
-    { label: "Privacy", href: "/privacy" },
-    { label: "Terms", href: "/terms" },
+    { label: t.footer.privacy, href: "/privacy" },
+    { label: t.footer.terms, href: "/terms" },
   ];
 
   return (

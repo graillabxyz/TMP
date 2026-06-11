@@ -19,6 +19,7 @@ type ProductFormLabels = {
   priceMax: string;
   currency: string;
   leadTime: string;
+  leadTimePlaceholder: string;
   images: string;
   imagePlaceholder: string;
   imageHelp: string;
@@ -112,7 +113,7 @@ export function ProductForm({
               <Input
                 id="lead_time"
                 name="lead_time"
-                placeholder="2-4 weeks"
+                placeholder={labels.leadTimePlaceholder}
                 defaultValue={product?.lead_time ?? ""}
               />
             </div>

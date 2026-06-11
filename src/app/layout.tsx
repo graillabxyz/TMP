@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
 
+import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
 
 import "./globals.css";
 
-export const metadata: Metadata = createMetadata({
-  title: "TMP | Turkiye Market Place",
-  description:
-    "A premium B2B sourcing marketplace connecting European buyers with verified Turkish suppliers.",
-  path: "/",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
+  return createMetadata({
+    title: t.metadata.rootTitle,
+    description: t.metadata.rootDescription,
+    path: "/",
+  });
+}
 
 export default async function RootLayout({
   children,

@@ -5,11 +5,16 @@ import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = createMetadata({
-  title: "Login | TMP",
-  description: "Access your TMP account.",
-  path: "/login",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
+  return createMetadata({
+    title: t.metadata.loginTitle,
+    description: t.metadata.loginDescription,
+    path: "/login",
+  });
+}
 
 type LoginPageProps = {
   searchParams: Promise<{

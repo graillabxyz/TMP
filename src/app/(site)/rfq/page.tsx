@@ -16,12 +16,16 @@ import { getPlatformActivity } from "@/lib/platform-activity";
 import { getProductBySlug } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = createMetadata({
-  title: "Submit an RFQ | TMP",
-  description:
-    "Send a structured sourcing request to Turkish suppliers with product, quantity, destination country, and attachment details.",
-  path: "/rfq",
-});
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
+  return createMetadata({
+    title: t.rfq.metadataTitle,
+    description: t.rfq.metadataDescription,
+    path: "/rfq",
+  });
+}
 
 type RFQPageProps = {
   searchParams?: Promise<{
@@ -207,14 +211,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                       <option value="" disabled>
                         {t.rfq.selectCountry}
                       </option>
-                      {[
-                        "Germany",
-                        "Netherlands",
-                        "France",
-                        "Spain",
-                        "Italy",
-                        "United Kingdom",
-                      ].map((country) => (
+                      {t.rfq.destinationCountries.map((country) => (
                         <option key={country} value={country}>
                           {country}
                         </option>

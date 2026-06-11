@@ -2,29 +2,38 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 import { Button } from "@/components/ui/button";
+import { getDictionary } from "@/lib/dictionary";
+import { getLocale } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-  title: "Page Not Found | TMP",
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
 
-export default function NotFound() {
+  return {
+    title: t.notFound.metadataTitle,
+    robots: {
+      index: false,
+      follow: false,
+    },
+  };
+}
+
+export default async function NotFound() {
+  const locale = await getLocale();
+  const t = getDictionary(locale);
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-surface-radial px-6">
       <div className="max-w-md text-center">
         <p className="text-sm text-gold-200">404</p>
         <h1 className="mt-3 text-3xl font-semibold text-white">
-          This route is still being sourced.
+          {t.notFound.title}
         </h1>
         <p className="mt-4 text-muted-foreground">
-          The page may have moved, or it is waiting for the next marketplace
-          sprint.
+          {t.notFound.body}
         </p>
         <Button asChild className="mt-8">
-          <Link href="/">Return home</Link>
+          <Link href="/">{t.notFound.cta}</Link>
         </Button>
       </div>
     </main>
