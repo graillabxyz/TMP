@@ -38,6 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description: t.suppliers.body,
     path: "/suppliers",
     keywords: t.supplierDetail.seoKeywords,
+    locale,
   });
 }
 
@@ -111,7 +112,12 @@ export default async function SuppliersPage({
 
   return (
     <>
-      <JsonLd data={getSupplierCollectionJsonLd(filteredSuppliers)} />
+      <JsonLd
+        data={getSupplierCollectionJsonLd(filteredSuppliers, {
+          name: t.suppliers.title,
+          description: t.suppliers.body,
+        })}
+      />
       <section className="section-shell">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>

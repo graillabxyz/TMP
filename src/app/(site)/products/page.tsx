@@ -40,6 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description: t.products.metadataDescription,
     path: "/products",
     keywords: t.products.seoKeywords,
+    locale,
   });
 }
 
@@ -63,7 +64,12 @@ export default async function ProductsPage({
 
   return (
     <>
-      <JsonLd data={getProductCollectionJsonLd(products)} />
+      <JsonLd
+        data={getProductCollectionJsonLd(products, {
+          name: t.products.metadataTitle,
+          description: t.products.metadataDescription,
+        })}
+      />
       <section className="section-shell">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>

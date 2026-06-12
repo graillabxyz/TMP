@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
-import { getSupplierBySlug, getSuppliers } from "@/lib/marketplace";
+import { getSupplierBySlug } from "@/lib/marketplace";
 import { getPlatformActivity } from "@/lib/platform-activity";
 import { createMetadata } from "@/lib/seo";
 import { slugify } from "@/lib/slug";
@@ -32,15 +32,8 @@ type SupplierDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
 
+export const dynamic = "force-dynamic";
 export const revalidate = 300;
-
-export async function generateStaticParams() {
-  const suppliers = await getSuppliers("en");
-
-  return suppliers.map((supplier) => ({
-    slug: supplier.slug,
-  }));
-}
 
 export async function generateMetadata({
   params,
@@ -55,6 +48,7 @@ export async function generateMetadata({
       title: t.supplierDetail.metadataNotFoundTitle,
       description: t.supplierDetail.metadataNotFoundDescription,
       path: "/suppliers",
+      locale,
     });
   }
 
@@ -63,6 +57,7 @@ export async function generateMetadata({
     description: `${supplier.summary} ${t.supplierDetail.metadataBasedIn}: ${supplier.city}, ${supplier.country}. ${t.supplierDetail.metadataCategory}: ${supplier.category}.`,
     path: `/suppliers/${supplier.slug}`,
     image: supplier.image,
+    locale,
     keywords: [
       supplier.name,
       supplier.category,

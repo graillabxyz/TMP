@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 export const locales = ["en", "fr", "tr"] as const;
 export type Locale = (typeof locales)[number];
@@ -10,10 +10,28 @@ export function isLocale(value: string | undefined): value is Locale {
 }
 
 export async function getLocale(): Promise<Locale> {
+  const headerStore = await headers();
+  const headerLocale = headerStore.get("x-tmp-locale");
+  const localeFromHeader = headerLocale ?? undefined;
+
+  if (isLocale(localeFromHeader)) {
+    return localeFromHeader;
+  }
+
   const cookieStore = await cookies();
   const locale = cookieStore.get("tmp-locale")?.value;
 
   return isLocale(locale) ? locale : defaultLocale;
+}
+
+export function getLocalizedPath(locale: Locale, path: string) {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+
+  if (locale === defaultLocale) {
+    return normalizedPath;
+  }
+
+  return normalizedPath === "/" ? `/${locale}` : `/${locale}${normalizedPath}`;
 }
 
 export function localizedValue(

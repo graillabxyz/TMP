@@ -75,6 +75,13 @@ export async function POST(request: NextRequest) {
   const payload = await request.text();
 
   if (!config.webhookSecret) {
+    if (process.env.NODE_ENV === "production") {
+      return NextResponse.json(
+        { error: "Stripe webhook secret is not configured." },
+        { status: 500 },
+      );
+    }
+
     return NextResponse.json({
       received: true,
       mode: "placeholder",

@@ -58,14 +58,20 @@ export function getBreadcrumbJsonLd(
   };
 }
 
-export function getProductCollectionJsonLd(products: MarketplaceProduct[]) {
+export function getProductCollectionJsonLd(
+  products: MarketplaceProduct[],
+  copy: { name: string; description: string } = {
+    name: "Turkish supplier products",
+    description:
+      "Browse published Turkish supplier products for European B2B sourcing.",
+  },
+) {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Turkish supplier products",
+    name: copy.name,
     url: absoluteUrl("/products"),
-    description:
-      "Browse published Turkish supplier products for European B2B sourcing.",
+    description: copy.description,
     mainEntity: {
       "@type": "ItemList",
       itemListElement: products.slice(0, 24).map((product, index) => ({
@@ -78,14 +84,20 @@ export function getProductCollectionJsonLd(products: MarketplaceProduct[]) {
   };
 }
 
-export function getSupplierCollectionJsonLd(suppliers: Supplier[]) {
+export function getSupplierCollectionJsonLd(
+  suppliers: Supplier[],
+  copy: { name: string; description: string } = {
+    name: "Verified Turkish suppliers",
+    description:
+      "Browse verified Turkish suppliers by category, certifications, MOQ, and export readiness.",
+  },
+) {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Verified Turkish suppliers",
+    name: copy.name,
     url: absoluteUrl("/suppliers"),
-    description:
-      "Browse verified Turkish suppliers by category, certifications, MOQ, and export readiness.",
+    description: copy.description,
     mainEntity: {
       "@type": "ItemList",
       itemListElement: suppliers.slice(0, 24).map((supplier, index) => ({

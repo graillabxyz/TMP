@@ -14,6 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t.metadata.rootTitle,
     description: t.metadata.rootDescription,
     path: "/",
+    locale,
   });
 }
 

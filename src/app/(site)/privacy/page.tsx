@@ -13,6 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t.legal.privacyMetadataTitle,
     description: t.legal.privacyMetadataDescription,
     path: "/privacy",
+    locale,
   });
 }
 

@@ -5,8 +5,11 @@ import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import {
   getCategoryOverride,
+  getCategorySlugOverride,
   getProductOverride,
+  getProductSlugOverride,
   getSupplierNameOverride,
+  getSupplierSlugOverride,
 } from "@/lib/translation-overrides";
 import type { MarketplaceProduct } from "@/types";
 import type { Database } from "@/types/database";
@@ -76,7 +79,7 @@ function normalizeProduct(
 
   return {
     id: product.id,
-    slug: product.slug,
+    slug: getProductSlugOverride(product.slug),
     title:
       productOverride?.title ??
       localizedValue(locale, product.title, product.title_fr),
@@ -85,20 +88,20 @@ function normalizeProduct(
       localizedValue(locale, product.description, product.description_fr),
     category: product.category
       ? (productOverride?.category ??
-          categoryOverride?.name ??
-          localizedValue(locale, product.category.name, product.category.name_fr))
+        categoryOverride?.name ??
+        localizedValue(locale, product.category.name, product.category.name_fr))
       : t.common.uncategorized,
-    categorySlug: product.category?.slug ?? "",
+    categorySlug: getCategorySlugOverride(product.category?.slug),
     supplierName: product.supplier
       ? (getSupplierNameOverride(locale, product.supplier.slug) ??
-          localizedValue(
-            locale,
-            product.supplier.company_name,
-            product.supplier.company_name_fr,
-          ))
+        localizedValue(
+          locale,
+          product.supplier.company_name,
+          product.supplier.company_name_fr,
+        ))
       : t.common.supplier,
     supplierId: product.supplier?.id ?? null,
-    supplierSlug: product.supplier?.slug ?? "",
+    supplierSlug: getSupplierSlugOverride(product.supplier?.slug),
     supplierVerified:
       product.supplier?.verified ||
       product.supplier?.verification_status === "verified",
@@ -374,11 +377,11 @@ export async function getSupplierProductWorkspace(locale: Locale) {
       status: product.status,
       categoryName: product.category
         ? (getCategoryOverride(locale, product.category.slug)?.name ??
-            localizedValue(
-              locale,
-              product.category.name,
-              product.category.name_fr,
-            ))
+          localizedValue(
+            locale,
+            product.category.name,
+            product.category.name_fr,
+          ))
         : t.common.uncategorized,
       moq: product.moq,
       priceMin: product.price_min,
@@ -414,7 +417,8 @@ export async function getEditableProduct(
         "Listing produit démo pour tester le workflow fournisseur.",
         "Tedarikçi iş akışını test etmek için demo ürün ilanı.",
       ),
-      description_fr: "Listing produit démo pour tester le workflow fournisseur.",
+      description_fr:
+        "Listing produit démo pour tester le workflow fournisseur.",
       price_min: 18,
       price_max: 32,
       currency: "EUR",

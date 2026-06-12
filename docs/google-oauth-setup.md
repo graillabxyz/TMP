@@ -2,9 +2,10 @@
 
 TMP already has the application-side Google OAuth flow wired through Supabase:
 
-- Login/register role selection passes `buyer` or `supplier`.
+- Login/register creates one TMP account with buyer sourcing enabled by default.
 - `signInWithGoogle` starts Supabase OAuth.
-- `/auth/callback` exchanges the auth code, upserts the TMP profile role, and ensures a supplier profile exists for supplier onboarding.
+- `/auth/callback` exchanges the auth code and creates the TMP profile.
+- Supplier access is added later from `/dashboard/profile`, where the user enters business details and can start the verification subscription.
 
 No Google client secret should be added to this Next.js app or Vercel frontend environment. Google OAuth credentials belong in Supabase Auth provider settings.
 

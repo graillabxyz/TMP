@@ -12,8 +12,10 @@ import {
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import {
   getCategoryOverride,
+  getCategorySlugOverride,
   getProductOverride,
   getSupplierNameOverride,
+  getSupplierSlugOverride,
 } from "@/lib/translation-overrides";
 import type { Category, ProductPreview, Supplier } from "@/types";
 
@@ -117,14 +119,19 @@ const trSupplierCopy: Record<
     name: "Marmara Makine Atölyesi",
     country: "Türkiye",
     category: "Makine ve Komponentler",
-    summary: "AB alıcıları için CNC işlenmiş komponentler ve endüstriyel montajlar.",
+    summary:
+      "AB alıcıları için CNC işlenmiş komponentler ve endüstriyel montajlar.",
     description:
       "Endüstriyel ekipman üreticileri için CNC, lazer kesim ve montaj kapasitesine sahip hassas üretim partneri.",
     exportMarkets: ["İtalya", "Avusturya", "Polonya"],
     moq: "Proje bazlı",
     responseTime: "24 saatten kısa",
     tags: ["CNC", "ISO 9001", "Özel takım"],
-    certifications: ["ISO 9001", "CE dokümantasyon desteği", "EN 1090 partneri"],
+    certifications: [
+      "ISO 9001",
+      "CE dokümantasyon desteği",
+      "EN 1090 partneri",
+    ],
     products: [
       {
         name: "CNC alüminyum gövdeler",
@@ -175,7 +182,8 @@ const trSupplierCopy: Record<
     name: "İzmir Doğal Gıdalar",
     country: "Türkiye",
     category: "Gıda ve İçerikler",
-    summary: "Kuru meyve, kuruyemiş, baharat ve perakendeye hazır Akdeniz ürünleri.",
+    summary:
+      "Kuru meyve, kuruyemiş, baharat ve perakendeye hazır Akdeniz ürünleri.",
     description:
       "İzlenebilir tedarik, AB etiket desteği ve market alıcıları için esnek private label ambalaj sunan ihracat odaklı gıda üreticisi.",
     exportMarkets: ["Belçika", "Birleşik Krallık", "Çekya"],
@@ -204,14 +212,19 @@ const trSupplierCopy: Record<
     name: "Bursa Yapı Malzemeleri",
     country: "Türkiye",
     category: "Yapı Malzemeleri",
-    summary: "Cephe sistemleri, yalıtım, armatürler ve fit-out malzeme tedariki.",
+    summary:
+      "Cephe sistemleri, yalıtım, armatürler ve fit-out malzeme tedariki.",
     description:
       "Alüminyum profiller, yalıtım levhaları, hırdavat ve ihracata hazır fit-out programları için Bursa bölgesi kapasitesine sahip yapı malzemeleri tedarikçisi.",
     exportMarkets: ["Romanya", "Almanya", "Macaristan"],
     moq: "1 konteyner",
     responseTime: "24 saatten kısa",
     tags: ["Cephe sistemleri", "Fit-out tedariki", "Konteyner yükleri"],
-    certifications: ["ISO 9001", "CE işaretli hatlar", "Yangına dayanımlı seçenekler"],
+    certifications: [
+      "ISO 9001",
+      "CE işaretli hatlar",
+      "Yangına dayanımlı seçenekler",
+    ],
     products: [
       {
         name: "Alüminyum pencere profil setleri",
@@ -233,14 +246,19 @@ const trSupplierCopy: Record<
     name: "Bursa Yapı Malzemeleri",
     country: "Türkiye",
     category: "Yapı Malzemeleri",
-    summary: "Cephe sistemleri, yalıtım, armatürler ve fit-out malzeme tedariki.",
+    summary:
+      "Cephe sistemleri, yalıtım, armatürler ve fit-out malzeme tedariki.",
     description:
       "Alüminyum profiller, yalıtım levhaları, hırdavat ve ihracata hazır fit-out programları için Bursa bölgesi kapasitesine sahip yapı malzemeleri tedarikçisi.",
     exportMarkets: ["Romanya", "Almanya", "Macaristan"],
     moq: "1 konteyner",
     responseTime: "24 saatten kısa",
     tags: ["Cephe sistemleri", "Fit-out tedariki", "Konteyner yükleri"],
-    certifications: ["ISO 9001", "CE işaretli hatlar", "Yangına dayanımlı seçenekler"],
+    certifications: [
+      "ISO 9001",
+      "CE işaretli hatlar",
+      "Yangına dayanımlı seçenekler",
+    ],
     products: [
       {
         name: "Alüminyum pencere profil setleri",
@@ -262,7 +280,8 @@ const trSupplierCopy: Record<
     name: "İstanbul Ambalaj Laboratuvarı",
     country: "Türkiye",
     category: "Ambalaj",
-    summary: "Premium kutular, e-ticaret kargo paketleri, etiketler ve perakende ambalaj.",
+    summary:
+      "Premium kutular, e-ticaret kargo paketleri, etiketler ve perakende ambalaj.",
     description:
       "Hızlı prototipleme ve ihracata hazır kaliteli finisaj isteyen e-ticaret, kozmetik ve gıda markaları için modern ambalaj partneri.",
     exportMarkets: ["Fransa", "İrlanda", "Portekiz"],
@@ -314,7 +333,7 @@ function normalizeCategory(row: CategoryRow, locale: Locale): Category {
   return {
     id: row.id,
     name: override?.name ?? localizedValue(locale, row.name, row.name_fr),
-    slug: row.slug,
+    slug: getCategorySlugOverride(row.slug),
     description:
       override?.description ??
       localizedValue(locale, row.description, row.description_fr),
@@ -335,8 +354,8 @@ function normalizeProduct(
       productOverride?.title ?? localizedValue(locale, row.title, row.title_fr),
     category: row.category
       ? (productOverride?.category ??
-          categoryOverride?.name ??
-          localizedValue(locale, row.category.name, row.category.name_fr))
+        categoryOverride?.name ??
+        localizedValue(locale, row.category.name, row.category.name_fr))
       : t.common.product,
     moq: row.moq ? `${row.moq} ${t.common.units}` : t.common.onRequest,
     image: row.images[0] ?? "/brand/tmp-logo.webp",
@@ -365,7 +384,7 @@ function getCategoryName(
 
 function normalizeSupplier(row: SupplierRow, locale: Locale): Supplier {
   const supplier = {
-    slug: row.slug,
+    slug: getSupplierSlugOverride(row.slug),
     name:
       getSupplierNameOverride(locale, row.slug) ??
       localizedValue(locale, row.company_name, row.company_name_fr),

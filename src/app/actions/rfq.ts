@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 
+import { sendRfqNotification } from "@/lib/rfq-notification";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import type { Database } from "@/types/database";
 
@@ -124,6 +125,29 @@ export async function submitRfq(formData: FormData) {
 
     console.error("Unable to submit RFQ", error.message);
     redirect("/rfq?status=error");
+  }
+
+  try {
+    await sendRfqNotification({
+      productRequest,
+      categorySlug: categorySlug || null,
+      quantity,
+      destinationCountry,
+      targetTimeline: targetTimeline || null,
+      notes: notes || null,
+      productSlug: productSlug || null,
+      supplierSlug: supplierSlug || null,
+      attachmentName: attachmentFile?.name ?? null,
+      attachmentSize: attachmentFile?.size ?? null,
+      attachmentType: attachmentFile?.type ?? null,
+      inquiryType:
+        getString(formData, "inquiry_type") === "product"
+          ? "product"
+          : "general",
+    });
+  } catch (notificationError) {
+    console.error("Unable to send RFQ email notification", notificationError);
+    redirect("/rfq?status=notification");
   }
 
   redirect("/rfq?status=success");

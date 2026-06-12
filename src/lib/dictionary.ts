@@ -241,6 +241,8 @@ const dictionaries = {
         specific:
           "Please make the product request more specific with material, spec, certification, or target quantity.",
         config: "Supabase is not configured for this environment yet.",
+        notification:
+          "The RFQ was saved, but we could not send the email notification. Please contact TMP support.",
         error: "We could not submit the RFQ. Please try again.",
       },
       metadataTitle: "Submit an RFQ | TMP",
@@ -928,6 +930,8 @@ const dictionaries = {
         specific:
           "Veuillez preciser la demande produit avec matiere, specification, certification ou quantite cible.",
         config: "Supabase n’est pas encore configuré pour cet environnement.",
+        notification:
+          "La demande a été enregistrée, mais la notification email n’a pas pu être envoyée. Veuillez contacter le support TMP.",
         error: "Impossible d’envoyer la demande. Veuillez réessayer.",
       },
       metadataTitle: "Envoyer une RFQ | TMP",
@@ -1623,6 +1627,8 @@ const turkishDictionary = {
       specific:
         "Lütfen ürün talebini malzeme, teknik özellik, sertifika veya hedef miktarla daha belirgin hale getirin.",
       config: "Supabase bu ortam için henüz yapılandırılmadı.",
+      notification:
+        "Teklif talebi kaydedildi, ancak e-posta bildirimi gönderilemedi. Lütfen TMP destek ekibiyle iletişime geçin.",
       error: "Teklif talebi gönderilemedi. Lütfen tekrar deneyin.",
     },
     metadataTitle: "RFQ Gönder | TMP",

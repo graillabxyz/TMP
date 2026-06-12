@@ -35,6 +35,9 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
 STRIPE_VERIFICATION_PRICE_ID=
 STRIPE_WEBHOOK_SECRET=
+RESEND_API_KEY=
+RFQ_NOTIFICATION_FROM=
+RFQ_NOTIFICATION_TO=
 ```
 
 The app reads suppliers, categories, published products, dashboard product
@@ -92,6 +95,8 @@ Apply the SQL migrations in order from `supabase/migrations/`.
   Stripe-ready billing fields.
 - `20260603000000_stripe_subscription_sync_rpc.sql` adds the narrow Stripe
   webhook RPC that syncs subscription status after a verified Stripe event.
+- `20260612000000_building_materials_category_cleanup.sql` aligns the former
+  automotive seed/category data with the current Building Materials category.
 
 Current RLS stance:
 
@@ -102,8 +107,24 @@ Current RLS stance:
 - Public cannot update or delete marketplace records.
 - Authenticated suppliers can create, update, archive, and delete only products
   connected to their own supplier profile.
+- Suppliers can publish listings immediately after adding a supplier profile.
 - Supplier approval and verification fields remain admin-only.
 - Supplier verification documents are private to the supplier owner and admins.
+
+## RFQ Email Routing
+
+RFQs are inserted into Supabase and then routed to the configured team inbox with
+Resend. Set these variables in production:
+
+```bash
+RESEND_API_KEY=
+RFQ_NOTIFICATION_FROM=TMP RFQ <rfq@your-domain.com>
+RFQ_NOTIFICATION_TO=sourcing@your-domain.com
+```
+
+In production, missing RFQ email variables cause the RFQ action to report a
+notification error after saving the request. In development, the email send is
+skipped so the form can be tested without Resend credentials.
 
 ## Stripe
 
@@ -129,9 +150,10 @@ STRIPE_WEBHOOK_SECRET=
 ```
 
 `STRIPE_VERIFICATION_PRICE_ID` should be the recurring monthly Price ID for the
-Verified Supplier subscription. The webhook route verifies Stripe signatures and
-syncs subscription status back to Supabase through a narrow security-definer
-RPC. No Supabase service-role key is required.
+Verified Supplier subscription. The current `1 EUR` amount is test pricing only.
+The webhook route verifies Stripe signatures and syncs subscription status back
+to Supabase through a narrow security-definer RPC. No Supabase service-role key
+is required.
 
 After applying the Stripe sync migration, set the same webhook secret in
 Supabase before testing live webhooks:
@@ -156,8 +178,16 @@ Supabase callback route:
 /auth/callback
 ```
 
-The app passes the selected onboarding role through the callback and upserts a
-buyer/supplier profile after Supabase exchanges the OAuth code.
+The app creates one TMP account by default. Supplier access is added later from
+the authenticated profile page, where the user enters basic business details and
+can start the verification subscription.
+
+## Multilingual SEO
+
+English uses the canonical unprefixed routes, while French and Turkish are
+available through locale-prefixed routes such as `/fr/products` and
+`/tr/products`. Metadata emits language alternates for English, French, Turkish,
+and `x-default`.
 
 ## Launch
 

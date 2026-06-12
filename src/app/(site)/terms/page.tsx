@@ -13,6 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t.legal.termsMetadataTitle,
     description: t.legal.termsMetadataDescription,
     path: "/terms",
+    locale,
   });
 }
 

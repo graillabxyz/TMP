@@ -70,6 +70,10 @@ const categoryOverrides: Record<
   },
 };
 
+const categorySlugOverrides: Record<string, string | undefined> = {
+  "automotive-parts": "building-materials",
+};
+
 const productOverrides: Record<
   Locale,
   Record<string, ProductOverride | undefined>
@@ -87,6 +91,18 @@ const productOverrides: Record<
         "Thermal insulation boards for construction and fit-out supply programs.",
       category: "Construction",
     },
+    "aluminum-window-profile-sets": {
+      title: "Aluminum window profile sets",
+      description:
+        "Export-ready aluminum profile sets for window and facade programs.",
+      category: "Building Materials",
+    },
+    "thermal-insulation-boards": {
+      title: "Thermal insulation boards",
+      description:
+        "Thermal insulation boards for construction and fit-out supply programs.",
+      category: "Construction",
+    },
   },
   fr: {
     "wiring-harness-assemblies": {
@@ -96,6 +112,18 @@ const productOverrides: Record<
       category: "Matériaux de bâtiments",
     },
     "rubber-vibration-mounts": {
+      title: "Panneaux d’isolation thermique",
+      description:
+        "Panneaux d’isolation thermique pour programmes de construction et fit-out.",
+      category: "Construction",
+    },
+    "aluminum-window-profile-sets": {
+      title: "Sets de profilés aluminium pour fenêtres",
+      description:
+        "Sets de profilés aluminium prêts pour l’export pour programmes fenêtres et façades.",
+      category: "Matériaux de bâtiments",
+    },
+    "thermal-insulation-boards": {
       title: "Panneaux d’isolation thermique",
       description:
         "Panneaux d’isolation thermique pour programmes de construction et fit-out.",
@@ -163,10 +191,21 @@ const productOverrides: Record<
         "İnşaat ve fit-out tedarik programları için ısı yalıtım levhaları.",
       category: "İnşaat",
     },
+    "aluminum-window-profile-sets": {
+      title: "Alüminyum pencere profil setleri",
+      description:
+        "Pencere ve cephe programları için ihracata hazır alüminyum profil setleri.",
+      category: "Yapı Malzemeleri",
+    },
+    "thermal-insulation-boards": {
+      title: "Isı yalıtım levhaları",
+      description:
+        "İnşaat ve fit-out tedarik programları için ısı yalıtım levhaları.",
+      category: "İnşaat",
+    },
     "rigid-cosmetics-box": {
       title: "Sert kozmetik kutusu",
-      description:
-        "İhracata hazır finisajlı premium sert kozmetik ambalajı.",
+      description: "İhracata hazır finisajlı premium sert kozmetik ambalajı.",
       category: "Ambalaj",
     },
     "ecommerce-mailer-set": {
@@ -176,6 +215,11 @@ const productOverrides: Record<
       category: "Ambalaj",
     },
   },
+};
+
+const productSlugOverrides: Record<string, string | undefined> = {
+  "wiring-harness-assemblies": "aluminum-window-profile-sets",
+  "rubber-vibration-mounts": "thermal-insulation-boards",
 };
 
 const supplierNameOverrides: Record<
@@ -205,12 +249,28 @@ const supplierNameOverrides: Record<
   },
 };
 
+const supplierSlugOverrides: Record<string, string | undefined> = {
+  "bursa-auto-systems": "bursa-building-materials",
+};
+
+export function getCategorySlugOverride(slug?: string | null) {
+  return slug ? (categorySlugOverrides[slug] ?? slug) : "";
+}
+
 export function getCategoryOverride(locale: Locale, slug?: string | null) {
   return slug ? categoryOverrides[locale][slug] : undefined;
 }
 
+export function getProductSlugOverride(slug?: string | null) {
+  return slug ? (productSlugOverrides[slug] ?? slug) : "";
+}
+
 export function getProductOverride(locale: Locale, slug?: string | null) {
   return slug ? productOverrides[locale][slug] : undefined;
+}
+
+export function getSupplierSlugOverride(slug?: string | null) {
+  return slug ? (supplierSlugOverrides[slug] ?? slug) : "";
 }
 
 export function getSupplierNameOverride(locale: Locale, slug?: string | null) {

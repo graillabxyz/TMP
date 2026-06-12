@@ -18,6 +18,8 @@ Use this checklist before opening TMP publicly.
   public marketplace pages.
 - Keep `TMP_DEMO_AUTH_BYPASS=false` and
   `TMP_DEMO_AUTH_ALLOW_PRODUCTION=false` for public launch.
+- Remove the demo auth bypass routes/env variables after the client presentation
+  if they are no longer needed for supervised demos.
 
 ## Supabase
 
@@ -30,6 +32,7 @@ Use this checklist before opening TMP publicly.
   - RFQ inserts only
 - Confirm RFQs are not publicly selectable.
 - Confirm verification documents are private to supplier owners and admins.
+- Confirm RFQ email routing is configured and delivers to the sourcing inbox.
 - Set the Stripe webhook sync secret after applying the Stripe migration:
 
 ```sql
@@ -43,7 +46,7 @@ do update set value = excluded.value, updated_at = now();
 
 - Rotate any live Stripe secret key that was shared outside Stripe/Vercel.
 - Create or confirm the Verified Supplier recurring monthly price:
-  - amount: `1 EUR`
+  - amount: final business-approved amount (`1 EUR` is test pricing only)
   - interval: monthly
 - Set Vercel production variables:
   - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
@@ -71,8 +74,7 @@ do update set value = excluded.value, updated_at = now();
 - Confirm Google Console authorized domains include:
   - `turkiyemarketplace.org`
 - Test buyer Google signup lands in buyer dashboard.
-- Test supplier Google signup creates a supplier profile and lands on
-  verification settings.
+- Test one-account signup, then add supplier access from `/dashboard/profile`.
 - Test email auth only after email provider settings are final. Supabase default
   email can work for testing, but production email deliverability should use a
   configured SMTP provider.
@@ -82,7 +84,8 @@ do update set value = excluded.value, updated_at = now();
 - Search products by keyword and category.
 - Open a product detail page and submit a product-context RFQ.
 - Submit a general RFQ.
-- Switch English/French and confirm page copy changes.
+- Confirm both RFQs arrive in the configured sourcing email inbox.
+- Switch English/French/Turkish and confirm page copy changes.
 - Register as buyer and confirm supplier-only actions are hidden.
 - Register as supplier and confirm product posting, edit, archive, and
   verification settings are reachable.
@@ -90,7 +93,7 @@ do update set value = excluded.value, updated_at = now();
   - homepage hero
   - products filters
   - RFQ form
-  - login/register role selection
+  - login/register one-account flow
   - dashboard/sidebar behavior
 
 ## SEO
@@ -111,15 +114,14 @@ do update set value = excluded.value, updated_at = now();
 - Verify public detail pages have:
   - one clear `h1`
   - canonical URL
+  - English/French/Turkish language alternates
   - Open Graph image
   - JSON-LD structured data
-- Treat English as the primary SEO language for this launch. If French organic
-  search becomes a priority, move from cookie-based language switching to
-  URL-based routes such as `/fr/products`.
+- Confirm `/fr/...` and `/tr/...` localized routes render and are included in
+  `/sitemap.xml`.
 
 ## Legal And Trust
 
 - Review privacy policy and terms before public launch.
 - Add a real support/contact channel before announcing.
-- Decide whether the marketplace is accepting RFQs manually by email,
-  dashboard review, or admin exports during the MVP period.
+- Confirm the RFQ inbox owner and response SLA before announcing.

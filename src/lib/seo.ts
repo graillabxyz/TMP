@@ -1,14 +1,27 @@
 import type { Metadata } from "next";
 
 import { siteConfig } from "@/lib/constants";
+import {
+  defaultLocale,
+  getLocalizedPath,
+  locales,
+  type Locale,
+} from "@/lib/i18n";
 
 type MetadataInput = {
   title: string;
   description: string;
   path: string;
   image?: string;
-  keywords?: string[];
+  keywords?: readonly string[];
   noIndex?: boolean;
+  locale?: Locale;
+};
+
+const openGraphLocales: Record<Locale, string> = {
+  en: "en_US",
+  fr: "fr_FR",
+  tr: "tr_TR",
 };
 
 export function createMetadata({
@@ -25,8 +38,16 @@ export function createMetadata({
     "RFQ marketplace",
   ],
   noIndex = false,
+  locale = defaultLocale,
 }: MetadataInput): Metadata {
-  const url = `${siteConfig.url}${path}`;
+  const canonicalPath = getLocalizedPath(locale, path);
+  const url = `${siteConfig.url}${canonicalPath}`;
+  const languages = Object.fromEntries(
+    locales.map((item) => [
+      item,
+      `${siteConfig.url}${getLocalizedPath(item, path)}`,
+    ]),
+  ) as Record<Locale, string>;
 
   return {
     metadataBase: new URL(siteConfig.url),
@@ -38,7 +59,7 @@ export function createMetadata({
     },
     title,
     description,
-    keywords,
+    keywords: [...keywords],
     icons: {
       icon: [
         {
@@ -50,6 +71,10 @@ export function createMetadata({
     },
     alternates: {
       canonical: url,
+      languages: {
+        ...languages,
+        "x-default": `${siteConfig.url}${getLocalizedPath(defaultLocale, path)}`,
+      },
     },
     robots: {
       index: !noIndex,
@@ -68,7 +93,10 @@ export function createMetadata({
       url,
       siteName: siteConfig.fullName,
       images: [{ url: image, width: 1200, height: 630 }],
-      locale: "en_US",
+      locale: openGraphLocales[locale],
+      alternateLocale: locales
+        .filter((item) => item !== locale)
+        .map((item) => openGraphLocales[item]),
       type: "website",
     },
     twitter: {

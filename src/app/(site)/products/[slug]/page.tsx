@@ -23,7 +23,6 @@ import { getPlatformActivity } from "@/lib/platform-activity";
 import {
   formatPriceRange,
   getProductBySlug,
-  getProducts,
   getRelatedProducts,
 } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
@@ -32,6 +31,8 @@ import { getBreadcrumbJsonLd, getProductJsonLd } from "@/lib/structured-data";
 type ProductDetailPageProps = {
   params: Promise<{ slug: string }>;
 };
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -46,6 +47,7 @@ export async function generateMetadata({
       title: t.products.detailFallbackTitle,
       description: t.products.detailFallbackDescription,
       path: `/products/${slug}`,
+      locale,
     });
   }
 
@@ -58,6 +60,7 @@ export async function generateMetadata({
     }. ${t.common.supplier}: ${product.supplierName}.`,
     path: `/products/${product.slug}`,
     image: product.images[0],
+    locale,
     keywords: [
       product.title,
       product.category,
@@ -65,12 +68,6 @@ export async function generateMetadata({
       ...t.products.detailSeoKeywords,
     ],
   });
-}
-
-export async function generateStaticParams() {
-  const products = await getProducts();
-
-  return products.map((product) => ({ slug: product.slug }));
 }
 
 export default async function ProductDetailPage({
