@@ -6,11 +6,12 @@ import { cn } from "@/lib/utils";
 type LogoProps = {
   compact?: boolean;
   className?: string;
+  href?: string;
 };
 
-export function Logo({ compact = false, className }: LogoProps) {
+export function Logo({ compact = false, className, href = "/" }: LogoProps) {
   return (
-    <Link href="/" className={cn("flex items-center gap-3", className)}>
+    <Link href={href} className={cn("flex items-center gap-3", className)}>
       <span className="relative flex size-10 items-center justify-center overflow-hidden rounded-lg border border-gold-300/[0.35] bg-gold-300/10 shadow-glow">
         <Image
           src="/brand/tmp-logo.webp"

@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 import type { Category } from "@/types";
 
 type CategoriesDropdownProps = {
+  baseHref: string;
   categories: Category[];
   label: string;
 };
@@ -14,6 +15,7 @@ type CategoriesDropdownProps = {
 const CLOSE_DELAY_MS = 450;
 
 export function CategoriesDropdown({
+  baseHref,
   categories,
   label,
 }: CategoriesDropdownProps) {
@@ -89,7 +91,7 @@ export function CategoriesDropdown({
             {categories.map((category) => (
               <Link
                 key={category.slug}
-                href={`/products?category=${category.slug}`}
+                href={`${baseHref}?category=${category.slug}`}
                 role="menuitem"
                 onClick={() => setOpen(false)}
                 className="group/item grid gap-1 rounded-md px-3 py-2.5 transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"

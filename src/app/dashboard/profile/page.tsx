@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { BillingActions } from "@/components/verification/billing-actions";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
 import { getVerificationWorkspace } from "@/lib/verification";
 
@@ -39,9 +39,14 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
   const copy = t.profileSettings;
   const verificationCopy = t.verificationSettings;
   const profile = await getCurrentProfile();
+  const productsHref = getLocalizedPath(locale, "/dashboard/products");
+  const verificationHref = getLocalizedPath(
+    locale,
+    "/dashboard/settings/verification",
+  );
 
   if (!profile) {
-    redirect("/login?next=/dashboard/profile");
+    redirect(`${getLocalizedPath(locale, "/login")}?next=/dashboard/profile`);
   }
 
   const workspace = await getVerificationWorkspace();
@@ -155,7 +160,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                   variant="outline"
                   className="w-full whitespace-normal text-center leading-5"
                 >
-                  <Link href="/dashboard/settings/verification">
+                  <Link href={verificationHref}>
                     {copy.verificationSettings}
                   </Link>
                 </Button>
@@ -194,7 +199,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                   </Badge>
                 </div>
                 <Button asChild className="mt-2 w-full sm:w-auto">
-                  <Link href="/dashboard/products">{copy.manageProducts}</Link>
+                  <Link href={productsHref}>{copy.manageProducts}</Link>
                 </Button>
               </div>
             ) : (

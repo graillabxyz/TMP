@@ -44,14 +44,22 @@ export async function setLocale(formData: FormData) {
       : defaultLocale;
 
   const cookieStore = await cookies();
+  const requestHeaders = await headers();
+  const requestProtocol =
+    requestHeaders.get("x-forwarded-proto") ??
+    (requestHeaders.get("host")?.startsWith("localhost") ||
+    requestHeaders.get("host")?.startsWith("127.0.0.1")
+      ? "http"
+      : "https");
+
   cookieStore.set("tmp-locale", locale, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production" && requestProtocol === "https",
     path: "/",
     maxAge: 60 * 60 * 24 * 365,
   });
 
   revalidatePath("/", "layout");
-  redirect(getSafeRedirectPath((await headers()).get("referer"), locale));
+  redirect(getSafeRedirectPath(requestHeaders.get("referer"), locale));
 }

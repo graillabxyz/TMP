@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
 
 export async function SiteFooter() {
@@ -14,18 +14,18 @@ export async function SiteFooter() {
     getCurrentProfile(),
   ]);
   const supplierUpgradeHref = profile
-    ? "/dashboard/profile"
-    : "/register?next=/dashboard/profile";
+    ? getLocalizedPath(locale, "/dashboard/profile")
+    : `${getLocalizedPath(locale, "/register")}?next=/dashboard/profile`;
   const footerLinks = [
-    { label: t.footer.suppliers, href: "/suppliers" },
-    { label: t.footer.rfq, href: "/rfq" },
-    { label: t.footer.buyerLogin, href: "/login" },
+    { label: t.footer.suppliers, href: getLocalizedPath(locale, "/suppliers") },
+    { label: t.footer.rfq, href: getLocalizedPath(locale, "/rfq") },
+    { label: t.footer.buyerLogin, href: getLocalizedPath(locale, "/login") },
     {
       label: t.footer.supplierOnboarding,
       href: supplierUpgradeHref,
     },
-    { label: t.footer.privacy, href: "/privacy" },
-    { label: t.footer.terms, href: "/terms" },
+    { label: t.footer.privacy, href: getLocalizedPath(locale, "/privacy") },
+    { label: t.footer.terms, href: getLocalizedPath(locale, "/terms") },
   ];
 
   return (
@@ -33,7 +33,7 @@ export async function SiteFooter() {
       <div className="container py-12">
         <div className="grid gap-10 md:grid-cols-[1.2fr_.8fr_.8fr]">
           <div>
-            <Logo />
+            <Logo href={getLocalizedPath(locale, "/")} />
             <p className="mt-5 max-w-sm text-sm leading-6 text-muted-foreground">
               {t.footer.intro}
             </p>
@@ -62,7 +62,7 @@ export async function SiteFooter() {
               {categories.slice(0, 4).map((category) => (
                 <Link
                   key={category.slug}
-                  href={`/suppliers?category=${category.slug}`}
+                  href={`${getLocalizedPath(locale, "/suppliers")}?category=${category.slug}`}
                   className="rounded-sm text-sm text-muted-foreground transition hover:text-gold-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   {category.name}

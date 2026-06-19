@@ -33,7 +33,7 @@ import { Select } from "@/components/ui/select";
 import { getCurrentProfile } from "@/lib/account";
 import { heroImage, trustMetrics } from "@/lib/data";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories, getSuppliers } from "@/lib/marketplace";
 import { getPlatformActivity } from "@/lib/platform-activity";
 import { getOrganizationJsonLd, getWebsiteJsonLd } from "@/lib/structured-data";
@@ -49,9 +49,12 @@ export default async function HomePage() {
     getSuppliers(locale),
     getCurrentProfile(),
   ]);
+  const productsHref = getLocalizedPath(locale, "/products");
+  const rfqHref = getLocalizedPath(locale, "/rfq");
+  const suppliersHref = getLocalizedPath(locale, "/suppliers");
   const supplierUpgradeHref = profile
-    ? "/dashboard/profile"
-    : "/register?next=/dashboard/profile";
+    ? getLocalizedPath(locale, "/dashboard/profile")
+    : `${getLocalizedPath(locale, "/register")}?next=/dashboard/profile`;
   const featuredSuppliers = suppliers
     .filter((supplier) => supplier.verified)
     .slice(0, 3);
@@ -105,7 +108,7 @@ export default async function HomePage() {
             </p>
 
             <form
-              action="/products"
+              action={productsHref}
               className="mt-8 max-w-4xl rounded-md border border-gold-300/35 bg-gold-50/[0.98] p-2 shadow-premium"
             >
               <div className="grid gap-3 md:grid-cols-[1fr_180px_auto]">
@@ -144,8 +147,8 @@ export default async function HomePage() {
               {activity.categoryDemand.map((item) => (
                 <Link
                   key={item.categorySlug}
-                  href={`/products?category=${item.categorySlug}`}
-                  className="rounded-full border border-white/15 bg-white/[0.08] px-3 py-1.5 text-white transition hover:border-gold-300/45 hover:text-gold-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  href={`${productsHref}?category=${item.categorySlug}`}
+                  className="rounded-full border border-white/15 bg-white/[0.08] px-3 py-2 text-white transition hover:border-gold-300/45 hover:text-gold-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   {item.label}
                 </Link>
@@ -196,7 +199,7 @@ export default async function HomePage() {
               {activity.activeBriefs.slice(0, 3).map((brief) => (
                 <Link
                   key={`${brief.title}-${brief.market}`}
-                  href={`/products?category=${brief.categorySlug}`}
+                  href={`${productsHref}?category=${brief.categorySlug}`}
                   className="rounded-md border border-white/10 bg-white/[0.035] p-3 transition hover:border-gold-300/35 hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -214,7 +217,7 @@ export default async function HomePage() {
               ))}
             </div>
             <Button asChild className="mt-5 w-full">
-              <Link href="/rfq">
+              <Link href={rfqHref}>
                 {t.common.requestQuote}
                 <ArrowRight aria-hidden="true" />
               </Link>
@@ -276,7 +279,7 @@ export default async function HomePage() {
                   return (
                     <Link
                       key={category.slug}
-                      href={`/products?category=${category.slug}`}
+                      href={`${productsHref}?category=${category.slug}`}
                       className="group flex items-center justify-between gap-3 rounded-md px-2 py-2.5 text-sm text-muted-foreground transition hover:bg-white/[0.055] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
                       <span className="flex min-w-0 items-center gap-3">
@@ -300,7 +303,7 @@ export default async function HomePage() {
               {frequentlySearched.map((product) => (
                 <Link
                   key={`${product.supplierSlug}-${product.name}`}
-                  href={`/products?q=${encodeURIComponent(product.name)}`}
+                  href={`${productsHref}?q=${encodeURIComponent(product.name)}`}
                   className="group overflow-hidden rounded-lg border border-white/10 bg-background/70 shadow-premium transition hover:-translate-y-0.5 hover:border-gold-300/35 hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   <div className="p-4">
@@ -337,7 +340,7 @@ export default async function HomePage() {
                 {activity.activeBriefs.slice(0, 2).map((brief) => (
                   <Link
                     key={`${brief.title}-${brief.market}`}
-                    href={`/products?category=${brief.categorySlug}`}
+                    href={`${productsHref}?category=${brief.categorySlug}`}
                     className="rounded-md border border-white/10 bg-white/[0.035] p-3 transition hover:border-gold-300/35 hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
                     <p className="line-clamp-2 text-sm font-medium text-white">
@@ -350,7 +353,7 @@ export default async function HomePage() {
                 ))}
               </div>
               <Button asChild className="mt-5 w-full" variant="outline">
-                <Link href="/rfq">
+                <Link href={rfqHref}>
                   {t.common.requestQuote}
                   <ArrowRight aria-hidden="true" />
                 </Link>
@@ -384,14 +387,14 @@ export default async function HomePage() {
                   ))}
                 </div>
                 <Button asChild className="mt-5" variant="outline">
-                  <Link href="/products">{t.home.exploreNow}</Link>
+                  <Link href={productsHref}>{t.home.exploreNow}</Link>
                 </Button>
               </div>
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
                 {recommendedProducts.map((product) => (
                   <Link
                     key={`${product.supplierSlug}-${product.name}`}
-                    href={`/products?q=${encodeURIComponent(product.name)}`}
+                    href={`${productsHref}?q=${encodeURIComponent(product.name)}`}
                     className="group min-w-0 rounded-md border border-white/10 bg-background/55 p-2 transition hover:border-gold-300/30 hover:bg-background/75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
                     <div className="relative aspect-square overflow-hidden rounded-md bg-white">
@@ -454,7 +457,7 @@ export default async function HomePage() {
               {activity.activeBriefs.map((brief) => (
                 <Link
                   key={`${brief.title}-${brief.market}`}
-                  href={`/products?category=${brief.categorySlug}`}
+                  href={`${productsHref}?category=${brief.categorySlug}`}
                   className="rounded-lg border border-white/10 bg-card p-4 transition hover:border-gold-300/35 hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -492,7 +495,7 @@ export default async function HomePage() {
             </h2>
           </div>
           <Button asChild variant="outline">
-            <Link href="/suppliers">{t.home.exploreSuppliers}</Link>
+            <Link href={suppliersHref}>{t.home.exploreSuppliers}</Link>
           </Button>
         </div>
         <div className="mt-10 grid gap-5 md:grid-cols-3">
@@ -529,7 +532,7 @@ export default async function HomePage() {
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((category) => (
               <Link
-                href={`/products?category=${category.slug}`}
+                href={`${productsHref}?category=${category.slug}`}
                 key={category.slug}
                 className="group rounded-lg border border-white/10 bg-card p-5 transition duration-300 hover:-translate-y-1 hover:border-gold-300/[0.35] hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >

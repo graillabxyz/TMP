@@ -302,7 +302,7 @@ values
   ((select id from public.suppliers where slug = 'izmir-natural-foods'), 'Mediterranean spice blends', 'Ingredients', '300 kg', 'https://images.unsplash.com/photo-1532336414038-cf19250c5757?auto=format&fit=crop&w=900&q=80', 20),
   ((select id from public.suppliers where slug = 'bursa-auto-systems'), 'Wiring harness assemblies', 'Automotive', '500 units', 'https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=900&q=80', 10),
   ((select id from public.suppliers where slug = 'bursa-auto-systems'), 'Rubber vibration mounts', 'Parts', '1,000 units', 'https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=900&q=80', 20),
-  ((select id from public.suppliers where slug = 'istanbul-packaging-lab'), 'Rigid cosmetics box', 'Packaging', '1,000 units', 'https://images.unsplash.com/photo-1607344645866-009c320f75c4?auto=format&fit=crop&w=900&q=80', 10),
+  ((select id from public.suppliers where slug = 'istanbul-packaging-lab'), 'Rigid cosmetics box', 'Packaging', '1,000 units', 'https://images.unsplash.com/photo-1607082350899-7e105aa886ae?auto=format&fit=crop&w=900&q=80', 10),
   ((select id from public.suppliers where slug = 'istanbul-packaging-lab'), 'Ecommerce mailer set', 'Packaging', '2,500 units', 'https://images.unsplash.com/photo-1607082350899-7e105aa886ae?auto=format&fit=crop&w=900&q=80', 20)
 on conflict (supplier_id, name) do update
 set

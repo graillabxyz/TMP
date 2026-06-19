@@ -17,7 +17,7 @@ export function LanguageToggle({ locale }: LanguageToggleProps) {
         </summary>
         <form
           action={setLocale}
-          className="absolute right-0 top-full z-50 mt-2 grid min-w-28 gap-1 rounded-lg border border-white/10 bg-charcoal-900 p-1.5 shadow-premium"
+          className="absolute right-0 top-full z-50 mt-2 hidden min-w-28 gap-1 rounded-lg border border-white/10 bg-charcoal-900 p-1.5 shadow-premium group-open:grid"
           aria-label="Language"
         >
           {options.map((option) => (

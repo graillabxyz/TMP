@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   robots: {
@@ -20,14 +20,15 @@ export default async function AuthLayout({
 }) {
   const locale = await getLocale();
   const t = getDictionary(locale);
+  const homeHref = getLocalizedPath(locale, "/");
 
   return (
     <main className="min-h-screen bg-surface-radial">
       <div className="container flex min-h-screen flex-col">
         <header className="flex items-center justify-between py-6">
-          <Logo />
+          <Logo href={homeHref} />
           <Button asChild variant="ghost">
-            <Link href="/">{t.nav.backHome}</Link>
+            <Link href={homeHref}>{t.nav.backHome}</Link>
           </Button>
         </header>
         <div className="flex flex-1 items-center justify-center py-10">
