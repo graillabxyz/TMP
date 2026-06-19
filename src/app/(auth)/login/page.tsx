@@ -13,6 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t.metadata.loginTitle,
     description: t.metadata.loginDescription,
     path: "/login",
+    locale,
   });
 }
 
