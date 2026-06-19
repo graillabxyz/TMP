@@ -22,7 +22,7 @@ export function Logo({ compact = false, className }: LogoProps) {
         />
       </span>
       {!compact && (
-        <span className="flex flex-col leading-none">
+        <span className="flex flex-col leading-none max-[380px]:hidden">
           <span className="text-base font-semibold text-white">TMP</span>
           <span className="mt-1 text-xs text-muted-foreground">
             Turkiye Market Place

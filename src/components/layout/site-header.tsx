@@ -35,8 +35,8 @@ export async function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-charcoal-900/[0.94] shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
-      <div className="container flex min-h-[4.25rem] items-center justify-between gap-4 py-3">
-        <Logo />
+      <div className="container flex min-h-16 items-center justify-between gap-2 py-2 sm:min-h-[4.25rem] sm:gap-4 sm:py-3">
+        <Logo className="min-w-0" />
         <form
           action="/products"
           className="hidden h-10 min-w-0 max-w-[640px] flex-1 items-center overflow-hidden rounded-md border border-white/[0.12] bg-white/[0.065] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition focus-within:border-gold-300/50 focus-within:bg-white/[0.105] lg:flex"
@@ -55,7 +55,7 @@ export async function SiteHeader() {
             {t.common.search}
           </Button>
         </form>
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           <LanguageToggle locale={locale} />
           {profile ? (
             <details className="group relative">
@@ -90,16 +90,20 @@ export async function SiteHeader() {
             </Button>
           )}
           {!profile && (
-            <Button asChild>
+            <Button
+              asChild
+              className="h-10 shrink-0 px-3 text-sm sm:h-11 sm:px-4"
+            >
               <Link href="/register">
-                {t.nav.join}
-                <ArrowRight aria-hidden="true" />
+                <span className="hidden sm:inline">{t.nav.join}</span>
+                <span className="sm:hidden">{t.nav.joinShort}</span>
+                <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
             </Button>
           )}
         </div>
       </div>
-      <form action="/products" className="container flex pb-3 md:hidden">
+      <form action="/products" className="container flex pb-2 md:hidden">
         <div className="flex h-10 min-w-0 flex-1 items-center overflow-hidden rounded-md border border-white/15 bg-white/[0.075] text-white shadow-none transition focus-within:border-gold-300/50 focus-within:bg-white/[0.11]">
           <Search
             className="ml-3 size-4 shrink-0 text-gold-200"
@@ -111,8 +115,12 @@ export async function SiteHeader() {
             placeholder={t.home.headerSearchPlaceholder}
             className="h-10 min-w-0 flex-1 bg-transparent px-3 text-sm text-white outline-none placeholder:text-muted-foreground"
           />
-          <Button type="submit" className="m-1 h-8 rounded-md px-3">
-            {t.common.search}
+          <Button
+            type="submit"
+            aria-label={t.common.search}
+            className="m-1 size-8 shrink-0 rounded-md p-0"
+          >
+            <ArrowRight className="size-4" aria-hidden="true" />
           </Button>
         </div>
       </form>

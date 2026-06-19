@@ -9,6 +9,7 @@ const dictionaries = {
       dashboard: "Dashboard",
       login: "Login",
       join: "Join TMP",
+      joinShort: "Join",
       backHome: "Back home",
     },
     common: {
@@ -695,6 +696,7 @@ const dictionaries = {
       dashboard: "Tableau",
       login: "Connexion",
       join: "Rejoindre TMP",
+      joinShort: "Rejoindre",
       backHome: "Retour",
     },
     common: {
@@ -1397,6 +1399,7 @@ const turkishDictionary = {
     dashboard: "Panel",
     login: "Giriş",
     join: "TMP'ye Katıl",
+    joinShort: "Katıl",
     backHome: "Ana sayfaya dön",
   },
   common: {
