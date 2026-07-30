@@ -86,6 +86,10 @@ export default async function ProductDetailPage({
   const related = await getRelatedProducts(product, locale);
   const productsHref = getLocalizedPath(locale, "/products");
   const rfqHref = getLocalizedPath(locale, "/rfq");
+  const supplierHref = getLocalizedPath(
+    locale,
+    `/suppliers/${product.supplierSlug}`,
+  );
   const relevantBriefs = activity.activeBriefs
     .filter((brief) => brief.categorySlug === product.categorySlug)
     .slice(0, 2);
@@ -156,7 +160,12 @@ export default async function ProductDetailPage({
                   </div>
                   <div>
                     <h2 className="font-semibold text-white">
-                      {product.supplierName}
+                      <Link
+                        href={supplierHref}
+                        className="rounded-sm underline-offset-4 transition hover:text-gold-100 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      >
+                        {product.supplierName}
+                      </Link>
                     </h2>
                     {product.supplierVerified && (
                       <Badge className="mt-2" variant="success">

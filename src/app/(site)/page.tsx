@@ -257,7 +257,7 @@ export default async function HomePage() {
                   index === 0
                     ? rfqHref
                     : index === 1
-                      ? `${suppliersHref}?verified=true`
+                      ? `${suppliersHref}?verified=1`
                       : productsHref;
 
                 return (

@@ -148,7 +148,7 @@ export async function SiteHeader() {
               {t.nav.rfq}
             </Link>
             <Link
-              href={`${suppliersHref}?verified=true`}
+              href={`${suppliersHref}?verified=1`}
               className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               <ShieldCheck

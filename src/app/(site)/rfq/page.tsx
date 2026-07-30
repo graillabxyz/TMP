@@ -13,7 +13,7 @@ import { submitRfq } from "@/app/actions/rfq";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
-import { getCategories } from "@/lib/marketplace";
+import { getCategories, getSupplierBySlug } from "@/lib/marketplace";
 import { getPlatformActivity } from "@/lib/platform-activity";
 import { getProductBySlug } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
@@ -51,9 +51,14 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
   ]);
   const status = resolvedSearchParams?.status;
   const productSlug = resolvedSearchParams?.product;
+  const supplierSlug = resolvedSearchParams?.supplier;
   const prefillProduct = productSlug
     ? await getProductBySlug(productSlug, locale)
     : null;
+  const prefillSupplier =
+    !prefillProduct && supplierSlug
+      ? await getSupplierBySlug(supplierSlug, locale)
+      : null;
   const statusMessage =
     status && status in t.rfq.status
       ? t.rfq.status[status as keyof typeof t.rfq.status]
@@ -150,14 +155,16 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                       autoComplete="off"
                     />
                   </div>
-                  {prefillProduct && (
+                  {(prefillProduct || prefillSupplier) && (
                     <div className="rounded-lg border border-gold-300/25 bg-gold-300/[0.08] p-4 text-sm">
                       <p className="font-medium text-white">
-                        {prefillProduct.title}
+                        {prefillProduct?.title ?? prefillSupplier?.name}
                       </p>
-                      <p className="mt-1 text-muted-foreground">
-                        {prefillProduct.supplierName}
-                      </p>
+                      {prefillProduct && (
+                        <p className="mt-1 text-muted-foreground">
+                          {prefillProduct.supplierName}
+                        </p>
+                      )}
                     </div>
                   )}
                   <div className="grid gap-5 sm:grid-cols-2">
@@ -218,7 +225,9 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                   <input
                     type="hidden"
                     name="supplier_slug"
-                    value={prefillProduct?.supplierSlug ?? ""}
+                    value={
+                      prefillProduct?.supplierSlug ?? prefillSupplier?.slug ?? ""
+                    }
                   />
                   <input
                     type="hidden"
@@ -228,7 +237,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                   <input
                     type="hidden"
                     name="product_slug"
-                    value={prefillProduct?.slug ?? productSlug ?? ""}
+                    value={prefillProduct?.slug ?? ""}
                   />
                   <div className="grid gap-2">
                     <Label htmlFor="product">{t.rfq.productRequest}</Label>

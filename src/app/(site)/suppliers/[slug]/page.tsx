@@ -88,6 +88,7 @@ export default async function SupplierDetailPage({
     ? relevantBriefs
     : activity.activeBriefs.slice(0, 2);
   const suppliersHref = getLocalizedPath(locale, "/suppliers");
+  const productsHref = getLocalizedPath(locale, "/products");
   const rfqHref = getLocalizedPath(locale, "/rfq");
 
   return (
@@ -202,7 +203,12 @@ export default async function SupplierDetailPage({
                 ))}
               </div>
               <Button asChild className="mt-6 w-full" size="lg">
-                <Link href={rfqHref}>
+                <Link
+                  href={{
+                    pathname: rfqHref,
+                    query: { supplier: supplier.slug },
+                  }}
+                >
                   {t.common.requestQuote}
                   <Send aria-hidden="true" />
                 </Link>
@@ -222,6 +228,16 @@ export default async function SupplierDetailPage({
                   {t.supplierDetail.previewProducts}
                 </h2>
               </div>
+              <Button asChild variant="outline">
+                <Link
+                  href={{
+                    pathname: productsHref,
+                    query: { supplier: supplier.slug },
+                  }}
+                >
+                  {t.supplierDetail.viewAllProducts}
+                </Link>
+              </Button>
             </div>
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               {supplier.products.map((product) => (
