@@ -189,6 +189,27 @@ export async function startSupplierProfile(formData: FormData) {
     );
   }
 
+  const { data: existingProfile, error: profileReadError } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .maybeSingle();
+  const profileRecord = existingProfile as unknown as {
+    role: "buyer" | "supplier" | "admin";
+  } | null;
+
+  if (profileReadError || !profileRecord) {
+    if (profileReadError) {
+      console.error(
+        "Unable to load profile before supplier upgrade",
+        profileReadError.message,
+      );
+    }
+
+    redirect(`${returnPath}?status=error`);
+  }
+
+  const previousRole = profileRecord.role;
   const profileMutations = supabase.from(
     "profiles",
   ) as unknown as ProfileMutationTable;
@@ -212,7 +233,36 @@ export async function startSupplierProfile(formData: FormData) {
 
   if (supplierError) {
     console.error("Unable to start supplier profile", supplierError.message);
-    redirect(`${returnPath}?status=error`);
+
+    const { data: recoveredSupplier, error: recoveryError } = await supabase
+      .from("suppliers")
+      .select("id")
+      .eq("owner_id", user.id)
+      .maybeSingle();
+
+    if (recoveryError) {
+      console.error(
+        "Unable to verify supplier upgrade recovery",
+        recoveryError.message,
+      );
+    }
+
+    if (!recoveredSupplier) {
+      if (previousRole === "buyer") {
+        const { error: rollbackError } = await profileMutations
+          .update({ role: "buyer" })
+          .eq("id", user.id);
+
+        if (rollbackError) {
+          console.error(
+            "Unable to roll back failed supplier upgrade",
+            rollbackError.message,
+          );
+        }
+      }
+
+      redirect(`${returnPath}?status=error`);
+    }
   }
 
   redirect(`${returnPath}?status=supplier-started`);
