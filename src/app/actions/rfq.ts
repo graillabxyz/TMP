@@ -159,7 +159,7 @@ export async function submitRfq(formData: FormData) {
     }
   }
 
-  const legacyPayload = {
+  const payload = {
     id: rfqId,
     product_request: productRequest,
     category_slug: categorySlug || null,
@@ -170,9 +170,6 @@ export async function submitRfq(formData: FormData) {
     attachment_name: attachmentFile?.name ?? null,
     attachment_size: attachmentFile?.size ?? null,
     attachment_type: attachmentContentType,
-  } as unknown as RfqInsert;
-  const payload: RfqInsert = {
-    ...legacyPayload,
     requester_name: requesterName,
     requester_email: requesterEmail,
     requester_company: requesterCompany || null,
@@ -184,7 +181,7 @@ export async function submitRfq(formData: FormData) {
     supplier_slug: supplierSlug || null,
     inquiry_type:
       getString(formData, "inquiry_type") === "product" ? "product" : "general",
-  };
+  } as RfqInsert;
   const notificationInput = {
     rfqId,
     requesterName,
@@ -212,44 +209,6 @@ export async function submitRfq(formData: FormData) {
   const { error } = await rfqMutations.insert(payload);
 
   if (error) {
-    const isLegacySchemaError =
-      error.message.includes("product_id") ||
-      error.message.includes("inquiry_type") ||
-      error.message.includes("supplier_id") ||
-      error.message.includes("submitter_id") ||
-      error.message.includes("attachment_path") ||
-      error.message.includes("requester_name") ||
-      error.message.includes("requester_email");
-
-    if (!attachmentPath && isLegacySchemaError) {
-      const { error: fallbackError } = await rfqMutations.insert({
-        ...legacyPayload,
-        attachment_name: null,
-        attachment_size: null,
-        attachment_type: null,
-      });
-
-      if (!fallbackError) {
-        let notificationFailed = false;
-
-        try {
-          await sendRfqNotification(notificationInput);
-        } catch (notificationError) {
-          console.error(
-            "Unable to send legacy RFQ email notification",
-            notificationError,
-          );
-          notificationFailed = true;
-        }
-
-        if (notificationFailed) {
-          redirect("/rfq?status=notification");
-        }
-
-        redirect("/rfq?status=success");
-      }
-    }
-
     if (attachmentPath) {
       await supabase.storage
         .from(RFQ_ATTACHMENTS_BUCKET)
