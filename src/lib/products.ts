@@ -62,9 +62,9 @@ export type DashboardProduct = {
   createdAt: string;
 };
 
-function fallbackImage(images: string[]) {
+function fallbackImage(images: string[], productSlug: string) {
   return images.length > 0
-    ? repairKnownSeedImages(images)
+    ? repairKnownSeedImages(images, productSlug)
     : ["/brand/tmp-logo.webp"];
 }
 
@@ -123,7 +123,7 @@ function normalizeProduct(
     currency: product.currency,
     moq: product.moq,
     leadTime: product.lead_time,
-    images: fallbackImage(product.images),
+    images: fallbackImage(product.images, product.slug),
     status: product.status,
     createdAt: product.created_at,
   };

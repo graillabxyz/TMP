@@ -232,7 +232,7 @@ function normalizeProduct(
       : t.common.product,
     moq: row.moq ? `${row.moq} ${t.common.units}` : t.common.onRequest,
     image: row.images[0]
-      ? repairKnownSeedImage(row.images[0])
+      ? repairKnownSeedImage(row.images[0], row.slug)
       : "/brand/tmp-logo.webp",
   };
 }

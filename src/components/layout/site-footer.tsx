@@ -62,7 +62,7 @@ export async function SiteFooter() {
               {t.common.categories}
             </h3>
             <div className="mt-4 grid gap-3">
-              {categories.slice(0, 4).map((category) => (
+              {categories.map((category) => (
                 <Link
                   key={category.slug}
                   href={`${getLocalizedPath(locale, "/suppliers")}?category=${category.slug}`}
