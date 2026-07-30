@@ -398,3 +398,40 @@ Each completed loop will add:
    private document denial with two accounts. The 1 EUR amount remains the
    owner-approved test price and must not charge public users as production
    pricing.
+
+### Loop 9
+
+1. **Flows and environment:** Exercised every public, auth, legal, and not-found
+   surface in EN/FR/TR; ran a 42-case responsive matrix across 320, 375, 390,
+   430, 1280, 1440, and 1920 pixel widths; inspected all showcase product
+   images; and verified page-level canonical/hreflang metadata plus the XML
+   sitemap.
+2. **Defects:** `Medium` - several showcase listings displayed unrelated cars,
+   electronics, rooms, or generic fruit, which undermined marketplace trust.
+   `Medium` - the media migration skipped already-hosted Supabase seed images,
+   so a stale but hosted image could never be corrected. `Medium` - non-visible
+   navigation and image labels remained English-only despite translated page
+   copy, and sitemap entries lacked language relationships. `Low` - the footer
+   hid two of six categories. `Low` - legacy automotive seed slugs bypassed the
+   new building-material image mapping until their database migration ran.
+3. **Fix:** Added a visually reviewed curated showcase catalog, legacy slug
+   aliases, immediate known-seed fallbacks, and a forced Supabase Storage
+   refresh path for curated media. The footer now lists every category.
+   Language, navigation, and supplier-image accessible names are localized in
+   all three languages, and every sitemap URL carries EN/FR/TR/x-default
+   alternates. Commits `2cedf37`, `bf6b59b`, and `53a1679`.
+4. **Evidence:** All 12 product cards resolve a relevant source, including
+   specific CNC, textile production, towel manufacturing, figs, aluminum
+   profiles, insulation, and packaging imagery; known media load at 900 px.
+   The 33-route multilingual browser audit found zero horizontal overflow,
+   missing image alternatives, missing/duplicate H1s, application errors,
+   canonical gaps, or page hreflang gaps. Wrapped supplier filter checkboxes
+   have visible labels. The generated sitemap includes EN, FR, TR, and
+   x-default alternates. Twenty-four tests, typecheck, full lint, and diff
+   checks passed.
+5. **Remaining:** Curated third-party sources are an intentional temporary
+   fallback for known demo rows. Run `npm run migrate:media` with the server-only
+   service-role key so all showcase and hero assets are copied into Supabase
+   Storage and database URLs are updated. Live storage contents and policy
+   state remain unverified because this task exposes no callable Supabase
+   project tools.
