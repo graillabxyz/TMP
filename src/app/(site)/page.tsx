@@ -145,6 +145,7 @@ export default async function HomePage() {
                   aria-label={t.common.category}
                   defaultValue=""
                   className="border-charcoal-900/10 bg-white/55 text-charcoal-900 shadow-none hover:border-gold-300/35 focus-visible:ring-offset-gold-50 [&_option]:bg-white [&_option]:text-charcoal-900"
+                  iconClassName="text-charcoal-600"
                 >
                   <option value="">{t.home.allCategories}</option>
                   {categories.map((category) => (

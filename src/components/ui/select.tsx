@@ -1,22 +1,34 @@
 import * as React from "react";
+import { ChevronDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-export type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
+export type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
+  iconClassName?: string;
+};
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, children, ...props }, ref) => {
+  ({ className, children, iconClassName, ...props }, ref) => {
     return (
-      <select
-        ref={ref}
-        className={cn(
-          "flex h-11 w-full cursor-pointer rounded-md border border-input bg-white/5 px-3 py-2 text-sm text-white shadow-sm transition hover:border-gold-300/35 focus-visible:border-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 [&_option]:bg-charcoal-900 [&_option]:text-white",
-          className,
-        )}
-        {...props}
-      >
-        {children}
-      </select>
+      <div className="relative w-full">
+        <select
+          ref={ref}
+          className={cn(
+            "peer flex h-11 w-full cursor-pointer appearance-none rounded-md border border-input bg-white/5 py-2 pl-3 pr-11 text-sm text-white shadow-sm transition hover:border-gold-300/35 focus-visible:border-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 [&_option]:bg-charcoal-900 [&_option]:text-white",
+            className,
+          )}
+          {...props}
+        >
+          {children}
+        </select>
+        <ChevronDown
+          className={cn(
+            "pointer-events-none absolute right-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground transition peer-disabled:opacity-50",
+            iconClassName,
+          )}
+          aria-hidden="true"
+        />
+      </div>
     );
   },
 );
