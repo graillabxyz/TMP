@@ -69,13 +69,13 @@ Status key:
 
 ## Loop 4: Buyer Account And Session
 
-21. `QUEUED` Anonymous dashboard/profile access redirects to localized login.
-22. `QUEUED` An authenticated buyer sees only their profile, email, RFQs, and
+21. `FIXED` Anonymous dashboard/profile access redirects to localized login.
+22. `BLOCKED` An authenticated buyer sees only their profile, email, RFQs, and
     relevant dashboard actions.
-23. `QUEUED` Sessions persist across refresh and expire/revoke predictably.
-24. `QUEUED` Public and dashboard profile menus open, close, navigate, and sign
+23. `BLOCKED` Sessions persist across refresh and expire/revoke predictably.
+24. `BLOCKED` Public and dashboard profile menus open, close, navigate, and sign
     out correctly by pointer and keyboard.
-25. `QUEUED` A buyer cannot read or mutate another account's profile, RFQs,
+25. `BLOCKED` A buyer cannot read or mutate another account's profile, RFQs,
     attachments, supplier, products, or verification documents.
 
 ## Loop 5: Supplier Upgrade
@@ -244,3 +244,31 @@ Each completed loop will add:
    completion, and Google consent completion require test identities and inbox
    access; flows 14, 16, and 18 remain blocked. Flow 20's missing implementation
    is fixed, but its emailed-link completion still needs that provider test.
+
+### Loop 4
+
+1. **Flows and environment:** Exercised anonymous access to every dashboard
+   route in TR, reviewed all dashboard profile/session branches, and audited
+   checked-in RLS for profiles, RFQs, supplier records, products, supplier
+   assets, verification files, and RFQ attachments.
+2. **Defects:** `Medium` - localized dashboard roots redirected anonymous users
+   to English login. `Medium` - nested product and verification workspaces
+   rendered dashboard chrome and denial cards to anonymous visitors instead of
+   enforcing one consistent auth boundary. `Medium` - dashboard links, product
+   form cancellation, and sign-out failure handling could silently lose locale.
+3. **Fix:** Every dashboard entry now redirects before workspace loading to a
+   localized login with an exact safe return path; auth-required feedback,
+   dashboard links, product cancellation, profile return, and sign-out locale
+   are consistent. Commit `61160dd`.
+4. **Evidence:** `/tr/dashboard`, Profile, Products, New Product, arbitrary Edit
+   Product, and Verification each returned
+   `/tr/login?status=auth-required&next=<exact localized route>`. The login
+   rendered Turkish auth-required copy. Static policy evidence includes
+   `profiles.id = auth.uid()`, `rfqs.submitter_id = auth.uid()`, supplier
+   ownership checks, and owner-prefixed private storage paths. Twelve tests,
+   typecheck, and lint passed.
+5. **Remaining:** A real signed-in buyer and a second adversarial account are
+   required to test session refresh/revocation, menu sign-out, and cross-account
+   reads/mutations end to end. The Supabase MCP registration exists, but live
+   SQL/policy tools are not callable in this running task, so checked-in
+   migrations cannot substitute for verifying applied production policy state.
