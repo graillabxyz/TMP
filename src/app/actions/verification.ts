@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 
-import { getDemoRole } from "@/lib/demo-session";
 import {
   createMediaPath,
   isOwnedPrivateMediaPath,
@@ -163,10 +162,6 @@ async function removeVerificationFiles(
 export async function startSupplierProfile(formData: FormData) {
   const returnPath = getReturnPath(formData);
 
-  if ((await getDemoRole()) === "supplier") {
-    redirect(`${returnPath}?status=supplier-started`);
-  }
-
   const company = getString(formData, "company");
 
   if (!company) {
@@ -212,10 +207,6 @@ export async function startSupplierProfile(formData: FormData) {
 }
 
 export async function submitVerificationDocuments(formData: FormData) {
-  if ((await getDemoRole()) === "supplier") {
-    redirect("/dashboard/settings/verification?status=submitted");
-  }
-
   const { supabase, supplierId, userId, verificationStatus } =
     await getSupplierId();
 

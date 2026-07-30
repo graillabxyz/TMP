@@ -1,6 +1,4 @@
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
-import { getDemoRole } from "@/lib/demo-session";
-import { getLocale, localizedValue } from "@/lib/i18n";
 
 export type VerificationStatus = "none" | "pending" | "verified" | "rejected";
 export type VerificationSubscriptionStatus =
@@ -48,31 +46,6 @@ type DocumentRow = {
 };
 
 export async function getVerificationWorkspace(): Promise<VerificationWorkspace> {
-  const demoRole = await getDemoRole();
-
-  if (demoRole === "supplier") {
-    const locale = await getLocale();
-
-    return {
-      state: "ready",
-      supplier: {
-        id: "demo-supplier",
-        name: localizedValue(
-          locale,
-          "TMP Demo Supplier",
-          "Fournisseur démo TMP",
-          "TMP Demo Tedarikçi",
-        ),
-        verificationStatus: "pending",
-        subscriptionStatus: "inactive",
-        stripeCustomerId: null,
-        verificationStartedAt: null,
-        verificationExpiresAt: null,
-      },
-      documents: null,
-    };
-  }
-
   let supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
   try {

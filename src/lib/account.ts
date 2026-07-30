@@ -1,5 +1,4 @@
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
-import { getDemoProfile } from "@/lib/demo-session";
 
 export type AccountRole = "buyer" | "supplier" | "admin";
 
@@ -10,12 +9,6 @@ export type CurrentProfile = {
 } | null;
 
 export async function getCurrentProfile(): Promise<CurrentProfile> {
-  const demoProfile = await getDemoProfile();
-
-  if (demoProfile) {
-    return demoProfile;
-  }
-
   let supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
   try {

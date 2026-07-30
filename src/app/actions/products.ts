@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 
-import { getDemoRole } from "@/lib/demo-session";
 import {
   createMediaPath,
   getOwnedMediaPath,
@@ -206,10 +205,6 @@ export async function createProduct(formData: FormData) {
     redirect("/dashboard/products/new?status=missing");
   }
 
-  if ((await getDemoRole()) === "supplier") {
-    redirect("/dashboard/products?status=created");
-  }
-
   const { supabase, supplierId, userId } = await getCurrentSupplierContext();
 
   if (!supplierId || !userId) {
@@ -280,10 +275,6 @@ export async function updateProduct(formData: FormData) {
     hasInvalidProductDetails(formData)
   ) {
     redirect(`/dashboard/products/${productId}/edit?status=missing`);
-  }
-
-  if ((await getDemoRole()) === "supplier") {
-    redirect("/dashboard/products?status=updated");
   }
 
   const { supabase, supplierId, userId } = await getCurrentSupplierContext();
@@ -374,10 +365,6 @@ export async function updateProduct(formData: FormData) {
 
 export async function archiveProduct(formData: FormData) {
   const productId = getString(formData, "id");
-
-  if ((await getDemoRole()) === "supplier") {
-    redirect("/dashboard/products?status=archived");
-  }
 
   const { supabase, supplierId } = await getCurrentSupplierContext();
 

@@ -80,7 +80,7 @@ export default async function EditProductPage({
 
   const [categories, product] = await Promise.all([
     getCategories(locale),
-    getEditableProduct(id, locale),
+    getEditableProduct(id),
   ]);
   const statusCopy =
     query.status === "missing"
