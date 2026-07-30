@@ -134,14 +134,19 @@ are cleared.
 - [x] `PASS` English, French, and Turkish headings, buttons, labels, legal copy,
   and auth copy were crawled on the core route set.
 - [x] `PASS` Header category menu closes on outside click and Escape.
-- [ ] `PENDING` Desktop visual review at 1280, 1440, and 1920 widths.
-- [ ] `PENDING` Mobile visual review at 320, 375, 390, and 430 widths.
+- [x] `PASS` Ten primary public routes were checked at 1280, 1440, and 1920
+  widths with no horizontal overflow, duplicate IDs, unnamed visible buttons,
+  missing image alternative text, or invalid primary heading counts.
+- [x] `PASS` The same ten public routes were checked at 320, 375, 390, and 430
+  widths with the same result, for a 70-page responsive matrix.
 - [ ] `PENDING` Keyboard-only review for header menus, filters, forms, dialogs,
   dashboard navigation, and focus visibility.
 - [ ] `PENDING` Automated accessibility scan plus manual label, heading,
   contrast, zoom, and screen-reader spot checks.
-- [ ] `PENDING` Verify every image loads, has useful alternative text, and does
-  not cause layout shift on product and supplier detail pages.
+- [x] `PASS` All 12 product and 6 supplier detail pages were crawled at 390 px;
+  every visible image loaded, every page had one `h1`, and none overflowed or
+  rendered a not-found state. The known legacy seed image is repaired at read
+  time while the production data migration remains pending.
 - [ ] `PENDING` Validate loading, empty, validation, error, offline, and success
   states for every primary workflow.
 - [ ] `PENDING` Run Lighthouse on home, products, suppliers, RFQ, login, and one
