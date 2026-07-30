@@ -5,6 +5,7 @@ import {
   type Locale,
   defaultLocale,
 } from "@/lib/i18n";
+import { repairKnownSeedImage } from "@/lib/media-fallbacks";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import {
   getCategoryOverride,
@@ -223,7 +224,9 @@ function normalizeProduct(
         localizedValue(locale, row.category.name, row.category.name_fr))
       : t.common.product,
     moq: row.moq ? `${row.moq} ${t.common.units}` : t.common.onRequest,
-    image: row.images[0] ?? "/brand/tmp-logo.webp",
+    image: row.images[0]
+      ? repairKnownSeedImage(row.images[0])
+      : "/brand/tmp-logo.webp",
   };
 }
 

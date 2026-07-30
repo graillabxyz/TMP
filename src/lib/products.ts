@@ -1,5 +1,6 @@
 import { defaultLocale, localizedValue, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionary";
+import { repairKnownSeedImages } from "@/lib/media-fallbacks";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import {
@@ -55,7 +56,9 @@ export type DashboardProduct = {
 };
 
 function fallbackImage(images: string[]) {
-  return images.length > 0 ? images : ["/brand/tmp-logo.webp"];
+  return images.length > 0
+    ? repairKnownSeedImages(images)
+    : ["/brand/tmp-logo.webp"];
 }
 
 function getSafeSearchPattern(query?: string) {
