@@ -71,10 +71,18 @@ function getCurrency(formData: FormData) {
 }
 
 function hasInvalidProductDetails(formData: FormData) {
+  const title = getString(formData, "title");
+  const description = getString(formData, "description");
+  const leadTime = getString(formData, "lead_time");
   const priceMin = getNumber(formData, "price_min");
   const priceMax = getNumber(formData, "price_max");
 
   return (
+    title.length < 3 ||
+    title.length > 160 ||
+    description.length < 20 ||
+    description.length > 5000 ||
+    leadTime.length > 120 ||
     hasInvalidNumber(formData, "moq", { integer: true, min: 1 }) ||
     hasInvalidNumber(formData, "price_min", { min: 0 }) ||
     hasInvalidNumber(formData, "price_max", { min: 0 }) ||

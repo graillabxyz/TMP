@@ -64,6 +64,8 @@ export function ProductForm({
               id="title"
               name="title"
               required
+              minLength={3}
+              maxLength={160}
               defaultValue={product?.title ?? ""}
             />
           </div>
@@ -93,6 +95,8 @@ export function ProductForm({
               id="description"
               name="description"
               required
+              minLength={20}
+              maxLength={5000}
               rows={6}
               defaultValue={product?.description ?? ""}
             />
@@ -114,6 +118,7 @@ export function ProductForm({
               <Input
                 id="lead_time"
                 name="lead_time"
+                maxLength={120}
                 placeholder={labels.leadTimePlaceholder}
                 defaultValue={product?.lead_time ?? ""}
               />

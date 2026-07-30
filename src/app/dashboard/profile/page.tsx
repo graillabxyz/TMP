@@ -79,7 +79,10 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
           <Card className="bg-white/[0.035]">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <UserRound className="size-5 text-gold-200" aria-hidden="true" />
+                <UserRound
+                  className="size-5 text-gold-200"
+                  aria-hidden="true"
+                />
                 {copy.accountTitle}
               </CardTitle>
             </CardHeader>
@@ -89,12 +92,16 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                 <p className="mt-2 font-medium text-white">{profile.email}</p>
               </div>
               <div className="rounded-lg border border-white/10 bg-white/[0.035] p-4">
-                <p className="text-sm text-muted-foreground">{copy.accountType}</p>
+                <p className="text-sm text-muted-foreground">
+                  {copy.accountType}
+                </p>
                 <div className="mt-2 flex flex-wrap items-center gap-2">
                   <p className="font-medium text-white">
                     {isSupplier ? copy.supplierAccount : copy.buyerAccount}
                   </p>
-                  {isSupplier && <Badge variant="outline">{copy.supplierEnabled}</Badge>}
+                  {isSupplier && (
+                    <Badge variant="outline">{copy.supplierEnabled}</Badge>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -103,7 +110,10 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
           <Card className="bg-white/[0.035]">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <BadgeCheck className="size-5 text-gold-200" aria-hidden="true" />
+                <BadgeCheck
+                  className="size-5 text-gold-200"
+                  aria-hidden="true"
+                />
                 {copy.verifiedTitle}
               </CardTitle>
             </CardHeader>
@@ -132,7 +142,9 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                       {verificationCopy.states[supplier.subscriptionStatus]}
                     </Badge>
                   ) : (
-                    <Badge variant="secondary">{verificationCopy.states.none}</Badge>
+                    <Badge variant="secondary">
+                      {verificationCopy.states.none}
+                    </Badge>
                   )}
                 </div>
                 <p className="mt-3 text-sm leading-6 text-muted-foreground">
@@ -207,13 +219,20 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                 action={startSupplierProfile}
                 className="mt-6 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end"
               >
-                <input type="hidden" name="return_to" value="/dashboard/profile" />
+                <input
+                  type="hidden"
+                  name="return_to"
+                  value="/dashboard/profile"
+                />
                 <div className="grid gap-2">
                   <Label htmlFor="company">{copy.businessName}</Label>
                   <Input
                     id="company"
                     name="company"
                     required
+                    minLength={2}
+                    maxLength={120}
+                    autoComplete="organization"
                     placeholder={copy.businessNamePlaceholder}
                   />
                 </div>

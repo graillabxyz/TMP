@@ -164,7 +164,7 @@ export async function startSupplierProfile(formData: FormData) {
 
   const company = getString(formData, "company");
 
-  if (!company) {
+  if (company.length < 2 || company.length > 120) {
     redirect(`${returnPath}?status=missing-company`);
   }
 
