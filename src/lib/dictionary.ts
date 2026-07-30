@@ -58,6 +58,10 @@ const dictionaries = {
       privacy: "Privacy",
       terms: "Terms",
       goToProfile: "Go to profile",
+      language: "Language",
+      marketplaceNavigation: "Marketplace navigation",
+      buyerToolsNavigation: "Buyer tools",
+      mobileNavigation: "Mobile navigation",
     },
     footer: {
       intro:
@@ -143,6 +147,7 @@ const dictionaries = {
       verification: "Verification",
       checks: ["Verified suppliers", "EU export experience", "Low MOQ"],
       viewSupplier: "View supplier",
+      imageAlt: "Production preview for {supplier}",
       emptyTitle: "No suppliers match these filters",
       emptyBody:
         "Try a broader search, clear a filter, or browse the full supplier directory.",
@@ -199,6 +204,7 @@ const dictionaries = {
       certifications: "Certifications",
       licenses: "Licenses & audits",
       exportMarkets: "Export markets",
+      facilityImageAlt: "{supplier} facility",
       metadataNotFoundTitle: "Supplier not found | TMP",
       metadataNotFoundDescription: "This supplier profile is not available.",
       metadataVerifiedTitle: "Verified Turkish Supplier",
@@ -803,6 +809,10 @@ const dictionaries = {
       privacy: "Confidentialité",
       terms: "Conditions",
       goToProfile: "Aller au profil",
+      language: "Langue",
+      marketplaceNavigation: "Navigation de la marketplace",
+      buyerToolsNavigation: "Outils acheteur",
+      mobileNavigation: "Navigation mobile",
     },
     footer: {
       intro:
@@ -892,6 +902,7 @@ const dictionaries = {
       verification: "Vérification",
       checks: ["Fournisseurs vérifiés", "Expérience export UE", "MOQ faible"],
       viewSupplier: "Voir le fournisseur",
+      imageAlt: "Aperçu de production de {supplier}",
       emptyTitle: "Aucun fournisseur ne correspond à ces filtres",
       emptyBody:
         "Essayez une recherche plus large, effacez un filtre ou parcourez tout l’annuaire fournisseur.",
@@ -949,6 +960,7 @@ const dictionaries = {
       certifications: "Certifications",
       licenses: "Licences et audits",
       exportMarkets: "Marchés export",
+      facilityImageAlt: "Site de production de {supplier}",
       metadataNotFoundTitle: "Fournisseur introuvable | TMP",
       metadataNotFoundDescription:
         "Ce profil fournisseur n’est pas disponible.",
@@ -1568,6 +1580,10 @@ const turkishDictionary = {
     privacy: "Gizlilik",
     terms: "Şartlar",
     goToProfile: "Profile git",
+    language: "Dil",
+    marketplaceNavigation: "Pazar yeri navigasyonu",
+    buyerToolsNavigation: "Alıcı araçları",
+    mobileNavigation: "Mobil navigasyon",
   },
   footer: {
     intro:
@@ -1658,6 +1674,7 @@ const turkishDictionary = {
       "Düşük minimum sipariş",
     ],
     viewSupplier: "Tedarikçiyi görüntüle",
+    imageAlt: "{supplier} üretim önizlemesi",
     emptyTitle: "Bu filtrelerle eşleşen tedarikçi yok",
     emptyBody:
       "Daha geniş bir arama deneyin, filtreyi temizleyin veya tüm tedarikçi rehberine göz atın.",
@@ -1713,6 +1730,7 @@ const turkishDictionary = {
     certifications: "Sertifikalar",
     licenses: "Lisanslar ve denetimler",
     exportMarkets: "İhracat pazarları",
+    facilityImageAlt: "{supplier} üretim tesisi",
     metadataNotFoundTitle: "Tedarikçi bulunamadı | TMP",
     metadataNotFoundDescription: "Bu tedarikçi profili mevcut değil.",
     metadataVerifiedTitle: "Doğrulanmış Türk Tedarikçi",

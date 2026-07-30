@@ -8,9 +8,10 @@ import { cn } from "@/lib/utils";
 
 type LanguageToggleProps = {
   locale: Locale;
+  label: string;
 };
 
-export function LanguageToggle({ locale }: LanguageToggleProps) {
+export function LanguageToggle({ locale, label }: LanguageToggleProps) {
   const options = ["en", "fr", "tr"] as const;
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -18,12 +19,15 @@ export function LanguageToggle({ locale }: LanguageToggleProps) {
   return (
     <>
       <details className="group relative sm:hidden">
-        <summary className="inline-flex h-10 min-w-12 cursor-pointer list-none items-center justify-center rounded-md border border-white/10 bg-white/[0.06] px-3 text-sm font-semibold uppercase text-white transition hover:border-gold-300/35 hover:bg-white/[0.09] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden">
+        <summary
+          aria-label={`${label}: ${locale.toUpperCase()}`}
+          className="inline-flex h-10 min-w-12 cursor-pointer list-none items-center justify-center rounded-md border border-white/10 bg-white/[0.06] px-3 text-sm font-semibold uppercase text-white transition hover:border-gold-300/35 hover:bg-white/[0.09] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden"
+        >
           {locale}
         </summary>
         <div
           className="absolute right-0 top-full z-50 mt-2 hidden min-w-28 gap-1 rounded-lg border border-white/10 bg-charcoal-900 p-1.5 shadow-premium group-open:grid"
-          aria-label="Language"
+          aria-label={label}
         >
           {options.map((option) => (
             <a
@@ -42,7 +46,7 @@ export function LanguageToggle({ locale }: LanguageToggleProps) {
       </details>
       <nav
         className="hidden grid-cols-3 rounded-md border border-white/10 bg-white/[0.04] p-1 sm:grid"
-        aria-label="Language"
+        aria-label={label}
       >
         {options.map((option) => (
           <a

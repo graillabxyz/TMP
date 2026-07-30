@@ -29,7 +29,7 @@ export default async function AuthLayout({
         <header className="flex items-center justify-between py-6">
           <Logo href={homeHref} />
           <div className="flex items-center gap-2">
-            <LanguageToggle locale={locale} />
+            <LanguageToggle locale={locale} label={t.common.language} />
             <Button asChild variant="ghost">
               <Link href={homeHref}>{t.nav.backHome}</Link>
             </Button>

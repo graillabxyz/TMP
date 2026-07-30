@@ -286,6 +286,7 @@ export default async function SuppliersPage({
                     moq: t.common.moq,
                     response: t.common.response,
                     viewSupplier: t.suppliers.viewSupplier,
+                    imageAlt: t.suppliers.imageAlt,
                   }}
                 />
               ))}

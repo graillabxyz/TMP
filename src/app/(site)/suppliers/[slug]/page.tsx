@@ -183,7 +183,10 @@ export default async function SupplierDetailPage({
             <div className="relative aspect-[4/3]">
               <Image
                 src={supplier.image}
-                alt={`${supplier.name} facility`}
+                alt={t.supplierDetail.facilityImageAlt.replace(
+                  "{supplier}",
+                  supplier.name,
+                )}
                 fill
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 className="object-cover"

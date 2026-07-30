@@ -60,7 +60,7 @@ export async function SiteHeader() {
           </Button>
         </form>
         <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-          <LanguageToggle locale={locale} />
+          <LanguageToggle locale={locale} label={t.common.language} />
           <ContactDropdown labels={t.contact} />
           {profile ? (
             <ProfileDropdown
@@ -124,7 +124,10 @@ export async function SiteHeader() {
       </form>
       <div className="hidden border-t border-white/10 bg-black/20 md:block">
         <div className="container flex min-h-10 items-center justify-between gap-4 py-1.5">
-          <nav className="flex items-center gap-1" aria-label="Marketplace">
+          <nav
+            className="flex items-center gap-1"
+            aria-label={t.common.marketplaceNavigation}
+          >
             <CategoriesDropdown
               baseHref={productsHref}
               categories={categories}
@@ -142,7 +145,7 @@ export async function SiteHeader() {
           </nav>
           <nav
             className="hidden items-center gap-1 lg:flex"
-            aria-label="Buyer tools"
+            aria-label={t.common.buyerToolsNavigation}
           >
             <Link
               href={getLocalizedPath(locale, "/rfq")}
@@ -173,7 +176,10 @@ export async function SiteHeader() {
           </nav>
         </div>
       </div>
-      <nav className="border-t border-white/10 md:hidden" aria-label="Mobile">
+      <nav
+        className="border-t border-white/10 md:hidden"
+        aria-label={t.common.mobileNavigation}
+      >
         <div className="container flex items-center gap-1 py-1.5">
           {mobileNav.map((item) => (
             <Link

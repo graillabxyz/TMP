@@ -528,6 +528,7 @@ export default async function HomePage() {
                 moq: t.common.moq,
                 response: t.common.response,
                 viewSupplier: t.suppliers.viewSupplier,
+                imageAlt: t.suppliers.imageAlt,
               }}
             />
           ))}

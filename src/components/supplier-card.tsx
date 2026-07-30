@@ -15,6 +15,7 @@ type SupplierCardProps = {
     moq: string;
     response: string;
     viewSupplier: string;
+    imageAlt: string;
   };
 };
 
@@ -33,7 +34,7 @@ export function SupplierCard({
         <div className="relative aspect-[16/10] overflow-hidden">
           <Image
             src={supplier.image}
-            alt={`${supplier.name} production preview`}
+            alt={labels.imageAlt.replace("{supplier}", supplier.name)}
             fill
             sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
             className="object-cover transition duration-500 group-hover:scale-105"
