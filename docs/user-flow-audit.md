@@ -40,18 +40,18 @@ Status key:
 
 ## Loop 2: Marketplace Discovery
 
-7. `QUEUED` Browse product and supplier indexes with populated results.
-8. `QUEUED` Search from the homepage/header and receive the expected product
+7. `PASS` Browse product and supplier indexes with populated results.
+8. `PASS` Search from the homepage/header and receive the expected product
    results.
-9. `QUEUED` Filter products by search, category, and supplier; combine and clear
+9. `PASS` Filter products by search, category, and supplier; combine and clear
    filters.
-10. `QUEUED` Filter suppliers by search, category, location, verification,
+10. `FIXED` Filter suppliers by search, category, location, verification,
     export market, and capability; combine and clear filters.
-11. `QUEUED` Open product details, related products, supplier details, and
+11. `FIXED` Open product details, related products, supplier details, and
     supplier products with correct localized URLs and breadcrumbs.
-12. `QUEUED` Start a product-specific or supplier-specific RFQ with trustworthy
+12. `FIXED` Start a product-specific or supplier-specific RFQ with trustworthy
     context carried into the request.
-13. `QUEUED` Render useful no-results, unavailable-data, and unknown-slug
+13. `PASS` Render useful no-results, unavailable-data, and unknown-slug
     states without leaking internal errors.
 
 ## Loop 3: Account Entry And Authentication
@@ -185,3 +185,33 @@ Each completed loop will add:
 5. **Remaining:** Dashboard locale behavior is rechecked with an authenticated
    session in Loop 4. Provider-backed navigation remains covered by its owning
    later loop.
+
+### Loop 2
+
+1. **Flows and environment:** Exercised flows 7-13 in FR and TR against live
+   Supabase-backed catalog data. Tested populated indexes, combined product
+   search/category/supplier filters, combined supplier
+   search/category/verified/export/low-MOQ filters, clear actions, product and
+   supplier details, related/catalog navigation, contextual RFQs, no-results,
+   and unknown slugs.
+2. **Defects:** `Medium` - verified-directory links emitted
+   `verified=true`, but the filter only recognized `verified=1`, leaving the
+   control inactive. `High` - supplier profile RFQ links dropped supplier
+   context, so a supplier-targeted buyer intent became a general request.
+   `Medium` - product details did not link to the supplier and supplier
+   profiles offered no path to that supplier's full product catalog.
+3. **Fix:** Standardized verified links while accepting the legacy query,
+   carried validated supplier context into RFQ presentation and hidden fields,
+   stopped forwarding unknown product slugs, and added localized
+   product-to-supplier and supplier-to-catalog links. Commit `623b02b`.
+4. **Evidence:** A three-filter product query returned one expected hoodie and
+   clearing restored 12 listings. A five-filter supplier query returned only
+   Laboratoire Packaging Istanbul with all controls checked. Supplier catalog
+   navigation returned its two products. Product and supplier RFQs populated
+   the expected known slugs; unknown product input was no longer copied into
+   the form. FR/TR no-results and unknown product/supplier routes rendered
+   localized, non-sensitive states. Tests, typecheck, and lint passed.
+5. **Remaining:** RFQ action-side resistance to forged context belongs to Loop
+   7. A real provider outage was not induced against the connected project; its
+   fail-empty code path was reviewed and the full failure experience is covered
+   again in Loop 9.
