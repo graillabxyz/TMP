@@ -33,6 +33,14 @@ function isValidOptionalSlug(value: string) {
   return !value || /^[a-z0-9-]{1,120}$/.test(value);
 }
 
+function isValidEmail(value: string) {
+  return (
+    value.length >= 3 &&
+    value.length <= 254 &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+  );
+}
+
 function hasSpecificProductDetail(value: string, hasCatalogProduct: boolean) {
   const words = value
     .split(/\s+/)
@@ -55,6 +63,9 @@ export async function submitRfq(formData: FormData) {
   }
 
   const productRequest = getString(formData, "product_request");
+  const requesterName = getString(formData, "requester_name");
+  const requesterEmail = getString(formData, "requester_email").toLowerCase();
+  const requesterCompany = getString(formData, "requester_company");
   const categorySlug = getString(formData, "category_slug");
   const quantity = getString(formData, "quantity");
   const destinationCountry = getString(formData, "destination_country");
@@ -67,6 +78,10 @@ export async function submitRfq(formData: FormData) {
   );
 
   if (
+    requesterName.length < 2 ||
+    requesterName.length > 100 ||
+    !isValidEmail(requesterEmail) ||
+    requesterCompany.length > 120 ||
     !productRequest ||
     !quantity ||
     !destinationCountry ||
@@ -139,7 +154,7 @@ export async function submitRfq(formData: FormData) {
     }
   }
 
-  const basePayload: RfqInsert = {
+  const legacyPayload = {
     id: rfqId,
     product_request: productRequest,
     category_slug: categorySlug || null,
@@ -150,9 +165,12 @@ export async function submitRfq(formData: FormData) {
     attachment_name: attachmentFile?.name ?? null,
     attachment_size: attachmentFile?.size ?? null,
     attachment_type: attachmentContentType,
-  };
+  } as unknown as RfqInsert;
   const payload: RfqInsert = {
-    ...basePayload,
+    ...legacyPayload,
+    requester_name: requesterName,
+    requester_email: requesterEmail,
+    requester_company: requesterCompany || null,
     submitter_id: user?.id ?? null,
     attachment_path: attachmentPath,
     product_id: getString(formData, "product_id") || null,
@@ -161,6 +179,28 @@ export async function submitRfq(formData: FormData) {
     supplier_slug: supplierSlug || null,
     inquiry_type:
       getString(formData, "inquiry_type") === "product" ? "product" : "general",
+  };
+  const notificationInput = {
+    rfqId,
+    requesterName,
+    requesterEmail,
+    requesterCompany: requesterCompany || null,
+    productRequest,
+    categorySlug: categorySlug || null,
+    quantity,
+    destinationCountry,
+    targetTimeline: targetTimeline || null,
+    notes: notes || null,
+    productSlug: productSlug || null,
+    supplierSlug: supplierSlug || null,
+    attachmentName: attachmentFile?.name ?? null,
+    attachmentSize: attachmentFile?.size ?? null,
+    attachmentType: attachmentContentType,
+    attachmentUrl: null as string | null,
+    inquiryType:
+      getString(formData, "inquiry_type") === "product"
+        ? ("product" as const)
+        : ("general" as const),
   };
 
   const rfqMutations = supabase.from("rfqs") as unknown as RfqMutationTable;
@@ -172,17 +212,35 @@ export async function submitRfq(formData: FormData) {
       error.message.includes("inquiry_type") ||
       error.message.includes("supplier_id") ||
       error.message.includes("submitter_id") ||
-      error.message.includes("attachment_path");
+      error.message.includes("attachment_path") ||
+      error.message.includes("requester_name") ||
+      error.message.includes("requester_email");
 
     if (!attachmentPath && isLegacySchemaError) {
       const { error: fallbackError } = await rfqMutations.insert({
-        ...basePayload,
+        ...legacyPayload,
         attachment_name: null,
         attachment_size: null,
         attachment_type: null,
       });
 
       if (!fallbackError) {
+        let notificationFailed = false;
+
+        try {
+          await sendRfqNotification(notificationInput);
+        } catch (notificationError) {
+          console.error(
+            "Unable to send legacy RFQ email notification",
+            notificationError,
+          );
+          notificationFailed = true;
+        }
+
+        if (notificationFailed) {
+          redirect("/rfq?status=notification");
+        }
+
         redirect("/rfq?status=success");
       }
     }
@@ -216,24 +274,7 @@ export async function submitRfq(formData: FormData) {
   }
 
   try {
-    await sendRfqNotification({
-      productRequest,
-      categorySlug: categorySlug || null,
-      quantity,
-      destinationCountry,
-      targetTimeline: targetTimeline || null,
-      notes: notes || null,
-      productSlug: productSlug || null,
-      supplierSlug: supplierSlug || null,
-      attachmentName: attachmentFile?.name ?? null,
-      attachmentSize: attachmentFile?.size ?? null,
-      attachmentType: attachmentContentType,
-      attachmentUrl,
-      inquiryType:
-        getString(formData, "inquiry_type") === "product"
-          ? "product"
-          : "general",
-    });
+    await sendRfqNotification({ ...notificationInput, attachmentUrl });
   } catch (notificationError) {
     console.error("Unable to send RFQ email notification", notificationError);
     redirect("/rfq?status=notification");

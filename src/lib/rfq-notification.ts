@@ -1,4 +1,8 @@
 type RfqNotificationInput = {
+  rfqId: string;
+  requesterName: string;
+  requesterEmail: string;
+  requesterCompany: string | null;
   productRequest: string;
   categorySlug: string | null;
   quantity: string;
@@ -60,6 +64,11 @@ function buildRfqEmailText(input: RfqNotificationInput) {
   return [
     "A new TMP RFQ was submitted.",
     "",
+    `Requester: ${input.requesterName}`,
+    `Requester email: ${input.requesterEmail}`,
+    formatOptional("Company", input.requesterCompany),
+    `RFQ ID: ${input.rfqId}`,
+    "",
     `Product request: ${input.productRequest}`,
     `Quantity: ${input.quantity}`,
     `Destination country: ${input.destinationCountry}`,
@@ -94,10 +103,12 @@ export async function sendRfqNotification(input: RfqNotificationInput) {
     headers: {
       Authorization: `Bearer ${config.apiKey}`,
       "Content-Type": "application/json",
+      "Idempotency-Key": `rfq-${input.rfqId}`,
     },
     body: JSON.stringify({
       from: config.from,
       to: [config.to],
+      reply_to: input.requesterEmail,
       subject: `New TMP RFQ: ${input.productRequest.slice(0, 80)}`,
       text: buildRfqEmailText(input),
     }),

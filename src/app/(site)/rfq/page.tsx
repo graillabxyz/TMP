@@ -142,6 +142,50 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                     </p>
                   </div>
                 )}
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="grid gap-2">
+                    <Label htmlFor="requester_name">
+                      {t.rfq.requesterName}
+                    </Label>
+                    <Input
+                      id="requester_name"
+                      name="requester_name"
+                      required
+                      minLength={2}
+                      maxLength={100}
+                      autoComplete="name"
+                      defaultValue={profile?.fullName ?? ""}
+                      placeholder={t.rfq.requesterNamePlaceholder}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="requester_email">
+                      {t.rfq.requesterEmail}
+                    </Label>
+                    <Input
+                      id="requester_email"
+                      name="requester_email"
+                      type="email"
+                      required
+                      maxLength={254}
+                      autoComplete="email"
+                      defaultValue={profile?.email ?? ""}
+                      placeholder={t.rfq.requesterEmailPlaceholder}
+                    />
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="requester_company">
+                    {t.rfq.requesterCompany}
+                  </Label>
+                  <Input
+                    id="requester_company"
+                    name="requester_company"
+                    maxLength={120}
+                    autoComplete="organization"
+                    placeholder={t.rfq.requesterCompanyPlaceholder}
+                  />
+                </div>
                 <input
                   type="hidden"
                   name="inquiry_type"

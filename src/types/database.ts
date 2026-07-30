@@ -408,6 +408,9 @@ export type Database = {
         Row: {
           id: string;
           submitter_id: string | null;
+          requester_name: string;
+          requester_email: string;
+          requester_company: string | null;
           product_id: string | null;
           supplier_id: string | null;
           product_slug: string | null;
@@ -430,6 +433,9 @@ export type Database = {
         Insert: {
           id?: string;
           submitter_id?: string | null;
+          requester_name: string;
+          requester_email: string;
+          requester_company?: string | null;
           product_id?: string | null;
           supplier_id?: string | null;
           product_slug?: string | null;
