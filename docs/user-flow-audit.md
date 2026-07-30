@@ -27,15 +27,15 @@ Status key:
 
 ## Loop 1: Global Navigation And Locale
 
-1. `QUEUED` Load the homepage from logo, direct URL, and localized URL.
-2. `QUEUED` Use desktop and mobile header search; preserve the active locale.
-3. `QUEUED` Open, navigate, and naturally close the categories menu by
+1. `PASS` Load the homepage from logo, direct URL, and localized URL.
+2. `PASS` Use desktop and mobile header search; preserve the active locale.
+3. `PASS` Open, navigate, and naturally close the categories menu by
    selection, outside click, pointer leave, and Escape.
-4. `QUEUED` Switch EN/FR/TR from public and dashboard surfaces while preserving
+4. `FIXED` Switch EN/FR/TR from public and dashboard surfaces while preserving
    the current public route and query where appropriate.
-5. `QUEUED` Open and close Contact; call and email links use the intended
+5. `PASS` Open and close Contact; call and email links use the intended
    administrator details.
-6. `QUEUED` Follow primary, buyer-tool, footer, legal, login, join, profile, and
+6. `PASS` Follow primary, buyer-tool, footer, legal, login, join, profile, and
    supplier-upgrade navigation without dead ends or misleading controls.
 
 ## Loop 2: Marketplace Discovery
@@ -159,3 +159,29 @@ Each completed loop will add:
 3. Files changed and commit.
 4. Verification evidence.
 5. Remaining blocked or owner-dependent paths.
+
+### Loop 1
+
+1. **Flows and environment:** Exercised flows 1-6 against the local Next.js
+   development server at 390x844 and 1440x900 in EN, FR, and TR. Checked direct
+   and logo homepage navigation, desktop/mobile header search, category
+   selection and dismissal, locale switching with query strings, Contact, and
+   public/auth/legal navigation targets.
+2. **Defect:** `Medium` - client-side language changes updated page content but
+   left the persistent header, active language control, and document language
+   in the previous locale.
+3. **Fix:** Locale controls now use route-preserving navigation links and a
+   pathname-driven document language synchronizer. Commit `39e3069`.
+4. **Evidence:** `/products?q=hoodie&category=packaging` remained on the same
+   route/query through EN -> FR -> TR -> EN; header copy, selector state, and
+   `<html lang>` agreed after every change. FR desktop search reached
+   `/fr/products?q=hoodie`; TR mobile search reached
+   `/tr/products?q=havlu`. Category selection reached
+   `/tr/products?category=building-materials`; outside click and Escape closed
+   the menu. Static review confirms its 450ms pointer-leave delay. Contact
+   exposed `tel:+33683024752` and `mailto:o.biyik@outlook.fr` and closed by its
+   close control, outside click, and Escape. Nine tests, typecheck, lint, and
+   production build passed.
+5. **Remaining:** Dashboard locale behavior is rechecked with an authenticated
+   session in Loop 4. Provider-backed navigation remains covered by its owning
+   later loop.
