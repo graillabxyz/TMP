@@ -91,15 +91,15 @@ Status key:
 
 ## Loop 6: Supplier Listings And Media
 
-30. `QUEUED` Create a draft or immediately published listing with valid
+30. `BLOCKED` Create a draft or immediately published listing with valid
     category, description, MOQ, pricing, currency, lead time, and image.
-31. `QUEUED` Reject malformed numbers, price inversion, excessive text,
+31. `FIXED` Reject malformed numbers, price inversion, excessive text,
     unsupported currency, missing category/image, spoofed files, and oversized
     uploads.
-32. `QUEUED` Edit listing details, replace the image, and clean up only the
+32. `BLOCKED` Edit listing details, replace the image, and clean up only the
     replaced owner-scoped object.
-33. `QUEUED` Archive a listing and remove it from public discovery.
-34. `QUEUED` A buyer or different supplier cannot create, edit, archive, delete,
+33. `BLOCKED` Archive a listing and remove it from public discovery.
+34. `BLOCKED` A buyer or different supplier cannot create, edit, archive, delete,
     reference, or overwrite another supplier's listing or storage path.
 
 ## Loop 7: RFQ And Inbox
@@ -299,3 +299,31 @@ Each completed loop will add:
    so the successful buyer-to-supplier transition and immediate supplier UI
    remain blocked pending a designated test account. Live applied RPC/RLS state
    also remains unverified without callable Supabase project tools.
+
+### Loop 6
+
+1. **Flows and environment:** Reviewed flows 30-34 through listing create,
+   update, archive, media upload/replacement, public catalog visibility,
+   database constraints, and supplier/storage RLS. Exercised signature, file
+   type, file size, and owner-path validation with automated tests.
+2. **Defects:** `Medium` - listing actions redirected to English routes and
+   lost locale. `Medium` - application validation omitted the database's upper
+   bounds, so extreme numeric values could trigger an unnecessary upload before
+   a generic database failure. `Medium` - archive reported success when the
+   submitted product did not exist or was not owned by the supplier. `Low` -
+   forged identifiers were not rejected before query/redirect construction.
+3. **Fix:** Listing forms now submit locale; all mutation outcomes use localized
+   paths; UUIDs, database-aligned MOQ/pricing limits, and browser limits are
+   enforced before upload; archive verifies an owned row before mutation.
+   Commit `35ed151`.
+4. **Evidence:** Upload validation checks JPEG, PNG, and WebP signatures rather
+   than MIME metadata, rejects PDF/empty/over-5MB product images, and writes a
+   randomized `user/supplier/products` path. Failed inserts remove the new
+   object; replacements remove an old object only after decoding it as the same
+   owner's supplier path. Insert/update policies repeat supplier ownership and
+   owner-prefix checks, while the public catalog reads only published rows.
+   Thirteen tests, typecheck, and lint passed.
+5. **Remaining:** A designated supplier account is required to create, replace,
+   and archive a real listing. A second account plus callable live Supabase
+   policy inspection is required to prove cross-supplier denial against the
+   deployed project; migration text alone is not treated as live evidence.
