@@ -203,6 +203,11 @@ export default async function DashboardProductsPage({
                               <form action={archiveProduct}>
                                 <input
                                   type="hidden"
+                                  name="locale"
+                                  value={locale}
+                                />
+                                <input
+                                  type="hidden"
                                   name="id"
                                   value={product.id}
                                 />

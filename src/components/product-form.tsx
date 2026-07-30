@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import type { Locale } from "@/lib/i18n";
 import type { Category } from "@/types";
 import type { ProductUpdate } from "@/lib/products";
 
@@ -36,6 +37,7 @@ type ProductFormProps = {
   action: (formData: FormData) => Promise<void>;
   categories: Category[];
   cancelHref: string;
+  locale: Locale;
   labels: ProductFormLabels;
   product?: ProductUpdate & { id: string };
 };
@@ -44,6 +46,7 @@ export function ProductForm({
   action,
   categories,
   cancelHref,
+  locale,
   labels,
   product,
 }: ProductFormProps) {
@@ -58,6 +61,7 @@ export function ProductForm({
       </CardHeader>
       <CardContent>
         <form action={action} className="grid gap-5">
+          <input type="hidden" name="locale" value={locale} />
           {product?.id && <input type="hidden" name="id" value={product.id} />}
 
           <div className="grid gap-2">
@@ -112,6 +116,7 @@ export function ProductForm({
                 name="moq"
                 type="number"
                 min="1"
+                max="1000000000"
                 defaultValue={product?.moq ?? ""}
               />
             </div>
@@ -135,6 +140,7 @@ export function ProductForm({
                 name="price_min"
                 type="number"
                 min="0"
+                max="1000000000000"
                 step="0.01"
                 defaultValue={product?.price_min ?? ""}
               />
@@ -146,6 +152,7 @@ export function ProductForm({
                 name="price_max"
                 type="number"
                 min="0"
+                max="1000000000000"
                 step="0.01"
                 defaultValue={product?.price_max ?? ""}
               />

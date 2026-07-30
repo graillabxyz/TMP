@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 
+import { getLocalizedPath, isLocale, type Locale } from "@/lib/i18n";
 import {
   createMediaPath,
   getOwnedMediaPath,
@@ -25,11 +26,23 @@ type SupplierProductsMutationTable = {
 };
 
 const allowedCurrencies = new Set(["EUR", "USD", "GBP", "TRY"]);
+const uuidPattern =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 function getString(formData: FormData, key: string) {
   const value = formData.get(key);
 
   return typeof value === "string" ? value.trim() : "";
+}
+
+function getFormLocale(formData: FormData): Locale {
+  const locale = getString(formData, "locale");
+
+  return isLocale(locale) ? locale : "en";
+}
+
+function isUuid(value: string) {
+  return uuidPattern.test(value);
 }
 
 function getNumber(formData: FormData, key: string) {
@@ -47,7 +60,7 @@ function getNumber(formData: FormData, key: string) {
 function hasInvalidNumber(
   formData: FormData,
   key: string,
-  options: { integer?: boolean; min?: number } = {},
+  options: { integer?: boolean; min?: number; max?: number } = {},
 ) {
   const value = getString(formData, key);
 
@@ -60,6 +73,7 @@ function hasInvalidNumber(
   return (
     !Number.isFinite(numeric) ||
     numeric < (options.min ?? Number.NEGATIVE_INFINITY) ||
+    numeric > (options.max ?? Number.POSITIVE_INFINITY) ||
     Boolean(options.integer && !Number.isInteger(numeric))
   );
 }
@@ -83,9 +97,19 @@ function hasInvalidProductDetails(formData: FormData) {
     description.length < 20 ||
     description.length > 5000 ||
     leadTime.length > 120 ||
-    hasInvalidNumber(formData, "moq", { integer: true, min: 1 }) ||
-    hasInvalidNumber(formData, "price_min", { min: 0 }) ||
-    hasInvalidNumber(formData, "price_max", { min: 0 }) ||
+    hasInvalidNumber(formData, "moq", {
+      integer: true,
+      min: 1,
+      max: 1_000_000_000,
+    }) ||
+    hasInvalidNumber(formData, "price_min", {
+      min: 0,
+      max: 1_000_000_000_000,
+    }) ||
+    hasInvalidNumber(formData, "price_max", {
+      min: 0,
+      max: 1_000_000_000_000,
+    }) ||
     (priceMin !== null && priceMax !== null && priceMin > priceMax) ||
     getCurrency(formData) === null
   );
@@ -196,6 +220,9 @@ async function removeProductImage(
 }
 
 export async function createProduct(formData: FormData) {
+  const locale = getFormLocale(formData);
+  const productsPath = getLocalizedPath(locale, "/dashboard/products");
+  const newProductPath = getLocalizedPath(locale, "/dashboard/products/new");
   const title = getString(formData, "title");
   const categoryId = getString(formData, "category_id");
   const description = getString(formData, "description");
@@ -204,25 +231,25 @@ export async function createProduct(formData: FormData) {
 
   if (
     !title ||
-    !categoryId ||
+    !isUuid(categoryId) ||
     !description ||
     !status ||
     !currency ||
     hasInvalidProductDetails(formData)
   ) {
-    redirect("/dashboard/products/new?status=missing");
+    redirect(`${newProductPath}?status=missing`);
   }
 
   const { supabase, supplierId, userId } = await getCurrentSupplierContext();
 
   if (!supplierId || !userId) {
-    redirect("/dashboard/products?status=supplier-missing");
+    redirect(`${productsPath}?status=supplier-missing`);
   }
 
   const imageFile = getFile(formData, "image");
 
   if (!imageFile) {
-    redirect("/dashboard/products/new?status=image");
+    redirect(`${newProductPath}?status=image`);
   }
 
   const uploadedImage = await uploadProductImage({
@@ -233,7 +260,7 @@ export async function createProduct(formData: FormData) {
   });
 
   if (!uploadedImage) {
-    redirect("/dashboard/products/new?status=image");
+    redirect(`${newProductPath}?status=image`);
   }
 
   const payload: ProductInsert = {
@@ -259,14 +286,19 @@ export async function createProduct(formData: FormData) {
   if (error) {
     await removeProductImage(supabase, uploadedImage.path);
     console.error("Unable to create product", error.message);
-    redirect("/dashboard/products/new?status=error");
+    redirect(`${newProductPath}?status=error`);
   }
 
-  redirect("/dashboard/products?status=created");
+  redirect(`${productsPath}?status=created`);
 }
 
 export async function updateProduct(formData: FormData) {
+  const locale = getFormLocale(formData);
   const productId = getString(formData, "id");
+  const productsPath = getLocalizedPath(locale, "/dashboard/products");
+  const editProductPath = isUuid(productId)
+    ? getLocalizedPath(locale, `/dashboard/products/${productId}/edit`)
+    : productsPath;
   const title = getString(formData, "title");
   const categoryId = getString(formData, "category_id");
   const description = getString(formData, "description");
@@ -274,21 +306,21 @@ export async function updateProduct(formData: FormData) {
   const currency = getCurrency(formData);
 
   if (
-    !productId ||
+    !isUuid(productId) ||
     !title ||
-    !categoryId ||
+    !isUuid(categoryId) ||
     !description ||
     !status ||
     !currency ||
     hasInvalidProductDetails(formData)
   ) {
-    redirect(`/dashboard/products/${productId}/edit?status=missing`);
+    redirect(`${editProductPath}?status=missing`);
   }
 
   const { supabase, supplierId, userId } = await getCurrentSupplierContext();
 
   if (!supplierId || !userId) {
-    redirect("/dashboard/products?status=supplier-missing");
+    redirect(`${productsPath}?status=supplier-missing`);
   }
 
   const { data: existingData, error: existingError } = await supabase
@@ -303,7 +335,7 @@ export async function updateProduct(formData: FormData) {
     if (existingError) {
       console.error("Unable to load existing product", existingError.message);
     }
-    redirect(`/dashboard/products/${productId}/edit?status=error`);
+    redirect(`${editProductPath}?status=error`);
   }
 
   const imageFile = getFile(formData, "image");
@@ -317,7 +349,7 @@ export async function updateProduct(formData: FormData) {
     : null;
 
   if (imageFile && !uploadedImage) {
-    redirect(`/dashboard/products/${productId}/edit?status=image`);
+    redirect(`${editProductPath}?status=image`);
   }
 
   const currentImageUrl = existingProduct.images[0] ?? null;
@@ -326,7 +358,7 @@ export async function updateProduct(formData: FormData) {
     : existingProduct.images;
 
   if (nextImages.length === 0) {
-    redirect(`/dashboard/products/${productId}/edit?status=image`);
+    redirect(`${editProductPath}?status=image`);
   }
 
   const payload: ProductUpdate = {
@@ -354,7 +386,7 @@ export async function updateProduct(formData: FormData) {
   if (error) {
     await removeProductImage(supabase, uploadedImage?.path ?? null);
     console.error("Unable to update product", error.message);
-    redirect(`/dashboard/products/${productId}/edit?status=error`);
+    redirect(`${editProductPath}?status=error`);
   }
 
   if (uploadedImage && currentImageUrl) {
@@ -368,16 +400,36 @@ export async function updateProduct(formData: FormData) {
     await removeProductImage(supabase, previousPath);
   }
 
-  redirect("/dashboard/products?status=updated");
+  redirect(`${productsPath}?status=updated`);
 }
 
 export async function archiveProduct(formData: FormData) {
+  const locale = getFormLocale(formData);
   const productId = getString(formData, "id");
+  const productsPath = getLocalizedPath(locale, "/dashboard/products");
 
   const { supabase, supplierId } = await getCurrentSupplierContext();
 
-  if (!productId || !supplierId) {
-    redirect("/dashboard/products?status=error");
+  if (!isUuid(productId) || !supplierId) {
+    redirect(`${productsPath}?status=error`);
+  }
+
+  const { data: ownedProduct, error: ownedProductError } = await supabase
+    .from("supplier_products")
+    .select("id")
+    .eq("id", productId)
+    .eq("supplier_id", supplierId)
+    .maybeSingle();
+
+  if (ownedProductError || !ownedProduct) {
+    if (ownedProductError) {
+      console.error(
+        "Unable to verify product before archive",
+        ownedProductError.message,
+      );
+    }
+
+    redirect(`${productsPath}?status=error`);
   }
 
   const productMutations = supabase.from(
@@ -390,8 +442,8 @@ export async function archiveProduct(formData: FormData) {
 
   if (error) {
     console.error("Unable to archive product", error.message);
-    redirect("/dashboard/products?status=error");
+    redirect(`${productsPath}?status=error`);
   }
 
-  redirect("/dashboard/products?status=archived");
+  redirect(`${productsPath}?status=archived`);
 }

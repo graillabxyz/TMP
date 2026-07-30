@@ -102,6 +102,7 @@ export default async function NewProductPage({
             action={createProduct}
             categories={categories}
             cancelHref={getLocalizedPath(locale, "/dashboard/products")}
+            locale={locale}
             labels={{
               title: labels.createProduct,
               productTitle: labels.productTitle,
