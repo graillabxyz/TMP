@@ -129,25 +129,27 @@ Status key:
 
 ## Loop 9: Experience, Accessibility, And Failure States
 
-44. `QUEUED` Complete primary flows at 320, 375, 390, 430, 1280, 1440, and
+44. `PASS` Complete primary flows at 320, 375, 390, 430, 1280, 1440, and
     1920 px without overflow, overlap, clipped copy, or layout shift.
-45. `QUEUED` Complete menus, filters, forms, dialogs, and dashboard navigation
+45. `BLOCKED` Complete menus, filters, forms, dialogs, and dashboard navigation
     by keyboard with visible focus, logical order, Escape behavior, and useful
-    names.
-46. `QUEUED` Verify EN/FR/TR copy, validation, success/error states, metadata,
+    names. Public controls passed structural review; authenticated dashboard
+    coverage still requires a designated account.
+46. `FIXED` Verify EN/FR/TR copy, validation, success/error states, metadata,
     canonical URLs, alternates, sitemap, robots, structured data, and 404s.
-47. `QUEUED` Verify useful loading, empty, validation, offline, provider-error,
-    and success feedback without false activity or trust claims.
+47. `PASS` Verify useful loading, empty, validation, provider-error, and
+    success feedback without false activity or trust claims. A browser-level
+    offline simulation remains part of the final manual device pass.
 
 ## Loop 10: Adversarial Regression And Operations
 
-48. `QUEUED` Run tests, typecheck, lint, build, dependency audit, secret scan,
+48. `FIXED` Run tests, typecheck, lint, build, dependency audit, secret scan,
     security-header checks, origin checks, and production runtime review.
-49. `QUEUED` Verify database RLS/storage policies and advisors against the
+49. `BLOCKED` Verify database RLS/storage policies and advisors against the
     connected production Supabase project after every migration is applied.
-50. `QUEUED` Verify alerting, backup/restore, rollback, key rotation, incident
+50. `BLOCKED` Verify alerting, backup/restore, rollback, key rotation, incident
     ownership, moderation/takedown, deletion, and legal launch decisions.
-51. `QUEUED` Rerun all fixed flows and issue a final evidence-based GO/NO-GO
+51. `BLOCKED` Rerun all fixed flows and issue a final evidence-based GO/NO-GO
     decision with no unresolved Critical or High security findings.
 
 ## Loop Exit Record
@@ -434,3 +436,44 @@ Each completed loop will add:
    Storage and database URLs are updated. Live storage contents and policy
    state remain unverified because this task exposes no callable Supabase
    project tools.
+
+### Loop 10
+
+1. **Flows and environment:** Ran all repository quality gates, dependency and
+   tracked-secret scans, local production HTTP probes, custom-domain checks,
+   Vercel deployment/runtime inspection, and production environment-name
+   review. Probes covered anonymous workspace access, hostile and allowed
+   billing origins, unsigned webhooks, unsafe auth callback destinations,
+   sitemap/robots/404 behavior, and EN/FR/TR public delivery.
+2. **Defects:** `High` - production telemetry showed authenticated page loads
+   querying `profiles.full_name`, but the live table does not yet have that
+   migration. `High` - production RFQ delivery is failing because all three
+   Resend variables are absent. `High` - Stripe subscription synchronization
+   cannot operate until the server-only Supabase service-role key and migration
+   are present. `Medium` - demo-auth secrets remained in Vercel despite the
+   bypass code having been removed. `Medium` - checked-in database throttling
+   protects RFQs only after migration; auth, upload, and paid-endpoint provider
+   controls still need production configuration.
+3. **Fix:** Current-profile reads no longer depend on the new `full_name`
+   column and instead use established profile columns plus authenticated user
+   metadata. Both stale demo-auth environment variables were removed from
+   Vercel Preview and Production. Commit `7473d09`.
+4. **Evidence:** Twenty-four focused tests, typecheck, lint, format check,
+   production build, diff checks, and an audit of production and development
+   dependencies passed; `npm audit --audit-level=low` reported zero
+   vulnerabilities. The live apex returns `307` to the canonical `www` host;
+   the canonical home, Turkish catalog, robots, and sitemap return `200`; the
+   sitemap contains EN/FR/TR/x-default relationships. Anonymous dashboard access
+   returns a login redirect, hostile billing origins return `403`, allowed
+   unauthenticated origins return an auth-required destination, unsafe callback
+   destinations are discarded, and unsigned webhooks fail closed. Vercel
+   deployment `dpl_8cJtq2mSajzG6mcPuHCDUVwZpuhy` for `7473d09` is `READY`,
+   and that deployment had no error/fatal logs in the inspected window.
+5. **Remaining and decision:** `NO-GO` for unrestricted public signup. Apply and
+   inspect all migrations/RLS/storage policies, migrate media, configure and
+   prove RFQ delivery, configure server-only webhook synchronization, complete
+   two-account authorization tests and real auth/Stripe journeys, establish
+   abuse controls and alerting, verify backup/restore and rollback, and obtain
+   legal/operational sign-off. No code-only Critical finding remains open, but
+   these unresolved High production dependencies prevent a responsible public
+   launch.

@@ -15,9 +15,10 @@ Status key:
 
 The latest production deployment is healthy and the application has passed its
 local quality gates. Public launch remains blocked by unapplied Supabase
-migrations/media migration and missing RFQ email delivery configuration. Real
-auth and Stripe subscription workflows must be exercised after those blockers
-are cleared.
+migrations/media migration, missing RFQ email delivery configuration, and
+missing server-only webhook synchronization credentials. Real two-account auth,
+authorization, and Stripe subscription workflows must be exercised after those
+blockers are cleared.
 
 ## 1. Code, Supply Chain, And Deployment
 
@@ -29,9 +30,11 @@ are cleared.
       vulnerabilities.
 - [x] `PASS` CI runs install, production audit, tests, typecheck, lint, and
       build.
-- [x] `PASS` Seven focused regression tests cover internal redirect
-      sanitization, upload signatures, PDF restrictions, size limits, randomized
-      media paths, and private-path ownership checks.
+- [x] `PASS` Twenty-four focused regression tests cover authentication input,
+      locale navigation, internal redirect sanitization, RFQ specificity,
+      upload signatures, PDF restrictions, size limits, randomized media paths,
+      private-path ownership, curated media, webhook signatures, and paid-badge
+      eligibility.
 - [x] `PASS` Runtime is pinned to Node 24.
 - [x] `PASS` Security headers are present on the public domain.
 - [x] `PASS` Marketplace images render without depending on Vercel image
@@ -70,6 +73,8 @@ are cleared.
 ## 3. Authentication And Authorization
 
 - [x] `PASS` Demo authentication bypass code and routes have been removed.
+- [x] `PASS` Stale `TMP_DEMO_AUTH_TOKEN` and `TMP_DEMO_AUTH_BYPASS`
+      environment variables were removed from Vercel Preview and Production.
 - [x] `PASS` Protected server actions re-check the authenticated user.
 - [x] `PASS` Profile email is designed to remain synchronized with auth email.
 - [x] `PASS` Anonymous users are directed to sign in before submitting an RFQ.
@@ -112,8 +117,8 @@ are cleared.
 
 ## 5. Stripe And Verified Membership
 
-- [x] `PASS` Production has enough Stripe configuration for the checkout endpoint
-      to return `auth-required` instead of configuration failure.
+- [x] `PASS` Production has Stripe publishable, secret, price, and webhook
+      environment entries; no values were exposed during verification.
 - [x] `PASS` The webhook endpoint rejects unsigned requests.
 - [x] `PASS` Checkout and portal endpoints reject requests without the exact
       production `Origin`, while same-origin unauthenticated requests return the
@@ -170,10 +175,14 @@ are cleared.
 
 - [x] `PASS` A public support contact is available in the site header.
 - [x] `PASS` Recent production runtime errors can be queried through Vercel.
+- [x] `PASS` A production profile/schema mismatch found in runtime telemetry was
+      made backward-compatible in commit `7473d09`; the replacement deployment
+      is ready and had no error/fatal entries in the inspected window.
 - [ ] `BLOCKED` Configure production error alerting for server errors, failed
       RFQ email, failed webhooks, and authentication spikes.
-- [ ] `PENDING` Add rate limiting or abuse controls to auth-adjacent actions,
-      uploads, RFQs, and costly endpoints.
+- [ ] `BLOCKED` Apply the checked-in database RFQ rate-limit migration, then add
+      or verify provider controls for authentication, uploads, and paid
+      endpoints.
 - [ ] `PENDING` Define image/file moderation, supplier takedown, account
       suspension, and data deletion procedures.
 - [ ] `PENDING` Review log output to ensure it excludes secrets, tokens,
