@@ -89,7 +89,7 @@ const productOverrides: Record<
       title: "Thermal insulation boards",
       description:
         "Thermal insulation boards for construction and fit-out supply programs.",
-      category: "Construction",
+      category: "Building Materials",
     },
     "aluminum-window-profile-sets": {
       title: "Aluminum window profile sets",
@@ -101,7 +101,7 @@ const productOverrides: Record<
       title: "Thermal insulation boards",
       description:
         "Thermal insulation boards for construction and fit-out supply programs.",
-      category: "Construction",
+      category: "Building Materials",
     },
   },
   fr: {
@@ -115,7 +115,7 @@ const productOverrides: Record<
       title: "Panneaux d’isolation thermique",
       description:
         "Panneaux d’isolation thermique pour programmes de construction et fit-out.",
-      category: "Construction",
+      category: "Matériaux de bâtiments",
     },
     "aluminum-window-profile-sets": {
       title: "Sets de profilés aluminium pour fenêtres",
@@ -127,7 +127,7 @@ const productOverrides: Record<
       title: "Panneaux d’isolation thermique",
       description:
         "Panneaux d’isolation thermique pour programmes de construction et fit-out.",
-      category: "Construction",
+      category: "Matériaux de bâtiments",
     },
   },
   tr: {
@@ -189,7 +189,7 @@ const productOverrides: Record<
       title: "Isı yalıtım levhaları",
       description:
         "İnşaat ve fit-out tedarik programları için ısı yalıtım levhaları.",
-      category: "İnşaat",
+      category: "Yapı Malzemeleri",
     },
     "aluminum-window-profile-sets": {
       title: "Alüminyum pencere profil setleri",
@@ -201,7 +201,7 @@ const productOverrides: Record<
       title: "Isı yalıtım levhaları",
       description:
         "İnşaat ve fit-out tedarik programları için ısı yalıtım levhaları.",
-      category: "İnşaat",
+      category: "Yapı Malzemeleri",
     },
     "rigid-cosmetics-box": {
       title: "Sert kozmetik kutusu",
