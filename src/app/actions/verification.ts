@@ -2,6 +2,8 @@
 
 import { redirect } from "next/navigation";
 
+import { isValidCompanyName } from "@/lib/auth-validation";
+import { getLocalizedPath, isLocale, type Locale } from "@/lib/i18n";
 import {
   createMediaPath,
   isOwnedPrivateMediaPath,
@@ -50,10 +52,16 @@ function getString(formData: FormData, key: string) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-function getReturnPath(formData: FormData) {
+function getFormLocale(formData: FormData): Locale {
+  const locale = getString(formData, "locale");
+
+  return isLocale(locale) ? locale : "en";
+}
+
+function getReturnPath(formData: FormData, locale: Locale) {
   return getSafeInternalPath(
     getString(formData, "return_to"),
-    "/dashboard/settings/verification",
+    getLocalizedPath(locale, "/dashboard/settings/verification"),
   );
 }
 
@@ -160,11 +168,11 @@ async function removeVerificationFiles(
 }
 
 export async function startSupplierProfile(formData: FormData) {
-  const returnPath = getReturnPath(formData);
-
+  const locale = getFormLocale(formData);
+  const returnPath = getReturnPath(formData, locale);
   const company = getString(formData, "company");
 
-  if (company.length < 2 || company.length > 120) {
+  if (!isValidCompanyName(company)) {
     redirect(`${returnPath}?status=missing-company`);
   }
 
@@ -174,7 +182,11 @@ export async function startSupplierProfile(formData: FormData) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/login?next=${encodeURIComponent(returnPath)}&status=missing`);
+    redirect(
+      `${getLocalizedPath(locale, "/login")}?next=${encodeURIComponent(
+        returnPath,
+      )}&status=auth-required`,
+    );
   }
 
   const profileMutations = supabase.from(

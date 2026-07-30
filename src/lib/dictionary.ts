@@ -576,7 +576,7 @@ const dictionaries = {
         "Upload private business documents for admin review. Files are stored securely and are not public marketplace assets.",
       supplierAccessTitle: "Add a supplier profile",
       supplierAccessBody:
-        "Your TMP account can source as a buyer by default. Add company details, then activate the monthly verification subscription to unlock supplier tools.",
+        "Your TMP account can source as a buyer by default. Add company details to unlock supplier tools; paid verification is optional.",
       supplierCompany: "Supplier company",
       startSupplierProfile: "Start supplier upgrade",
       businessLicense: "Business license",
@@ -590,7 +590,7 @@ const dictionaries = {
       submitDocuments: "Submit for review",
       statusSubmitted: "Verification documents submitted for admin review.",
       statusSupplierStarted:
-        "Supplier profile started. Continue with verification and billing setup.",
+        "Supplier profile started. You can publish products now and add paid verification when ready.",
       statusMissingCompany: "Please add a supplier company name.",
       statusDocumentError:
         "Add valid business license and company registration files. Use PDF, JPG, PNG, or WebP files up to 10 MB.",
@@ -1333,7 +1333,7 @@ const dictionaries = {
         "Importez des documents d’entreprise privés pour la revue admin. Les fichiers sont stockés de façon sécurisée et ne sont pas publics.",
       supplierAccessTitle: "Ajouter un profil fournisseur",
       supplierAccessBody:
-        "Votre compte TMP permet le sourcing acheteur par défaut. Ajoutez la société, puis activez l’abonnement mensuel de vérification pour débloquer les outils fournisseur.",
+        "Votre compte TMP permet le sourcing acheteur par défaut. Ajoutez la société pour débloquer les outils fournisseur; la vérification payante est facultative.",
       supplierCompany: "Société fournisseur",
       startSupplierProfile: "Démarrer l’upgrade fournisseur",
       businessLicense: "Licence commerciale",
@@ -1347,7 +1347,7 @@ const dictionaries = {
       submitDocuments: "Soumettre pour revue",
       statusSubmitted: "Documents soumis pour revue admin.",
       statusSupplierStarted:
-        "Profil fournisseur démarré. Continuez avec la vérification et la facturation.",
+        "Profil fournisseur démarré. Vous pouvez publier maintenant et ajouter la vérification payante ensuite.",
       statusMissingCompany:
         "Veuillez ajouter le nom de la société fournisseur.",
       statusDocumentError:
@@ -2082,7 +2082,7 @@ const turkishDictionary = {
       "Yönetici incelemesi için özel işletme belgelerini yükleyin. Dosyalar güvenli biçimde saklanır ve pazar yerinde herkese açık değildir.",
     supplierAccessTitle: "Tedarikçi profili ekle",
     supplierAccessBody:
-      "TMP hesabınız varsayılan olarak alıcı sourcing yapabilir. Tedarikçi araçlarını açmak için şirket bilgilerini ekleyin, ardından aylık doğrulama aboneliğini etkinleştirin.",
+      "TMP hesabınız varsayılan olarak alıcı sourcing yapabilir. Tedarikçi araçlarını açmak için şirket bilgilerini ekleyin; ücretli doğrulama isteğe bağlıdır.",
     supplierCompany: "Tedarikçi şirketi",
     startSupplierProfile: "Tedarikçi yükseltmesini başlat",
     businessLicense: "İşletme lisansı",
@@ -2096,7 +2096,7 @@ const turkishDictionary = {
     submitDocuments: "İncelemeye gönder",
     statusSubmitted: "Doğrulama belgeleri yönetici incelemesine gönderildi.",
     statusSupplierStarted:
-      "Tedarikçi profili başlatıldı. Doğrulama ve faturalandırma kurulumuyla devam edin.",
+      "Tedarikçi profili başlatıldı. Ürünleri hemen yayınlayabilir, ücretli doğrulamayı daha sonra ekleyebilirsiniz.",
     statusMissingCompany: "Lütfen tedarikçi şirket adını ekleyin.",
     statusDocumentError:
       "Geçerli işletme lisansı ve şirket kayıt dosyaları ekleyin. En fazla 10 MB PDF, JPG, PNG veya WebP kullanın.",

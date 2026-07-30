@@ -230,6 +230,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                   name="return_to"
                   value={getLocalizedPath(locale, "/dashboard/profile")}
                 />
+                <input type="hidden" name="locale" value={locale} />
                 <div className="grid gap-2">
                   <Label htmlFor="company">{copy.businessName}</Label>
                   <Input

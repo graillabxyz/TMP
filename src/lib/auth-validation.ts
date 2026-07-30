@@ -11,3 +11,11 @@ export function isValidFullName(value: string) {
 export function isValidPassword(value: string) {
   return value.length >= 8 && value.length <= 128;
 }
+
+export function isValidCompanyName(value: string) {
+  return (
+    value.length >= 2 &&
+    value.length <= 120 &&
+    !/[\u0000-\u001f\u007f]/.test(value)
+  );
+}

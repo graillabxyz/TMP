@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   isValidEmail,
+  isValidCompanyName,
   isValidFullName,
   isValidPassword,
 } from "../src/lib/auth-validation.ts";
@@ -24,4 +25,11 @@ test("enforces account field length boundaries", () => {
   assert.equal(isValidFullName("A".repeat(101)), false);
   assert.equal(isValidPassword("short"), false);
   assert.equal(isValidPassword("a".repeat(129)), false);
+});
+
+test("accepts international company names and rejects control characters", () => {
+  assert.equal(isValidCompanyName("İzmir Ambalaj Sanayi A.Ş."), true);
+  assert.equal(isValidCompanyName("A"), false);
+  assert.equal(isValidCompanyName("Valid Company\nInjected Field"), false);
+  assert.equal(isValidCompanyName("A".repeat(121)), false);
 });
