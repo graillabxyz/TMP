@@ -104,15 +104,15 @@ Status key:
 
 ## Loop 7: RFQ And Inbox
 
-35. `QUEUED` Submit general and product-context RFQs with specific product,
+35. `BLOCKED` Submit general and product-context RFQs with specific product,
     quantity, destination, timeline, requester, and optional company details.
-36. `QUEUED` Reject vague, malformed, oversized, anonymous, honeypot, stale
+36. `FIXED` Reject vague, malformed, oversized, anonymous, honeypot, stale
     schema, and excessive-frequency RFQs safely.
-37. `QUEUED` Accept only signature-validated private attachments within the
+37. `BLOCKED` Accept only signature-validated private attachments within the
     size limit; reject traversal, spoofing, and cross-account access.
-38. `QUEUED` Save one owned RFQ, send one idempotent email with reply-to, and
+38. `BLOCKED` Save one owned RFQ, send one idempotent email with reply-to, and
     provide a time-limited attachment review link.
-39. `QUEUED` Handle database, storage, email, and signed-link failures without
+39. `FIXED` Handle database, storage, email, and signed-link failures without
     duplicate requests, orphaned files, false success, or sensitive logs.
 
 ## Loop 8: Verification And Billing
@@ -327,3 +327,39 @@ Each completed loop will add:
    and archive a real listing. A second account plus callable live Supabase
    policy inspection is required to prove cross-supplier denial against the
    deployed project; migration text alone is not treated as live evidence.
+
+### Loop 7
+
+1. **Flows and environment:** Traced flows 35-39 from the EN/FR/TR RFQ form
+   through authentication, context resolution, private storage, database
+   insert, signed-link creation, Resend delivery, and failure cleanup. Exercised
+   localized anonymous/context states and catalog-prefilled form structure in
+   the local browser.
+2. **Defects:** `High` - authenticated users could forge hidden product,
+   supplier, and inquiry identifiers, causing stored and emailed context to
+   disagree with the public catalog. `High` - submissions had no stable
+   idempotency token, so a retry could create a second RFQ. `Medium` - all
+   action outcomes redirected to English. `Medium` - quantity accepted vague
+   text and request specificity was biased toward ASCII/English terms. `Low` -
+   attachment display names had no application or database length/control
+   boundary.
+3. **Fix:** The action now derives IDs, canonical slugs, category, and inquiry
+   type from published database rows; hidden IDs were removed. A unique
+   submitter/request token makes retries idempotent. Locale-safe outcomes,
+   multilingual specificity checks, numeric-unit quantity checks, sanitized
+   filenames, category validation, and a database context-integrity trigger
+   were added. Commit `879e01e`.
+4. **Evidence:** The TR unavailable-context state rendered translated copy and
+   localized login paths. A product-prefilled form contained canonical product
+   and supplier slugs, locale `tr`, and a UUID token, with zero product-ID,
+   supplier-ID, or inquiry-type inputs. Sixteen tests cover multilingual
+   specificity, malformed identifiers/email, controls, filename traversal,
+   signature validation, private randomized paths, and upload limits.
+   Typecheck and lint passed. Checked-in RLS requires
+   `submitter_id = auth.uid()` and authenticated email equality; storage policy
+   requires the first path segment to equal `auth.uid()`.
+5. **Remaining:** No real buyer RFQ, private object, signed URL, or inbox email
+   was created. Local Resend values are documented only in `.env.example`.
+   Live delivery, rate-limit behavior, signed-link expiry, and cross-account
+   denial require designated accounts, inbox access, applied migration
+   verification, and callable Supabase project tools.
