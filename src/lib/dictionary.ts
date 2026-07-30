@@ -12,6 +12,14 @@ const dictionaries = {
       joinShort: "Join",
       backHome: "Back home",
     },
+    contact: {
+      contact: "Contact",
+      title: "Contact the TMP team",
+      body: "Speak directly with the administrator about joining the marketplace.",
+      call: "Call the administrator",
+      email: "Email the administrator",
+      close: "Close contact details",
+    },
     common: {
       verified: "Verified",
       verifiedSupplier: "Verified supplier",
@@ -698,6 +706,15 @@ const dictionaries = {
       join: "Rejoindre TMP",
       joinShort: "Rejoindre",
       backHome: "Retour",
+    },
+    contact: {
+      contact: "Contact",
+      title: "Contacter l’équipe TMP",
+      body:
+        "Échangez directement avec l’administrateur pour rejoindre la marketplace.",
+      call: "Appeler l’administrateur",
+      email: "Écrire à l’administrateur",
+      close: "Fermer les coordonnées",
     },
     common: {
       verified: "Vérifié",
@@ -1401,6 +1418,15 @@ const turkishDictionary = {
     join: "TMP'ye Katıl",
     joinShort: "Katıl",
     backHome: "Ana sayfaya dön",
+  },
+  contact: {
+    contact: "İletişim",
+    title: "TMP ekibiyle iletişime geçin",
+    body:
+      "Pazar yerine katılmak için yöneticiyle doğrudan iletişime geçin.",
+    call: "Yöneticiyi ara",
+    email: "Yöneticiye e-posta gönder",
+    close: "İletişim bilgilerini kapat",
   },
   common: {
     verified: "Doğrulandı",

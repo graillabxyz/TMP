@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { CategoriesDropdown } from "@/components/layout/categories-dropdown";
+import { ContactDropdown } from "@/components/layout/contact-dropdown";
 import { LanguageToggle } from "@/components/language-toggle";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -63,6 +64,7 @@ export async function SiteHeader() {
         </form>
         <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           <LanguageToggle locale={locale} />
+          <ContactDropdown labels={t.contact} />
           {profile ? (
             <details className="group relative">
               <summary className="inline-flex h-11 cursor-pointer list-none items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden">
