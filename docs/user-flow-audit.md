@@ -211,8 +211,7 @@ Each completed loop will add:
    the expected known slugs; unknown product input was no longer copied into
    the form. FR/TR no-results and unknown product/supplier routes rendered
    localized, non-sensitive states. Tests, typecheck, and lint passed.
-5. **Remaining:** RFQ action-side resistance to forged context belongs to Loop
-   7. A real provider outage was not induced against the connected project; its
+5. **Remaining:** RFQ action-side resistance to forged context belongs to Loop 7. A real provider outage was not induced against the connected project; its
    fail-empty code path was reviewed and the full failure experience is covered
    again in Loop 9.
 

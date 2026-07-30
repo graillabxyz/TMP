@@ -70,11 +70,13 @@ async function downloadApprovedImage(sourceUrl) {
 }
 
 async function uploadPublicImage(bucket, path, image) {
-  const { error } = await supabase.storage.from(bucket).upload(path, image.bytes, {
-    cacheControl: "31536000",
-    contentType: image.contentType,
-    upsert: true,
-  });
+  const { error } = await supabase.storage
+    .from(bucket)
+    .upload(path, image.bytes, {
+      cacheControl: "31536000",
+      contentType: image.contentType,
+      upsert: true,
+    });
 
   if (error) throw error;
 

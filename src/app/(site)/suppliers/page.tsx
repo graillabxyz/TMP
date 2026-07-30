@@ -75,8 +75,7 @@ export default async function SuppliersPage({
   const query = (params.q ?? "").trim();
   const normalizedQuery = query.toLowerCase();
   const category = params.category ?? "";
-  const verifiedOnly =
-    params.verified === "1" || params.verified === "true";
+  const verifiedOnly = params.verified === "1" || params.verified === "true";
   const euExportOnly = params.eu === "1";
   const lowMoqOnly = params.low_moq === "1";
   const [categories, suppliers] = await Promise.all([

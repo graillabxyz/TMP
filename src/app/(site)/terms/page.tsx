@@ -39,9 +39,7 @@ export default async function TermsPage() {
               key={title}
               className="rounded-lg border border-white/10 bg-white/[0.035] p-5"
             >
-              <h2 className="text-lg font-semibold text-white">
-                {title}
-              </h2>
+              <h2 className="text-lg font-semibold text-white">{title}</h2>
               <p className="mt-3 text-sm leading-7 text-muted-foreground">
                 {body}
               </p>

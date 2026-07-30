@@ -54,11 +54,7 @@ export function middleware(request: NextRequest) {
         headers: requestHeaders,
       },
     });
-    response.cookies.set(
-      localeCookieName,
-      locale,
-      getCookieOptions(request),
-    );
+    response.cookies.set(localeCookieName, locale, getCookieOptions(request));
 
     return response;
   }
@@ -73,7 +69,11 @@ export function middleware(request: NextRequest) {
       headers: requestHeaders,
     },
   });
-  response.cookies.set(localeCookieName, maybeLocale, getCookieOptions(request));
+  response.cookies.set(
+    localeCookieName,
+    maybeLocale,
+    getCookieOptions(request),
+  );
 
   return response;
 }

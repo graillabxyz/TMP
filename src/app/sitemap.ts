@@ -31,7 +31,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     return locales.map((locale) => ({
       url: `${siteConfig.url}${getLocalizedPath(locale, path)}`,
-      changeFrequency: route === "" ? ("weekly" as const) : ("monthly" as const),
+      changeFrequency:
+        route === "" ? ("weekly" as const) : ("monthly" as const),
       priority: route === "" ? 1 : 0.7,
       alternates: {
         languages: {
