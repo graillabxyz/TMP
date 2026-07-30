@@ -137,3 +137,19 @@ export async function signInWithGoogle(formData: FormData) {
 
   redirect(data.url);
 }
+
+export async function signOut(formData: FormData) {
+  const requestedPath = getString(formData, "next");
+  const nextPath =
+    requestedPath.startsWith("/") && !requestedPath.startsWith("//")
+      ? requestedPath
+      : "/";
+  const supabase = await getConfiguredSupabase("login");
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error("Unable to sign out", error.message);
+  }
+
+  redirect(nextPath);
+}

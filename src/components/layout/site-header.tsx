@@ -1,15 +1,9 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Factory,
-  Search,
-  ShieldCheck,
-  Target,
-  UserRound,
-} from "lucide-react";
+import { ArrowRight, Factory, Search, ShieldCheck, Target } from "lucide-react";
 
 import { CategoriesDropdown } from "@/components/layout/categories-dropdown";
 import { ContactDropdown } from "@/components/layout/contact-dropdown";
+import { ProfileDropdown } from "@/components/layout/profile-dropdown";
 import { LanguageToggle } from "@/components/language-toggle";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -66,35 +60,27 @@ export async function SiteHeader() {
           <LanguageToggle locale={locale} />
           <ContactDropdown labels={t.contact} />
           {profile ? (
-            <details className="group relative">
-              <summary className="inline-flex h-11 cursor-pointer list-none items-center justify-center gap-2 whitespace-nowrap rounded-md px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&::-webkit-details-marker]:hidden">
-                <UserRound
-                  className="size-4 text-gold-200"
-                  aria-hidden="true"
-                />
-                {t.dashboard.profile}
-              </summary>
-              <div className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-lg border border-white/10 bg-charcoal-900 p-2 shadow-premium">
-                <p className="truncate px-3 py-2 text-xs text-muted-foreground">
-                  {profile.email}
-                </p>
-                <Link
-                  href={getLocalizedPath(locale, "/dashboard/profile")}
-                  className="block rounded-md px-3 py-2 text-sm text-white transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                >
-                  {t.dashboard.profile}
-                </Link>
-                <Link
-                  href={getLocalizedPath(locale, "/dashboard")}
-                  className="block rounded-md px-3 py-2 text-sm text-muted-foreground transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                >
-                  {t.nav.dashboard}
-                </Link>
-              </div>
-            </details>
+            <ProfileDropdown
+              email={profile.email}
+              label={t.dashboard.profile}
+              signOutLabel={t.nav.logout}
+              signOutHref={homeHref}
+              items={[
+                {
+                  href: getLocalizedPath(locale, "/dashboard/profile"),
+                  label: t.dashboard.profile,
+                },
+                {
+                  href: getLocalizedPath(locale, "/dashboard"),
+                  label: t.nav.dashboard,
+                },
+              ]}
+            />
           ) : (
             <Button asChild variant="ghost" className="hidden sm:inline-flex">
-              <Link href={getLocalizedPath(locale, "/login")}>{t.nav.login}</Link>
+              <Link href={getLocalizedPath(locale, "/login")}>
+                {t.nav.login}
+              </Link>
             </Button>
           )}
           {!profile && (
