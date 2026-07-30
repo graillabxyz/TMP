@@ -241,7 +241,10 @@ const dictionaries = {
       notesPlaceholder:
         "Share materials, certifications, packaging, Incoterms, and any existing supplier benchmark.",
       upload: "Upload attachment",
-      uploadHelp: "Technical drawings, reference images, or spec sheets",
+      uploadHelp:
+        "Private PDF, JPG, PNG, or WebP up to 10 MB. Only TMP reviewers can access it.",
+      uploadSignIn:
+        "Sign in to add a private technical drawing, reference image, or specification sheet.",
       submit: "Submit RFQ",
       status: {
         success: "RFQ submitted. Our sourcing team will review it shortly.",
@@ -252,6 +255,9 @@ const dictionaries = {
         config: "Supabase is not configured for this environment yet.",
         notification:
           "The RFQ was saved, but we could not send the email notification. Please contact TMP support.",
+        attachmentAuth: "Sign in before adding a private attachment.",
+        attachment:
+          "Use a valid PDF, JPG, PNG, or WebP attachment no larger than 10 MB.",
         error: "We could not submit the RFQ. Please try again.",
       },
       metadataTitle: "Submit an RFQ | TMP",
@@ -948,7 +954,10 @@ const dictionaries = {
       notesPlaceholder:
         "Partagez matériaux, certifications, emballage, Incoterms et références existantes.",
       upload: "Ajouter une pièce jointe",
-      uploadHelp: "Plans techniques, images de référence ou cahier des charges",
+      uploadHelp:
+        "PDF, JPG, PNG ou WebP privé de 10 Mo maximum. Seuls les reviewers TMP peuvent y accéder.",
+      uploadSignIn:
+        "Connectez-vous pour ajouter un plan technique, une image de référence ou un cahier des charges privé.",
       submit: "Envoyer la demande",
       status: {
         success: "Demande envoyée. Notre équipe sourcing va l’examiner.",
@@ -959,6 +968,10 @@ const dictionaries = {
         config: "Supabase n’est pas encore configuré pour cet environnement.",
         notification:
           "La demande a été enregistrée, mais la notification email n’a pas pu être envoyée. Veuillez contacter le support TMP.",
+        attachmentAuth:
+          "Connectez-vous avant d’ajouter une pièce jointe privée.",
+        attachment:
+          "Utilisez un fichier PDF, JPG, PNG ou WebP valide de 10 Mo maximum.",
         error: "Impossible d’envoyer la demande. Veuillez réessayer.",
       },
       metadataTitle: "Envoyer une RFQ | TMP",
@@ -1667,7 +1680,10 @@ const turkishDictionary = {
     notesPlaceholder:
       "Malzeme, sertifika, ambalaj, Incoterms ve mevcut tedarikçi kıyaslarını paylaşın.",
     upload: "Ek yükle",
-    uploadHelp: "Teknik çizimler, referans görselleri veya teknik föyler",
+    uploadHelp:
+      "En fazla 10 MB özel PDF, JPG, PNG veya WebP. Yalnızca TMP inceleyicileri erişebilir.",
+    uploadSignIn:
+      "Özel teknik çizim, referans görsel veya teknik föy eklemek için giriş yapın.",
     submit: "Teklif talebini gönder",
     status: {
       success:
@@ -1678,6 +1694,9 @@ const turkishDictionary = {
       config: "Supabase bu ortam için henüz yapılandırılmadı.",
       notification:
         "Teklif talebi kaydedildi, ancak e-posta bildirimi gönderilemedi. Lütfen TMP destek ekibiyle iletişime geçin.",
+      attachmentAuth: "Özel ek eklemeden önce giriş yapın.",
+      attachment:
+        "En fazla 10 MB boyutunda geçerli bir PDF, JPG, PNG veya WebP kullanın.",
       error: "Teklif talebi gönderilemedi. Lütfen tekrar deneyin.",
     },
     metadataTitle: "RFQ Gönder | TMP",

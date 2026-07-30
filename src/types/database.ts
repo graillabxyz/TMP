@@ -379,6 +379,7 @@ export type Database = {
       rfqs: {
         Row: {
           id: string;
+          submitter_id: string | null;
           product_id: string | null;
           supplier_id: string | null;
           product_slug: string | null;
@@ -393,12 +394,14 @@ export type Database = {
           attachment_name: string | null;
           attachment_size: number | null;
           attachment_type: string | null;
+          attachment_path: string | null;
           status: "new" | "reviewing" | "matched" | "closed";
           created_at: string;
           updated_at: string;
         };
         Insert: {
           id?: string;
+          submitter_id?: string | null;
           product_id?: string | null;
           supplier_id?: string | null;
           product_slug?: string | null;
@@ -413,6 +416,7 @@ export type Database = {
           attachment_name?: string | null;
           attachment_size?: number | null;
           attachment_type?: string | null;
+          attachment_path?: string | null;
           status?: "new" | "reviewing" | "matched" | "closed";
           created_at?: string;
           updated_at?: string;

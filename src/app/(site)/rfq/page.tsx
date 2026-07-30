@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CheckCircle2, FileUp, PackageSearch, Send } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { submitRfq } from "@/app/actions/rfq";
+import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
@@ -42,9 +44,10 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
   const locale = await getLocale();
   const t = getDictionary(locale);
   const activity = getPlatformActivity(locale);
-  const [categories, resolvedSearchParams] = await Promise.all([
+  const [categories, resolvedSearchParams, profile] = await Promise.all([
     getCategories(locale),
     searchParams,
+    getCurrentProfile(),
   ]);
   const status = resolvedSearchParams?.status;
   const productSlug = resolvedSearchParams?.product;
@@ -116,6 +119,19 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
               )}
 
               <form action={submitRfq} className="grid gap-5">
+                <div
+                  className="absolute -left-[10000px] top-auto size-px overflow-hidden"
+                  aria-hidden="true"
+                >
+                  <Label htmlFor="website">Website</Label>
+                  <Input
+                    id="website"
+                    name="website"
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
                 {prefillProduct && (
                   <div className="rounded-lg border border-gold-300/25 bg-gold-300/[0.08] p-4 text-sm">
                     <p className="font-medium text-white">
@@ -238,25 +254,46 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                   />
                 </div>
 
-                <label
-                  htmlFor="attachment"
-                  className="flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-gold-300/30 bg-gold-300/[0.05] px-6 py-8 text-center transition focus-within:border-gold-300/60 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background hover:border-gold-300/50 hover:bg-gold-300/[0.08]"
-                >
-                  <FileUp className="size-8 text-gold-100" aria-hidden="true" />
-                  <span className="mt-3 text-sm font-medium text-white">
-                    {t.rfq.upload}
-                  </span>
-                  <span className="mt-1 text-xs text-muted-foreground">
-                    {t.rfq.uploadHelp}
-                  </span>
-                  <input
-                    id="attachment"
-                    name="attachment"
-                    type="file"
-                    accept=".pdf,.png,.jpg,.jpeg,.webp"
-                    className="sr-only"
-                  />
-                </label>
+                {profile ? (
+                  <label
+                    htmlFor="attachment"
+                    className="flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-gold-300/30 bg-gold-300/[0.05] px-6 py-8 text-center transition focus-within:border-gold-300/60 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background hover:border-gold-300/50 hover:bg-gold-300/[0.08]"
+                  >
+                    <FileUp
+                      className="size-8 text-gold-100"
+                      aria-hidden="true"
+                    />
+                    <span className="mt-3 text-sm font-medium text-white">
+                      {t.rfq.upload}
+                    </span>
+                    <span className="mt-1 max-w-sm text-xs leading-5 text-muted-foreground">
+                      {t.rfq.uploadHelp}
+                    </span>
+                    <input
+                      id="attachment"
+                      name="attachment"
+                      type="file"
+                      accept=".pdf,.png,.jpg,.jpeg,.webp"
+                      className="sr-only"
+                    />
+                  </label>
+                ) : (
+                  <div className="flex min-h-32 flex-col items-center justify-center rounded-lg border border-dashed border-white/15 bg-white/[0.025] px-6 py-6 text-center">
+                    <FileUp
+                      className="size-7 text-muted-foreground"
+                      aria-hidden="true"
+                    />
+                    <p className="mt-3 text-sm text-muted-foreground">
+                      {t.rfq.uploadSignIn}
+                    </p>
+                    <Link
+                      href="/login?next=/rfq"
+                      className="mt-2 text-sm font-medium text-gold-100 underline-offset-4 hover:underline"
+                    >
+                      {t.nav.login}
+                    </Link>
+                  </div>
+                )}
 
                 <Button type="submit" size="lg" className="w-full">
                   {t.rfq.submit}

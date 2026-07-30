@@ -10,6 +10,7 @@ type RfqNotificationInput = {
   attachmentName: string | null;
   attachmentSize: number | null;
   attachmentType: string | null;
+  attachmentUrl: string | null;
   inquiryType: "general" | "product";
 };
 
@@ -45,7 +46,14 @@ function formatAttachment(input: RfqNotificationInput) {
     : "size unavailable";
   const type = input.attachmentType || "type unavailable";
 
-  return `Attachment: ${input.attachmentName} (${type}, ${size})`;
+  return [
+    `Attachment: ${input.attachmentName} (${type}, ${size})`,
+    input.attachmentUrl
+      ? `Secure review link (expires in 7 days): ${input.attachmentUrl}`
+      : null,
+  ]
+    .filter((line): line is string => line !== null)
+    .join("\n");
 }
 
 function buildRfqEmailText(input: RfqNotificationInput) {

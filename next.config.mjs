@@ -7,7 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const nextConfig = {
   experimental: {
     serverActions: {
-      bodySizeLimit: "6mb",
+      bodySizeLimit: "12mb",
     },
   },
   async headers() {

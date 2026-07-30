@@ -2,11 +2,22 @@
 
 import { redirect } from "next/navigation";
 
+import {
+  createRfqAttachmentPath,
+  MAX_RFQ_ATTACHMENT_BYTES,
+  RFQ_ATTACHMENTS_BUCKET,
+  validateUpload,
+} from "@/lib/media";
 import { sendRfqNotification } from "@/lib/rfq-notification";
-import { createPublicSupabaseClient } from "@/lib/supabase/public";
+import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database";
 
-const maxAttachmentSize = 10 * 1024 * 1024;
+type RfqInsert = Database["public"]["Tables"]["rfqs"]["Insert"];
+type RfqMutationTable = {
+  insert: (
+    payload: RfqInsert,
+  ) => Promise<{ error: { message: string } | null }>;
+};
 
 function getString(formData: FormData, key: string) {
   const value = formData.get(key);
@@ -39,6 +50,10 @@ function hasSpecificProductDetail(value: string, hasCatalogProduct: boolean) {
 }
 
 export async function submitRfq(formData: FormData) {
+  if (getString(formData, "website")) {
+    redirect("/rfq?status=success");
+  }
+
   const productRequest = getString(formData, "product_request");
   const categorySlug = getString(formData, "category_slug");
   const quantity = getString(formData, "quantity");
@@ -71,21 +86,61 @@ export async function submitRfq(formData: FormData) {
     redirect("/rfq?status=specific");
   }
 
-  const supabase = createPublicSupabaseClient();
+  let supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
-  if (!supabase) {
+  try {
+    supabase = await createServerSupabaseClient();
+  } catch {
     redirect("/rfq?status=config");
   }
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const attachment = formData.get("attachment");
   const attachmentFile =
     attachment instanceof File && attachment.size > 0 ? attachment : null;
 
-  if (attachmentFile && attachmentFile.size > maxAttachmentSize) {
-    redirect("/rfq?status=error");
+  if (attachmentFile && !user) {
+    redirect("/rfq?status=attachmentAuth");
   }
 
-  const basePayload: Database["public"]["Tables"]["rfqs"]["Insert"] = {
+  const rfqId = crypto.randomUUID();
+  let attachmentPath: string | null = null;
+  let attachmentContentType: string | null = null;
+
+  if (attachmentFile && user) {
+    const detected = await validateUpload(attachmentFile, {
+      maxBytes: MAX_RFQ_ATTACHMENT_BYTES,
+      allowPdf: true,
+    });
+
+    if (!detected) {
+      redirect("/rfq?status=attachment");
+    }
+
+    attachmentContentType = detected.contentType;
+    attachmentPath = createRfqAttachmentPath({
+      userId: user.id,
+      rfqId,
+      extension: detected.extension,
+    });
+    const { error: uploadError } = await supabase.storage
+      .from(RFQ_ATTACHMENTS_BUCKET)
+      .upload(attachmentPath, attachmentFile, {
+        cacheControl: "3600",
+        contentType: detected.contentType,
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.error("Unable to upload RFQ attachment", uploadError.message);
+      redirect("/rfq?status=attachment");
+    }
+  }
+
+  const basePayload: RfqInsert = {
+    id: rfqId,
     product_request: productRequest,
     category_slug: categorySlug || null,
     quantity,
@@ -94,10 +149,12 @@ export async function submitRfq(formData: FormData) {
     notes: notes || null,
     attachment_name: attachmentFile?.name ?? null,
     attachment_size: attachmentFile?.size ?? null,
-    attachment_type: attachmentFile?.type ?? null,
+    attachment_type: attachmentContentType,
   };
-  const payload: Database["public"]["Tables"]["rfqs"]["Insert"] = {
+  const payload: RfqInsert = {
     ...basePayload,
+    submitter_id: user?.id ?? null,
+    attachment_path: attachmentPath,
     product_id: getString(formData, "product_id") || null,
     supplier_id: getString(formData, "supplier_id") || null,
     product_slug: productSlug || null,
@@ -106,25 +163,56 @@ export async function submitRfq(formData: FormData) {
       getString(formData, "inquiry_type") === "product" ? "product" : "general",
   };
 
-  const { error } = await supabase.from("rfqs").insert(payload);
+  const rfqMutations = supabase.from("rfqs") as unknown as RfqMutationTable;
+  const { error } = await rfqMutations.insert(payload);
 
   if (error) {
-    if (
+    const isLegacySchemaError =
       error.message.includes("product_id") ||
       error.message.includes("inquiry_type") ||
-      error.message.includes("supplier_id")
-    ) {
-      const { error: fallbackError } = await supabase
-        .from("rfqs")
-        .insert(basePayload);
+      error.message.includes("supplier_id") ||
+      error.message.includes("submitter_id") ||
+      error.message.includes("attachment_path");
+
+    if (!attachmentPath && isLegacySchemaError) {
+      const { error: fallbackError } = await rfqMutations.insert({
+        ...basePayload,
+        attachment_name: null,
+        attachment_size: null,
+        attachment_type: null,
+      });
 
       if (!fallbackError) {
         redirect("/rfq?status=success");
       }
     }
 
+    if (attachmentPath) {
+      await supabase.storage
+        .from(RFQ_ATTACHMENTS_BUCKET)
+        .remove([attachmentPath]);
+    }
     console.error("Unable to submit RFQ", error.message);
     redirect("/rfq?status=error");
+  }
+
+  let attachmentUrl: string | null = null;
+
+  if (attachmentPath && attachmentFile) {
+    const { data, error: signedUrlError } = await supabase.storage
+      .from(RFQ_ATTACHMENTS_BUCKET)
+      .createSignedUrl(attachmentPath, 60 * 60 * 24 * 7, {
+        download: attachmentFile.name,
+      });
+
+    if (signedUrlError) {
+      console.error(
+        "Unable to create RFQ attachment review link",
+        signedUrlError.message,
+      );
+    } else {
+      attachmentUrl = data.signedUrl;
+    }
   }
 
   try {
@@ -139,7 +227,8 @@ export async function submitRfq(formData: FormData) {
       supplierSlug: supplierSlug || null,
       attachmentName: attachmentFile?.name ?? null,
       attachmentSize: attachmentFile?.size ?? null,
-      attachmentType: attachmentFile?.type ?? null,
+      attachmentType: attachmentContentType,
+      attachmentUrl,
       inquiryType:
         getString(formData, "inquiry_type") === "product"
           ? "product"
