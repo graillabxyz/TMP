@@ -27,6 +27,34 @@ export type Database = {
         Update: Partial<Database["public"]["Tables"]["profiles"]["Insert"]>;
         Relationships: [];
       };
+      site_assets: {
+        Row: {
+          key: string;
+          bucket: string;
+          path: string;
+          alt: string;
+          alt_fr: string | null;
+          alt_tr: string | null;
+          ready: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          key: string;
+          bucket: string;
+          path: string;
+          alt?: string;
+          alt_fr?: string | null;
+          alt_tr?: string | null;
+          ready?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<
+          Database["public"]["Tables"]["site_assets"]["Insert"]
+        >;
+        Relationships: [];
+      };
       supplier_categories: {
         Row: {
           id: string;

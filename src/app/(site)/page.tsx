@@ -31,11 +31,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { getCurrentProfile } from "@/lib/account";
-import { heroImage, trustMetrics } from "@/lib/data";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories, getSuppliers } from "@/lib/marketplace";
 import { getPlatformActivity } from "@/lib/platform-activity";
+import { getLandingHeroImage } from "@/lib/site-assets";
+import { trustMetrics } from "@/lib/site-data";
 import { getOrganizationJsonLd, getWebsiteJsonLd } from "@/lib/structured-data";
 
 export const revalidate = 300;
@@ -44,10 +45,11 @@ export default async function HomePage() {
   const locale = await getLocale();
   const t = getDictionary(locale);
   const activity = getPlatformActivity(locale);
-  const [categories, suppliers, profile] = await Promise.all([
+  const [categories, suppliers, profile, heroImage] = await Promise.all([
     getCategories(locale),
     getSuppliers(locale),
     getCurrentProfile(),
+    getLandingHeroImage(),
   ]);
   const productsHref = getLocalizedPath(locale, "/products");
   const rfqHref = getLocalizedPath(locale, "/rfq");

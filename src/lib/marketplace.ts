@@ -1,7 +1,3 @@
-import {
-  categories as mockCategories,
-  suppliers as mockSuppliers,
-} from "@/lib/data";
 import { getDictionary } from "@/lib/dictionary";
 import {
   localizedArray,
@@ -83,7 +79,7 @@ const trSupplierCopy: Record<
       | "tags"
       | "certifications"
     >
-  > & { products?: ProductPreview[] }
+  >
 > = {
   "anatolia-textile-studio": {
     name: "Anadolu Tekstil Stüdyosu",
@@ -98,22 +94,6 @@ const trSupplierCopy: Record<
     responseTime: "12 saatten kısa",
     tags: ["Private label", "OEKO-TEX", "Triko"],
     certifications: ["OEKO-TEX Standard 100", "ISO 9001", "BSCI denetimi"],
-    products: [
-      {
-        name: "Organik pamuk hoodie",
-        category: "Giyim",
-        moq: "500 adet",
-        image:
-          "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Ribana jarse basics",
-        category: "Kumaş",
-        moq: "250 kg",
-        image:
-          "https://images.unsplash.com/photo-1531891437562-4301cf35b7e4?auto=format&fit=crop&w=900&q=80",
-      },
-    ],
   },
   "marmara-machinery-works": {
     name: "Marmara Makine Atölyesi",
@@ -132,22 +112,6 @@ const trSupplierCopy: Record<
       "CE dokümantasyon desteği",
       "EN 1090 partneri",
     ],
-    products: [
-      {
-        name: "CNC alüminyum gövdeler",
-        category: "Komponentler",
-        moq: "100 adet",
-        image:
-          "https://images.unsplash.com/photo-1565043666747-69f6646db940?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Sac metal muhafazalar",
-        category: "Endüstriyel",
-        moq: "75 adet",
-        image:
-          "https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=900&q=80",
-      },
-    ],
   },
   "aegean-homeware-co": {
     name: "Ege Ev Ürünleri",
@@ -161,22 +125,6 @@ const trSupplierCopy: Record<
     responseTime: "18 saatten kısa",
     tags: ["Seramik", "Hospitality", "Tasarım odaklı"],
     certifications: ["Gıda temas uyumu", "Sedex üyesi", "REACH desteği"],
-    products: [
-      {
-        name: "Stoneware yemek takımı",
-        category: "Seramik",
-        moq: "200 set",
-        image:
-          "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Pamuk hamam havluları",
-        category: "Ev tekstili",
-        moq: "400 adet",
-        image:
-          "https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=900&q=80",
-      },
-    ],
   },
   "izmir-natural-foods": {
     name: "İzmir Doğal Gıdalar",
@@ -191,22 +139,6 @@ const trSupplierCopy: Record<
     responseTime: "24 saatten kısa",
     tags: ["Private label", "Perakende paketler", "İzlenebilir"],
     certifications: ["BRCGS beklemede", "Helal", "Organik hatlar mevcut"],
-    products: [
-      {
-        name: "Kuru incir perakende paketleri",
-        category: "Gıda",
-        moq: "1.200 paket",
-        image:
-          "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Akdeniz baharat karışımları",
-        category: "İçerikler",
-        moq: "300 kg",
-        image:
-          "https://images.unsplash.com/photo-1532336414038-cf19250c5757?auto=format&fit=crop&w=900&q=80",
-      },
-    ],
   },
   "bursa-building-materials": {
     name: "Bursa Yapı Malzemeleri",
@@ -224,22 +156,6 @@ const trSupplierCopy: Record<
       "ISO 9001",
       "CE işaretli hatlar",
       "Yangına dayanımlı seçenekler",
-    ],
-    products: [
-      {
-        name: "Alüminyum pencere profil setleri",
-        category: "Yapı Malzemeleri",
-        moq: "1 konteyner",
-        image:
-          "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Isı yalıtım levhaları",
-        category: "İnşaat",
-        moq: "20 palet",
-        image:
-          "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=900&q=80",
-      },
     ],
   },
   "bursa-auto-systems": {
@@ -259,22 +175,6 @@ const trSupplierCopy: Record<
       "CE işaretli hatlar",
       "Yangına dayanımlı seçenekler",
     ],
-    products: [
-      {
-        name: "Alüminyum pencere profil setleri",
-        category: "Yapı Malzemeleri",
-        moq: "1 konteyner",
-        image:
-          "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "Isı yalıtım levhaları",
-        category: "İnşaat",
-        moq: "20 palet",
-        image:
-          "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=900&q=80",
-      },
-    ],
   },
   "istanbul-packaging-lab": {
     name: "İstanbul Ambalaj Laboratuvarı",
@@ -289,43 +189,8 @@ const trSupplierCopy: Record<
     responseTime: "8 saatten kısa",
     tags: ["FSC kağıt", "Düşük MOQ", "Hızlı numune"],
     certifications: ["FSC malzeme mevcut", "ISO 14001 yol haritası"],
-    products: [
-      {
-        name: "Sert kozmetik kutusu",
-        category: "Ambalaj",
-        moq: "1.000 adet",
-        image:
-          "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=80",
-      },
-      {
-        name: "E-ticaret kargo paketi seti",
-        category: "Ambalaj",
-        moq: "2.500 adet",
-        image:
-          "https://images.unsplash.com/photo-1607082350899-7e105aa886ae?auto=format&fit=crop&w=900&q=80",
-      },
-    ],
   },
 };
-
-function localizeMockCategories(locale: Locale) {
-  return mockCategories.map((category) => ({
-    ...category,
-    ...getCategoryOverride(locale, category.slug),
-  }));
-}
-
-function localizeMockSuppliers(locale: Locale) {
-  if (locale !== "tr") {
-    return mockSuppliers;
-  }
-
-  return mockSuppliers.map((supplier) => ({
-    ...supplier,
-    ...trSupplierCopy[supplier.slug],
-    products: trSupplierCopy[supplier.slug]?.products ?? supplier.products,
-  }));
-}
 
 function normalizeCategory(row: CategoryRow, locale: Locale): Category {
   const override = getCategoryOverride(locale, row.slug);
@@ -415,7 +280,6 @@ function normalizeSupplier(row: SupplierRow, locale: Locale): Supplier {
     return {
       ...supplier,
       ...trSupplierCopy[row.slug],
-      products: trSupplierCopy[row.slug]?.products ?? supplier.products,
     };
   }
 
@@ -428,7 +292,8 @@ export async function getCategories(
   const supabase = createPublicSupabaseClient();
 
   if (!supabase) {
-    return localizeMockCategories(locale);
+    console.error("Supabase is not configured; categories are unavailable.");
+    return [];
   }
 
   const { data, error } = await supabase
@@ -441,7 +306,7 @@ export async function getCategories(
       console.error("Unable to load Supabase categories", error.message);
     }
 
-    return localizeMockCategories(locale);
+    return [];
   }
 
   return data.map((category) => normalizeCategory(category, locale));
@@ -453,7 +318,8 @@ export async function getSuppliers(
   const supabase = createPublicSupabaseClient();
 
   if (!supabase) {
-    return localizeMockSuppliers(locale);
+    console.error("Supabase is not configured; suppliers are unavailable.");
+    return [];
   }
 
   const { data, error } = await supabase
@@ -494,7 +360,7 @@ export async function getSuppliers(
       console.error("Unable to load Supabase suppliers", error.message);
     }
 
-    return localizeMockSuppliers(locale);
+    return [];
   }
 
   return (data as unknown as SupplierRow[]).map((supplier) =>

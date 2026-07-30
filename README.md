@@ -42,9 +42,8 @@ RFQ_NOTIFICATION_TO=
 
 The app reads suppliers, categories, published products, dashboard product
 workspace data, and RFQ inserts from Supabase when environment variables are
-present. Without local Supabase variables, the original supplier/category pages
-fall back to the seed-like mock data in `src/lib/data.ts`; product discovery
-expects Supabase data.
+present. Marketplace records do not silently fall back to a second mock catalog;
+an unavailable database returns an empty result and logs the query failure.
 
 The app intentionally uses the publishable key only. Do not add service-role or
 admin keys to the frontend project; database access should be controlled with
@@ -97,12 +96,20 @@ Apply the SQL migrations in order from `supabase/migrations/`.
   webhook RPC that syncs subscription status after a verified Stripe event.
 - `20260612000000_building_materials_category_cleanup.sql` aligns the former
   automotive seed/category data with the current Building Materials category.
+- `20260730000000_secure_marketplace_media.sql` applies bucket limits and
+  owner-scoped Storage RLS for supplier assets and private verification files.
+- `20260730001000_private_verification_document_paths.sql` stores private object
+  paths instead of public verification-document URLs.
+- `20260730002000_secure_rfq_submissions.sql` hardens RFQ constraints and adds
+  authenticated private attachments with owner/admin Storage RLS.
+- `20260730003000_site_assets.sql` adds the public site-asset registry and
+  protected site media bucket.
 
 Current RLS stance:
 
 - Public can read published categories, verified supplier accounts, and
   published products from verified suppliers.
-- Public can insert RFQs only.
+- Public can insert validated text-only RFQs.
 - Public cannot select, update, or delete RFQs.
 - Public cannot update or delete marketplace records.
 - Authenticated suppliers can create, update, archive, and delete only products
@@ -110,6 +117,25 @@ Current RLS stance:
 - Suppliers can publish listings immediately after adding a supplier profile.
 - Supplier approval and verification fields remain admin-only.
 - Supplier verification documents are private to the supplier owner and admins.
+- Supplier media writes are restricted to the authenticated owner path.
+- RFQ attachments require authentication and are private to their submitter and
+  admins.
+
+### One-time media migration
+
+After applying all migrations, migrate the existing external seed images and the
+landing hero into Supabase Storage:
+
+```bash
+SUPABASE_SERVICE_ROLE_KEY=server-only-key npm run migrate:media
+```
+
+The script accepts existing remote images only from the approved Unsplash seed
+host, uploads them to project Storage, updates supplier/product rows, uploads the
+landing hero, and marks the hero database record ready. It is idempotent.
+
+`SUPABASE_SERVICE_ROLE_KEY` is for this trusted local/admin migration only. Never
+prefix it with `NEXT_PUBLIC_`, commit it, or add it to browser code.
 
 ## RFQ Email Routing
 
