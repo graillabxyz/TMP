@@ -35,8 +35,8 @@ import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories, getSuppliers } from "@/lib/marketplace";
 import { getPlatformActivity } from "@/lib/platform-activity";
+import { getProducts } from "@/lib/products";
 import { getLandingHeroImage } from "@/lib/site-assets";
-import { trustMetrics } from "@/lib/site-data";
 import { getOrganizationJsonLd, getWebsiteJsonLd } from "@/lib/structured-data";
 
 export const revalidate = 300;
@@ -44,13 +44,19 @@ export const revalidate = 300;
 export default async function HomePage() {
   const locale = await getLocale();
   const t = getDictionary(locale);
-  const activity = getPlatformActivity(locale);
-  const [categories, suppliers, profile, heroImage] = await Promise.all([
-    getCategories(locale),
-    getSuppliers(locale),
-    getCurrentProfile(),
-    getLandingHeroImage(),
-  ]);
+  const [categories, suppliers, products, profile, heroImage] =
+    await Promise.all([
+      getCategories(locale),
+      getSuppliers(locale),
+      getProducts({ locale }),
+      getCurrentProfile(),
+      getLandingHeroImage(),
+    ]);
+  const activity = getPlatformActivity(locale, {
+    categories: categories.length,
+    suppliers: suppliers.length,
+    products: products.length,
+  });
   const productsHref = getLocalizedPath(locale, "/products");
   const rfqHref = getLocalizedPath(locale, "/rfq");
   const suppliersHref = getLocalizedPath(locale, "/suppliers");
@@ -79,6 +85,11 @@ export default async function HomePage() {
   const frequentlySearched = previewProducts.slice(0, 3);
   const recommendedProducts = previewProducts.slice(3, 8);
   const businessToolIcons = [Target, Trophy, WandSparkles];
+  const marketplaceMetrics = [
+    categories.length,
+    suppliers.length,
+    products.length,
+  ];
 
   return (
     <>
@@ -158,14 +169,12 @@ export default async function HomePage() {
             </div>
 
             <div className="mt-7 grid max-w-3xl gap-3 sm:grid-cols-3">
-              {trustMetrics.map((metric, index) => (
+              {marketplaceMetrics.map((value, index) => (
                 <div
-                  key={metric.label}
+                  key={t.home.trustMetrics[index]}
                   className="rounded-md border border-white/10 bg-background/45 p-4 backdrop-blur-md"
                 >
-                  <p className="text-2xl font-semibold text-white">
-                    {metric.value}
-                  </p>
+                  <p className="text-2xl font-semibold text-white">{value}</p>
                   <p className="mt-1 text-xs leading-5 text-muted-foreground">
                     {t.home.trustMetrics[index]}
                   </p>
