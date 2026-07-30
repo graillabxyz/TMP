@@ -351,7 +351,6 @@ export async function getSuppliers(
         products:supplier_products(title, title_fr, slug, moq, images, category:categories(name, name_fr, slug))
       `,
     )
-    .eq("verification_status", "verified")
     .order("display_order", { ascending: true })
     .limit(3, { referencedTable: "supplier_products" });
 
