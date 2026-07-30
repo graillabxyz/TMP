@@ -29,6 +29,8 @@ are cleared.
 - [x] `PASS` CI runs install, production audit, typecheck, lint, and build.
 - [x] `PASS` Runtime is pinned to Node 24.
 - [x] `PASS` Security headers are present on the public domain.
+- [x] `PASS` Marketplace images render without depending on Vercel image
+  optimization quota; all homepage images loaded successfully after scrolling.
 - [x] `PASS` Preview deployments require Vercel authentication; the custom
   production domain remains publicly reachable.
 - [ ] `PENDING` Confirm branch protection requires the CI workflow before merge.
@@ -66,6 +68,8 @@ are cleared.
 - [x] `PASS` Protected server actions re-check the authenticated user.
 - [x] `PASS` Profile email is designed to remain synchronized with auth email.
 - [x] `PASS` Anonymous users are directed to sign in before submitting an RFQ.
+- [x] `PASS` A localized sign-out action is available from both public and
+  dashboard profile menus.
 - [ ] `PENDING` Create a real email/password account and verify confirmation,
   login, logout, reset password, and session persistence.
 - [ ] `PENDING` Test Google OAuth callback and authorized-domain configuration.
@@ -101,6 +105,9 @@ are cleared.
 - [x] `PASS` Production has enough Stripe configuration for the checkout endpoint
   to return `auth-required` instead of configuration failure.
 - [x] `PASS` The webhook endpoint rejects unsigned requests.
+- [x] `PASS` Checkout and portal endpoints reject requests without the exact
+  production `Origin`, while same-origin unauthenticated requests return the
+  intended login path.
 - [ ] `BLOCKED` Replace the EUR 1 test price with the approved production price
   before charging real customers.
 - [ ] `PENDING` Complete a Stripe test-mode checkout with a supplier account.
@@ -118,16 +125,23 @@ are cleared.
 - [x] `PASS` English, French, and Turkish route infrastructure exists.
 - [x] `PASS` Sitemap, robots rules, canonical metadata, language alternates, and
   structured data are implemented for public routes.
+- [x] `PASS` Public links and JSON-LD retain `/fr` and `/tr` prefixes.
+- [x] `PASS` Robots rules block private, auth, and account routes in all three
+  languages.
+- [x] `PASS` Major public routes have exactly one `h1`, no duplicate IDs, named
+  visible buttons, labeled visible fields, and alternative text on every image.
+- [x] `PASS` Core public routes have no horizontal overflow at 320 px.
+- [x] `PASS` English, French, and Turkish headings, buttons, labels, legal copy,
+  and auth copy were crawled on the core route set.
+- [x] `PASS` Header category menu closes on outside click and Escape.
 - [ ] `PENDING` Desktop visual review at 1280, 1440, and 1920 widths.
 - [ ] `PENDING` Mobile visual review at 320, 375, 390, and 430 widths.
 - [ ] `PENDING` Keyboard-only review for header menus, filters, forms, dialogs,
   dashboard navigation, and focus visibility.
 - [ ] `PENDING` Automated accessibility scan plus manual label, heading,
   contrast, zoom, and screen-reader spot checks.
-- [ ] `PENDING` Crawl English, French, and Turkish routes for untranslated
-  interface copy, broken links, missing metadata, and duplicate content.
 - [ ] `PENDING` Verify every image loads, has useful alternative text, and does
-  not cause layout shift.
+  not cause layout shift on product and supplier detail pages.
 - [ ] `PENDING` Validate loading, empty, validation, error, offline, and success
   states for every primary workflow.
 - [ ] `PENDING` Run Lighthouse on home, products, suppliers, RFQ, login, and one
