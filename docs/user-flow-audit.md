@@ -56,16 +56,16 @@ Status key:
 
 ## Loop 3: Account Entry And Authentication
 
-14. `QUEUED` Register a standard account with email/password and valid profile
+14. `BLOCKED` Register a standard account with email/password and valid profile
     details.
-15. `QUEUED` Reject empty, malformed, oversized, weak-password, and duplicate
+15. `FIXED` Reject empty, malformed, oversized, weak-password, and duplicate
     registration input without exposing provider details.
-16. `QUEUED` Complete email confirmation and land on the intended safe route.
-17. `QUEUED` Login with email/password; handle invalid credentials safely.
-18. `QUEUED` Start and complete Google OAuth for login and registration.
-19. `QUEUED` Preserve valid internal `next` paths and reject external,
+16. `BLOCKED` Complete email confirmation and land on the intended safe route.
+17. `BLOCKED` Login with email/password; handle invalid credentials safely.
+18. `BLOCKED` Start and complete Google OAuth for login and registration.
+19. `PASS` Preserve valid internal `next` paths and reject external,
     protocol-relative, encoded, and backslash-normalized redirects.
-20. `QUEUED` Recover a forgotten password and establish a new session.
+20. `FIXED` Recover a forgotten password and establish a new session.
 
 ## Loop 4: Buyer Account And Session
 
@@ -215,3 +215,32 @@ Each completed loop will add:
    7. A real provider outage was not induced against the connected project; its
    fail-empty code path was reviewed and the full failure experience is covered
    again in Loop 9.
+
+### Loop 3
+
+1. **Flows and environment:** Exercised flows 14-20 across EN/FR/TR. Tested
+   login/register/recovery navigation, malformed field validation, invalid
+   credentials, safe and hostile `next` values, callback failure routing,
+   Google OAuth launch, unknown-email recovery, reset-session guards, and
+   production compilation.
+2. **Defects:** `High` - no password recovery or password update journey
+   existed. `Medium` - auth links, action errors, and callbacks fell back to
+   English routes. `Medium` - server registration accepted malformed email and
+   one-character names until Supabase rejected them. `Medium` - supplier auth
+   copy incorrectly said monthly verification was required before publishing.
+3. **Fix:** Added localized forgot/reset pages and Supabase recovery actions,
+   non-enumerating reset responses, authenticated password updates, locale-safe
+   action/OAuth callbacks, server validation with unit coverage, an auth-layout
+   language selector, and accurate optional-verification copy. Commit
+   `6b88cf3`.
+4. **Evidence:** Invalid FR credentials returned one generic error. An external
+   `next` became `/dashboard`; a missing-code callback with `//evil.example`
+   returned `/fr/login?status=auth-error`. Google OAuth reached the configured
+   Google consent endpoint with the FR callback and intended internal route.
+   Unknown-email TR recovery returned the generic sent state. Twelve tests,
+   typecheck, lint, and the 24-route production build passed.
+5. **Remaining:** No real account was created during the audit and no inbox was
+   used. Valid email/password login, confirmation-link completion, reset-link
+   completion, and Google consent completion require test identities and inbox
+   access; flows 14, 16, and 18 remain blocked. Flow 20's missing implementation
+   is fixed, but its emailed-link completion still needs that provider test.
