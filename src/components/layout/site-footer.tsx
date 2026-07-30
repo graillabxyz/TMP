@@ -13,9 +13,12 @@ export async function SiteFooter() {
     getCategories(locale),
     getCurrentProfile(),
   ]);
+  const supplierProfileHref = getLocalizedPath(locale, "/dashboard/profile");
   const supplierUpgradeHref = profile
-    ? getLocalizedPath(locale, "/dashboard/profile")
-    : `${getLocalizedPath(locale, "/register")}?next=/dashboard/profile`;
+    ? supplierProfileHref
+    : `${getLocalizedPath(locale, "/register")}?next=${encodeURIComponent(
+        supplierProfileHref,
+      )}`;
   const footerLinks = [
     { label: t.footer.suppliers, href: getLocalizedPath(locale, "/suppliers") },
     { label: t.footer.rfq, href: getLocalizedPath(locale, "/rfq") },

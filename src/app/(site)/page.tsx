@@ -60,9 +60,12 @@ export default async function HomePage() {
   const productsHref = getLocalizedPath(locale, "/products");
   const rfqHref = getLocalizedPath(locale, "/rfq");
   const suppliersHref = getLocalizedPath(locale, "/suppliers");
+  const supplierProfileHref = getLocalizedPath(locale, "/dashboard/profile");
   const supplierUpgradeHref = profile
-    ? getLocalizedPath(locale, "/dashboard/profile")
-    : `${getLocalizedPath(locale, "/register")}?next=/dashboard/profile`;
+    ? supplierProfileHref
+    : `${getLocalizedPath(locale, "/register")}?next=${encodeURIComponent(
+        supplierProfileHref,
+      )}`;
   const featuredSuppliers = suppliers
     .filter((supplier) => supplier.verified)
     .slice(0, 3);

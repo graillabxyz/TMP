@@ -30,9 +30,12 @@ export async function SiteHeader() {
     ...primaryNav,
     { label: t.nav.rfq, href: getLocalizedPath(locale, "/rfq") },
   ];
+  const supplierProfileHref = getLocalizedPath(locale, "/dashboard/profile");
   const supplierUpgradeHref = profile
-    ? getLocalizedPath(locale, "/dashboard/profile")
-    : `${getLocalizedPath(locale, "/register")}?next=/dashboard/profile`;
+    ? supplierProfileHref
+    : `${getLocalizedPath(locale, "/register")}?next=${encodeURIComponent(
+        supplierProfileHref,
+      )}`;
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-charcoal-900/[0.94] shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
