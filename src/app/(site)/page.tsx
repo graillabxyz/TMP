@@ -84,11 +84,11 @@ export default async function HomePage() {
       <section className="relative isolate overflow-hidden">
         <Image
           src={heroImage}
-          alt="Modern manufacturing floor for Turkish export suppliers"
+          alt={t.home.heroImageAlt}
           fill
           priority
           sizes="100vw"
-          className="-z-20 object-cover opacity-70"
+          className="-z-20 object-cover object-[72%_center] opacity-90 md:object-center"
         />
         <div className="from-black/88 via-black/72 absolute inset-0 -z-10 bg-gradient-to-b to-background" />
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(0,0,0,.78),rgba(0,0,0,.52)_52%,rgba(0,0,0,.76))]" />

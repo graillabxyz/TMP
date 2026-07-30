@@ -71,6 +71,8 @@ const dictionaries = {
       note: "Built for sourcing validation, buyer trust, and supplier growth.",
     },
     home: {
+      heroImageAlt:
+        "Istanbul skyline, Bosphorus, and Galata Tower at night",
       badge: "Verified Turkish supply network for Europe",
       title: "Turkiye Market Place",
       subtitle:
@@ -767,6 +769,8 @@ const dictionaries = {
       note: "Conçu pour valider le sourcing, renforcer la confiance et accélérer la croissance fournisseur.",
     },
     home: {
+      heroImageAlt:
+        "Vue nocturne d’Istanbul, du Bosphore et de la tour de Galata",
       badge: "Réseau de fournisseurs turcs vérifiés pour l’Europe",
       title: "Turkiye Market Place",
       subtitle:
@@ -1479,6 +1483,8 @@ const turkishDictionary = {
     note: "Sourcing doğrulaması, alıcı güveni ve tedarikçi büyümesi için geliştirildi.",
   },
   home: {
+    heroImageAlt:
+      "Gece İstanbul silüeti, Boğaz ve Galata Kulesi",
     badge: "Avrupa için doğrulanmış Türk tedarik ağı",
     title: "Turkiye Market Place",
     subtitle:

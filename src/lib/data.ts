@@ -1,7 +1,6 @@
 import type { Category, Supplier } from "@/types";
 
-export const heroImage =
-  "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=2200&q=85";
+export const heroImage = "/images/istanbul-hero.jpg";
 
 export const suppliers: Supplier[] = [
   {
