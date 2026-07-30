@@ -223,6 +223,10 @@ const dictionaries = {
       requesterEmailPlaceholder: "you@company.com",
       requesterCompany: "Company (optional)",
       requesterCompanyPlaceholder: "Company name",
+      signInRequiredTitle: "Sign in before sending an RFQ",
+      signInRequiredBody:
+        "A TMP account keeps your request private, lets you add attachments, and gives suppliers a verified reply address.",
+      signInToSubmit: "Sign in to submit",
       productRequest: "Product specification",
       productPlaceholder:
         "Organic cotton hoodie, 320gsm fleece, OEKO-TEX, 500 pcs",
@@ -943,6 +947,10 @@ const dictionaries = {
       requesterEmailPlaceholder: "vous@entreprise.com",
       requesterCompany: "Entreprise (optionnel)",
       requesterCompanyPlaceholder: "Nom de l’entreprise",
+      signInRequiredTitle: "Connectez-vous avant d’envoyer une demande",
+      signInRequiredBody:
+        "Un compte TMP protège votre demande, permet d’ajouter des pièces jointes et fournit aux fournisseurs une adresse de réponse vérifiée.",
+      signInToSubmit: "Se connecter pour envoyer",
       productRequest: "Specification produit",
       productPlaceholder: "Sweat coton bio, molleton 320gsm, OEKO-TEX, 500 pcs",
       productHelp:
@@ -1674,6 +1682,10 @@ const turkishDictionary = {
     requesterEmailPlaceholder: "siz@sirket.com",
     requesterCompany: "Şirket (isteğe bağlı)",
     requesterCompanyPlaceholder: "Şirket adı",
+    signInRequiredTitle: "RFQ göndermeden önce giriş yapın",
+    signInRequiredBody:
+      "TMP hesabı talebinizi gizli tutar, ek yüklemenizi sağlar ve tedarikçilere doğrulanmış bir yanıt adresi sunar.",
+    signInToSubmit: "Göndermek için giriş yap",
     productRequest: "Ürün spesifikasyonu",
     productPlaceholder:
       "Organik pamuk hoodie, 320gsm polar, OEKO-TEX, 500 adet",

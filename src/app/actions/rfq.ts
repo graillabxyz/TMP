@@ -64,7 +64,10 @@ export async function submitRfq(formData: FormData) {
 
   const productRequest = getString(formData, "product_request");
   const requesterName = getString(formData, "requester_name");
-  const requesterEmail = getString(formData, "requester_email").toLowerCase();
+  const submittedRequesterEmail = getString(
+    formData,
+    "requester_email",
+  ).toLowerCase();
   const requesterCompany = getString(formData, "requester_company");
   const categorySlug = getString(formData, "category_slug");
   const quantity = getString(formData, "quantity");
@@ -80,7 +83,7 @@ export async function submitRfq(formData: FormData) {
   if (
     requesterName.length < 2 ||
     requesterName.length > 100 ||
-    !isValidEmail(requesterEmail) ||
+    !isValidEmail(submittedRequesterEmail) ||
     requesterCompany.length > 120 ||
     !productRequest ||
     !quantity ||
@@ -112,19 +115,21 @@ export async function submitRfq(formData: FormData) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  if (!user?.email) {
+    redirect("/login?next=/rfq&status=auth-required");
+  }
+
+  const requesterEmail = user.email.toLowerCase();
   const attachment = formData.get("attachment");
   const attachmentFile =
     attachment instanceof File && attachment.size > 0 ? attachment : null;
-
-  if (attachmentFile && !user) {
-    redirect("/rfq?status=attachmentAuth");
-  }
 
   const rfqId = crypto.randomUUID();
   let attachmentPath: string | null = null;
   let attachmentContentType: string | null = null;
 
-  if (attachmentFile && user) {
+  if (attachmentFile) {
     const detected = await validateUpload(attachmentFile, {
       maxBytes: MAX_RFQ_ATTACHMENT_BYTES,
       allowPdf: true,
