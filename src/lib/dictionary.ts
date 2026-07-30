@@ -71,8 +71,7 @@ const dictionaries = {
       note: "Built for sourcing validation, buyer trust, and supplier growth.",
     },
     home: {
-      heroImageAlt:
-        "Istanbul skyline, Bosphorus, and Galata Tower at night",
+      heroImageAlt: "Istanbul skyline, Bosphorus, and Galata Tower at night",
       badge: "Verified Turkish supply network for Europe",
       title: "Turkiye Market Place",
       subtitle:
@@ -199,8 +198,7 @@ const dictionaries = {
       licenses: "Licenses & audits",
       exportMarkets: "Export markets",
       metadataNotFoundTitle: "Supplier not found | TMP",
-      metadataNotFoundDescription:
-        "This supplier profile is not available.",
+      metadataNotFoundDescription: "This supplier profile is not available.",
       metadataVerifiedTitle: "Verified Turkish Supplier",
       metadataBasedIn: "Based in",
       metadataCategory: "Category",
@@ -445,8 +443,7 @@ const dictionaries = {
           "Upload one JPG, PNG, or WebP image up to 5 MB. TMP stores it securely with your supplier account.",
         replaceImage:
           "Choose a new JPG, PNG, or WebP file only when you want to replace the current image.",
-        imageError:
-          "Add a valid JPG, PNG, or WebP image no larger than 5 MB.",
+        imageError: "Add a valid JPG, PNG, or WebP image no larger than 5 MB.",
         status: "Status",
         draft: "Draft",
         published: "Published",
@@ -537,7 +534,7 @@ const dictionaries = {
       manage: "Manage subscription",
       documents: "Business verification",
       documentsBody:
-        "Add upload-ready URLs for now. Supabase Storage upload controls can replace these fields later.",
+        "Upload private business documents for admin review. Files are stored securely and are not public marketplace assets.",
       supplierAccessTitle: "Add a supplier profile",
       supplierAccessBody:
         "Your TMP account can source as a buyer by default. Add company details, then activate the monthly verification subscription to unlock supplier tools.",
@@ -546,12 +543,18 @@ const dictionaries = {
       businessLicense: "Business license",
       companyRegistration: "Company registration",
       certifications: "Certifications",
+      documentRequired: "Required. PDF, JPG, PNG, or WebP up to 10 MB.",
+      documentOptional: "Optional. PDF, JPG, PNG, or WebP up to 10 MB.",
+      documentUploaded:
+        "Uploaded securely. Choose a new file only to replace it.",
       notes: "Notes for review",
       submitDocuments: "Submit for review",
       statusSubmitted: "Verification documents submitted for admin review.",
       statusSupplierStarted:
         "Supplier profile started. Continue with verification and billing setup.",
       statusMissingCompany: "Please add a supplier company name.",
+      statusDocumentError:
+        "Add valid business license and company registration files. Use PDF, JPG, PNG, or WebP files up to 10 MB.",
       statusError:
         "We could not update verification details. Please try again.",
       checkoutPlaceholder:
@@ -686,8 +689,7 @@ const dictionaries = {
     notFound: {
       metadataTitle: "Page Not Found | TMP",
       title: "This route is still being sourced.",
-      body:
-        "The page may have moved, or it is waiting for the next marketplace sprint.",
+      body: "The page may have moved, or it is waiting for the next marketplace sprint.",
       cta: "Return home",
     },
     metadata: {
@@ -715,8 +717,7 @@ const dictionaries = {
     contact: {
       contact: "Contact",
       title: "Contacter l’équipe TMP",
-      body:
-        "Échangez directement avec l’administrateur pour rejoindre la marketplace.",
+      body: "Échangez directement avec l’administrateur pour rejoindre la marketplace.",
       call: "Appeler l’administrateur",
       email: "Écrire à l’administrateur",
       close: "Fermer les coordonnées",
@@ -969,8 +970,7 @@ const dictionaries = {
       loginTitle: "Continuez avec votre compte TMP.",
       loginBody:
         "Un seul compte permet de sourcer comme acheteur, gérer les demandes et ajouter un profil fournisseur quand vous êtes prêt à vendre sur TMP.",
-      supplierLoginTitle:
-        "Connectez-vous pour lancer l’upgrade fournisseur.",
+      supplierLoginTitle: "Connectez-vous pour lancer l’upgrade fournisseur.",
       supplierLoginBody:
         "Utilisez votre compte TMP pour ajouter la société, activer l’abonnement mensuel de vérification et débloquer les outils fournisseur.",
       buyerLogin: "Connexion acheteur",
@@ -985,8 +985,7 @@ const dictionaries = {
       onboarding: "Onboarding TMP",
       registerTitle:
         "Créez un compte TMP. Ajoutez l’accès fournisseur quand vous êtes prêt.",
-      supplierRegisterTitle:
-        "Créez votre compte TMP pour commencer à vendre.",
+      supplierRegisterTitle: "Créez votre compte TMP pour commencer à vendre.",
       supplierRegisterBody:
         "Ensuite, ajoutez votre profil fournisseur, lancez la vérification et activez l’abonnement mensuel depuis le même compte.",
       accountPath: "Un compte TMP",
@@ -1250,7 +1249,7 @@ const dictionaries = {
       manage: "Gérer l’abonnement",
       documents: "Vérification entreprise",
       documentsBody:
-        "Ajoutez des URLs prêtes pour l’upload pour l’instant. Les contrôles Supabase Storage pourront remplacer ces champs plus tard.",
+        "Importez des documents d’entreprise privés pour la revue admin. Les fichiers sont stockés de façon sécurisée et ne sont pas publics.",
       supplierAccessTitle: "Ajouter un profil fournisseur",
       supplierAccessBody:
         "Votre compte TMP permet le sourcing acheteur par défaut. Ajoutez la société, puis activez l’abonnement mensuel de vérification pour débloquer les outils fournisseur.",
@@ -1259,6 +1258,10 @@ const dictionaries = {
       businessLicense: "Licence commerciale",
       companyRegistration: "Immatriculation société",
       certifications: "Certifications",
+      documentRequired: "Obligatoire. PDF, JPG, PNG ou WebP de 10 Mo maximum.",
+      documentOptional: "Facultatif. PDF, JPG, PNG ou WebP de 10 Mo maximum.",
+      documentUploaded:
+        "Importé en toute sécurité. Choisissez un nouveau fichier uniquement pour le remplacer.",
       notes: "Notes pour la revue",
       submitDocuments: "Soumettre pour revue",
       statusSubmitted: "Documents soumis pour revue admin.",
@@ -1266,6 +1269,8 @@ const dictionaries = {
         "Profil fournisseur démarré. Continuez avec la vérification et la facturation.",
       statusMissingCompany:
         "Veuillez ajouter le nom de la société fournisseur.",
+      statusDocumentError:
+        "Ajoutez une licence commerciale et une immatriculation valides. Utilisez des fichiers PDF, JPG, PNG ou WebP de 10 Mo maximum.",
       statusError:
         "Impossible de mettre à jour les détails de vérification. Veuillez réessayer.",
       checkoutPlaceholder:
@@ -1401,8 +1406,7 @@ const dictionaries = {
     notFound: {
       metadataTitle: "Page introuvable | TMP",
       title: "Cette route est encore en cours de sourcing.",
-      body:
-        "La page a peut-être été déplacée ou attend le prochain sprint marketplace.",
+      body: "La page a peut-être été déplacée ou attend le prochain sprint marketplace.",
       cta: "Retour à l’accueil",
     },
     metadata: {
@@ -1432,8 +1436,7 @@ const turkishDictionary = {
   contact: {
     contact: "İletişim",
     title: "TMP ekibiyle iletişime geçin",
-    body:
-      "Pazar yerine katılmak için yöneticiyle doğrudan iletişime geçin.",
+    body: "Pazar yerine katılmak için yöneticiyle doğrudan iletişime geçin.",
     call: "Yöneticiyi ara",
     email: "Yöneticiye e-posta gönder",
     close: "İletişim bilgilerini kapat",
@@ -1489,8 +1492,7 @@ const turkishDictionary = {
     note: "Sourcing doğrulaması, alıcı güveni ve tedarikçi büyümesi için geliştirildi.",
   },
   home: {
-    heroImageAlt:
-      "Gece İstanbul silüeti, Boğaz ve Galata Kulesi",
+    heroImageAlt: "Gece İstanbul silüeti, Boğaz ve Galata Kulesi",
     badge: "Avrupa için doğrulanmış Türk tedarik ağı",
     title: "Turkiye Market Place",
     subtitle:
@@ -1550,7 +1552,8 @@ const turkishDictionary = {
   },
   suppliers: {
     badge: "Tedarikçi rehberi",
-    title: "Avrupa sourcing ekipleri için hazırlanmış Türk tedarikçileri arayın.",
+    title:
+      "Avrupa sourcing ekipleri için hazırlanmış Türk tedarikçileri arayın.",
     body: "Teklif talebi göndermeden önce doğrulama durumunu, kategorileri, ihracat pazarlarını, minimum siparişleri ve yanıt hızını karşılaştırın.",
     indexed: "tedarikçi listeleniyor",
     indexedSingular: "tedarikçi listeleniyor",
@@ -1559,7 +1562,11 @@ const turkishDictionary = {
     searchPlaceholder: "Tekstil, CNC, ambalaj",
     allCategories: "Tüm kategoriler",
     verification: "Doğrulama",
-    checks: ["Doğrulanmış tedarikçiler", "AB ihracat deneyimi", "Düşük minimum sipariş"],
+    checks: [
+      "Doğrulanmış tedarikçiler",
+      "AB ihracat deneyimi",
+      "Düşük minimum sipariş",
+    ],
     viewSupplier: "Tedarikçiyi görüntüle",
     emptyTitle: "Bu filtrelerle eşleşen tedarikçi yok",
     emptyBody:
@@ -1586,8 +1593,7 @@ const turkishDictionary = {
     related: "Bu tedarikçiden diğer ürünler",
     requestQuote: "Teklif iste",
     backToProducts: "Ürünlere dön",
-    notConfigured:
-      "Supabase ürünleri bu ortamda henüz yapılandırılmadı.",
+    notConfigured: "Supabase ürünleri bu ortamda henüz yapılandırılmadı.",
     metadataTitle: "Ürün Keşfi | TMP",
     metadataDescription:
       "Yayınlanmış Türk tedarikçi ürünlerini arama, kategori, tedarikçi, MOQ, fiyat aralığı ve teslim süresine göre inceleyin.",
@@ -1629,7 +1635,8 @@ const turkishDictionary = {
   },
   rfq: {
     badge: "Teklif talebi",
-    title: "Tek bir sourcing brief'i gönderin. Doğru Türk tedarikçilere ulaşın.",
+    title:
+      "Tek bir sourcing brief'i gönderin. Doğru Türk tedarikçilere ulaşın.",
     body: "Tedarikçilerin uygunluğu değerlendirmesi, fiyat hazırlaması ve faydalı bir sonraki adımla yanıt vermesi için gereken detayları paylaşın.",
     bullets: [
       "Ürün özellikleri",
@@ -1663,7 +1670,8 @@ const turkishDictionary = {
     uploadHelp: "Teknik çizimler, referans görselleri veya teknik föyler",
     submit: "Teklif talebini gönder",
     status: {
-      success: "Teklif talebi gönderildi. Sourcing ekibimiz kısa süre içinde inceleyecek.",
+      success:
+        "Teklif talebi gönderildi. Sourcing ekibimiz kısa süre içinde inceleyecek.",
       missing: "Lütfen ürün talebi, miktar ve varış ülkesini ekleyin.",
       specific:
         "Lütfen ürün talebini malzeme, teknik özellik, sertifika veya hedef miktarla daha belirgin hale getirin.",
@@ -1694,7 +1702,8 @@ const turkishDictionary = {
     createAccount: "Hesap oluştur",
     supplierCreateAccount: "Hesap oluştur ve devam et",
     onboarding: "TMP onboarding",
-    registerTitle: "Tek TMP hesabı oluşturun. Hazır olduğunuzda tedarikçi erişimi ekleyin.",
+    registerTitle:
+      "Tek TMP hesabı oluşturun. Hazır olduğunuzda tedarikçi erişimi ekleyin.",
     supplierRegisterTitle: "Satışa başlamak için TMP hesabınızı oluşturun.",
     supplierRegisterBody:
       "Sonraki adımda tedarikçi profilinizi ekler, doğrulamayı başlatır ve aylık aboneliği aynı hesaptan etkinleştirirsiniz.",
@@ -1711,7 +1720,8 @@ const turkishDictionary = {
     supplierStepUpgradeBody:
       "Şirket bilgilerini ekleyin, aylık doğrulama aboneliğini başlatın ve ürünleri yayınlayın.",
     buyerPath: "Alıcı yolu",
-    buyerPathBody: "Teklif talepleri gönderin ve tedarikçileri kısa listeye alın.",
+    buyerPathBody:
+      "Teklif talepleri gönderin ve tedarikçileri kısa listeye alın.",
     supplierPath: "Tedarikçi yolu",
     supplierPathBody:
       "Tedarikçi profili ekleyin, doğrulamayı başlatın ve ürünleri yayınlayın.",
@@ -1766,12 +1776,7 @@ const turkishDictionary = {
     productInquiries: "Ürün talepleri",
     verification: "Doğrulama",
     verificationSettings: "Doğrulama ayarları",
-    metrics: [
-      "Aktif ilanlar",
-      "Açık RFQ'lar",
-      "Ürün talepleri",
-      "Doğrulama",
-    ],
+    metrics: ["Aktif ilanlar", "Açık RFQ'lar", "Ürün talepleri", "Doğrulama"],
     supplierRequestRows: [
       ["Organik pamuk basics", "Almanya", "500 adet", "Yeni"],
       ["Sert kozmetik kutuları", "Fransa", "2.000 adet", "İnceleme"],
@@ -1894,8 +1899,7 @@ const turkishDictionary = {
     productMetadataDescription:
       "TMP tedarikçi ürün ilanlarını oluşturun ve yönetin.",
     createProductMetadataTitle: "Ürün Oluştur | TMP",
-    createProductMetadataDescription:
-      "TMP'de tedarikçi ürün ilanı oluşturun.",
+    createProductMetadataDescription: "TMP'de tedarikçi ürün ilanı oluşturun.",
     editProductMetadataTitle: "Ürünü Düzenle | TMP",
     editProductMetadataDescription: "TMP tedarikçi ürün ilanını düzenleyin.",
   },
@@ -1953,7 +1957,7 @@ const turkishDictionary = {
     manage: "Aboneliği yönet",
     documents: "İşletme doğrulaması",
     documentsBody:
-      "Şimdilik yüklemeye hazır URL'ler ekleyin. Supabase Storage yükleme kontrolleri daha sonra bu alanların yerini alabilir.",
+      "Yönetici incelemesi için özel işletme belgelerini yükleyin. Dosyalar güvenli biçimde saklanır ve pazar yerinde herkese açık değildir.",
     supplierAccessTitle: "Tedarikçi profili ekle",
     supplierAccessBody:
       "TMP hesabınız varsayılan olarak alıcı sourcing yapabilir. Tedarikçi araçlarını açmak için şirket bilgilerini ekleyin, ardından aylık doğrulama aboneliğini etkinleştirin.",
@@ -1962,14 +1966,19 @@ const turkishDictionary = {
     businessLicense: "İşletme lisansı",
     companyRegistration: "Şirket kaydı",
     certifications: "Sertifikalar",
+    documentRequired: "Zorunlu. En fazla 10 MB PDF, JPG, PNG veya WebP.",
+    documentOptional: "İsteğe bağlı. En fazla 10 MB PDF, JPG, PNG veya WebP.",
+    documentUploaded:
+      "Güvenli biçimde yüklendi. Yalnızca değiştirmek için yeni dosya seçin.",
     notes: "İnceleme notları",
     submitDocuments: "İncelemeye gönder",
     statusSubmitted: "Doğrulama belgeleri yönetici incelemesine gönderildi.",
     statusSupplierStarted:
       "Tedarikçi profili başlatıldı. Doğrulama ve faturalandırma kurulumuyla devam edin.",
     statusMissingCompany: "Lütfen tedarikçi şirket adını ekleyin.",
-    statusError:
-      "Doğrulama detayları güncellenemedi. Lütfen tekrar deneyin.",
+    statusDocumentError:
+      "Geçerli işletme lisansı ve şirket kayıt dosyaları ekleyin. En fazla 10 MB PDF, JPG, PNG veya WebP kullanın.",
+    statusError: "Doğrulama detayları güncellenemedi. Lütfen tekrar deneyin.",
     checkoutPlaceholder:
       "Checkout yer tutucusu açıldı. Kimlik bilgileri eklendiğinde Stripe bağlanmaya hazır.",
     checkoutSuccess:
@@ -1983,8 +1992,7 @@ const turkishDictionary = {
       "Müşteri portalı yer tutucusu açıldı. Canlı portal oturumları Stripe yapılandırıldıktan sonra çalışır.",
     portalMissingCustomer:
       "Müşteri portalını açmadan önce doğrulama aboneliği başlatın.",
-    portalError:
-      "Stripe müşteri portalı açılamadı. Lütfen tekrar deneyin.",
+    portalError: "Stripe müşteri portalı açılamadı. Lütfen tekrar deneyin.",
     preparing: "Hazırlanıyor...",
     opening: "Açılıyor...",
     missingSupplier:
@@ -2102,8 +2110,7 @@ const turkishDictionary = {
   notFound: {
     metadataTitle: "Sayfa Bulunamadı | TMP",
     title: "Bu rota hâlâ tedarik ediliyor.",
-    body:
-      "Sayfa taşınmış olabilir veya bir sonraki pazar yeri sprintini bekliyor olabilir.",
+    body: "Sayfa taşınmış olabilir veya bir sonraki pazar yeri sprintini bekliyor olabilir.",
     cta: "Ana sayfaya dön",
   },
   metadata: {

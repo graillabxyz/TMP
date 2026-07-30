@@ -246,6 +246,9 @@ export type Database = {
           business_license_url: string | null;
           company_registration_url: string | null;
           certifications_url: string | null;
+          business_license_path: string | null;
+          company_registration_path: string | null;
+          certifications_path: string | null;
           notes: string | null;
           submitted_at: string | null;
           created_at: string;
@@ -257,6 +260,9 @@ export type Database = {
           business_license_url?: string | null;
           company_registration_url?: string | null;
           certifications_url?: string | null;
+          business_license_path?: string | null;
+          company_registration_path?: string | null;
+          certifications_path?: string | null;
           notes?: string | null;
           submitted_at?: string | null;
           created_at?: string;

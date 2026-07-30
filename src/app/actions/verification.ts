@@ -3,6 +3,13 @@
 import { redirect } from "next/navigation";
 
 import { getDemoRole } from "@/lib/demo-session";
+import {
+  createMediaPath,
+  isOwnedPrivateMediaPath,
+  MAX_VERIFICATION_DOCUMENT_BYTES,
+  validateUpload,
+  VERIFICATION_DOCUMENTS_BUCKET,
+} from "@/lib/media";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database";
 
@@ -58,7 +65,12 @@ async function getSupplierId() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { supabase, supplierId: null, verificationStatus: null };
+    return {
+      supabase,
+      supplierId: null,
+      userId: null,
+      verificationStatus: null,
+    };
   }
 
   const { data, error } = await supabase
@@ -78,8 +90,74 @@ async function getSupplierId() {
   return {
     supabase,
     supplierId: supplier?.id ?? null,
+    userId: user.id,
     verificationStatus: supplier?.verification_status ?? null,
   };
+}
+
+function getFile(formData: FormData, key: string) {
+  const value = formData.get(key);
+
+  return value instanceof File && value.size > 0 ? value : null;
+}
+
+async function uploadVerificationFile({
+  file,
+  supplierId,
+  supabase,
+  userId,
+}: {
+  file: File;
+  supplierId: string;
+  supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
+  userId: string;
+}) {
+  const detected = await validateUpload(file, {
+    maxBytes: MAX_VERIFICATION_DOCUMENT_BYTES,
+    allowPdf: true,
+  });
+
+  if (!detected) {
+    return null;
+  }
+
+  const path = createMediaPath({
+    userId,
+    supplierId,
+    area: "verification",
+    extension: detected.extension,
+  });
+  const { error } = await supabase.storage
+    .from(VERIFICATION_DOCUMENTS_BUCKET)
+    .upload(path, file, {
+      cacheControl: "3600",
+      contentType: detected.contentType,
+      upsert: false,
+    });
+
+  if (error) {
+    console.error("Unable to upload verification document", error.message);
+    return null;
+  }
+
+  return path;
+}
+
+async function removeVerificationFiles(
+  supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>,
+  paths: string[],
+) {
+  if (paths.length === 0) {
+    return;
+  }
+
+  const { error } = await supabase.storage
+    .from(VERIFICATION_DOCUMENTS_BUCKET)
+    .remove(paths);
+
+  if (error) {
+    console.error("Unable to remove verification documents", error.message);
+  }
 }
 
 export async function startSupplierProfile(formData: FormData) {
@@ -138,10 +216,108 @@ export async function submitVerificationDocuments(formData: FormData) {
     redirect("/dashboard/settings/verification?status=submitted");
   }
 
-  const { supabase, supplierId, verificationStatus } = await getSupplierId();
+  const { supabase, supplierId, userId, verificationStatus } =
+    await getSupplierId();
 
-  if (!supplierId) {
+  if (!supplierId || !userId) {
     redirect("/dashboard/settings/verification?status=supplier-missing");
+  }
+
+  const notes = getString(formData, "notes");
+
+  if (notes.length > 3000) {
+    redirect("/dashboard/settings/verification?status=document");
+  }
+
+  const { data: existingData, error: existingError } = await supabase
+    .from("supplier_verification_documents")
+    .select(
+      "business_license_path, company_registration_path, certifications_path",
+    )
+    .eq("supplier_id", supplierId)
+    .maybeSingle();
+  const existing = existingData as {
+    business_license_path: string | null;
+    company_registration_path: string | null;
+    certifications_path: string | null;
+  } | null;
+
+  if (existingError) {
+    console.error(
+      "Unable to load existing verification documents",
+      existingError.message,
+    );
+    redirect("/dashboard/settings/verification?status=error");
+  }
+
+  const businessLicenseFile = getFile(formData, "business_license");
+  const companyRegistrationFile = getFile(formData, "company_registration");
+  const certificationsFile = getFile(formData, "certifications");
+  const uploadedPaths: string[] = [];
+
+  const businessLicenseUpload = businessLicenseFile
+    ? await uploadVerificationFile({
+        file: businessLicenseFile,
+        supplierId,
+        supabase,
+        userId,
+      })
+    : null;
+
+  if (businessLicenseFile && !businessLicenseUpload) {
+    redirect("/dashboard/settings/verification?status=document");
+  }
+
+  if (businessLicenseUpload) {
+    uploadedPaths.push(businessLicenseUpload);
+  }
+
+  const companyRegistrationUpload = companyRegistrationFile
+    ? await uploadVerificationFile({
+        file: companyRegistrationFile,
+        supplierId,
+        supabase,
+        userId,
+      })
+    : null;
+
+  if (companyRegistrationFile && !companyRegistrationUpload) {
+    await removeVerificationFiles(supabase, uploadedPaths);
+    redirect("/dashboard/settings/verification?status=document");
+  }
+
+  if (companyRegistrationUpload) {
+    uploadedPaths.push(companyRegistrationUpload);
+  }
+
+  const certificationsUpload = certificationsFile
+    ? await uploadVerificationFile({
+        file: certificationsFile,
+        supplierId,
+        supabase,
+        userId,
+      })
+    : null;
+
+  if (certificationsFile && !certificationsUpload) {
+    await removeVerificationFiles(supabase, uploadedPaths);
+    redirect("/dashboard/settings/verification?status=document");
+  }
+
+  if (certificationsUpload) {
+    uploadedPaths.push(certificationsUpload);
+  }
+
+  const businessLicensePath =
+    businessLicenseUpload ?? existing?.business_license_path ?? null;
+  const companyRegistrationPath =
+    companyRegistrationUpload ?? existing?.company_registration_path ?? null;
+  const certificationsPath =
+    certificationsUpload ?? existing?.certifications_path ?? null;
+
+  if (!businessLicensePath || !companyRegistrationPath) {
+    await removeVerificationFiles(supabase, uploadedPaths);
+    redirect("/dashboard/settings/verification?status=document");
   }
 
   const documentMutations = supabase.from(
@@ -149,21 +325,41 @@ export async function submitVerificationDocuments(formData: FormData) {
   ) as unknown as DocumentMutationTable;
   const { error: documentError } = await documentMutations.upsert({
     supplier_id: supplierId,
-    business_license_url: getString(formData, "business_license_url") || null,
-    company_registration_url:
-      getString(formData, "company_registration_url") || null,
-    certifications_url: getString(formData, "certifications_url") || null,
-    notes: getString(formData, "notes") || null,
+    business_license_url: null,
+    company_registration_url: null,
+    certifications_url: null,
+    business_license_path: businessLicensePath,
+    company_registration_path: companyRegistrationPath,
+    certifications_path: certificationsPath,
+    notes: notes || null,
     submitted_at: new Date().toISOString(),
   });
 
   if (documentError) {
+    await removeVerificationFiles(supabase, uploadedPaths);
     console.error(
       "Unable to submit verification documents",
       documentError.message,
     );
     redirect("/dashboard/settings/verification?status=error");
   }
+
+  const replacedPaths = [
+    businessLicenseUpload ? existing?.business_license_path : null,
+    companyRegistrationUpload ? existing?.company_registration_path : null,
+    certificationsUpload ? existing?.certifications_path : null,
+  ].filter(
+    (path): path is string =>
+      Boolean(path) &&
+      isOwnedPrivateMediaPath({
+        path: path ?? null,
+        userId,
+        supplierId,
+        area: "verification",
+      }),
+  );
+
+  await removeVerificationFiles(supabase, replacedPaths);
 
   if (verificationStatus !== "verified") {
     const supplierMutations = supabase.from(

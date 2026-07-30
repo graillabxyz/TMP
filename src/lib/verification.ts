@@ -21,9 +21,9 @@ export type VerificationWorkspace = {
     verificationExpiresAt: string | null;
   } | null;
   documents: {
-    businessLicenseUrl: string | null;
-    companyRegistrationUrl: string | null;
-    certificationsUrl: string | null;
+    businessLicensePath: string | null;
+    companyRegistrationPath: string | null;
+    certificationsPath: string | null;
     notes: string | null;
     submittedAt: string | null;
   } | null;
@@ -40,9 +40,9 @@ type SupplierRow = {
 };
 
 type DocumentRow = {
-  business_license_url: string | null;
-  company_registration_url: string | null;
-  certifications_url: string | null;
+  business_license_path: string | null;
+  company_registration_path: string | null;
+  certifications_path: string | null;
   notes: string | null;
   submitted_at: string | null;
 };
@@ -114,7 +114,7 @@ export async function getVerificationWorkspace(): Promise<VerificationWorkspace>
   const { data: documentData, error: documentError } = await supabase
     .from("supplier_verification_documents")
     .select(
-      "business_license_url, company_registration_url, certifications_url, notes, submitted_at",
+      "business_license_path, company_registration_path, certifications_path, notes, submitted_at",
     )
     .eq("supplier_id", supplier.id)
     .maybeSingle();
@@ -140,9 +140,9 @@ export async function getVerificationWorkspace(): Promise<VerificationWorkspace>
     },
     documents: documents
       ? {
-          businessLicenseUrl: documents.business_license_url,
-          companyRegistrationUrl: documents.company_registration_url,
-          certificationsUrl: documents.certifications_url,
+          businessLicensePath: documents.business_license_path,
+          companyRegistrationPath: documents.company_registration_path,
+          certificationsPath: documents.certifications_path,
           notes: documents.notes,
           submittedAt: documents.submitted_at,
         }

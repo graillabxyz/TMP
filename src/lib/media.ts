@@ -104,3 +104,21 @@ export function getOwnedMediaPath({
     return null;
   }
 }
+
+export function isOwnedPrivateMediaPath({
+  path,
+  userId,
+  supplierId,
+  area,
+}: {
+  path: string | null;
+  userId: string;
+  supplierId: string;
+  area: "products" | "verification";
+}) {
+  return Boolean(
+    path?.startsWith(`${userId}/${supplierId}/${area}/`) &&
+    !path.includes("..") &&
+    path.split("/").length === 4,
+  );
+}

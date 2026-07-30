@@ -72,23 +72,25 @@ export default async function VerificationSettingsPage({
         ? copy.statusSupplierStarted
         : params.status === "missing-company"
           ? copy.statusMissingCompany
-          : params.status === "error"
-            ? copy.statusError
-            : params.checkout === "placeholder"
-              ? copy.checkoutPlaceholder
-              : params.checkout === "success"
-                ? copy.checkoutSuccess
-                : params.checkout === "cancelled"
-                  ? copy.checkoutCancelled
-                  : params.checkout === "error"
-                    ? copy.checkoutError
-                    : params.portal === "placeholder"
-                      ? copy.portalPlaceholder
-                      : params.portal === "missing-customer"
-                        ? copy.portalMissingCustomer
-                        : params.portal === "error"
-                          ? copy.portalError
-                          : "";
+          : params.status === "document"
+            ? copy.statusDocumentError
+            : params.status === "error"
+              ? copy.statusError
+              : params.checkout === "placeholder"
+                ? copy.checkoutPlaceholder
+                : params.checkout === "success"
+                  ? copy.checkoutSuccess
+                  : params.checkout === "cancelled"
+                    ? copy.checkoutCancelled
+                    : params.checkout === "error"
+                      ? copy.checkoutError
+                      : params.portal === "placeholder"
+                        ? copy.portalPlaceholder
+                        : params.portal === "missing-customer"
+                          ? copy.portalMissingCustomer
+                          : params.portal === "error"
+                            ? copy.portalError
+                            : "";
 
   return (
     <DashboardShell
@@ -238,43 +240,55 @@ export default async function VerificationSettingsPage({
                     >
                       <div className="grid gap-5 md:grid-cols-2">
                         <div className="grid gap-2">
-                          <Label htmlFor="business_license_url">
+                          <Label htmlFor="business_license">
                             {copy.businessLicense}
                           </Label>
                           <Input
-                            id="business_license_url"
-                            name="business_license_url"
-                            type="url"
-                            placeholder="https://..."
-                            defaultValue={documents?.businessLicenseUrl ?? ""}
+                            id="business_license"
+                            name="business_license"
+                            type="file"
+                            accept="application/pdf,image/jpeg,image/png,image/webp"
+                            required={!documents?.businessLicensePath}
                           />
+                          <p className="text-xs leading-5 text-muted-foreground">
+                            {documents?.businessLicensePath
+                              ? copy.documentUploaded
+                              : copy.documentRequired}
+                          </p>
                         </div>
                         <div className="grid gap-2">
-                          <Label htmlFor="company_registration_url">
+                          <Label htmlFor="company_registration">
                             {copy.companyRegistration}
                           </Label>
                           <Input
-                            id="company_registration_url"
-                            name="company_registration_url"
-                            type="url"
-                            placeholder="https://..."
-                            defaultValue={
-                              documents?.companyRegistrationUrl ?? ""
-                            }
+                            id="company_registration"
+                            name="company_registration"
+                            type="file"
+                            accept="application/pdf,image/jpeg,image/png,image/webp"
+                            required={!documents?.companyRegistrationPath}
                           />
+                          <p className="text-xs leading-5 text-muted-foreground">
+                            {documents?.companyRegistrationPath
+                              ? copy.documentUploaded
+                              : copy.documentRequired}
+                          </p>
                         </div>
                       </div>
                       <div className="grid gap-2">
-                        <Label htmlFor="certifications_url">
+                        <Label htmlFor="certifications">
                           {copy.certifications}
                         </Label>
                         <Input
-                          id="certifications_url"
-                          name="certifications_url"
-                          type="url"
-                          placeholder="https://..."
-                          defaultValue={documents?.certificationsUrl ?? ""}
+                          id="certifications"
+                          name="certifications"
+                          type="file"
+                          accept="application/pdf,image/jpeg,image/png,image/webp"
                         />
+                        <p className="text-xs leading-5 text-muted-foreground">
+                          {documents?.certificationsPath
+                            ? copy.documentUploaded
+                            : copy.documentOptional}
+                        </p>
                       </div>
                       <div className="grid gap-2">
                         <Label htmlFor="notes">{copy.notes}</Label>
@@ -282,6 +296,7 @@ export default async function VerificationSettingsPage({
                           id="notes"
                           name="notes"
                           rows={5}
+                          maxLength={3000}
                           defaultValue={documents?.notes ?? ""}
                         />
                       </div>
