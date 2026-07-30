@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
+import { LanguageToggle } from "@/components/language-toggle";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { getDictionary } from "@/lib/dictionary";
@@ -27,9 +28,12 @@ export default async function AuthLayout({
       <div className="container flex min-h-screen flex-col">
         <header className="flex items-center justify-between py-6">
           <Logo href={homeHref} />
-          <Button asChild variant="ghost">
-            <Link href={homeHref}>{t.nav.backHome}</Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <LanguageToggle locale={locale} />
+            <Button asChild variant="ghost">
+              <Link href={homeHref}>{t.nav.backHome}</Link>
+            </Button>
+          </div>
         </header>
         <div className="flex flex-1 items-center justify-center py-10">
           {children}

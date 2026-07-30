@@ -4,7 +4,7 @@ import { BadgeCheck } from "lucide-react";
 import { OnboardingAuthCard } from "@/components/auth/onboarding-auth-card";
 import { Badge } from "@/components/ui/badge";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getSafeInternalPath } from "@/lib/safe-redirect";
 import { createMetadata } from "@/lib/seo";
 
@@ -81,7 +81,8 @@ export default async function RegisterPage({
                     label: t.auth.supplierUpgradePath,
                     body: t.auth.supplierUpgradePathBody,
                   },
-                ]).map((item) => (
+                ]
+            ).map((item) => (
               <div
                 key={item.label}
                 className="rounded-lg border border-white/10 bg-white/[0.035] p-4"
@@ -97,6 +98,10 @@ export default async function RegisterPage({
 
         <OnboardingAuthCard
           mode="register"
+          locale={locale}
+          loginHref={getLocalizedPath(locale, "/login")}
+          registerHref={getLocalizedPath(locale, "/register")}
+          forgotPasswordHref={getLocalizedPath(locale, "/forgot-password")}
           supplierIntent={supplierIntent}
           nextPath={nextPath}
           status={params.status}
@@ -111,6 +116,7 @@ export default async function RegisterPage({
             email: t.auth.email,
             workEmail: t.auth.workEmail,
             password: t.auth.password,
+            forgotPassword: t.auth.forgotPassword,
             login: t.auth.login,
             createAccount: t.auth.createAccount,
             supplierLogin: t.auth.supplierLoginCta,
@@ -126,6 +132,7 @@ export default async function RegisterPage({
             error: t.auth.status.error,
             checkEmail: t.auth.status.checkEmail,
             oauthNotReady: t.auth.status.oauthNotReady,
+            passwordUpdated: t.auth.status.passwordUpdated,
           }}
         />
       </div>

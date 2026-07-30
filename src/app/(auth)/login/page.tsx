@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { OnboardingAuthCard } from "@/components/auth/onboarding-auth-card";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getSafeInternalPath } from "@/lib/safe-redirect";
 import { createMetadata } from "@/lib/seo";
 
@@ -52,6 +52,10 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         </div>
         <OnboardingAuthCard
           mode="login"
+          locale={locale}
+          loginHref={getLocalizedPath(locale, "/login")}
+          registerHref={getLocalizedPath(locale, "/register")}
+          forgotPasswordHref={getLocalizedPath(locale, "/forgot-password")}
           supplierIntent={supplierIntent}
           nextPath={nextPath}
           status={params.status}
@@ -66,6 +70,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             email: t.auth.email,
             workEmail: t.auth.workEmail,
             password: t.auth.password,
+            forgotPassword: t.auth.forgotPassword,
             login: t.auth.login,
             createAccount: t.auth.createAccount,
             supplierLogin: t.auth.supplierLoginCta,
@@ -81,6 +86,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             error: t.auth.status.error,
             checkEmail: t.auth.status.checkEmail,
             oauthNotReady: t.auth.status.oauthNotReady,
+            passwordUpdated: t.auth.status.passwordUpdated,
           }}
         />
       </div>

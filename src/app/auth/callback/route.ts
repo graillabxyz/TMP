@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { getLocalizedPath, isLocale } from "@/lib/i18n";
 import { getSafeInternalPath } from "@/lib/safe-redirect";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database";
@@ -29,12 +30,21 @@ export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const next = getSafeInternalPath(url.searchParams.get("next"));
+  const requestedLocale = url.searchParams.get("locale") ?? undefined;
+  const locale = isLocale(requestedLocale) ? requestedLocale : "en";
+  const authMode =
+    url.searchParams.get("auth_mode") === "register" ? "register" : "login";
+  const isResetFlow = url.searchParams.get("flow") === "reset";
   const redirectUrl = new URL(next, url.origin);
+  const errorPath = isResetFlow
+    ? getLocalizedPath(locale, "/forgot-password")
+    : getLocalizedPath(locale, `/${authMode}`);
+  const errorUrl = new URL(errorPath, url.origin);
 
   if (!code) {
-    redirectUrl.searchParams.set("status", "auth-error");
+    errorUrl.searchParams.set("status", "auth-error");
 
-    return NextResponse.redirect(redirectUrl);
+    return NextResponse.redirect(errorUrl);
   }
 
   const supabase = await createServerSupabaseClient();
@@ -42,9 +52,9 @@ export async function GET(request: NextRequest) {
 
   if (error) {
     console.error("Unable to exchange auth code", error.message);
-    redirectUrl.searchParams.set("status", "auth-error");
+    errorUrl.searchParams.set("status", "auth-error");
 
-    return NextResponse.redirect(redirectUrl);
+    return NextResponse.redirect(errorUrl);
   }
 
   const {

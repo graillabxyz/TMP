@@ -283,11 +283,23 @@ const dictionaries = {
         "One account lets you source as a buyer, manage RFQs, and add a supplier profile when you are ready to sell on TMP.",
       supplierLoginTitle: "Sign in to start your supplier upgrade.",
       supplierLoginBody:
-        "Use your existing TMP account to add company details, activate the monthly verification subscription, and unlock supplier tools.",
+        "Use your existing TMP account to add company details and unlock supplier tools. Paid verification is optional.",
       buyerLogin: "Buyer login",
       supplierLogin: "Supplier login",
       email: "Email",
       password: "Password",
+      forgotPassword: "Forgot password?",
+      forgotPasswordTitle: "Reset your password",
+      forgotPasswordBody:
+        "Enter your account email. If an account exists, TMP will send a secure reset link.",
+      sendResetLink: "Send reset link",
+      backToLogin: "Back to login",
+      resetPasswordTitle: "Choose a new password",
+      resetPasswordBody:
+        "Use at least 8 characters. Your reset link must still be active.",
+      newPassword: "New password",
+      confirmPassword: "Confirm new password",
+      updatePassword: "Update password",
       login: "Login",
       supplierLoginCta: "Continue to supplier upgrade",
       newToTmp: "New to TMP?",
@@ -297,24 +309,24 @@ const dictionaries = {
       registerTitle: "Create one TMP account. Add supplier access when ready.",
       supplierRegisterTitle: "Create your TMP account to start selling.",
       supplierRegisterBody:
-        "Next you will add your supplier profile, start verification, and activate the monthly subscription from the same account.",
+        "Next you will add your supplier profile and publish products from the same account. Paid verification can be added separately.",
       accountPath: "One TMP account",
       accountPathBody:
         "Browse suppliers, send RFQs, and manage sourcing from one login.",
       supplierUpgradePath: "Supplier profile upgrade",
       supplierUpgradePathBody:
-        "After creating an account, add company details, verification, and product publishing.",
+        "After creating an account, add company details and publish products. Verification is an optional paid upgrade.",
       supplierStepAccount: "1. Create or sign in",
       supplierStepAccountBody:
         "Use one TMP login for buying, sourcing, and supplier tools.",
       supplierStepUpgrade: "2. Add supplier upgrade",
       supplierStepUpgradeBody:
-        "Add company details, activate the monthly verification subscription, then publish products.",
+        "Add company details and publish products. Add paid verification when you want the badge.",
       buyerPath: "Buyer path",
       buyerPathBody: "Send RFQs and shortlist suppliers.",
       supplierPath: "Supplier path",
       supplierPathBody:
-        "Add a supplier profile, start verification, then publish products.",
+        "Add a supplier profile and publish products. Verification is optional.",
       accountTitle: "TMP account",
       accountBody:
         "Buyer sourcing is included by default. Supplier access can be added from the same account.",
@@ -323,7 +335,7 @@ const dictionaries = {
         "Create or sign in to the same account you will use for sourcing and supplier tools.",
       supplierIntentTitle: "Step 2: Supplier upgrade",
       supplierIntentBody:
-        "After sign-in, add company details and activate the monthly verification subscription.",
+        "After sign-in, add company details and start publishing. Paid verification is optional.",
       buyerAccount: "Buyer account",
       supplierAccount: "Supplier profile",
       fullName: "Full name",
@@ -338,7 +350,7 @@ const dictionaries = {
       googleHelp:
         "Use Google to continue with one TMP account. Supplier setup happens after sign-in.",
       supplierGoogleHelp:
-        "Continue with one TMP account. Supplier profile and monthly subscription setup happen next.",
+        "Continue with one TMP account. Supplier profile setup happens next; paid verification is optional.",
       orEmail: "or continue with email",
       alreadyAccount: "Already have an account?",
       status: {
@@ -348,6 +360,14 @@ const dictionaries = {
           "Check your email to confirm the account before logging in.",
         oauthNotReady:
           "Google sign-in could not start. Please try again or continue with email.",
+        passwordUpdated: "Password updated. You can now sign in.",
+        resetSent:
+          "If an account exists for that email, a secure reset link is on its way.",
+        invalidEmail: "Enter a valid email address.",
+        resetError: "The reset link could not be completed. Request a new one.",
+        resetExpired: "This reset session has expired. Request a new link.",
+        passwordMismatch:
+          "Use matching passwords between 8 and 128 characters.",
       },
     },
     dashboard: {
@@ -1009,11 +1029,23 @@ const dictionaries = {
         "Un seul compte permet de sourcer comme acheteur, gérer les demandes et ajouter un profil fournisseur quand vous êtes prêt à vendre sur TMP.",
       supplierLoginTitle: "Connectez-vous pour lancer l’upgrade fournisseur.",
       supplierLoginBody:
-        "Utilisez votre compte TMP pour ajouter la société, activer l’abonnement mensuel de vérification et débloquer les outils fournisseur.",
+        "Utilisez votre compte TMP pour ajouter la société et débloquer les outils fournisseur. La vérification payante est facultative.",
       buyerLogin: "Connexion acheteur",
       supplierLogin: "Connexion fournisseur",
       email: "Email",
       password: "Mot de passe",
+      forgotPassword: "Mot de passe oublié ?",
+      forgotPasswordTitle: "Réinitialiser votre mot de passe",
+      forgotPasswordBody:
+        "Saisissez l’email du compte. Si un compte existe, TMP enverra un lien sécurisé.",
+      sendResetLink: "Envoyer le lien",
+      backToLogin: "Retour à la connexion",
+      resetPasswordTitle: "Choisissez un nouveau mot de passe",
+      resetPasswordBody:
+        "Utilisez au moins 8 caractères. Votre lien doit encore être actif.",
+      newPassword: "Nouveau mot de passe",
+      confirmPassword: "Confirmer le mot de passe",
+      updatePassword: "Mettre à jour le mot de passe",
       login: "Connexion",
       supplierLoginCta: "Continuer vers l’upgrade fournisseur",
       newToTmp: "Nouveau sur TMP ?",
@@ -1024,24 +1056,24 @@ const dictionaries = {
         "Créez un compte TMP. Ajoutez l’accès fournisseur quand vous êtes prêt.",
       supplierRegisterTitle: "Créez votre compte TMP pour commencer à vendre.",
       supplierRegisterBody:
-        "Ensuite, ajoutez votre profil fournisseur, lancez la vérification et activez l’abonnement mensuel depuis le même compte.",
+        "Ensuite, ajoutez votre profil fournisseur et publiez vos produits depuis le même compte. La vérification payante reste facultative.",
       accountPath: "Un compte TMP",
       accountPathBody:
         "Parcourez les fournisseurs, envoyez des demandes et gérez le sourcing depuis une seule connexion.",
       supplierUpgradePath: "Profil fournisseur",
       supplierUpgradePathBody:
-        "Après création du compte, ajoutez société, vérification et publication produits.",
+        "Après création du compte, ajoutez la société et publiez vos produits. La vérification est une option payante.",
       supplierStepAccount: "1. Créer ou se connecter",
       supplierStepAccountBody:
         "Utilisez une seule connexion TMP pour acheter, sourcer et gérer les outils fournisseur.",
       supplierStepUpgrade: "2. Ajouter l’upgrade fournisseur",
       supplierStepUpgradeBody:
-        "Ajoutez la société, activez l’abonnement mensuel de vérification puis publiez vos produits.",
+        "Ajoutez la société et publiez vos produits. Activez la vérification payante pour obtenir le badge.",
       buyerPath: "Parcours acheteur",
       buyerPathBody: "Envoyez des demandes et sélectionnez des fournisseurs.",
       supplierPath: "Parcours fournisseur",
       supplierPathBody:
-        "Ajoutez un profil fournisseur, lancez la vérification puis publiez vos produits.",
+        "Ajoutez un profil fournisseur et publiez vos produits. La vérification est facultative.",
       accountTitle: "Compte TMP",
       accountBody:
         "Le sourcing acheteur est inclus par défaut. L’accès fournisseur s’ajoute au même compte.",
@@ -1050,7 +1082,7 @@ const dictionaries = {
         "Créez ou connectez-vous au même compte utilisé pour le sourcing et les outils fournisseur.",
       supplierIntentTitle: "Étape 2 : upgrade fournisseur",
       supplierIntentBody:
-        "Après connexion, ajoutez la société et activez l’abonnement mensuel de vérification.",
+        "Après connexion, ajoutez la société et commencez à publier. La vérification payante est facultative.",
       buyerAccount: "Compte acheteur",
       supplierAccount: "Profil fournisseur",
       fullName: "Nom complet",
@@ -1065,7 +1097,7 @@ const dictionaries = {
       googleHelp:
         "Utilisez Google pour continuer avec un seul compte TMP. Le profil fournisseur se configure après connexion.",
       supplierGoogleHelp:
-        "Continuez avec un seul compte TMP. Le profil fournisseur et l’abonnement mensuel se configurent ensuite.",
+        "Continuez avec un seul compte TMP. Le profil fournisseur se configure ensuite; la vérification payante est facultative.",
       orEmail: "ou continuer avec email",
       alreadyAccount: "Vous avez déjà un compte ?",
       status: {
@@ -1075,6 +1107,16 @@ const dictionaries = {
           "Vérifiez votre email pour confirmer le compte avant de vous connecter.",
         oauthNotReady:
           "La connexion Google n’a pas pu démarrer. Réessayez ou continuez avec l’e-mail.",
+        passwordUpdated:
+          "Mot de passe mis à jour. Vous pouvez maintenant vous connecter.",
+        resetSent:
+          "Si un compte existe pour cet email, un lien sécurisé est en cours d’envoi.",
+        invalidEmail: "Saisissez une adresse email valide.",
+        resetError:
+          "Le lien n’a pas pu être utilisé. Demandez un nouveau lien.",
+        resetExpired: "Cette session a expiré. Demandez un nouveau lien.",
+        passwordMismatch:
+          "Utilisez deux mots de passe identiques de 8 à 128 caractères.",
       },
     },
     dashboard: {
@@ -1746,11 +1788,23 @@ const turkishDictionary = {
       "Tek hesapla alıcı olarak tedarik yapabilir, RFQ'ları yönetebilir ve hazır olduğunuzda tedarikçi profili ekleyebilirsiniz.",
     supplierLoginTitle: "Tedarikçi yükseltmesini başlatmak için giriş yapın.",
     supplierLoginBody:
-      "Şirket bilgilerini eklemek, aylık doğrulama aboneliğini başlatmak ve tedarikçi araçlarını açmak için mevcut TMP hesabınızı kullanın.",
+      "Şirket bilgilerini eklemek ve tedarikçi araçlarını açmak için mevcut TMP hesabınızı kullanın. Ücretli doğrulama isteğe bağlıdır.",
     buyerLogin: "Alıcı girişi",
     supplierLogin: "Tedarikçi girişi",
     email: "E-posta",
     password: "Şifre",
+    forgotPassword: "Şifrenizi mi unuttunuz?",
+    forgotPasswordTitle: "Şifrenizi sıfırlayın",
+    forgotPasswordBody:
+      "Hesap e-postanızı girin. Bir hesap varsa TMP güvenli bir sıfırlama bağlantısı gönderir.",
+    sendResetLink: "Sıfırlama bağlantısı gönder",
+    backToLogin: "Girişe dön",
+    resetPasswordTitle: "Yeni bir şifre seçin",
+    resetPasswordBody:
+      "En az 8 karakter kullanın. Sıfırlama bağlantınız hâlâ geçerli olmalıdır.",
+    newPassword: "Yeni şifre",
+    confirmPassword: "Yeni şifreyi doğrulayın",
+    updatePassword: "Şifreyi güncelle",
     login: "Giriş",
     supplierLoginCta: "Tedarikçi yükseltmesine devam et",
     newToTmp: "TMP'de yeni misiniz?",
@@ -1761,25 +1815,25 @@ const turkishDictionary = {
       "Tek TMP hesabı oluşturun. Hazır olduğunuzda tedarikçi erişimi ekleyin.",
     supplierRegisterTitle: "Satışa başlamak için TMP hesabınızı oluşturun.",
     supplierRegisterBody:
-      "Sonraki adımda tedarikçi profilinizi ekler, doğrulamayı başlatır ve aylık aboneliği aynı hesaptan etkinleştirirsiniz.",
+      "Sonraki adımda tedarikçi profilinizi ekleyip aynı hesaptan ürün yayınlayabilirsiniz. Ücretli doğrulama ayrıca eklenebilir.",
     accountPath: "Tek TMP hesabı",
     accountPathBody:
       "Tedarikçileri inceleyin, teklif talepleri gönderin ve sourcing sürecini tek girişle yönetin.",
     supplierUpgradePath: "Tedarikçi profili yükseltmesi",
     supplierUpgradePathBody:
-      "Hesap oluşturduktan sonra şirket bilgileri, doğrulama ve ürün yayınlama adımlarını ekleyin.",
+      "Hesap oluşturduktan sonra şirket bilgilerini ekleyip ürün yayınlayın. Doğrulama isteğe bağlı ücretli bir yükseltmedir.",
     supplierStepAccount: "1. Oluştur veya giriş yap",
     supplierStepAccountBody:
       "Satın alma, sourcing ve tedarikçi araçları için tek TMP girişini kullanın.",
     supplierStepUpgrade: "2. Tedarikçi yükseltmesi ekle",
     supplierStepUpgradeBody:
-      "Şirket bilgilerini ekleyin, aylık doğrulama aboneliğini başlatın ve ürünleri yayınlayın.",
+      "Şirket bilgilerini ekleyip ürün yayınlayın. Rozet istediğinizde ücretli doğrulama ekleyin.",
     buyerPath: "Alıcı yolu",
     buyerPathBody:
       "Teklif talepleri gönderin ve tedarikçileri kısa listeye alın.",
     supplierPath: "Tedarikçi yolu",
     supplierPathBody:
-      "Tedarikçi profili ekleyin, doğrulamayı başlatın ve ürünleri yayınlayın.",
+      "Tedarikçi profili ekleyip ürün yayınlayın. Doğrulama isteğe bağlıdır.",
     accountTitle: "TMP hesabı",
     accountBody:
       "Alıcı sourcing varsayılan olarak dahildir. Tedarikçi erişimi aynı hesaba eklenebilir.",
@@ -1788,7 +1842,7 @@ const turkishDictionary = {
       "Sourcing ve tedarikçi araçları için kullanacağınız aynı hesaba giriş yapın veya hesap oluşturun.",
     supplierIntentTitle: "Adım 2: Tedarikçi yükseltmesi",
     supplierIntentBody:
-      "Girişten sonra şirket bilgilerini ekleyin ve aylık doğrulama aboneliğini başlatın.",
+      "Girişten sonra şirket bilgilerini ekleyip yayınlamaya başlayın. Ücretli doğrulama isteğe bağlıdır.",
     buyerAccount: "Alıcı hesabı",
     supplierAccount: "Tedarikçi profili",
     fullName: "Ad soyad",
@@ -1803,7 +1857,7 @@ const turkishDictionary = {
     googleHelp:
       "Tek TMP hesabıyla devam etmek için Google kullanın. Tedarikçi kurulumu girişten sonra yapılır.",
     supplierGoogleHelp:
-      "Tek TMP hesabıyla devam edin. Tedarikçi profili ve aylık abonelik kurulumu sonraki adımda yapılır.",
+      "Tek TMP hesabıyla devam edin. Tedarikçi profili sonraki adımda kurulur; ücretli doğrulama isteğe bağlıdır.",
     orEmail: "veya e-posta ile devam et",
     alreadyAccount: "Zaten hesabınız var mı?",
     status: {
@@ -1813,6 +1867,16 @@ const turkishDictionary = {
         "Giriş yapmadan önce hesabı onaylamak için e-postanızı kontrol edin.",
       oauthNotReady:
         "Google girişi başlatılamadı. Lütfen tekrar deneyin veya e-posta ile devam edin.",
+      passwordUpdated: "Şifre güncellendi. Şimdi giriş yapabilirsiniz.",
+      resetSent:
+        "Bu e-postayla bir hesap varsa güvenli sıfırlama bağlantısı gönderilecektir.",
+      invalidEmail: "Geçerli bir e-posta adresi girin.",
+      resetError:
+        "Sıfırlama bağlantısı tamamlanamadı. Yeni bir bağlantı isteyin.",
+      resetExpired:
+        "Bu sıfırlama oturumunun süresi doldu. Yeni bir bağlantı isteyin.",
+      passwordMismatch:
+        "8 ile 128 karakter arasında eşleşen şifreler kullanın.",
     },
   },
   dashboard: {

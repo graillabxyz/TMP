@@ -21,6 +21,10 @@ type OnboardingAuthCardProps = {
   mode: AuthMode;
   supplierIntent?: boolean;
   nextPath?: string;
+  locale: string;
+  loginHref: string;
+  registerHref: string;
+  forgotPasswordHref: string;
   status?: string;
   labels: {
     accountTitle: string;
@@ -33,6 +37,7 @@ type OnboardingAuthCardProps = {
     email: string;
     workEmail: string;
     password: string;
+    forgotPassword: string;
     login: string;
     createAccount: string;
     supplierLogin: string;
@@ -48,6 +53,7 @@ type OnboardingAuthCardProps = {
     error: string;
     checkEmail: string;
     oauthNotReady: string;
+    passwordUpdated: string;
   };
 };
 
@@ -67,6 +73,10 @@ function getStatusCopy(
     return { tone: "success" as const, copy: labels.checkEmail };
   }
 
+  if (status === "password-updated") {
+    return { tone: "success" as const, copy: labels.passwordUpdated };
+  }
+
   if (status === "oauth-error" || status === "oauth-not-ready") {
     return { tone: "error" as const, copy: labels.oauthNotReady };
   }
@@ -78,6 +88,10 @@ export function OnboardingAuthCard({
   mode,
   supplierIntent = false,
   nextPath = "/dashboard",
+  locale,
+  loginHref,
+  registerHref,
+  forgotPasswordHref,
   status,
   labels,
 }: OnboardingAuthCardProps) {
@@ -160,6 +174,7 @@ export function OnboardingAuthCard({
         <form action={signInWithGoogle} className="mt-8">
           <input type="hidden" name="auth_mode" value={mode} />
           <input type="hidden" name="next" value={nextPath} />
+          <input type="hidden" name="locale" value={locale} />
           <Button
             type="submit"
             size="lg"
@@ -185,6 +200,7 @@ export function OnboardingAuthCard({
           className="grid gap-5"
         >
           <input type="hidden" name="next" value={nextPath} />
+          <input type="hidden" name="locale" value={locale} />
           {mode === "register" && (
             <div className="grid gap-5">
               <div className="grid gap-2">
@@ -193,6 +209,7 @@ export function OnboardingAuthCard({
                   id="full_name"
                   name="full_name"
                   required
+                  minLength={2}
                   maxLength={100}
                   autoComplete="name"
                   placeholder="Aylin Demir"
@@ -232,6 +249,17 @@ export function OnboardingAuthCard({
             />
           </div>
 
+          {mode === "login" && (
+            <div className="-mt-2 text-right">
+              <Link
+                href={forgotPasswordHref}
+                className="rounded-sm text-sm text-gold-100 underline-offset-4 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                {labels.forgotPassword}
+              </Link>
+            </div>
+          )}
+
           <Button type="submit" size="lg">
             {submitLabel}
             <ArrowRight aria-hidden="true" />
@@ -243,8 +271,8 @@ export function OnboardingAuthCard({
           <Link
             href={
               mode === "register"
-                ? `/login?next=${nextQuery}`
-                : `/register?next=${nextQuery}`
+                ? `${loginHref}?next=${nextQuery}`
+                : `${registerHref}?next=${nextQuery}`
             }
             className="rounded-sm text-gold-100 underline-offset-4 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
