@@ -30,9 +30,13 @@ export async function getCurrentProfile(): Promise<CurrentProfile> {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, email, full_name, role")
+    .select("id, email, role")
     .eq("id", user.id)
     .maybeSingle();
+  const fullName =
+    typeof user.user_metadata.full_name === "string"
+      ? user.user_metadata.full_name
+      : null;
 
   if (error) {
     console.error("Unable to load current profile", error.message);
@@ -40,10 +44,7 @@ export async function getCurrentProfile(): Promise<CurrentProfile> {
     return {
       id: user.id,
       email: user.email ?? "",
-      fullName:
-        typeof user.user_metadata.full_name === "string"
-          ? user.user_metadata.full_name
-          : null,
+      fullName,
       role: "buyer",
     };
   }
@@ -51,7 +52,6 @@ export async function getCurrentProfile(): Promise<CurrentProfile> {
   const profile = data as {
     id: string;
     email: string;
-    full_name: string | null;
     role: AccountRole;
   } | null;
 
@@ -59,16 +59,13 @@ export async function getCurrentProfile(): Promise<CurrentProfile> {
     ? {
         id: profile.id,
         email: profile.email,
-        fullName: profile.full_name,
+        fullName,
         role: profile.role,
       }
     : {
         id: user.id,
         email: user.email ?? "",
-        fullName:
-          typeof user.user_metadata.full_name === "string"
-            ? user.user_metadata.full_name
-            : null,
+        fullName,
         role: "buyer",
       };
 }
