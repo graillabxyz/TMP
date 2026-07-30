@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
+  ChevronDown,
   PackageSearch,
   Search,
   SlidersHorizontal,
@@ -14,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ResponsiveDetails } from "@/components/ui/responsive-details";
 import { Select } from "@/components/ui/select";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
@@ -77,17 +79,13 @@ export default async function ProductsPage({
         )}
       />
       <section className="section-shell">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-          <div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="page-intro">
             <Badge>{t.products.badge}</Badge>
-            <h1 className="mt-5 max-w-3xl text-4xl font-semibold text-white sm:text-5xl">
-              {t.products.title}
-            </h1>
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-muted-foreground">
-              {t.products.body}
-            </p>
+            <h1 className="page-title">{t.products.title}</h1>
+            <p className="page-description">{t.products.body}</p>
           </div>
-          <div className="rounded-lg border border-white/10 bg-white/[0.035] px-4 py-3 text-sm text-muted-foreground">
+          <div className="rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground">
             <span className="font-semibold text-white">{products.length}</span>{" "}
             {products.length === 1
               ? t.products.indexedSingular
@@ -95,79 +93,98 @@ export default async function ProductsPage({
           </div>
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[300px_1fr]">
+        <div className="mt-7 grid gap-5 lg:grid-cols-[280px_1fr]">
           <aside className="grid gap-4 self-start lg:sticky lg:top-24">
-            <Card className="bg-white/[0.035]">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base">
+            <ResponsiveDetails className="group">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-md border border-white/10 bg-white/[0.035] px-4 text-sm font-medium text-white transition hover:border-gold-300/30 hover:bg-white/[0.05] lg:hidden">
+                <span className="flex items-center gap-2">
                   <SlidersHorizontal
                     className="size-4 text-gold-200"
                     aria-hidden="true"
                   />
                   {t.products.filters}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form className="grid gap-5">
-                  <div className="grid gap-2">
-                    <Label htmlFor="q">{t.common.search}</Label>
-                    <div className="relative">
-                      <Search
-                        className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                </span>
+                <ChevronDown
+                  className="size-4 text-muted-foreground transition group-open:rotate-180"
+                  aria-hidden="true"
+                />
+              </summary>
+              <div className="mt-3 hidden group-open:block lg:mt-0 lg:block">
+                <Card className="bg-white/[0.035]">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-base">
+                      <SlidersHorizontal
+                        className="size-4 text-gold-200"
                         aria-hidden="true"
                       />
-                      <Input
-                        id="q"
-                        name="q"
-                        className="pl-10"
-                        defaultValue={query}
-                        placeholder={t.products.searchPlaceholder}
-                      />
-                    </div>
-                  </div>
+                      {t.products.filters}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <form className="grid gap-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="q">{t.common.search}</Label>
+                        <div className="relative">
+                          <Search
+                            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                            aria-hidden="true"
+                          />
+                          <Input
+                            id="q"
+                            name="q"
+                            className="pl-10"
+                            defaultValue={query}
+                            placeholder={t.products.searchPlaceholder}
+                          />
+                        </div>
+                      </div>
 
-                  <div className="grid gap-2">
-                    <Label htmlFor="category">{t.common.category}</Label>
-                    <Select
-                      id="category"
-                      name="category"
-                      defaultValue={category}
-                    >
-                      <option value="">{t.products.allCategories}</option>
-                      {categories.map((item) => (
-                        <option key={item.slug} value={item.slug}>
-                          {item.name}
-                        </option>
-                      ))}
-                    </Select>
-                  </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="category">{t.common.category}</Label>
+                        <Select
+                          id="category"
+                          name="category"
+                          defaultValue={category}
+                        >
+                          <option value="">{t.products.allCategories}</option>
+                          {categories.map((item) => (
+                            <option key={item.slug} value={item.slug}>
+                              {item.name}
+                            </option>
+                          ))}
+                        </Select>
+                      </div>
 
-                  <div className="grid gap-2">
-                    <Label htmlFor="supplier">{t.common.supplier}</Label>
-                    <Select
-                      id="supplier"
-                      name="supplier"
-                      defaultValue={supplier}
-                    >
-                      <option value="">{t.products.allSuppliers}</option>
-                      {suppliers.map((item) => (
-                        <option key={item.slug} value={item.slug}>
-                          {item.name}
-                        </option>
-                      ))}
-                    </Select>
-                  </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="supplier">{t.common.supplier}</Label>
+                        <Select
+                          id="supplier"
+                          name="supplier"
+                          defaultValue={supplier}
+                        >
+                          <option value="">{t.products.allSuppliers}</option>
+                          {suppliers.map((item) => (
+                            <option key={item.slug} value={item.slug}>
+                              {item.name}
+                            </option>
+                          ))}
+                        </Select>
+                      </div>
 
-                  <div className="grid gap-3">
-                    <Button type="submit">{t.common.search}</Button>
-                    <Button asChild variant="ghost">
-                      <Link href={productsHref}>{t.common.clearFilters}</Link>
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/[0.035]">
+                      <div className="grid grid-cols-[1fr_auto] gap-2">
+                        <Button type="submit">{t.common.search}</Button>
+                        <Button asChild size="sm" variant="ghost">
+                          <Link href={productsHref}>
+                            {t.common.clearFilters}
+                          </Link>
+                        </Button>
+                      </div>
+                    </form>
+                  </CardContent>
+                </Card>
+              </div>
+            </ResponsiveDetails>
+            <Card className="hidden bg-white/[0.035] lg:block">
               <CardContent className="p-5">
                 <div className="flex items-center gap-2 text-sm font-medium text-white">
                   <TrendingUp
@@ -203,7 +220,7 @@ export default async function ProductsPage({
           </aside>
 
           {products.length > 0 ? (
-            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {products.map((product) => (
                 <ProductCard
                   key={product.id}

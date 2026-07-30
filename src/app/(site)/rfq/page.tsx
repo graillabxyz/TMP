@@ -70,57 +70,55 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
 
   return (
     <section className="section-shell">
-      <div className="mx-auto max-w-5xl">
-        <div className="grid gap-8 lg:grid-cols-[.85fr_1.15fr] lg:items-start">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-7 lg:grid-cols-[.78fr_1.22fr] lg:items-start">
           <div>
             <Badge>
               <PackageSearch className="mr-1 size-3" aria-hidden="true" />
               {t.rfq.badge}
             </Badge>
-            <h1 className="mt-5 text-4xl font-semibold text-white sm:text-5xl">
-              {t.rfq.title}
-            </h1>
-            <p className="mt-5 text-sm leading-7 text-muted-foreground">
-              {t.rfq.body}
-            </p>
-            <div className="mt-8 grid gap-3">
+            <h1 className="page-title">{t.rfq.title}</h1>
+            <p className="page-description">{t.rfq.body}</p>
+            <div className="mt-6 grid gap-3">
               {t.rfq.bullets.map((item) => (
                 <div
                   key={item}
-                  className="rounded-lg border border-white/10 bg-white/[0.035] px-4 py-3 text-sm text-muted-foreground"
+                  className="flex items-start gap-3 border-b border-white/[0.08] pb-3 text-sm leading-6 text-muted-foreground last:border-0 last:pb-0"
                 >
-                  {item}
+                  <CheckCircle2
+                    className="mt-1 size-4 shrink-0 text-gold-200"
+                    aria-hidden="true"
+                  />
+                  <span>{item}</span>
                 </div>
               ))}
             </div>
-            <Card className="mt-6 bg-white/[0.035]">
-              <CardContent className="p-5">
-                <p className="text-sm text-gold-200">
-                  {activity.rfqExamplesTitle}
-                </p>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  {activity.rfqExamplesBody}
-                </p>
-                <div className="mt-4 grid gap-3">
-                  {activity.rfqExamples.map((example) => (
-                    <div
-                      key={example}
-                      className="flex gap-3 rounded-md border border-white/10 bg-white/[0.035] p-3 text-sm leading-6 text-muted-foreground"
-                    >
-                      <CheckCircle2
-                        className="mt-1 size-4 shrink-0 text-gold-200"
-                        aria-hidden="true"
-                      />
-                      {example}
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <div className="mt-6 hidden border-t border-white/10 pt-5 lg:block">
+              <p className="text-sm text-gold-200">
+                {activity.rfqExamplesTitle}
+              </p>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                {activity.rfqExamplesBody}
+              </p>
+              <div className="mt-4 grid gap-2">
+                {activity.rfqExamples.map((example) => (
+                  <div
+                    key={example}
+                    className="flex gap-3 text-sm leading-6 text-muted-foreground"
+                  >
+                    <CheckCircle2
+                      className="mt-1 size-4 shrink-0 text-gold-200"
+                      aria-hidden="true"
+                    />
+                    {example}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           <Card className="bg-white/[0.035]">
-            <CardContent className="p-6 sm:p-8">
+            <CardContent className="p-5 sm:p-6">
               {statusMessage && (
                 <div className="mb-5 rounded-lg border border-gold-300/25 bg-gold-300/[0.08] px-4 py-3 text-sm text-gold-50">
                   {statusMessage}
@@ -135,10 +133,13 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                   <p className="mt-1 text-sm leading-6 text-muted-foreground">
                     {t.rfq.signInRequiredBody}
                   </p>
+                  <Button asChild className="mt-3" size="sm">
+                    <Link href={loginHref}>{t.rfq.signInToSubmit}</Link>
+                  </Button>
                 </div>
               )}
 
-              <form action={submitRfq} className="grid gap-5">
+              <form action={submitRfq} className="grid gap-4">
                 <input type="hidden" name="locale" value={locale} />
                 <input
                   type="hidden"
@@ -174,7 +175,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                       )}
                     </div>
                   )}
-                  <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="grid gap-4 sm:grid-cols-2">
                     <div className="grid gap-2">
                       <Label htmlFor="requester_name">
                         {t.rfq.requesterName}
@@ -253,7 +254,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                     </p>
                   </div>
 
-                  <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="grid gap-4 sm:grid-cols-2">
                     <div className="grid gap-2">
                       <Label htmlFor="category">{t.common.category}</Label>
                       <Select
@@ -284,7 +285,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                     </div>
                   </div>
 
-                  <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="grid gap-4 sm:grid-cols-2">
                     <div className="grid gap-2">
                       <Label htmlFor="country">
                         {t.rfq.destinationCountry}
@@ -329,10 +330,10 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                   {profile ? (
                     <label
                       htmlFor="attachment"
-                      className="flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-gold-300/30 bg-gold-300/[0.05] px-6 py-8 text-center transition focus-within:border-gold-300/60 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background hover:border-gold-300/50 hover:bg-gold-300/[0.08]"
+                      className="flex min-h-28 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-gold-300/30 bg-gold-300/[0.04] px-5 py-5 text-center transition focus-within:border-gold-300/60 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background hover:border-gold-300/50 hover:bg-gold-300/[0.07]"
                     >
                       <FileUp
-                        className="size-8 text-gold-100"
+                        className="size-6 text-gold-100"
                         aria-hidden="true"
                       />
                       <span className="mt-3 text-sm font-medium text-white">
@@ -350,7 +351,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                       />
                     </label>
                   ) : (
-                    <div className="flex min-h-32 flex-col items-center justify-center rounded-lg border border-dashed border-white/15 bg-white/[0.025] px-6 py-6 text-center">
+                    <div className="flex min-h-28 flex-col items-center justify-center rounded-md border border-dashed border-white/15 bg-white/[0.025] px-5 py-5 text-center">
                       <FileUp
                         className="size-7 text-muted-foreground"
                         aria-hidden="true"

@@ -25,13 +25,13 @@ export function SupplierCard({
   labels,
 }: SupplierCardProps) {
   return (
-    <Card className="group overflow-hidden bg-white/[0.035] transition duration-300 focus-within:border-gold-300/45 hover:-translate-y-1 hover:border-gold-300/30 hover:bg-white/[0.055]">
+    <Card className="group overflow-hidden bg-white/[0.03] transition duration-300 focus-within:border-gold-300/45 hover:-translate-y-0.5 hover:border-gold-300/30 hover:bg-white/[0.05]">
       <Link
         href={supplierHref}
         className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         aria-label={`${labels.viewSupplier}: ${supplier.name}`}
       >
-        <div className="relative aspect-[16/10] overflow-hidden">
+        <div className="relative aspect-[4/3] overflow-hidden">
           <Image
             src={supplier.image}
             alt={labels.imageAlt.replace("{supplier}", supplier.name)}
@@ -41,18 +41,18 @@ export function SupplierCard({
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
           {supplier.verified && (
-            <Badge className="absolute left-4 top-4" variant="success">
+            <Badge className="absolute left-3 top-3" variant="success">
               <BadgeCheck className="mr-1 size-3" aria-hidden="true" />
               {labels.verified}
             </Badge>
           )}
         </div>
       </Link>
-      <CardContent className="p-5">
+      <CardContent className="p-4 sm:p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="text-xs text-gold-200">{supplier.category}</p>
-            <h3 className="mt-2 text-lg font-semibold leading-6 text-white">
+            <h3 className="mt-1.5 text-base font-semibold leading-[1.4] text-white">
               <Link
                 href={supplierHref}
                 className="rounded-sm underline-offset-4 transition hover:text-gold-100 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -62,21 +62,21 @@ export function SupplierCard({
             </h3>
           </div>
         </div>
-        <p className="mt-3 line-clamp-2 text-sm leading-6 text-muted-foreground">
+        <p className="mt-2 line-clamp-2 text-sm leading-5 text-muted-foreground">
           {supplier.summary}
         </p>
-        <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
           <MapPin className="size-4 text-gold-200" aria-hidden="true" />
           {supplier.city}, {supplier.country}
         </div>
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="mt-3 flex min-h-6 flex-wrap gap-1.5">
           {supplier.tags.slice(0, 3).map((tag) => (
             <Badge key={tag} variant="secondary">
               {tag}
             </Badge>
           ))}
         </div>
-        <div className="mt-5 grid grid-cols-2 gap-3 border-t border-white/10 pt-4 text-sm">
+        <div className="mt-4 grid grid-cols-2 gap-3 border-t border-white/10 pt-3 text-xs">
           <div>
             <p className="text-muted-foreground">{labels.moq}</p>
             <p className="mt-1 font-medium text-white">{supplier.moq}</p>
@@ -88,7 +88,7 @@ export function SupplierCard({
             </p>
           </div>
         </div>
-        <Button asChild className="mt-5 w-full" variant="outline">
+        <Button asChild className="mt-4 w-full" size="sm" variant="outline">
           <Link href={supplierHref}>
             {labels.viewSupplier}
             <ArrowRight aria-hidden="true" />

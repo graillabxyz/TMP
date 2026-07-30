@@ -161,8 +161,8 @@ export default async function VerificationSettingsPage({
           )}
 
           {workspace.state === "ready" && supplier && (
-            <div className="grid gap-6 xl:grid-cols-[1fr_420px]">
-              <div className="grid gap-6">
+            <div className="grid gap-5 xl:grid-cols-[1fr_380px]">
+              <div className="grid gap-5">
                 <Card className="bg-white/[0.035]">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
@@ -173,8 +173,8 @@ export default async function VerificationSettingsPage({
                       {copy.overview}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="grid gap-5 sm:grid-cols-2">
-                    <div className="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+                  <CardContent className="grid gap-0 divide-y divide-white/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+                    <div className="pb-4 sm:pb-0 sm:pr-5">
                       <p className="text-sm text-muted-foreground">
                         {copy.currentStatus}
                       </p>
@@ -185,7 +185,7 @@ export default async function VerificationSettingsPage({
                         {copy.states[supplier.verificationStatus]}
                       </Badge>
                     </div>
-                    <div className="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+                    <div className="pt-4 sm:pl-5 sm:pt-0">
                       <p className="text-sm text-muted-foreground">
                         {copy.subscriptionStatus}
                       </p>
@@ -203,7 +203,7 @@ export default async function VerificationSettingsPage({
                   <CardHeader>
                     <CardTitle>{copy.benefits}</CardTitle>
                   </CardHeader>
-                  <CardContent className="grid gap-3 sm:grid-cols-2">
+                  <CardContent className="grid gap-x-5 gap-y-0 sm:grid-cols-2">
                     {copy.benefitItems.map((item, index) => {
                       const icons = [
                         BadgeCheck,
@@ -216,13 +216,13 @@ export default async function VerificationSettingsPage({
                       return (
                         <div
                           key={item}
-                          className="rounded-lg border border-white/10 bg-white/[0.035] p-4"
+                          className="flex items-start gap-3 border-b border-white/10 py-3 first:pt-0 last:border-0 last:pb-0"
                         >
                           <Icon
-                            className="size-5 text-gold-100"
+                            className="mt-0.5 size-5 shrink-0 text-gold-100"
                             aria-hidden="true"
                           />
-                          <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                          <p className="text-sm leading-6 text-muted-foreground">
                             {item}
                           </p>
                         </div>
@@ -247,10 +247,10 @@ export default async function VerificationSettingsPage({
                   <CardContent>
                     <form
                       action={submitVerificationDocuments}
-                      className="grid gap-5"
+                      className="grid gap-4"
                     >
                       <input type="hidden" name="locale" value={locale} />
-                      <div className="grid gap-5 md:grid-cols-2">
+                      <div className="grid gap-4 md:grid-cols-2">
                         <div className="grid gap-2">
                           <Label htmlFor="business_license">
                             {copy.businessLicense}

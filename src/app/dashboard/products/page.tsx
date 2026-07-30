@@ -127,12 +127,12 @@ export default async function DashboardProductsPage({
 
       {profile?.role !== "buyer" && workspace.state === "ready" && (
         <>
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm text-muted-foreground">
                 {workspace.supplier?.name}
               </p>
-              <h2 className="mt-1 text-2xl font-semibold text-white">
+              <h2 className="mt-1 text-xl font-semibold text-white">
                 {labels.title}
               </h2>
             </div>
@@ -145,22 +145,22 @@ export default async function DashboardProductsPage({
           </div>
 
           {workspace.products.length > 0 ? (
-            <Card className="mt-6 overflow-hidden bg-white/[0.035]">
+            <Card className="mt-5 overflow-hidden bg-white/[0.035]">
               <div className="overflow-x-auto">
                 <table className="w-full min-w-[760px] text-left text-sm">
                   <thead className="border-b border-white/10 text-muted-foreground">
                     <tr>
-                      <th className="px-5 py-4 font-medium">
+                      <th className="px-4 py-3 font-medium">
                         {labels.tableProduct}
                       </th>
-                      <th className="px-5 py-4 font-medium">
+                      <th className="px-4 py-3 font-medium">
                         {labels.tableCategory}
                       </th>
-                      <th className="px-5 py-4 font-medium">
+                      <th className="px-4 py-3 font-medium">
                         {labels.tablePricing}
                       </th>
-                      <th className="px-5 py-4 font-medium">{labels.status}</th>
-                      <th className="px-5 py-4 font-medium">
+                      <th className="px-4 py-3 font-medium">{labels.status}</th>
+                      <th className="px-4 py-3 font-medium">
                         {t.common.action}
                       </th>
                     </tr>
@@ -168,7 +168,7 @@ export default async function DashboardProductsPage({
                   <tbody className="divide-y divide-white/10">
                     {workspace.products.map((product) => (
                       <tr key={product.id} className="align-middle">
-                        <td className="px-5 py-4">
+                        <td className="px-4 py-3">
                           <p className="font-medium text-white">
                             {product.title}
                           </p>
@@ -176,18 +176,18 @@ export default async function DashboardProductsPage({
                             {new Date(product.createdAt).toLocaleDateString()}
                           </p>
                         </td>
-                        <td className="px-5 py-4 text-muted-foreground">
+                        <td className="px-4 py-3 text-muted-foreground">
                           {product.categoryName}
                         </td>
-                        <td className="px-5 py-4 text-white">
+                        <td className="px-4 py-3 text-white">
                           {formatPriceRange(product, t.products.quote)}
                         </td>
-                        <td className="px-5 py-4">
+                        <td className="px-4 py-3">
                           <Badge variant={statusVariant(product.status)}>
                             {labels[product.status]}
                           </Badge>
                         </td>
-                        <td className="px-5 py-4">
+                        <td className="px-4 py-3">
                           <div className="flex items-center gap-2">
                             <Button asChild size="sm" variant="outline">
                               <Link
@@ -229,8 +229,8 @@ export default async function DashboardProductsPage({
               </div>
             </Card>
           ) : (
-            <Card className="mt-6 bg-white/[0.035]">
-              <CardContent className="p-8">
+            <Card className="mt-5 bg-white/[0.035]">
+              <CardContent className="p-6">
                 <PackagePlus
                   className="size-8 text-gold-200"
                   aria-hidden="true"

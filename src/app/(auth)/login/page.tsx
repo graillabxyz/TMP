@@ -43,13 +43,13 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <div className="w-full max-w-5xl">
-      <div className="grid gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
+      <div className="grid gap-7 lg:grid-cols-[.82fr_1.18fr] lg:items-center">
         <div>
           <p className="text-sm text-gold-200">{t.auth.welcomeBack}</p>
-          <h1 className="mt-4 text-4xl font-semibold text-white sm:text-5xl">
+          <h1 className="mt-3 text-3xl font-semibold leading-tight text-white sm:text-4xl">
             {supplierIntent ? t.auth.supplierLoginTitle : t.auth.loginTitle}
           </h1>
-          <p className="mt-5 text-sm leading-7 text-muted-foreground">
+          <p className="mt-3 max-w-lg text-sm leading-6 text-muted-foreground">
             {supplierIntent ? t.auth.supplierLoginBody : t.auth.loginBody}
           </p>
         </div>

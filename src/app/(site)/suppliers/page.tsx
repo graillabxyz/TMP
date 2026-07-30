@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PackageSearch, Radio, Search, SlidersHorizontal } from "lucide-react";
+import {
+  ChevronDown,
+  PackageSearch,
+  Radio,
+  Search,
+  SlidersHorizontal,
+} from "lucide-react";
 
 import { JsonLd } from "@/components/seo/json-ld";
 import { SupplierCard } from "@/components/supplier-card";
@@ -9,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ResponsiveDetails } from "@/components/ui/responsive-details";
 import { Select } from "@/components/ui/select";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
@@ -126,17 +133,13 @@ export default async function SuppliersPage({
         )}
       />
       <section className="section-shell">
-        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-          <div>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div className="page-intro">
             <Badge>{t.suppliers.badge}</Badge>
-            <h1 className="mt-5 max-w-3xl text-4xl font-semibold text-white sm:text-5xl">
-              {t.suppliers.title}
-            </h1>
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-muted-foreground">
-              {t.suppliers.body}
-            </p>
+            <h1 className="page-title">{t.suppliers.title}</h1>
+            <p className="page-description">{t.suppliers.body}</p>
           </div>
-          <div className="rounded-lg border border-white/10 bg-white/[0.035] px-4 py-3 text-sm text-muted-foreground">
+          <div className="rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground">
             <span className="font-semibold text-white">
               {filteredSuppliers.length}
             </span>{" "}
@@ -146,99 +149,118 @@ export default async function SuppliersPage({
           </div>
         </div>
 
-        <div className="mt-10 grid gap-6 lg:grid-cols-[290px_1fr]">
+        <div className="mt-7 grid gap-5 lg:grid-cols-[280px_1fr]">
           <aside className="grid gap-4 self-start lg:sticky lg:top-24">
-            <Card className="bg-white/[0.035]">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base">
+            <ResponsiveDetails className="group">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-md border border-white/10 bg-white/[0.035] px-4 text-sm font-medium text-white transition hover:border-gold-300/30 hover:bg-white/[0.05] lg:hidden">
+                <span className="flex items-center gap-2">
                   <SlidersHorizontal
                     className="size-4 text-gold-200"
                     aria-hidden="true"
                   />
                   {t.suppliers.filters}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form className="grid gap-5">
-                  <div className="grid gap-2">
-                    <Label htmlFor="supplier-search">
-                      {t.suppliers.search}
-                    </Label>
-                    <div className="relative">
-                      <Search
-                        className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                </span>
+                <ChevronDown
+                  className="size-4 text-muted-foreground transition group-open:rotate-180"
+                  aria-hidden="true"
+                />
+              </summary>
+              <div className="mt-3 hidden group-open:block lg:mt-0 lg:block">
+                <Card className="bg-white/[0.035]">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-base">
+                      <SlidersHorizontal
+                        className="size-4 text-gold-200"
                         aria-hidden="true"
                       />
-                      <Input
-                        id="supplier-search"
-                        name="q"
-                        className="pl-10"
-                        defaultValue={query}
-                        placeholder={t.suppliers.searchPlaceholder}
-                      />
-                    </div>
-                  </div>
+                      {t.suppliers.filters}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <form className="grid gap-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="supplier-search">
+                          {t.suppliers.search}
+                        </Label>
+                        <div className="relative">
+                          <Search
+                            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                            aria-hidden="true"
+                          />
+                          <Input
+                            id="supplier-search"
+                            name="q"
+                            className="pl-10"
+                            defaultValue={query}
+                            placeholder={t.suppliers.searchPlaceholder}
+                          />
+                        </div>
+                      </div>
 
-                  <div className="grid gap-2">
-                    <Label htmlFor="category">{t.common.category}</Label>
-                    <Select
-                      id="category"
-                      name="category"
-                      defaultValue={category}
-                    >
-                      <option value="">{t.suppliers.allCategories}</option>
-                      {categories.map((item) => (
-                        <option key={item.slug} value={item.slug}>
-                          {item.name}
-                        </option>
-                      ))}
-                    </Select>
-                  </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="category">{t.common.category}</Label>
+                        <Select
+                          id="category"
+                          name="category"
+                          defaultValue={category}
+                        >
+                          <option value="">{t.suppliers.allCategories}</option>
+                          {categories.map((item) => (
+                            <option key={item.slug} value={item.slug}>
+                              {item.name}
+                            </option>
+                          ))}
+                        </Select>
+                      </div>
 
-                  <div className="grid gap-3">
-                    <Label>{t.suppliers.verification}</Label>
-                    <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground transition focus-within:border-gold-300/45 hover:border-gold-300/35 hover:bg-white/[0.055]">
-                      <input
-                        type="checkbox"
-                        name="verified"
-                        value="1"
-                        defaultChecked={verifiedOnly}
-                        className="size-4 rounded border-white/20 bg-transparent accent-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                      />
-                      {t.suppliers.checks[0]}
-                    </label>
-                    <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground transition focus-within:border-gold-300/45 hover:border-gold-300/35 hover:bg-white/[0.055]">
-                      <input
-                        type="checkbox"
-                        name="eu"
-                        value="1"
-                        defaultChecked={euExportOnly}
-                        className="size-4 rounded border-white/20 bg-transparent accent-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                      />
-                      {t.suppliers.checks[1]}
-                    </label>
-                    <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground transition focus-within:border-gold-300/45 hover:border-gold-300/35 hover:bg-white/[0.055]">
-                      <input
-                        type="checkbox"
-                        name="low_moq"
-                        value="1"
-                        defaultChecked={lowMoqOnly}
-                        className="size-4 rounded border-white/20 bg-transparent accent-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                      />
-                      {t.suppliers.checks[2]}
-                    </label>
-                  </div>
+                      <div className="grid gap-3">
+                        <Label>{t.suppliers.verification}</Label>
+                        <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground transition focus-within:border-gold-300/45 hover:border-gold-300/35 hover:bg-white/[0.055]">
+                          <input
+                            type="checkbox"
+                            name="verified"
+                            value="1"
+                            defaultChecked={verifiedOnly}
+                            className="size-4 rounded border-white/20 bg-transparent accent-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                          />
+                          {t.suppliers.checks[0]}
+                        </label>
+                        <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground transition focus-within:border-gold-300/45 hover:border-gold-300/35 hover:bg-white/[0.055]">
+                          <input
+                            type="checkbox"
+                            name="eu"
+                            value="1"
+                            defaultChecked={euExportOnly}
+                            className="size-4 rounded border-white/20 bg-transparent accent-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                          />
+                          {t.suppliers.checks[1]}
+                        </label>
+                        <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground transition focus-within:border-gold-300/45 hover:border-gold-300/35 hover:bg-white/[0.055]">
+                          <input
+                            type="checkbox"
+                            name="low_moq"
+                            value="1"
+                            defaultChecked={lowMoqOnly}
+                            className="size-4 rounded border-white/20 bg-transparent accent-gold-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                          />
+                          {t.suppliers.checks[2]}
+                        </label>
+                      </div>
 
-                  <div className="grid gap-3">
-                    <Button type="submit">{t.common.search}</Button>
-                    <Button asChild variant="ghost">
-                      <Link href={suppliersHref}>{t.common.clearFilters}</Link>
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/[0.035]">
+                      <div className="grid grid-cols-[1fr_auto] gap-2">
+                        <Button type="submit">{t.common.search}</Button>
+                        <Button asChild size="sm" variant="ghost">
+                          <Link href={suppliersHref}>
+                            {t.common.clearFilters}
+                          </Link>
+                        </Button>
+                      </div>
+                    </form>
+                  </CardContent>
+                </Card>
+              </div>
+            </ResponsiveDetails>
+            <Card className="hidden bg-white/[0.035] lg:block">
               <CardContent className="p-5">
                 <div className="flex items-center gap-2 text-sm font-medium text-white">
                   <Radio className="size-4 text-gold-200" aria-hidden="true" />
@@ -271,7 +293,7 @@ export default async function SuppliersPage({
           </aside>
 
           {filteredSuppliers.length > 0 ? (
-            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {filteredSuppliers.map((supplier) => (
                 <SupplierCard
                   key={supplier.slug}

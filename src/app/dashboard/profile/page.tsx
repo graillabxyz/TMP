@@ -81,8 +81,8 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
         </div>
       )}
 
-      <div className="grid gap-6 xl:grid-cols-[.9fr_1.1fr]">
-        <div className="grid gap-6">
+      <div className="grid gap-5 xl:grid-cols-[.85fr_1.15fr]">
+        <div className="grid gap-5">
           <Card className="bg-white/[0.035]">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -93,16 +93,18 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                 {copy.accountTitle}
               </CardTitle>
             </CardHeader>
-            <CardContent className="grid gap-4">
-              <div className="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+            <CardContent className="divide-y divide-white/10">
+              <div className="flex flex-col gap-1 py-3 first:pt-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                 <p className="text-sm text-muted-foreground">{copy.email}</p>
-                <p className="mt-2 font-medium text-white">{profile.email}</p>
+                <p className="break-all font-medium text-white">
+                  {profile.email}
+                </p>
               </div>
-              <div className="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+              <div className="flex flex-col gap-2 py-3 last:pb-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                 <p className="text-sm text-muted-foreground">
                   {copy.accountType}
                 </p>
-                <div className="mt-2 flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <p className="font-medium text-white">
                     {isSupplier ? copy.supplierAccount : copy.buyerAccount}
                   </p>
@@ -128,7 +130,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
               <p className="text-sm leading-6 text-muted-foreground">
                 {isSupplier ? copy.verifiedBody : copy.verifiedLockedBody}
               </p>
-              <div className="mt-5 rounded-lg border border-white/10 bg-white/[0.035] p-4">
+              <div className="mt-4 border-y border-white/10 py-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <p className="font-medium text-white">
@@ -154,11 +156,11 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                     </Badge>
                   )}
                 </div>
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
                   {verificationCopy.priceNote}
                 </p>
               </div>
-              <div className="mt-5 grid gap-3">
+              <div className="mt-4 grid gap-2">
                 {supplier ? (
                   <BillingActions
                     subscribeLabel={verificationCopy.subscribe}
@@ -201,7 +203,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
               {isSupplier ? copy.supplierReadyBody : copy.supplierUpgradeBody}
             </p>
             {isSupplier ? (
-              <div className="mt-6 grid gap-3 rounded-lg border border-gold-300/20 bg-gold-300/[0.08] p-4">
+              <div className="mt-5 grid gap-3 rounded-md border border-gold-300/20 bg-gold-300/[0.06] p-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <span className="text-sm text-muted-foreground">
                     {verificationCopy.currentStatus}
@@ -225,7 +227,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
             ) : (
               <form
                 action={startSupplierProfile}
-                className="mt-6 grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end"
+                className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end"
               >
                 <input
                   type="hidden"

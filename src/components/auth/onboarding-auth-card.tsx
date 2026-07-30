@@ -127,9 +127,9 @@ export function OnboardingAuthCard({
 
   return (
     <Card className="bg-white/[0.035]">
-      <CardContent className="p-6 sm:p-8">
+      <CardContent className="p-5 sm:p-6">
         <div className="grid gap-3">
-          <div className="relative flex items-start gap-3 rounded-lg border border-gold-300/[0.45] bg-gold-300/[0.1] p-4 text-sm text-white shadow-glow">
+          <div className="relative flex items-start gap-3 rounded-md border border-gold-300/30 bg-gold-300/[0.07] p-3.5 text-sm text-white">
             <UserRound
               className="mt-0.5 size-5 text-gold-100"
               aria-hidden="true"
@@ -146,7 +146,7 @@ export function OnboardingAuthCard({
           </div>
 
           {supplierIntent && (
-            <div className="flex items-start gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-4 text-sm text-white">
+            <div className="flex items-start gap-3 rounded-md border border-white/10 bg-white/[0.025] p-3.5 text-sm text-white">
               <Building2
                 className="mt-0.5 size-5 text-gold-100"
                 aria-hidden="true"
@@ -176,7 +176,7 @@ export function OnboardingAuthCard({
           </div>
         )}
 
-        <form action={signInWithGoogle} className="mt-8">
+        <form action={signInWithGoogle} className="mt-6">
           <input type="hidden" name="auth_mode" value={mode} />
           <input type="hidden" name="next" value={nextPath} />
           <input type="hidden" name="locale" value={locale} />
@@ -194,7 +194,7 @@ export function OnboardingAuthCard({
           </p>
         </form>
 
-        <div className="my-7 flex items-center gap-3 text-xs uppercase text-muted-foreground">
+        <div className="my-5 flex items-center gap-3 text-xs uppercase text-muted-foreground">
           <span className="h-px flex-1 bg-white/10" />
           {labels.orEmail}
           <span className="h-px flex-1 bg-white/10" />
@@ -202,12 +202,12 @@ export function OnboardingAuthCard({
 
         <form
           action={mode === "register" ? signUpWithEmail : signInWithEmail}
-          className="grid gap-5"
+          className="grid gap-4"
         >
           <input type="hidden" name="next" value={nextPath} />
           <input type="hidden" name="locale" value={locale} />
           {mode === "register" && (
-            <div className="grid gap-5">
+            <div className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="full_name">{labels.fullName}</Label>
                 <Input
@@ -271,7 +271,7 @@ export function OnboardingAuthCard({
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-muted-foreground">
+        <p className="mt-5 text-center text-sm text-muted-foreground">
           {mode === "register" ? labels.alreadyAccount : labels.newToTmp}{" "}
           <Link
             href={

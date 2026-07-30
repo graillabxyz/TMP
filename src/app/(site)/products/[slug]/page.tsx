@@ -120,7 +120,13 @@ export default async function ProductDetailPage({
           </Link>
         </Button>
 
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.05fr)_420px]">
+        <div className="mb-6 max-w-4xl">
+          <Badge>{t.products.productDetails}</Badge>
+          <h1 className="page-title">{product.title}</h1>
+          <p className="page-description max-w-3xl">{product.description}</p>
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_400px]">
           <div>
             <div className="relative aspect-[16/11] overflow-hidden rounded-lg border border-white/10 bg-charcoal-800 shadow-premium">
               <Image
@@ -135,16 +141,6 @@ export default async function ProductDetailPage({
               <Badge className="absolute left-5 top-5">
                 {product.category}
               </Badge>
-            </div>
-
-            <div className="mt-8">
-              <Badge>{t.products.productDetails}</Badge>
-              <h1 className="mt-5 text-4xl font-semibold text-white sm:text-5xl">
-                {product.title}
-              </h1>
-              <p className="mt-5 text-base leading-8 text-muted-foreground">
-                {product.description}
-              </p>
             </div>
           </div>
 

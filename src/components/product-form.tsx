@@ -55,12 +55,12 @@ export function ProductForm({
     : undefined;
 
   return (
-    <Card className="max-w-4xl bg-white/[0.035]">
+    <Card className="max-w-5xl bg-white/[0.035]">
       <CardHeader>
         <CardTitle>{labels.title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <form action={action} className="grid gap-5">
+        <form action={action} className="grid gap-4">
           <input type="hidden" name="locale" value={locale} />
           {product?.id && <input type="hidden" name="id" value={product.id} />}
 
@@ -108,7 +108,7 @@ export function ProductForm({
             />
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="grid gap-2">
               <Label htmlFor="moq">{labels.minimumOrderQuantity}</Label>
               <Input
@@ -132,7 +132,7 @@ export function ProductForm({
             </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-[1fr_1fr_140px]">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_140px]">
             <div className="grid gap-2">
               <Label htmlFor="price_min">{labels.priceMin}</Label>
               <Input
@@ -175,7 +175,7 @@ export function ProductForm({
           <div className="grid gap-2">
             <Label htmlFor="image">{labels.images}</Label>
             {imageValue && (
-              <div className="relative aspect-[16/9] w-full max-w-sm overflow-hidden rounded-lg border border-white/10 bg-charcoal-800">
+              <div className="relative aspect-[16/9] w-full max-w-sm overflow-hidden rounded-md border border-white/10 bg-charcoal-800">
                 <Image
                   src={imageValue}
                   alt=""
@@ -210,7 +210,7 @@ export function ProductForm({
             </Select>
           </div>
 
-          <div className="flex flex-col-reverse gap-3 border-t border-white/10 pt-5 sm:flex-row sm:justify-end">
+          <div className="flex flex-col-reverse gap-2 border-t border-white/10 pt-4 sm:flex-row sm:justify-end">
             <Button asChild variant="outline" className="sm:min-w-32">
               <Link href={cancelHref}>{labels.cancel}</Link>
             </Button>

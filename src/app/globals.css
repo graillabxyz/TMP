@@ -54,11 +54,23 @@
 
 @layer components {
   .section-shell {
-    @apply container py-16 sm:py-20 lg:py-24;
+    @apply container py-10 sm:py-12 lg:py-14;
   }
 
   .surface-panel {
-    @apply border border-white/10 bg-white/[0.035] shadow-premium backdrop-blur-xl;
+    @apply border border-white/[0.09] bg-white/[0.035] shadow-premium backdrop-blur-xl;
+  }
+
+  .page-intro {
+    @apply max-w-3xl;
+  }
+
+  .page-title {
+    @apply mt-4 text-3xl font-semibold leading-tight text-white sm:text-4xl;
+  }
+
+  .page-description {
+    @apply mt-3 max-w-2xl text-sm leading-6 text-muted-foreground;
   }
 
   .gold-divider {

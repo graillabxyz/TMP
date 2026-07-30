@@ -204,13 +204,13 @@ export async function DashboardShell({
           </nav>
         </div>
       </header>
-      <main className="container py-8 sm:py-10 lg:py-12">
-        <div className="mb-6 border-b border-white/10 pb-6">
+      <main className="container py-6 sm:py-8 lg:py-10">
+        <div className="mb-5 border-b border-white/10 pb-5">
           <p className="text-sm text-gold-200">{eyebrow}</p>
-          <h1 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">
+          <h1 className="mt-1.5 text-2xl font-semibold leading-tight text-white sm:text-3xl">
             {title}
           </h1>
-          <p className="mt-3 max-w-3xl text-sm leading-6 text-muted-foreground">
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
             {description}
           </p>
         </div>

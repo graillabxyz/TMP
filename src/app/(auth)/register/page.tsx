@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BadgeCheck } from "lucide-react";
+import { BadgeCheck, Check } from "lucide-react";
 
 import { OnboardingAuthCard } from "@/components/auth/onboarding-auth-card";
 import { Badge } from "@/components/ui/badge";
@@ -47,23 +47,23 @@ export default async function RegisterPage({
 
   return (
     <div className="w-full max-w-5xl">
-      <div className="grid gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
+      <div className="grid gap-7 lg:grid-cols-[.82fr_1.18fr] lg:items-center">
         <div>
           <Badge>
             <BadgeCheck className="mr-1 size-3" aria-hidden="true" />
             {t.auth.onboarding}
           </Badge>
-          <h1 className="mt-5 text-4xl font-semibold text-white sm:text-5xl">
+          <h1 className="mt-4 text-3xl font-semibold leading-tight text-white sm:text-4xl">
             {supplierIntent
               ? t.auth.supplierRegisterTitle
               : t.auth.registerTitle}
           </h1>
           {supplierIntent && (
-            <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">
+            <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
               {t.auth.supplierRegisterBody}
             </p>
           )}
-          <div className="mt-8 grid gap-3">
+          <div className="mt-6 grid gap-3">
             {(supplierIntent
               ? [
                   {
@@ -88,12 +88,19 @@ export default async function RegisterPage({
             ).map((item) => (
               <div
                 key={item.label}
-                className="rounded-lg border border-white/10 bg-white/[0.035] p-4"
+                className="flex items-start gap-3 border-b border-white/10 pb-3 last:border-0 last:pb-0"
               >
-                <p className="font-medium text-white">{item.label}</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {item.body}
-                </p>
+                <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-gold-300/15 text-gold-100">
+                  <Check className="size-3" aria-hidden="true" />
+                </span>
+                <span>
+                  <span className="block font-medium text-white">
+                    {item.label}
+                  </span>
+                  <span className="mt-1 block text-sm leading-6 text-muted-foreground">
+                    {item.body}
+                  </span>
+                </span>
               </div>
             ))}
           </div>
