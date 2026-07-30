@@ -193,6 +193,8 @@ export function OnboardingAuthCard({
                   id="full_name"
                   name="full_name"
                   required
+                  maxLength={100}
+                  autoComplete="name"
                   placeholder="Aylin Demir"
                 />
               </div>
@@ -208,6 +210,8 @@ export function OnboardingAuthCard({
               name="email"
               type="email"
               required
+              maxLength={254}
+              autoComplete="email"
               placeholder="you@company.com"
             />
           </div>
@@ -220,6 +224,10 @@ export function OnboardingAuthCard({
               type="password"
               required
               minLength={8}
+              maxLength={128}
+              autoComplete={
+                mode === "register" ? "new-password" : "current-password"
+              }
               placeholder="••••••••"
             />
           </div>

@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           id: string;
           email: string;
+          full_name: string | null;
           role: "buyer" | "supplier" | "admin";
           created_at: string;
           updated_at: string;
@@ -20,6 +21,7 @@ export type Database = {
         Insert: {
           id: string;
           email: string;
+          full_name?: string | null;
           role?: "buyer" | "supplier" | "admin";
           created_at?: string;
           updated_at?: string;
@@ -50,9 +52,7 @@ export type Database = {
           created_at?: string;
           updated_at?: string;
         };
-        Update: Partial<
-          Database["public"]["Tables"]["site_assets"]["Insert"]
-        >;
+        Update: Partial<Database["public"]["Tables"]["site_assets"]["Insert"]>;
         Relationships: [];
       };
       supplier_categories: {

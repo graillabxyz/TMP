@@ -5,6 +5,7 @@ export type AccountRole = "buyer" | "supplier" | "admin";
 export type CurrentProfile = {
   id: string;
   email: string;
+  fullName: string | null;
   role: AccountRole;
 } | null;
 
@@ -29,7 +30,7 @@ export async function getCurrentProfile(): Promise<CurrentProfile> {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, email, role")
+    .select("id, email, full_name, role")
     .eq("id", user.id)
     .maybeSingle();
 
@@ -39,13 +40,35 @@ export async function getCurrentProfile(): Promise<CurrentProfile> {
     return {
       id: user.id,
       email: user.email ?? "",
+      fullName:
+        typeof user.user_metadata.full_name === "string"
+          ? user.user_metadata.full_name
+          : null,
       role: "buyer",
     };
   }
 
-  return (data as CurrentProfile) ?? {
-    id: user.id,
-    email: user.email ?? "",
-    role: "buyer",
-  };
+  const profile = data as {
+    id: string;
+    email: string;
+    full_name: string | null;
+    role: AccountRole;
+  } | null;
+
+  return profile
+    ? {
+        id: profile.id,
+        email: profile.email,
+        fullName: profile.full_name,
+        role: profile.role,
+      }
+    : {
+        id: user.id,
+        email: user.email ?? "",
+        fullName:
+          typeof user.user_metadata.full_name === "string"
+            ? user.user_metadata.full_name
+            : null,
+        role: "buyer",
+      };
 }

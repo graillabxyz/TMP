@@ -49,7 +49,14 @@ export async function signUpWithEmail(formData: FormData) {
   const fullName = getString(formData, "full_name");
   const nextPath = getSafeNextPath(formData);
 
-  if (!email || !password || !fullName) {
+  if (
+    !email ||
+    email.length > 254 ||
+    password.length < 8 ||
+    password.length > 128 ||
+    !fullName ||
+    fullName.length > 100
+  ) {
     redirect(`/register?status=missing&next=${encodeURIComponent(nextPath)}`);
   }
 
