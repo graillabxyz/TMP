@@ -80,13 +80,13 @@ Status key:
 
 ## Loop 5: Supplier Upgrade
 
-26. `QUEUED` A signed-in buyer starts supplier access from Profile with a valid
+26. `BLOCKED` A signed-in buyer starts supplier access from Profile with a valid
     business name.
-27. `QUEUED` Missing, short, oversized, forged-return, anonymous, and repeated
+27. `FIXED` Missing, short, oversized, forged-return, anonymous, and repeated
     supplier-upgrade requests fail safely or remain idempotent.
-28. `QUEUED` The upgraded account immediately receives supplier tools without
+28. `BLOCKED` The upgraded account immediately receives supplier tools without
     receiving a verified badge.
-29. `QUEUED` Public and dashboard calls to become a supplier route existing
+29. `PASS` Public and dashboard calls to become a supplier route existing
     accounts to login/Profile rather than creating a second account type.
 
 ## Loop 6: Supplier Listings And Media
@@ -272,3 +272,30 @@ Each completed loop will add:
    reads/mutations end to end. The Supabase MCP registration exists, but live
    SQL/policy tools are not callable in this running task, so checked-in
    migrations cannot substitute for verifying applied production policy state.
+
+### Loop 5
+
+1. **Flows and environment:** Reviewed and exercised flows 26-29 through public
+   EN/FR/TR entry points, anonymous denial paths, server validation, safe return
+   handling, profile role RLS, and the `ensure_supplier_profile` RPC.
+2. **Defects:** `High` - a transient supplier RPC failure after role promotion
+   could leave a buyer marked `supplier` without a supplier record. `Medium` -
+   company names accepted control characters. `Medium` - anonymous action and
+   public upgrade links could lose locale. `Medium` - verification workspace
+   copy still said payment unlocked supplier tools.
+3. **Fix:** Upgrade now checks the existing profile, verifies whether an
+   ambiguous RPC response actually created the owned supplier, and rolls a
+   failed new buyer upgrade back safely. Company validation rejects control
+   characters while allowing international names; action/entry locale and
+   one-account copy are consistent. Commits `5b0db58`, `a907c27`, and
+   `4b2cbcf`.
+4. **Evidence:** FR supplier entry points now target
+   `/fr/register?next=%2Ffr%2Fdashboard%2Fprofile`. The RPC requires
+   `auth.uid()`, checks supplier role, searches by `owner_id`, and returns the
+   existing record on repeats. Database constraints keep company names at
+   2-120 characters and default verification to `none`/inactive. Thirteen
+   tests, typecheck, and lint passed.
+5. **Remaining:** Creating a real supplier would modify production user data,
+   so the successful buyer-to-supplier transition and immediate supplier UI
+   remain blocked pending a designated test account. Live applied RPC/RLS state
+   also remains unverified without callable Supabase project tools.
