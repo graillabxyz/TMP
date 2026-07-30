@@ -117,13 +117,13 @@ Status key:
 
 ## Loop 8: Verification And Billing
 
-40. `QUEUED` Upload required private verification documents, preserve valid
+40. `BLOCKED` Upload required private verification documents, preserve valid
     existing files, replace owner files safely, and enter pending review.
-41. `QUEUED` Keep listing publication independent from verification and show a
+41. `FIXED` Keep listing publication independent from verification and show a
     badge only when verification and subscription state permit it.
-42. `QUEUED` Start same-origin authenticated Stripe Checkout, return safely,
+42. `BLOCKED` Start same-origin authenticated Stripe Checkout, return safely,
     and open the correct customer portal.
-43. `QUEUED` Reject unsigned/invalid webhooks and synchronize checkout,
+43. `BLOCKED` Reject unsigned/invalid webhooks and synchronize checkout,
     renewal, failed payment, cancellation, duplicate, and out-of-order events
     without cross-supplier mutation.
 
@@ -363,3 +363,38 @@ Each completed loop will add:
    Live delivery, rate-limit behavior, signed-link expiry, and cross-account
    denial require designated accounts, inbox access, applied migration
    verification, and callable Supabase project tools.
+
+### Loop 8
+
+1. **Flows and environment:** Traced flows 40-43 through verification document
+   upload/replacement, supplier review state, public badge normalization,
+   Checkout and Portal creation, webhook signature verification, and database
+   subscription synchronization. Probed same-origin and hostile-origin billing
+   requests against the local server.
+2. **Defects:** `High` - public badges trusted verification status or a legacy
+   boolean without requiring the paid membership. `High` - the Stripe sync RPC
+   accepted a webhook secret argument and was executable by `anon` and
+   `authenticated`. `High` - subscription events could arrive out of order and
+   roll current billing state backward. `Medium` - active/past-due members could
+   open another Checkout. `Medium` - document and billing returns lost locale.
+3. **Fix:** Badge eligibility now requires verified review plus active,
+   unexpired membership. Webhook writes use a server-only service-role client;
+   the replacement RPC is service-role-only, records event identity/time, and
+   ignores duplicate/older events. Existing verified showcase suppliers are
+   grandfathered by migration. Existing memberships are guarded from another
+   Checkout, and billing/document paths preserve locale. Commit `1a1010d`.
+4. **Evidence:** A hostile-origin Checkout POST returned `403`; a same-origin TR
+   anonymous POST returned the localized login URL and exact verification
+   return path. Signature tests accept a valid current HMAC and reject stale,
+   malformed, and payload-mismatched signatures. Badge tests reject inactive,
+   pending, expired, and malformed-expiry states. Document code validates magic
+   bytes/10 MB limits, stores private owner paths, cleans partial uploads, and
+   deletes replaced paths only after owner validation. Twenty tests, typecheck,
+   and lint passed.
+5. **Remaining:** No verification files or Stripe objects were created. Apply
+   migration `20260730012000`, configure the server-only service-role key,
+   complete test-mode Checkout/Portal, inspect webhook rows for renewal,
+   past-due, cancellation, duplicate, and out-of-order events, and verify
+   private document denial with two accounts. The 1 EUR amount remains the
+   owner-approved test price and must not charge public users as production
+   pricing.
