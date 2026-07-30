@@ -52,6 +52,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
   const status = resolvedSearchParams?.status;
   const productSlug = resolvedSearchParams?.product;
   const supplierSlug = resolvedSearchParams?.supplier;
+  const requestToken = crypto.randomUUID();
   const prefillProduct = productSlug
     ? await getProductBySlug(productSlug, locale)
     : null;
@@ -138,6 +139,12 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
               )}
 
               <form action={submitRfq} className="grid gap-5">
+                <input type="hidden" name="locale" value={locale} />
+                <input
+                  type="hidden"
+                  name="request_token"
+                  value={requestToken}
+                />
                 <fieldset
                   disabled={!profile}
                   className="contents disabled:opacity-60"
@@ -214,25 +221,12 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                   </div>
                   <input
                     type="hidden"
-                    name="inquiry_type"
-                    value={prefillProduct ? "product" : "general"}
-                  />
-                  <input
-                    type="hidden"
-                    name="product_id"
-                    value={prefillProduct?.id ?? ""}
-                  />
-                  <input
-                    type="hidden"
                     name="supplier_slug"
                     value={
-                      prefillProduct?.supplierSlug ?? prefillSupplier?.slug ?? ""
+                      prefillProduct?.supplierSlug ??
+                      prefillSupplier?.slug ??
+                      ""
                     }
-                  />
-                  <input
-                    type="hidden"
-                    name="supplier_id"
-                    value={prefillProduct?.supplierId ?? ""}
                   />
                   <input
                     type="hidden"
@@ -266,6 +260,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                         id="category"
                         name="category_slug"
                         defaultValue={prefillProduct?.categorySlug ?? ""}
+                        required
                       >
                         <option value="" disabled>
                           {t.rfq.selectCategory}
@@ -283,6 +278,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                         id="quantity"
                         name="quantity"
                         required
+                        maxLength={80}
                         placeholder={t.rfq.quantityPlaceholder}
                       />
                     </div>
@@ -314,6 +310,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                       <Input
                         id="timeline"
                         name="target_timeline"
+                        maxLength={120}
                         placeholder={t.rfq.timelinePlaceholder}
                       />
                     </div>
@@ -324,6 +321,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                     <Textarea
                       id="notes"
                       name="notes"
+                      maxLength={3000}
                       placeholder={t.rfq.notesPlaceholder}
                     />
                   </div>

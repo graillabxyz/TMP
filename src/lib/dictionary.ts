@@ -264,6 +264,8 @@ const dictionaries = {
           "Please add a product request, quantity, and destination country.",
         specific:
           "Please make the product request more specific with material, spec, certification, or target quantity.",
+        context:
+          "That product, supplier, or category is no longer available. Please choose a current marketplace option.",
         config: "Supabase is not configured for this environment yet.",
         notification:
           "The RFQ was saved, but we could not send the email notification. Please contact TMP support.",
@@ -1010,6 +1012,8 @@ const dictionaries = {
           "Veuillez ajouter une demande produit, une quantité et un pays de destination.",
         specific:
           "Veuillez preciser la demande produit avec matiere, specification, certification ou quantite cible.",
+        context:
+          "Ce produit, fournisseur ou cette catégorie n’est plus disponible. Veuillez choisir une option actuelle de la marketplace.",
         config: "Supabase n’est pas encore configuré pour cet environnement.",
         notification:
           "La demande a été enregistrée, mais la notification email n’a pas pu être envoyée. Veuillez contacter le support TMP.",
@@ -1771,6 +1775,8 @@ const turkishDictionary = {
       missing: "Lütfen ürün talebi, miktar ve varış ülkesini ekleyin.",
       specific:
         "Lütfen ürün talebini malzeme, teknik özellik, sertifika veya hedef miktarla daha belirgin hale getirin.",
+      context:
+        "Bu ürün, tedarikçi veya kategori artık kullanılamıyor. Lütfen güncel bir pazar yeri seçeneği belirleyin.",
       config: "Supabase bu ortam için henüz yapılandırılmadı.",
       notification:
         "Teklif talebi kaydedildi, ancak e-posta bildirimi gönderilemedi. Lütfen TMP destek ekibiyle iletişime geçin.",

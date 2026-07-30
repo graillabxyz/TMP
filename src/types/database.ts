@@ -407,6 +407,7 @@ export type Database = {
       rfqs: {
         Row: {
           id: string;
+          request_token: string;
           submitter_id: string | null;
           requester_name: string;
           requester_email: string;
@@ -432,6 +433,7 @@ export type Database = {
         };
         Insert: {
           id?: string;
+          request_token: string;
           submitter_id?: string | null;
           requester_name: string;
           requester_email: string;
@@ -461,7 +463,7 @@ export type Database = {
             foreignKeyName: "rfqs_category_slug_fkey";
             columns: ["category_slug"];
             isOneToOne: false;
-            referencedRelation: "supplier_categories";
+            referencedRelation: "categories";
             referencedColumns: ["slug"];
           },
           {
