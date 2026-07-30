@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         mode: "supplier-required",
         url: `${origin}/dashboard/settings/verification?status=supplier-missing`,
-        message: error?.message ?? "Supplier profile is required.",
+        message: "Supplier profile is required.",
       });
     }
 
@@ -76,16 +76,16 @@ export async function POST(request: NextRequest) {
       sessionId: session.id,
     });
   } catch (error) {
-    console.error("Unable to create Stripe checkout session", error);
+    console.error(
+      "Unable to create Stripe checkout session",
+      error instanceof Error ? error.message : error,
+    );
 
     return NextResponse.json(
       {
         mode: "error",
         url: `${origin}/dashboard/settings/verification?checkout=error`,
-        message:
-          error instanceof Error
-            ? error.message
-            : "Unable to create checkout session.",
+        message: "Unable to create checkout session.",
       },
       { status: 500 },
     );

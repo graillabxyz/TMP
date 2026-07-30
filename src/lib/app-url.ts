@@ -31,8 +31,7 @@ export function isAllowedAppOrigin(
   requestOrigin: string | null,
   fallback?: string | null,
 ) {
-  return (
-    !requestOrigin ||
-    cleanOrigin(requestOrigin) === getAppOrigin(fallback)
+  return Boolean(
+    requestOrigin && cleanOrigin(requestOrigin) === getAppOrigin(fallback),
   );
 }

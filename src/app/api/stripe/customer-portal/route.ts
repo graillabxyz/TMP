@@ -57,7 +57,6 @@ export async function POST(request: NextRequest) {
         mode: "customer-required",
         url: `${origin}/dashboard/settings/verification?portal=missing-customer`,
         message:
-          error?.message ??
           "Start a verification subscription before opening the customer portal.",
       });
     }
@@ -73,16 +72,16 @@ export async function POST(request: NextRequest) {
       sessionId: session.id,
     });
   } catch (error) {
-    console.error("Unable to create Stripe customer portal session", error);
+    console.error(
+      "Unable to create Stripe customer portal session",
+      error instanceof Error ? error.message : error,
+    );
 
     return NextResponse.json(
       {
         mode: "error",
         url: `${origin}/dashboard/settings/verification?portal=error`,
-        message:
-          error instanceof Error
-            ? error.message
-            : "Unable to create portal session.",
+        message: "Unable to create portal session.",
       },
       { status: 500 },
     );
