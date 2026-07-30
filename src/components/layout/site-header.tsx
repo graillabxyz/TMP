@@ -62,7 +62,7 @@ export async function SiteHeader() {
         <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           <LanguageToggle locale={locale} label={t.common.language} />
           <ContactDropdown labels={t.contact} />
-          {profile ? (
+          {profile && (
             <ProfileDropdown
               email={profile.email}
               locale={locale}
@@ -80,12 +80,6 @@ export async function SiteHeader() {
                 },
               ]}
             />
-          ) : (
-            <Button asChild variant="ghost" className="hidden sm:inline-flex">
-              <Link href={getLocalizedPath(locale, "/login")}>
-                {t.nav.login}
-              </Link>
-            </Button>
           )}
           {!profile && (
             <Button
@@ -95,7 +89,6 @@ export async function SiteHeader() {
               <Link href={getLocalizedPath(locale, "/register")}>
                 <span className="hidden sm:inline">{t.nav.join}</span>
                 <span className="sm:hidden">{t.nav.joinShort}</span>
-                <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
             </Button>
           )}

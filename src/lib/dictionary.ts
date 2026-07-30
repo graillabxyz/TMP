@@ -9,8 +9,8 @@ const dictionaries = {
       dashboard: "Dashboard",
       login: "Login",
       logout: "Sign out",
-      join: "Join TMP",
-      joinShort: "Join",
+      join: "Join / Login",
+      joinShort: "Join/Login",
       backHome: "Back home",
     },
     contact: {
@@ -760,8 +760,8 @@ const dictionaries = {
       dashboard: "Tableau",
       login: "Connexion",
       logout: "Déconnexion",
-      join: "Rejoindre TMP",
-      joinShort: "Rejoindre",
+      join: "Inscription / Connexion",
+      joinShort: "Compte",
       backHome: "Retour",
     },
     contact: {
@@ -1531,8 +1531,8 @@ const turkishDictionary = {
     dashboard: "Panel",
     login: "Giriş",
     logout: "Çıkış yap",
-    join: "TMP'ye Katıl",
-    joinShort: "Katıl",
+    join: "Katıl / Giriş",
+    joinShort: "Katıl/Giriş",
     backHome: "Ana sayfaya dön",
   },
   contact: {

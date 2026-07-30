@@ -35,7 +35,10 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     params.intent === "supplier" || params.role === "supplier";
   const nextPath = getSafeInternalPath(
     params.next,
-    supplierIntent ? "/dashboard/profile" : "/dashboard",
+    getLocalizedPath(
+      locale,
+      supplierIntent ? "/dashboard/profile" : "/dashboard",
+    ),
   );
 
   return (
