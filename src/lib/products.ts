@@ -1,6 +1,7 @@
 import { defaultLocale, localizedValue, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionary";
 import { repairKnownSeedImages } from "@/lib/media-fallbacks";
+import { hasActiveVerifiedBadge } from "@/lib/supplier-verification";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import {
@@ -39,6 +40,12 @@ type PublicProductRow = {
     slug: string;
     verified: boolean;
     verification_status: "none" | "pending" | "verified" | "rejected";
+    verification_subscription_status:
+      | "inactive"
+      | "active"
+      | "past_due"
+      | "canceled";
+    verification_expires_at: string | null;
   } | null;
 };
 
@@ -104,9 +111,13 @@ function normalizeProduct(
       : t.common.supplier,
     supplierId: product.supplier?.id ?? null,
     supplierSlug: getSupplierSlugOverride(product.supplier?.slug),
-    supplierVerified:
-      product.supplier?.verified ||
-      product.supplier?.verification_status === "verified",
+    supplierVerified: product.supplier
+      ? hasActiveVerifiedBadge({
+          verificationStatus: product.supplier.verification_status,
+          subscriptionStatus: product.supplier.verification_subscription_status,
+          expiresAt: product.supplier.verification_expires_at,
+        })
+      : false,
     priceMin: product.price_min,
     priceMax: product.price_max,
     currency: product.currency,
@@ -175,7 +186,7 @@ export async function getProducts({
         status,
         created_at,
         category:categories(name, name_fr, slug),
-        supplier:suppliers(id, company_name, company_name_fr, slug, verified, verification_status)
+        supplier:suppliers(id, company_name, company_name_fr, slug, verified, verification_status, verification_subscription_status, verification_expires_at)
       `,
     )
     .eq("status", "published")

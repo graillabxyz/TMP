@@ -1,11 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import {
-  retrieveStripeSubscription,
-  verifyStripeWebhookSignature,
-} from "@/lib/stripe/api";
+import { retrieveStripeSubscription } from "@/lib/stripe/api";
 import { getStripeConfig } from "@/lib/stripe/config";
-import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
+import { verifyStripeWebhookSignature } from "@/lib/stripe/webhook-signature";
+import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 
 type StripeEventObject = {
   id?: string;
@@ -23,12 +21,13 @@ type StripeSyncRpcClient = {
   rpc: (
     functionName: "sync_supplier_stripe_subscription",
     args: {
-      p_webhook_secret: string;
       p_supplier_id: string;
       p_stripe_customer_id: string;
       p_stripe_subscription_id: string;
       p_stripe_status: string;
       p_current_period_end: string | null;
+      p_event_id: string;
+      p_event_created_at: string;
     },
   ) => Promise<{ error: { message: string } | null }>;
 };
@@ -42,26 +41,34 @@ function getPeriodEnd(value: number | undefined) {
 }
 
 async function syncSubscription(input: {
-  webhookSecret: string;
+  eventCreatedAt?: number;
+  eventId?: string;
   supplierId?: string;
   customerId?: string;
   subscriptionId?: string;
   status?: string;
   currentPeriodEnd?: number;
 }) {
-  if (!input.supplierId || !input.subscriptionId || !input.status) {
+  if (
+    !input.eventCreatedAt ||
+    !input.eventId ||
+    !input.supplierId ||
+    !input.subscriptionId ||
+    !input.status
+  ) {
     throw new Error("Stripe subscription event is missing supplier metadata.");
   }
 
   const supabase =
-    (await createServerSupabaseClient()) as unknown as StripeSyncRpcClient;
+    createAdminSupabaseClient() as unknown as StripeSyncRpcClient;
   const { error } = await supabase.rpc("sync_supplier_stripe_subscription", {
-    p_webhook_secret: input.webhookSecret,
     p_supplier_id: input.supplierId,
     p_stripe_customer_id: input.customerId ?? "",
     p_stripe_subscription_id: input.subscriptionId,
     p_stripe_status: input.status,
     p_current_period_end: getPeriodEnd(input.currentPeriodEnd),
+    p_event_id: input.eventId,
+    p_event_created_at: new Date(input.eventCreatedAt * 1000).toISOString(),
   });
 
   if (error) {
@@ -111,6 +118,8 @@ export async function POST(request: NextRequest) {
   }
 
   let event: {
+    id: string;
+    created: number;
     type: string;
     data: {
       object: StripeEventObject;
@@ -136,7 +145,8 @@ export async function POST(request: NextRequest) {
         );
 
         await syncSubscription({
-          webhookSecret: config.webhookSecret,
+          eventCreatedAt: event.created,
+          eventId: event.id,
           supplierId:
             session.metadata?.supplier_id ?? subscription.metadata?.supplier_id,
           customerId: getStripeId(session.customer ?? subscription.customer),
@@ -154,7 +164,8 @@ export async function POST(request: NextRequest) {
       const subscription = event.data.object;
 
       await syncSubscription({
-        webhookSecret: config.webhookSecret,
+        eventCreatedAt: event.created,
+        eventId: event.id,
         supplierId: subscription.metadata?.supplier_id,
         customerId: getStripeId(subscription.customer),
         subscriptionId: subscription.id,

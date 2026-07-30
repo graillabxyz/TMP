@@ -207,6 +207,8 @@ export type Database = {
             | "canceled";
           stripe_customer_id: string | null;
           stripe_subscription_id: string | null;
+          stripe_last_event_id: string | null;
+          stripe_last_event_created_at: string | null;
           verification_started_at: string | null;
           verification_expires_at: string | null;
           logo_url: string | null;
@@ -248,6 +250,8 @@ export type Database = {
             | "canceled";
           stripe_customer_id?: string | null;
           stripe_subscription_id?: string | null;
+          stripe_last_event_id?: string | null;
+          stripe_last_event_created_at?: string | null;
           verification_started_at?: string | null;
           verification_expires_at?: string | null;
           logo_url?: string | null;

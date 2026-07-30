@@ -28,6 +28,7 @@ Copy `.env.example` to `.env.local` when Supabase credentials are ready.
 NEXT_PUBLIC_SITE_URL=
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
 STRIPE_VERIFICATION_PRICE_ID=
@@ -42,9 +43,10 @@ workspace data, and RFQ inserts from Supabase when environment variables are
 present. Marketplace records do not silently fall back to a second mock catalog;
 an unavailable database returns an empty result and logs the query failure.
 
-The app intentionally uses the publishable key only. Do not add service-role or
-admin keys to the frontend project; database access should be controlled with
-Supabase Row Level Security policies.
+Browser and user-session access uses the publishable key with Row Level
+Security. The Stripe webhook alone uses `SUPABASE_SERVICE_ROLE_KEY` from the
+server runtime to call a service-role-only synchronization RPC. Never prefix
+that key with `NEXT_PUBLIC_`, expose it to client code, or commit it.
 
 ## Database
 
@@ -89,6 +91,11 @@ Apply the SQL migrations in order from `supabase/migrations/`.
   account for every RFQ.
 - `20260730010000_rfq_rate_limit.sql` enforces per-account hourly and daily RFQ
   limits inside the database.
+- `20260730011000_rfq_context_and_idempotency.sql` validates canonical RFQ
+  product/supplier context and prevents duplicate retries.
+- `20260730012000_secure_stripe_badge_sync.sql` restricts Stripe synchronization
+  to the service role, orders webhook events, and requires active membership
+  for a verified badge.
 
 Current RLS stance:
 
@@ -159,23 +166,15 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
 STRIPE_VERIFICATION_PRICE_ID=
 STRIPE_WEBHOOK_SECRET=
+SUPABASE_SERVICE_ROLE_KEY=
 ```
 
 `STRIPE_VERIFICATION_PRICE_ID` should be the recurring monthly Price ID for the
 Verified Supplier subscription. The current `1 EUR` amount is test pricing only.
-The webhook route verifies Stripe signatures and syncs subscription status back
-to Supabase through a narrow security-definer RPC. No Supabase service-role key
-is required.
-
-After applying the Stripe sync migration, set the same webhook secret in
-Supabase before testing live webhooks:
-
-```sql
-insert into public.app_settings (key, value)
-values ('stripe_webhook_secret', 'whsec_replace_with_your_real_webhook_secret')
-on conflict (key)
-do update set value = excluded.value, updated_at = now();
-```
+The webhook route verifies Stripe signatures, uses the server-only Supabase
+service role, and calls a synchronization RPC that is not executable by
+`anon` or `authenticated`. Duplicate and older Stripe events do not roll
+subscription state backward.
 
 ## Google OAuth
 

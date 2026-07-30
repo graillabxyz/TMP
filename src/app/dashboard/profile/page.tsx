@@ -29,6 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t.profileSettings.metadataTitle,
     description: t.profileSettings.metadataDescription,
     path: "/dashboard/profile",
+    locale,
   });
 }
 
@@ -166,6 +167,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                     openingLabel={verificationCopy.opening}
                     canManageSubscription={Boolean(supplier.stripeCustomerId)}
                     errorLabel={verificationCopy.billingActionError}
+                    locale={locale}
                   />
                 ) : (
                   <Button disabled variant="outline">

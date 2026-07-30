@@ -40,6 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t.verificationSettings.metadataTitle,
     description: t.verificationSettings.metadataDescription,
     path: "/dashboard/settings/verification",
+    locale,
   });
 }
 
@@ -95,17 +96,19 @@ export default async function VerificationSettingsPage({
                 ? copy.checkoutPlaceholder
                 : params.checkout === "success"
                   ? copy.checkoutSuccess
-                  : params.checkout === "cancelled"
-                    ? copy.checkoutCancelled
-                    : params.checkout === "error"
-                      ? copy.checkoutError
-                      : params.portal === "placeholder"
-                        ? copy.portalPlaceholder
-                        : params.portal === "missing-customer"
-                          ? copy.portalMissingCustomer
-                          : params.portal === "error"
-                            ? copy.portalError
-                            : "";
+                  : params.checkout === "existing"
+                    ? copy.checkoutExisting
+                    : params.checkout === "cancelled"
+                      ? copy.checkoutCancelled
+                      : params.checkout === "error"
+                        ? copy.checkoutError
+                        : params.portal === "placeholder"
+                          ? copy.portalPlaceholder
+                          : params.portal === "missing-customer"
+                            ? copy.portalMissingCustomer
+                            : params.portal === "error"
+                              ? copy.portalError
+                              : "";
 
   return (
     <DashboardShell
@@ -246,6 +249,7 @@ export default async function VerificationSettingsPage({
                       action={submitVerificationDocuments}
                       className="grid gap-5"
                     >
+                      <input type="hidden" name="locale" value={locale} />
                       <div className="grid gap-5 md:grid-cols-2">
                         <div className="grid gap-2">
                           <Label htmlFor="business_license">
@@ -335,6 +339,7 @@ export default async function VerificationSettingsPage({
                       openingLabel={copy.opening}
                       canManageSubscription={Boolean(supplier.stripeCustomerId)}
                       errorLabel={copy.billingActionError}
+                      locale={locale}
                     />
                     <div className="mt-5 rounded-lg border border-white/10 bg-charcoal-800 p-4 text-sm leading-6 text-muted-foreground">
                       {copy.subscriptionStatus}:{" "}

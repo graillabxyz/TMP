@@ -269,17 +269,30 @@ export async function startSupplierProfile(formData: FormData) {
 }
 
 export async function submitVerificationDocuments(formData: FormData) {
+  const locale = getFormLocale(formData);
+  const verificationPath = getLocalizedPath(
+    locale,
+    "/dashboard/settings/verification",
+  );
   const { supabase, supplierId, userId, verificationStatus } =
     await getSupplierId();
 
-  if (!supplierId || !userId) {
-    redirect("/dashboard/settings/verification?status=supplier-missing");
+  if (!userId) {
+    redirect(
+      `${getLocalizedPath(locale, "/login")}?status=auth-required&next=${encodeURIComponent(
+        verificationPath,
+      )}`,
+    );
+  }
+
+  if (!supplierId) {
+    redirect(`${verificationPath}?status=supplier-missing`);
   }
 
   const notes = getString(formData, "notes");
 
   if (notes.length > 3000) {
-    redirect("/dashboard/settings/verification?status=document");
+    redirect(`${verificationPath}?status=document`);
   }
 
   const { data: existingData, error: existingError } = await supabase
@@ -300,7 +313,7 @@ export async function submitVerificationDocuments(formData: FormData) {
       "Unable to load existing verification documents",
       existingError.message,
     );
-    redirect("/dashboard/settings/verification?status=error");
+    redirect(`${verificationPath}?status=error`);
   }
 
   const businessLicenseFile = getFile(formData, "business_license");
@@ -318,7 +331,7 @@ export async function submitVerificationDocuments(formData: FormData) {
     : null;
 
   if (businessLicenseFile && !businessLicenseUpload) {
-    redirect("/dashboard/settings/verification?status=document");
+    redirect(`${verificationPath}?status=document`);
   }
 
   if (businessLicenseUpload) {
@@ -336,7 +349,7 @@ export async function submitVerificationDocuments(formData: FormData) {
 
   if (companyRegistrationFile && !companyRegistrationUpload) {
     await removeVerificationFiles(supabase, uploadedPaths);
-    redirect("/dashboard/settings/verification?status=document");
+    redirect(`${verificationPath}?status=document`);
   }
 
   if (companyRegistrationUpload) {
@@ -354,7 +367,7 @@ export async function submitVerificationDocuments(formData: FormData) {
 
   if (certificationsFile && !certificationsUpload) {
     await removeVerificationFiles(supabase, uploadedPaths);
-    redirect("/dashboard/settings/verification?status=document");
+    redirect(`${verificationPath}?status=document`);
   }
 
   if (certificationsUpload) {
@@ -370,7 +383,7 @@ export async function submitVerificationDocuments(formData: FormData) {
 
   if (!businessLicensePath || !companyRegistrationPath) {
     await removeVerificationFiles(supabase, uploadedPaths);
-    redirect("/dashboard/settings/verification?status=document");
+    redirect(`${verificationPath}?status=document`);
   }
 
   const documentMutations = supabase.from(
@@ -394,7 +407,7 @@ export async function submitVerificationDocuments(formData: FormData) {
       "Unable to submit verification documents",
       documentError.message,
     );
-    redirect("/dashboard/settings/verification?status=error");
+    redirect(`${verificationPath}?status=error`);
   }
 
   const replacedPaths = [
@@ -427,9 +440,9 @@ export async function submitVerificationDocuments(formData: FormData) {
         "Unable to mark verification pending",
         supplierError.message,
       );
-      redirect("/dashboard/settings/verification?status=error");
+      redirect(`${verificationPath}?status=error`);
     }
   }
 
-  redirect("/dashboard/settings/verification?status=submitted");
+  redirect(`${verificationPath}?status=submitted`);
 }

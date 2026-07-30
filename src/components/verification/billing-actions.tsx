@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CreditCard, ExternalLink } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import type { Locale } from "@/lib/i18n";
 
 type BillingActionsProps = {
   subscribeLabel: string;
@@ -12,10 +13,11 @@ type BillingActionsProps = {
   openingLabel: string;
   canManageSubscription: boolean;
   errorLabel: string;
+  locale: Locale;
 };
 
-async function postAndRedirect(path: string) {
-  const response = await fetch(path, { method: "POST" });
+async function postAndRedirect(path: string, locale: Locale) {
+  const response = await fetch(`${path}?locale=${locale}`, { method: "POST" });
   const payload = (await response.json()) as { message?: string; url?: string };
 
   if (!response.ok) {
@@ -38,6 +40,7 @@ export function BillingActions({
   openingLabel,
   canManageSubscription,
   errorLabel,
+  locale,
 }: BillingActionsProps) {
   const [loading, setLoading] = useState<"checkout" | "portal" | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -47,7 +50,7 @@ export function BillingActions({
     setLoading(nextLoading);
 
     try {
-      await postAndRedirect(path);
+      await postAndRedirect(path, locale);
     } catch {
       setError(errorLabel);
       setLoading(null);

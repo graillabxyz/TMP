@@ -602,6 +602,8 @@ const dictionaries = {
         "Checkout placeholder opened. Stripe is ready to connect when credentials are added.",
       checkoutSuccess:
         "Checkout completed. Stripe will confirm the subscription by webhook.",
+      checkoutExisting:
+        "A verification membership already exists. Use Manage subscription to review billing.",
       checkoutCancelled: "Checkout cancelled. No subscription was started.",
       checkoutError:
         "Stripe checkout could not be created. Check the subscription environment variables.",
@@ -1362,6 +1364,8 @@ const dictionaries = {
         "Placeholder Checkout ouvert. Stripe sera connecté dès que les identifiants seront ajoutés.",
       checkoutSuccess:
         "Checkout terminé. Stripe confirmera l’abonnement via webhook.",
+      checkoutExisting:
+        "Un abonnement de vérification existe déjà. Utilisez Gérer l’abonnement pour consulter la facturation.",
       checkoutCancelled: "Checkout annulé. Aucun abonnement n’a été lancé.",
       checkoutError:
         "Impossible de créer le checkout Stripe. Vérifiez les variables d’environnement.",
@@ -2111,6 +2115,8 @@ const turkishDictionary = {
       "Checkout yer tutucusu açıldı. Kimlik bilgileri eklendiğinde Stripe bağlanmaya hazır.",
     checkoutSuccess:
       "Checkout tamamlandı. Stripe aboneliği webhook ile onaylayacak.",
+    checkoutExisting:
+      "Bir doğrulama üyeliği zaten mevcut. Faturalandırmayı incelemek için Aboneliği yönet seçeneğini kullanın.",
     checkoutCancelled: "Checkout iptal edildi. Abonelik başlatılmadı.",
     checkoutError:
       "Stripe checkout oluşturulamadı. Abonelik ortam değişkenlerini kontrol edin.",

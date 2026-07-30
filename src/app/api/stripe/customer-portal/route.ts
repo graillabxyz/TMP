@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { getAppOrigin, isAllowedAppOrigin } from "@/lib/app-url";
+import { getLocalizedPath, isLocale } from "@/lib/i18n";
 import { createBillingPortalSession } from "@/lib/stripe/api";
 import { isStripeServerConfigured } from "@/lib/stripe/config";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
@@ -13,6 +14,12 @@ type PortalSupplierRow = {
 
 export async function POST(request: NextRequest) {
   const origin = getAppOrigin(request.nextUrl.origin);
+  const requestedLocale = request.nextUrl.searchParams.get("locale") ?? "";
+  const locale = isLocale(requestedLocale) ? requestedLocale : "en";
+  const verificationPath = getLocalizedPath(
+    locale,
+    "/dashboard/settings/verification",
+  );
 
   if (
     !isAllowedAppOrigin(request.headers.get("origin"), request.nextUrl.origin)
@@ -21,15 +28,6 @@ export async function POST(request: NextRequest) {
       { error: "Invalid request origin." },
       { status: 403 },
     );
-  }
-
-  if (!isStripeServerConfigured()) {
-    return NextResponse.json({
-      mode: "placeholder",
-      url: `${origin}/dashboard/settings/verification?portal=placeholder`,
-      message:
-        "Stripe customer portal is ready to connect once STRIPE_SECRET_KEY and STRIPE_VERIFICATION_PRICE_ID are configured.",
-    });
   }
 
   try {
@@ -41,7 +39,9 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({
         mode: "auth-required",
-        url: `${origin}/login?next=/dashboard/profile`,
+        url: `${origin}${getLocalizedPath(locale, "/login")}?status=auth-required&next=${encodeURIComponent(
+          verificationPath,
+        )}`,
       });
     }
 
@@ -52,10 +52,28 @@ export async function POST(request: NextRequest) {
       .maybeSingle();
     const supplier = supplierData as unknown as PortalSupplierRow | null;
 
-    if (error || !supplier?.stripe_customer_id) {
+    if (error || !supplier) {
       return NextResponse.json({
         mode: "customer-required",
-        url: `${origin}/dashboard/settings/verification?portal=missing-customer`,
+        url: `${origin}${verificationPath}?portal=missing-customer`,
+        message:
+          "Start a verification subscription before opening the customer portal.",
+      });
+    }
+
+    if (!isStripeServerConfigured()) {
+      return NextResponse.json({
+        mode: "placeholder",
+        url: `${origin}${verificationPath}?portal=placeholder`,
+        message:
+          "Stripe customer portal is ready to connect once STRIPE_SECRET_KEY and STRIPE_VERIFICATION_PRICE_ID are configured.",
+      });
+    }
+
+    if (!supplier.stripe_customer_id) {
+      return NextResponse.json({
+        mode: "customer-required",
+        url: `${origin}${verificationPath}?portal=missing-customer`,
         message:
           "Start a verification subscription before opening the customer portal.",
       });
@@ -63,6 +81,7 @@ export async function POST(request: NextRequest) {
 
     const session = await createBillingPortalSession({
       origin,
+      returnPath: verificationPath,
       customerId: supplier.stripe_customer_id,
     });
 
@@ -80,7 +99,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         mode: "error",
-        url: `${origin}/dashboard/settings/verification?portal=error`,
+        url: `${origin}${verificationPath}?portal=error`,
         message: "Unable to create portal session.",
       },
       { status: 500 },

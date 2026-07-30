@@ -6,6 +6,7 @@ import {
   defaultLocale,
 } from "@/lib/i18n";
 import { repairKnownSeedImage } from "@/lib/media-fallbacks";
+import { hasActiveVerifiedBadge } from "@/lib/supplier-verification";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import {
   getCategoryOverride,
@@ -57,6 +58,12 @@ type SupplierRow = {
   certifications: string[];
   certifications_fr: string[];
   verification_status: "none" | "pending" | "verified" | "rejected";
+  verification_subscription_status:
+    | "inactive"
+    | "active"
+    | "past_due"
+    | "canceled";
+  verification_expires_at: string | null;
   category:
     | { name: string; name_fr: string | null; slug: string }
     | { name: string; name_fr: string | null; slug: string }[]
@@ -261,7 +268,11 @@ function normalizeSupplier(row: SupplierRow, locale: Locale): Supplier {
     category: getCategoryName(locale, row.category),
     summary: localizedValue(locale, row.summary, row.summary_fr),
     description: localizedValue(locale, row.description, row.description_fr),
-    verified: row.verified || row.verification_status === "verified",
+    verified: hasActiveVerifiedBadge({
+      verificationStatus: row.verification_status,
+      subscriptionStatus: row.verification_subscription_status,
+      expiresAt: row.verification_expires_at,
+    }),
     yearFounded: row.year_founded ?? new Date().getFullYear(),
     employees: row.employees,
     exportMarkets: row.export_markets,
@@ -350,6 +361,8 @@ export async function getSuppliers(
         certifications,
         certifications_fr,
         verification_status,
+        verification_subscription_status,
+        verification_expires_at,
         category:categories(name, name_fr, slug),
         products:supplier_products(title, title_fr, slug, moq, images, category:categories(name, name_fr, slug))
       `,

@@ -1,9 +1,6 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
-
 import { getStripeConfig } from "@/lib/stripe/config";
 
 const STRIPE_API_BASE = "https://api.stripe.com/v1";
-const WEBHOOK_TOLERANCE_SECONDS = 300;
 
 type StripeCheckoutSessionResponse = {
   id: string;
@@ -61,6 +58,7 @@ async function stripeRequest<T>(
 
 export async function createVerificationCheckoutSession(input: {
   origin: string;
+  returnPath: string;
   supplierId: string;
   ownerId: string;
   customerId?: string | null;
@@ -75,9 +73,9 @@ export async function createVerificationCheckoutSession(input: {
   const body = new URLSearchParams({
     mode: "subscription",
     success_url:
-      `${input.origin}/dashboard/settings/verification` +
+      `${input.origin}${input.returnPath}` +
       "?checkout=success&session_id={CHECKOUT_SESSION_ID}",
-    cancel_url: `${input.origin}/dashboard/settings/verification?checkout=cancelled`,
+    cancel_url: `${input.origin}${input.returnPath}?checkout=cancelled`,
     client_reference_id: input.supplierId,
     "line_items[0][price]": verificationPriceId,
     "line_items[0][quantity]": "1",
@@ -102,15 +100,19 @@ export async function createVerificationCheckoutSession(input: {
 
 export async function createBillingPortalSession(input: {
   origin: string;
+  returnPath: string;
   customerId: string;
 }) {
-  return stripeRequest<StripePortalSessionResponse>("/billing_portal/sessions", {
-    method: "POST",
-    body: new URLSearchParams({
-      customer: input.customerId,
-      return_url: `${input.origin}/dashboard/settings/verification`,
-    }),
-  });
+  return stripeRequest<StripePortalSessionResponse>(
+    "/billing_portal/sessions",
+    {
+      method: "POST",
+      body: new URLSearchParams({
+        customer: input.customerId,
+        return_url: `${input.origin}${input.returnPath}`,
+      }),
+    },
+  );
 }
 
 export async function retrieveStripeSubscription(subscriptionId: string) {
@@ -120,52 +122,4 @@ export async function retrieveStripeSubscription(subscriptionId: string) {
       method: "GET",
     },
   );
-}
-
-export function verifyStripeWebhookSignature(input: {
-  payload: string;
-  signature: string;
-  secret: string;
-}) {
-  const parts = input.signature.split(",").reduce<Record<string, string[]>>(
-    (acc, item) => {
-      const [key, value] = item.split("=");
-
-      if (key && value) {
-        acc[key] = [...(acc[key] ?? []), value];
-      }
-
-      return acc;
-    },
-    {},
-  );
-  const timestamp = parts.t?.[0];
-  const signatures = parts.v1 ?? [];
-
-  if (!timestamp || signatures.length === 0) {
-    return false;
-  }
-
-  const timestampSeconds = Number(timestamp);
-
-  if (
-    !Number.isFinite(timestampSeconds) ||
-    Math.abs(Date.now() / 1000 - timestampSeconds) > WEBHOOK_TOLERANCE_SECONDS
-  ) {
-    return false;
-  }
-
-  const expected = createHmac("sha256", input.secret)
-    .update(`${timestamp}.${input.payload}`)
-    .digest("hex");
-
-  return signatures.some((signature) => {
-    const expectedBuffer = Buffer.from(expected, "hex");
-    const signatureBuffer = Buffer.from(signature, "hex");
-
-    return (
-      expectedBuffer.length === signatureBuffer.length &&
-      timingSafeEqual(expectedBuffer, signatureBuffer)
-    );
-  });
 }
