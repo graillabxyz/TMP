@@ -69,6 +69,9 @@ const nextConfig = {
     ];
   },
   images: {
+    // Vercel's image optimizer can return a 402 when the project quota is
+    // unavailable. Marketplace media must continue to render at launch.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
