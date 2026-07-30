@@ -133,6 +133,7 @@ export async function DashboardShell({
             {profile ? (
               <ProfileDropdown
                 email={profile.email}
+                locale={locale}
                 label={t.dashboard.profile}
                 signOutLabel={t.nav.logout}
                 signOutHref={getLocalizedPath(locale, "/")}

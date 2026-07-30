@@ -62,6 +62,7 @@ export async function SiteHeader() {
           {profile ? (
             <ProfileDropdown
               email={profile.email}
+              locale={locale}
               label={t.dashboard.profile}
               signOutLabel={t.nav.logout}
               signOutHref={homeHref}

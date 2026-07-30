@@ -11,6 +11,7 @@ type ProfileDropdownProps = {
   label: string;
   signOutLabel: string;
   signOutHref: string;
+  locale: string;
   items: Array<{
     href: string;
     label: string;
@@ -22,6 +23,7 @@ export function ProfileDropdown({
   label,
   signOutLabel,
   signOutHref,
+  locale,
   items,
 }: ProfileDropdownProps) {
   const [open, setOpen] = useState(false);
@@ -88,6 +90,7 @@ export function ProfileDropdown({
           <div className="my-1 border-t border-white/10" />
           <form action={signOut}>
             <input type="hidden" name="next" value={signOutHref} />
+            <input type="hidden" name="locale" value={locale} />
             <button
               type="submit"
               role="menuitem"

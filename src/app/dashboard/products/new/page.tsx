@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { createProduct } from "@/app/actions/products";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
@@ -8,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
 import { createMetadata } from "@/lib/seo";
 
@@ -35,15 +36,26 @@ export default async function NewProductPage({
   const t = getDictionary(locale);
   const labels = t.dashboard.productManager;
   const profile = await getCurrentProfile();
+
+  if (!profile) {
+    const nextPath = getLocalizedPath(locale, "/dashboard/products/new");
+
+    redirect(
+      `${getLocalizedPath(locale, "/login")}?status=auth-required&next=${encodeURIComponent(
+        nextPath,
+      )}`,
+    );
+  }
+
   const categories = await getCategories(locale);
   const statusCopy =
     params.status === "missing"
       ? labels.missing
       : params.status === "image"
         ? labels.imageError
-      : params.status === "error"
-        ? labels.error
-        : "";
+        : params.status === "error"
+          ? labels.error
+          : "";
 
   return (
     <DashboardShell
@@ -59,22 +71,22 @@ export default async function NewProductPage({
               {profile ? labels.supplierAccessRequired : labels.loginRequired}
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
-              {profile ? labels.supplierAccessCreateBody : labels.loginRequiredBody}
+              {profile
+                ? labels.supplierAccessCreateBody
+                : labels.loginRequiredBody}
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               {profile ? (
                 <Button asChild>
-                  <Link href="/products">{labels.browseProducts}</Link>
-                </Button>
-              ) : (
-                <Button asChild>
-                  <Link href="/login?next=/dashboard/products/new">
-                    {t.nav.login}
+                  <Link href={getLocalizedPath(locale, "/products")}>
+                    {labels.browseProducts}
                   </Link>
                 </Button>
-              )}
+              ) : null}
               <Button asChild variant="outline">
-                <Link href="/dashboard/profile">{t.common.goToProfile}</Link>
+                <Link href={getLocalizedPath(locale, "/dashboard/profile")}>
+                  {t.common.goToProfile}
+                </Link>
               </Button>
             </div>
           </CardContent>
@@ -89,6 +101,7 @@ export default async function NewProductPage({
           <ProductForm
             action={createProduct}
             categories={categories}
+            cancelHref={getLocalizedPath(locale, "/dashboard/products")}
             labels={{
               title: labels.createProduct,
               productTitle: labels.productTitle,

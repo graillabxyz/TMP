@@ -46,7 +46,13 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
   );
 
   if (!profile) {
-    redirect(`${getLocalizedPath(locale, "/login")}?next=/dashboard/profile`);
+    const nextPath = getLocalizedPath(locale, "/dashboard/profile");
+
+    redirect(
+      `${getLocalizedPath(locale, "/login")}?status=auth-required&next=${encodeURIComponent(
+        nextPath,
+      )}`,
+    );
   }
 
   const workspace = await getVerificationWorkspace();
@@ -222,7 +228,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                 <input
                   type="hidden"
                   name="return_to"
-                  value="/dashboard/profile"
+                  value={getLocalizedPath(locale, "/dashboard/profile")}
                 />
                 <div className="grid gap-2">
                   <Label htmlFor="company">{copy.businessName}</Label>

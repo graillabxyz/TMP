@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import {
   BadgeCheck,
   FileCheck2,
@@ -19,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { BillingActions } from "@/components/verification/billing-actions";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
 import { getVerificationWorkspace } from "@/lib/verification";
 
@@ -62,6 +63,20 @@ export default async function VerificationSettingsPage({
   const t = getDictionary(locale);
   const copy = t.verificationSettings;
   const profile = await getCurrentProfile();
+
+  if (!profile) {
+    const nextPath = getLocalizedPath(
+      locale,
+      "/dashboard/settings/verification",
+    );
+
+    redirect(
+      `${getLocalizedPath(locale, "/login")}?status=auth-required&next=${encodeURIComponent(
+        nextPath,
+      )}`,
+    );
+  }
+
   const workspace = await getVerificationWorkspace();
   const supplier = workspace.supplier;
   const documents = workspace.documents;
@@ -110,7 +125,7 @@ export default async function VerificationSettingsPage({
               {t.profileSettings.verifiedLockedBody}
             </p>
             <Button asChild className="mt-6">
-              <Link href="/dashboard/profile">
+              <Link href={getLocalizedPath(locale, "/dashboard/profile")}>
                 {t.profileSettings.startSupplierUpgrade}
               </Link>
             </Button>
@@ -138,13 +153,6 @@ export default async function VerificationSettingsPage({
                     ? copy.loginRequired
                     : copy.missingSupplier}
                 </h2>
-                {workspace.state === "unauthenticated" && (
-                  <Button asChild className="mt-6">
-                    <Link href="/login?next=/dashboard/settings/verification">
-                      {t.nav.login}
-                    </Link>
-                  </Button>
-                )}
               </CardContent>
             </Card>
           )}

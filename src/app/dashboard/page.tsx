@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
 import { getVerificationWorkspace } from "@/lib/verification";
 
@@ -36,9 +36,21 @@ export default async function DashboardPage() {
   const locale = await getLocale();
   const t = getDictionary(locale);
   const profile = await getCurrentProfile();
+  const dashboardHref = getLocalizedPath(locale, "/dashboard");
+  const productsHref = getLocalizedPath(locale, "/products");
+  const suppliersHref = getLocalizedPath(locale, "/suppliers");
+  const rfqHref = getLocalizedPath(locale, "/rfq");
+  const verificationHref = getLocalizedPath(
+    locale,
+    "/dashboard/settings/verification",
+  );
 
   if (!profile) {
-    redirect("/login?status=auth-required");
+    redirect(
+      `${getLocalizedPath(locale, "/login")}?status=auth-required&next=${encodeURIComponent(
+        dashboardHref,
+      )}`,
+    );
   }
 
   const role = profile.role;
@@ -62,21 +74,21 @@ export default async function DashboardPage() {
       title: buyerCopy.savedSuppliers,
       body: buyerCopy.savedSuppliersBody,
       icon: Search,
-      href: "/suppliers",
+      href: suppliersHref,
       cta: buyerCopy.exploreSuppliers,
     },
     {
       title: buyerCopy.productInquiries,
       body: buyerCopy.productInquiriesBody,
       icon: Inbox,
-      href: "/products",
+      href: productsHref,
       cta: buyerCopy.browseProducts,
     },
     {
       title: t.dashboard.nextActions,
       body: buyerCopy.nextActionsBody,
       icon: Clock3,
-      href: "/rfq",
+      href: rfqHref,
       cta: buyerCopy.createRfq,
     },
   ];
@@ -85,21 +97,21 @@ export default async function DashboardPage() {
       title: t.dashboard.listings,
       body: t.dashboard.listingsBody,
       icon: PackagePlus,
-      href: "/dashboard/products",
+      href: getLocalizedPath(locale, "/dashboard/products"),
       cta: t.dashboard.manageProducts,
     },
     {
       title: t.dashboard.productInquiries,
       body: t.dashboard.productInquiriesBody,
       icon: Inbox,
-      href: "/dashboard/products",
+      href: getLocalizedPath(locale, "/dashboard/products"),
       cta: t.dashboard.reviewProducts,
     },
     {
       title: t.dashboard.nextActions,
       body: t.dashboard.nextActionsBody,
       icon: Clock3,
-      href: "/dashboard/settings/verification",
+      href: verificationHref,
       cta: t.dashboard.upgradeCta,
     },
   ];
@@ -158,7 +170,7 @@ export default async function DashboardPage() {
                   </h2>
                 </div>
                 <Button asChild variant="outline" size="sm">
-                  <Link href="/rfq">{buyerCopy.createRfq}</Link>
+                  <Link href={rfqHref}>{buyerCopy.createRfq}</Link>
                 </Button>
               </div>
               <div className="mt-6 grid gap-3">
@@ -187,10 +199,10 @@ export default async function DashboardPage() {
               </p>
               <div className="mt-6 grid gap-3">
                 <Button asChild>
-                  <Link href="/products">{buyerCopy.browseProducts}</Link>
+                  <Link href={productsHref}>{buyerCopy.browseProducts}</Link>
                 </Button>
                 <Button asChild variant="outline">
-                  <Link href="/suppliers">{buyerCopy.exploreSuppliers}</Link>
+                  <Link href={suppliersHref}>{buyerCopy.exploreSuppliers}</Link>
                 </Button>
               </div>
             </CardContent>
@@ -282,9 +294,7 @@ export default async function DashboardPage() {
                   >
                     <p className="font-medium text-white">{product}</p>
                     <p className="text-sm text-muted-foreground">{country}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {quantity}
-                    </p>
+                    <p className="text-sm text-muted-foreground">{quantity}</p>
                     <Badge variant={index === 0 ? "default" : "secondary"}>
                       {status}
                     </Badge>
@@ -381,9 +391,7 @@ export default async function DashboardPage() {
                 {t.dashboard.upgradeBody}
               </p>
               <Button asChild className="mt-4 w-full" variant="outline">
-                <Link href="/dashboard/settings/verification">
-                  {t.dashboard.upgradeCta}
-                </Link>
+                <Link href={verificationHref}>{t.dashboard.upgradeCta}</Link>
               </Button>
             </div>
           </CardContent>

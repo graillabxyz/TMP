@@ -35,6 +35,7 @@ type ProductFormLabels = {
 type ProductFormProps = {
   action: (formData: FormData) => Promise<void>;
   categories: Category[];
+  cancelHref: string;
   labels: ProductFormLabels;
   product?: ProductUpdate & { id: string };
 };
@@ -42,6 +43,7 @@ type ProductFormProps = {
 export function ProductForm({
   action,
   categories,
+  cancelHref,
   labels,
   product,
 }: ProductFormProps) {
@@ -203,7 +205,7 @@ export function ProductForm({
 
           <div className="flex flex-col-reverse gap-3 border-t border-white/10 pt-5 sm:flex-row sm:justify-end">
             <Button asChild variant="outline" className="sm:min-w-32">
-              <Link href="/dashboard/products">{labels.cancel}</Link>
+              <Link href={cancelHref}>{labels.cancel}</Link>
             </Button>
             <Button type="submit" className="sm:min-w-36">
               {labels.submit}

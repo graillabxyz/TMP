@@ -131,6 +131,7 @@ export default async function RegisterPage({
             missing: t.auth.status.missing,
             error: t.auth.status.error,
             checkEmail: t.auth.status.checkEmail,
+            authRequired: t.auth.status.authRequired,
             oauthNotReady: t.auth.status.oauthNotReady,
             passwordUpdated: t.auth.status.passwordUpdated,
           }}

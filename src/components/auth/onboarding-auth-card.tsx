@@ -52,6 +52,7 @@ type OnboardingAuthCardProps = {
     missing: string;
     error: string;
     checkEmail: string;
+    authRequired: string;
     oauthNotReady: string;
     passwordUpdated: string;
   };
@@ -71,6 +72,10 @@ function getStatusCopy(
 
   if (status === "check-email") {
     return { tone: "success" as const, copy: labels.checkEmail };
+  }
+
+  if (status === "auth-required") {
+    return { tone: "error" as const, copy: labels.authRequired };
   }
 
   if (status === "password-updated") {

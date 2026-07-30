@@ -358,6 +358,7 @@ const dictionaries = {
         error: "Authentication failed. Please try again.",
         checkEmail:
           "Check your email to confirm the account before logging in.",
+        authRequired: "Sign in to continue to your account.",
         oauthNotReady:
           "Google sign-in could not start. Please try again or continue with email.",
         passwordUpdated: "Password updated. You can now sign in.",
@@ -1105,6 +1106,7 @@ const dictionaries = {
         error: "L’authentification a échoué. Veuillez réessayer.",
         checkEmail:
           "Vérifiez votre email pour confirmer le compte avant de vous connecter.",
+        authRequired: "Connectez-vous pour accéder à votre compte.",
         oauthNotReady:
           "La connexion Google n’a pas pu démarrer. Réessayez ou continuez avec l’e-mail.",
         passwordUpdated:
@@ -1865,6 +1867,7 @@ const turkishDictionary = {
       error: "Kimlik doğrulama başarısız oldu. Lütfen tekrar deneyin.",
       checkEmail:
         "Giriş yapmadan önce hesabı onaylamak için e-postanızı kontrol edin.",
+      authRequired: "Hesabınıza devam etmek için giriş yapın.",
       oauthNotReady:
         "Google girişi başlatılamadı. Lütfen tekrar deneyin veya e-posta ile devam edin.",
       passwordUpdated: "Şifre güncellendi. Şimdi giriş yapabilirsiniz.",

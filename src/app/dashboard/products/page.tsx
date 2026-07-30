@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { PackagePlus, Plus, ShieldAlert } from "lucide-react";
+import { redirect } from "next/navigation";
 
 import { archiveProduct } from "@/app/actions/products";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
@@ -9,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { formatPriceRange, getSupplierProductWorkspace } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
 
@@ -48,6 +49,17 @@ export default async function DashboardProductsPage({
   const t = getDictionary(locale);
   const labels = t.dashboard.productManager;
   const profile = await getCurrentProfile();
+
+  if (!profile) {
+    const nextPath = getLocalizedPath(locale, "/dashboard/products");
+
+    redirect(
+      `${getLocalizedPath(locale, "/login")}?status=auth-required&next=${encodeURIComponent(
+        nextPath,
+      )}`,
+    );
+  }
+
   const workspace = await getSupplierProductWorkspace(locale);
   const statusCopy =
     params.status === "created"
@@ -85,31 +97,16 @@ export default async function DashboardProductsPage({
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button asChild>
-                <Link href="/products">{labels.browseProducts}</Link>
+                <Link href={getLocalizedPath(locale, "/products")}>
+                  {labels.browseProducts}
+                </Link>
               </Button>
               <Button asChild variant="outline">
-                <Link href="/dashboard/profile">{t.common.goToProfile}</Link>
+                <Link href={getLocalizedPath(locale, "/dashboard/profile")}>
+                  {t.common.goToProfile}
+                </Link>
               </Button>
             </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {profile?.role !== "buyer" && workspace.state === "unauthenticated" && (
-        <Card className="bg-white/[0.035]">
-          <CardContent className="p-8">
-            <ShieldAlert className="size-8 text-gold-200" aria-hidden="true" />
-            <h2 className="mt-4 text-xl font-semibold text-white">
-              {labels.loginRequired}
-            </h2>
-            <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
-              {labels.loginRequiredBody}
-            </p>
-            <Button asChild className="mt-6">
-              <Link href="/login?next=/dashboard/products">
-                {t.nav.login}
-              </Link>
-            </Button>
           </CardContent>
         </Card>
       )}
@@ -140,7 +137,7 @@ export default async function DashboardProductsPage({
               </h2>
             </div>
             <Button asChild>
-              <Link href="/dashboard/products/new">
+              <Link href={getLocalizedPath(locale, "/dashboard/products/new")}>
                 <Plus aria-hidden="true" />
                 {labels.createProduct}
               </Link>
@@ -194,7 +191,10 @@ export default async function DashboardProductsPage({
                           <div className="flex items-center gap-2">
                             <Button asChild size="sm" variant="outline">
                               <Link
-                                href={`/dashboard/products/${product.id}/edit`}
+                                href={getLocalizedPath(
+                                  locale,
+                                  `/dashboard/products/${product.id}/edit`,
+                                )}
                               >
                                 {t.common.edit}
                               </Link>
