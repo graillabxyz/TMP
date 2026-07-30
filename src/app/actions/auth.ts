@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { getAppOrigin } from "@/lib/app-url";
+import { getSafeInternalPath } from "@/lib/safe-redirect";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 
 type AuthMode = "login" | "register";
@@ -19,13 +20,7 @@ function getAuthMode(formData: FormData): AuthMode {
 }
 
 function getSafeNextPath(formData: FormData) {
-  const next = getString(formData, "next");
-
-  if (!next || !next.startsWith("/") || next.startsWith("//")) {
-    return "/dashboard";
-  }
-
-  return next;
+  return getSafeInternalPath(getString(formData, "next"));
 }
 
 async function getOrigin() {
@@ -139,11 +134,7 @@ export async function signInWithGoogle(formData: FormData) {
 }
 
 export async function signOut(formData: FormData) {
-  const requestedPath = getString(formData, "next");
-  const nextPath =
-    requestedPath.startsWith("/") && !requestedPath.startsWith("//")
-      ? requestedPath
-      : "/";
+  const nextPath = getSafeInternalPath(getString(formData, "next"), "/");
   const supabase = await getConfiguredSupabase("login");
   const { error } = await supabase.auth.signOut();
 

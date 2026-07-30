@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
+import { getSafeInternalPath } from "@/lib/safe-redirect";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database";
 
@@ -24,18 +25,10 @@ type ProfileMutationTable = {
   ) => Promise<{ error: { message: string } | null }>;
 };
 
-function getSafeNextPath(value: string | null) {
-  if (!value || !value.startsWith("/") || value.startsWith("//")) {
-    return "/dashboard";
-  }
-
-  return value;
-}
-
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
-  const next = getSafeNextPath(url.searchParams.get("next"));
+  const next = getSafeInternalPath(url.searchParams.get("next"));
   const redirectUrl = new URL(next, url.origin);
 
   if (!code) {
