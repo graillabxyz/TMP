@@ -1,4 +1,5 @@
 import { siteConfig } from "@/lib/constants";
+import { defaultLocale, getLocalizedPath, type Locale } from "@/lib/i18n";
 import { formatPriceRange } from "@/lib/products";
 import type { MarketplaceProduct, Supplier } from "@/types";
 
@@ -8,6 +9,14 @@ function absoluteUrl(pathOrUrl: string) {
   }
 
   return `${siteConfig.url}${pathOrUrl.startsWith("/") ? "" : "/"}${pathOrUrl}`;
+}
+
+function localizedAbsoluteUrl(locale: Locale, pathOrUrl: string) {
+  if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://")) {
+    return pathOrUrl;
+  }
+
+  return absoluteUrl(getLocalizedPath(locale, pathOrUrl));
 }
 
 function trimText(value: string, maxLength = 220) {
@@ -28,7 +37,7 @@ export function getOrganizationJsonLd() {
   };
 }
 
-export function getWebsiteJsonLd() {
+export function getWebsiteJsonLd(locale: Locale = defaultLocale) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -37,7 +46,7 @@ export function getWebsiteJsonLd() {
     description: siteConfig.description,
     potentialAction: {
       "@type": "SearchAction",
-      target: `${siteConfig.url}/products?q={search_term_string}`,
+      target: `${localizedAbsoluteUrl(locale, "/products")}?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
   };
@@ -45,6 +54,7 @@ export function getWebsiteJsonLd() {
 
 export function getBreadcrumbJsonLd(
   items: Array<{ name: string; path: string }>,
+  locale: Locale = defaultLocale,
 ) {
   return {
     "@context": "https://schema.org",
@@ -53,7 +63,7 @@ export function getBreadcrumbJsonLd(
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: absoluteUrl(item.path),
+      item: localizedAbsoluteUrl(locale, item.path),
     })),
   };
 }
@@ -65,19 +75,20 @@ export function getProductCollectionJsonLd(
     description:
       "Browse published Turkish supplier products for European B2B sourcing.",
   },
+  locale: Locale = defaultLocale,
 ) {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: copy.name,
-    url: absoluteUrl("/products"),
+    url: localizedAbsoluteUrl(locale, "/products"),
     description: copy.description,
     mainEntity: {
       "@type": "ItemList",
       itemListElement: products.slice(0, 24).map((product, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        url: absoluteUrl(`/products/${product.slug}`),
+        url: localizedAbsoluteUrl(locale, `/products/${product.slug}`),
         name: product.title,
       })),
     },
@@ -91,26 +102,30 @@ export function getSupplierCollectionJsonLd(
     description:
       "Browse verified Turkish suppliers by category, certifications, MOQ, and export readiness.",
   },
+  locale: Locale = defaultLocale,
 ) {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     name: copy.name,
-    url: absoluteUrl("/suppliers"),
+    url: localizedAbsoluteUrl(locale, "/suppliers"),
     description: copy.description,
     mainEntity: {
       "@type": "ItemList",
       itemListElement: suppliers.slice(0, 24).map((supplier, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        url: absoluteUrl(`/suppliers/${supplier.slug}`),
+        url: localizedAbsoluteUrl(locale, `/suppliers/${supplier.slug}`),
         name: supplier.name,
       })),
     },
   };
 }
 
-export function getProductJsonLd(product: MarketplaceProduct) {
+export function getProductJsonLd(
+  product: MarketplaceProduct,
+  locale: Locale = defaultLocale,
+) {
   const hasPrice = product.priceMin !== null || product.priceMax !== null;
   const lowPrice = product.priceMin ?? product.priceMax;
   const highPrice = product.priceMax ?? product.priceMin;
@@ -121,7 +136,7 @@ export function getProductJsonLd(product: MarketplaceProduct) {
     name: product.title,
     description: trimText(product.description),
     image: product.images.map(absoluteUrl),
-    url: absoluteUrl(`/products/${product.slug}`),
+    url: localizedAbsoluteUrl(locale, `/products/${product.slug}`),
     category: product.category,
     brand: {
       "@type": "Brand",
@@ -131,7 +146,7 @@ export function getProductJsonLd(product: MarketplaceProduct) {
       "@type": "Organization",
       name: product.supplierName,
       url: product.supplierSlug
-        ? absoluteUrl(`/suppliers/${product.supplierSlug}`)
+        ? localizedAbsoluteUrl(locale, `/suppliers/${product.supplierSlug}`)
         : undefined,
     },
     offers: hasPrice
@@ -142,7 +157,7 @@ export function getProductJsonLd(product: MarketplaceProduct) {
           highPrice,
           offerCount: 1,
           availability: "https://schema.org/InStock",
-          url: absoluteUrl(`/rfq?product=${product.slug}`),
+          url: `${localizedAbsoluteUrl(locale, "/rfq")}?product=${product.slug}`,
         }
       : undefined,
     additionalProperty: [
@@ -169,12 +184,15 @@ export function getProductJsonLd(product: MarketplaceProduct) {
   };
 }
 
-export function getSupplierJsonLd(supplier: Supplier) {
+export function getSupplierJsonLd(
+  supplier: Supplier,
+  locale: Locale = defaultLocale,
+) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: supplier.name,
-    url: absoluteUrl(`/suppliers/${supplier.slug}`),
+    url: localizedAbsoluteUrl(locale, `/suppliers/${supplier.slug}`),
     image: absoluteUrl(supplier.image),
     description: trimText(supplier.summary || supplier.description),
     address: {

@@ -21,7 +21,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getSupplierBySlug } from "@/lib/marketplace";
 import { getPlatformActivity } from "@/lib/platform-activity";
 import { createMetadata } from "@/lib/seo";
@@ -87,22 +87,27 @@ export default async function SupplierDetailPage({
   const visibleBriefs = relevantBriefs.length
     ? relevantBriefs
     : activity.activeBriefs.slice(0, 2);
+  const suppliersHref = getLocalizedPath(locale, "/suppliers");
+  const rfqHref = getLocalizedPath(locale, "/rfq");
 
   return (
     <>
       <JsonLd
         data={[
-          getSupplierJsonLd(supplier),
-          getBreadcrumbJsonLd([
-            { name: t.common.home, path: "/" },
-            { name: t.nav.suppliers, path: "/suppliers" },
-            { name: supplier.name, path: `/suppliers/${supplier.slug}` },
-          ]),
+          getSupplierJsonLd(supplier, locale),
+          getBreadcrumbJsonLd(
+            [
+              { name: t.common.home, path: "/" },
+              { name: t.nav.suppliers, path: "/suppliers" },
+              { name: supplier.name, path: `/suppliers/${supplier.slug}` },
+            ],
+            locale,
+          ),
         ]}
       />
       <section className="section-shell">
         <Button asChild variant="ghost" className="mb-8">
-          <Link href="/suppliers">
+          <Link href={suppliersHref}>
             <ArrowLeft aria-hidden="true" />
             {t.common.backToSuppliers}
           </Link>
@@ -197,7 +202,7 @@ export default async function SupplierDetailPage({
                 ))}
               </div>
               <Button asChild className="mt-6 w-full" size="lg">
-                <Link href="/rfq">
+                <Link href={rfqHref}>
                   {t.common.requestQuote}
                   <Send aria-hidden="true" />
                 </Link>

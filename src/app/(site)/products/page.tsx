@@ -16,7 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories, getSuppliers } from "@/lib/marketplace";
 import { getPlatformActivity } from "@/lib/platform-activity";
 import { getProducts } from "@/lib/products";
@@ -61,14 +61,20 @@ export default async function ProductsPage({
     getSuppliers(locale),
     getProducts({ locale, query, category, supplier }),
   ]);
+  const productsHref = getLocalizedPath(locale, "/products");
+  const rfqHref = getLocalizedPath(locale, "/rfq");
 
   return (
     <>
       <JsonLd
-        data={getProductCollectionJsonLd(products, {
-          name: t.products.metadataTitle,
-          description: t.products.metadataDescription,
-        })}
+        data={getProductCollectionJsonLd(
+          products,
+          {
+            name: t.products.metadataTitle,
+            description: t.products.metadataDescription,
+          },
+          locale,
+        )}
       />
       <section className="section-shell">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
@@ -155,7 +161,7 @@ export default async function ProductsPage({
                   <div className="grid gap-3">
                     <Button type="submit">{t.common.search}</Button>
                     <Button asChild variant="ghost">
-                      <Link href="/products">{t.common.clearFilters}</Link>
+                      <Link href={productsHref}>{t.common.clearFilters}</Link>
                     </Button>
                   </div>
                 </form>
@@ -177,7 +183,7 @@ export default async function ProductsPage({
                   {activity.categoryDemand.map((item) => (
                     <Link
                       key={item.categorySlug}
-                      href={`/products?category=${item.categorySlug}`}
+                      href={`${productsHref}?category=${item.categorySlug}`}
                       className="rounded-md border border-white/10 bg-white/[0.035] p-3 transition hover:border-gold-300/35 hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
                       <div className="flex items-center justify-between gap-3">
@@ -202,6 +208,11 @@ export default async function ProductsPage({
                 <ProductCard
                   key={product.id}
                   product={product}
+                  productHref={getLocalizedPath(
+                    locale,
+                    `/products/${product.slug}`,
+                  )}
+                  rfqHref={rfqHref}
                   labels={{
                     verified: t.products.verified,
                     moq: t.common.moq,
@@ -230,7 +241,7 @@ export default async function ProductsPage({
                   {t.products.emptyBody}
                 </p>
                 <Button asChild className="mt-6" variant="outline">
-                  <Link href="/products">{t.common.clearFilters}</Link>
+                  <Link href={productsHref}>{t.common.clearFilters}</Link>
                 </Button>
               </CardContent>
             </Card>

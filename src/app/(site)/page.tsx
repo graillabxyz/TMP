@@ -93,7 +93,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <JsonLd data={[getOrganizationJsonLd(), getWebsiteJsonLd()]} />
+      <JsonLd data={[getOrganizationJsonLd(), getWebsiteJsonLd(locale)]} />
       <section className="relative isolate overflow-hidden">
         <Image
           src={heroImage}
@@ -253,10 +253,10 @@ export default async function HomePage() {
                 const Icon = businessToolIcons[index] ?? Target;
                 const href =
                   index === 0
-                    ? "/rfq"
+                    ? rfqHref
                     : index === 1
-                      ? "/suppliers?verified=true"
-                      : "/products";
+                      ? `${suppliersHref}?verified=true`
+                      : productsHref;
 
                 return (
                   <Link
@@ -514,6 +514,10 @@ export default async function HomePage() {
             <SupplierCard
               key={supplier.slug}
               supplier={supplier}
+              supplierHref={getLocalizedPath(
+                locale,
+                `/suppliers/${supplier.slug}`,
+              )}
               labels={{
                 verified: t.common.verified,
                 moq: t.common.moq,

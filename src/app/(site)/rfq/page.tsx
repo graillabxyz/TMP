@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { submitRfq } from "@/app/actions/rfq";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
 import { getPlatformActivity } from "@/lib/platform-activity";
 import { getProductBySlug } from "@/lib/products";
@@ -58,6 +58,9 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
     status && status in t.rfq.status
       ? t.rfq.status[status as keyof typeof t.rfq.status]
       : null;
+  const loginHref = `${getLocalizedPath(locale, "/login")}?next=${encodeURIComponent(
+    getLocalizedPath(locale, "/rfq"),
+  )}`;
 
   return (
     <section className="section-shell">
@@ -349,7 +352,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                         {t.rfq.uploadSignIn}
                       </p>
                       <Link
-                        href="/login?next=/rfq"
+                        href={loginHref}
                         className="mt-2 text-sm font-medium text-gold-100 underline-offset-4 hover:underline"
                       >
                         {t.nav.login}
@@ -366,7 +369,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                 </fieldset>
                 {!profile && (
                   <Button asChild size="lg" className="w-full">
-                    <Link href="/login?next=/rfq">{t.rfq.signInToSubmit}</Link>
+                    <Link href={loginHref}>{t.rfq.signInToSubmit}</Link>
                   </Button>
                 )}
               </form>

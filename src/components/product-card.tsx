@@ -10,6 +10,8 @@ import type { MarketplaceProduct } from "@/types";
 
 type ProductCardProps = {
   product: MarketplaceProduct;
+  productHref: string;
+  rfqHref: string;
   labels: {
     verified: string;
     moq: string;
@@ -23,14 +25,19 @@ type ProductCardProps = {
   };
 };
 
-export function ProductCard({ product, labels }: ProductCardProps) {
+export function ProductCard({
+  product,
+  productHref,
+  rfqHref,
+  labels,
+}: ProductCardProps) {
   const price = formatPriceRange(product, labels.quote);
   const moq = product.moq ? `${product.moq} ${labels.units}` : labels.onRequest;
 
   return (
     <Card className="group overflow-hidden bg-white/[0.035] transition duration-300 focus-within:border-gold-300/45 hover:-translate-y-1 hover:border-gold-300/30 hover:bg-white/[0.055]">
       <Link
-        href={`/products/${product.slug}`}
+        href={productHref}
         className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         <div className="relative aspect-[1.08] overflow-hidden bg-charcoal-800">
@@ -59,7 +66,7 @@ export function ProductCard({ product, labels }: ProductCardProps) {
         </p>
         <h3 className="mt-2 min-h-12 text-lg font-semibold leading-6 text-white">
           <Link
-            href={`/products/${product.slug}`}
+            href={productHref}
             className="line-clamp-2 rounded-sm underline-offset-4 transition hover:text-gold-100 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           >
             {product.title}
@@ -94,7 +101,7 @@ export function ProductCard({ product, labels }: ProductCardProps) {
         <Button asChild className="mt-5 w-full">
           <Link
             href={{
-              pathname: "/rfq",
+              pathname: rfqHref,
               query: {
                 product: product.slug,
                 supplier: product.supplierSlug,

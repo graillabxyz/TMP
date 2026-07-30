@@ -18,7 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getPlatformActivity } from "@/lib/platform-activity";
 import {
   formatPriceRange,
@@ -84,6 +84,8 @@ export default async function ProductDetailPage({
   }
 
   const related = await getRelatedProducts(product, locale);
+  const productsHref = getLocalizedPath(locale, "/products");
+  const rfqHref = getLocalizedPath(locale, "/rfq");
   const relevantBriefs = activity.activeBriefs
     .filter((brief) => brief.categorySlug === product.categorySlug)
     .slice(0, 2);
@@ -95,17 +97,20 @@ export default async function ProductDetailPage({
     <>
       <JsonLd
         data={[
-          getProductJsonLd(product),
-          getBreadcrumbJsonLd([
-            { name: t.common.home, path: "/" },
-            { name: t.nav.products, path: "/products" },
-            { name: product.title, path: `/products/${product.slug}` },
-          ]),
+          getProductJsonLd(product, locale),
+          getBreadcrumbJsonLd(
+            [
+              { name: t.common.home, path: "/" },
+              { name: t.nav.products, path: "/products" },
+              { name: product.title, path: `/products/${product.slug}` },
+            ],
+            locale,
+          ),
         ]}
       />
       <section className="section-shell">
         <Button asChild variant="ghost" className="mb-6">
-          <Link href="/products">
+          <Link href={productsHref}>
             <ArrowLeft aria-hidden="true" />
             {t.products.backToProducts}
           </Link>
@@ -205,7 +210,7 @@ export default async function ProductDetailPage({
                 <Button asChild className="mt-7 w-full">
                   <Link
                     href={{
-                      pathname: "/rfq",
+                      pathname: rfqHref,
                       query: {
                         product: product.slug,
                         supplier: product.supplierSlug,
@@ -287,6 +292,11 @@ export default async function ProductDetailPage({
                 <ProductCard
                   key={item.id}
                   product={item}
+                  productHref={getLocalizedPath(
+                    locale,
+                    `/products/${item.slug}`,
+                  )}
+                  rfqHref={rfqHref}
                   labels={{
                     verified: t.products.verified,
                     moq: t.common.moq,

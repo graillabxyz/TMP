@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories, getSuppliers } from "@/lib/marketplace";
 import { getPlatformActivity } from "@/lib/platform-activity";
 import { createMetadata } from "@/lib/seo";
@@ -82,6 +82,8 @@ export default async function SuppliersPage({
     getCategories(locale),
     getSuppliers(locale),
   ]);
+  const productsHref = getLocalizedPath(locale, "/products");
+  const suppliersHref = getLocalizedPath(locale, "/suppliers");
   const selectedCategory = categories.find((item) => item.slug === category);
   const filteredSuppliers = suppliers.filter((supplier) => {
     const matchesCategory =
@@ -113,10 +115,14 @@ export default async function SuppliersPage({
   return (
     <>
       <JsonLd
-        data={getSupplierCollectionJsonLd(filteredSuppliers, {
-          name: t.suppliers.title,
-          description: t.suppliers.body,
-        })}
+        data={getSupplierCollectionJsonLd(
+          filteredSuppliers,
+          {
+            name: t.suppliers.title,
+            description: t.suppliers.body,
+          },
+          locale,
+        )}
       />
       <section className="section-shell">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
@@ -225,7 +231,7 @@ export default async function SuppliersPage({
                   <div className="grid gap-3">
                     <Button type="submit">{t.common.search}</Button>
                     <Button asChild variant="ghost">
-                      <Link href="/suppliers">{t.common.clearFilters}</Link>
+                      <Link href={suppliersHref}>{t.common.clearFilters}</Link>
                     </Button>
                   </div>
                 </form>
@@ -241,7 +247,7 @@ export default async function SuppliersPage({
                   {activity.activeBriefs.slice(0, 2).map((brief) => (
                     <Link
                       key={`${brief.title}-${brief.market}`}
-                      href={`/products?category=${brief.categorySlug}`}
+                      href={`${productsHref}?category=${brief.categorySlug}`}
                       className="rounded-md border border-white/10 bg-white/[0.035] p-3 transition hover:border-gold-300/35 hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
                       <p className="text-sm font-medium leading-5 text-white">
@@ -269,6 +275,10 @@ export default async function SuppliersPage({
                 <SupplierCard
                   key={supplier.slug}
                   supplier={supplier}
+                  supplierHref={getLocalizedPath(
+                    locale,
+                    `/suppliers/${supplier.slug}`,
+                  )}
                   labels={{
                     verified: t.common.verified,
                     moq: t.common.moq,
@@ -292,7 +302,7 @@ export default async function SuppliersPage({
                   {t.suppliers.emptyBody}
                 </p>
                 <Button asChild className="mt-6" variant="outline">
-                  <Link href="/suppliers">{t.common.clearFilters}</Link>
+                  <Link href={suppliersHref}>{t.common.clearFilters}</Link>
                 </Button>
               </CardContent>
             </Card>
