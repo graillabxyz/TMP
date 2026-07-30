@@ -5,6 +5,7 @@ import { OnboardingAuthCard } from "@/components/auth/onboarding-auth-card";
 import { Badge } from "@/components/ui/badge";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
+import { getSafeInternalPath } from "@/lib/safe-redirect";
 import { createMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -28,14 +29,6 @@ type RegisterPageProps = {
   }>;
 };
 
-function getSafeNextPath(value: string | undefined, supplierIntent: boolean) {
-  if (value?.startsWith("/") && !value.startsWith("//")) {
-    return value;
-  }
-
-  return supplierIntent ? "/dashboard/profile" : "/dashboard";
-}
-
 export default async function RegisterPage({
   searchParams,
 }: RegisterPageProps) {
@@ -44,7 +37,10 @@ export default async function RegisterPage({
   const t = getDictionary(locale);
   const supplierIntent =
     params.intent === "supplier" || params.role === "supplier";
-  const nextPath = getSafeNextPath(params.next, supplierIntent);
+  const nextPath = getSafeInternalPath(
+    params.next,
+    supplierIntent ? "/dashboard/profile" : "/dashboard",
+  );
 
   return (
     <div className="w-full max-w-5xl">

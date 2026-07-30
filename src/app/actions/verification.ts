@@ -9,6 +9,7 @@ import {
   validateUpload,
   VERIFICATION_DOCUMENTS_BUCKET,
 } from "@/lib/media";
+import { getSafeInternalPath } from "@/lib/safe-redirect";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import type { Database } from "@/types/database";
 
@@ -50,11 +51,10 @@ function getString(formData: FormData, key: string) {
 }
 
 function getReturnPath(formData: FormData) {
-  const value = getString(formData, "return_to");
-
-  return value.startsWith("/") && !value.startsWith("//")
-    ? value
-    : "/dashboard/settings/verification";
+  return getSafeInternalPath(
+    getString(formData, "return_to"),
+    "/dashboard/settings/verification",
+  );
 }
 
 async function getSupplierId() {
