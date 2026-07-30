@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { LocaleDocumentSync } from "@/components/locale-document-sync";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
@@ -27,7 +28,10 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className="dark">
-      <body>{children}</body>
+      <body>
+        <LocaleDocumentSync />
+        {children}
+      </body>
     </html>
   );
 }
