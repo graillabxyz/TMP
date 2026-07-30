@@ -25,7 +25,8 @@ are cleared.
 - [x] `PASS` TypeScript typecheck passes.
 - [x] `PASS` ESLint passes with zero warnings.
 - [x] `PASS` Next.js production build passes.
-- [x] `PASS` Production dependency audit reports zero vulnerabilities.
+- [x] `PASS` Full production and development dependency audit reports zero
+  vulnerabilities.
 - [x] `PASS` CI runs install, production audit, tests, typecheck, lint, and
   build.
 - [x] `PASS` Seven focused regression tests cover internal redirect
