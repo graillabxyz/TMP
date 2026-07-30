@@ -26,7 +26,11 @@ are cleared.
 - [x] `PASS` ESLint passes with zero warnings.
 - [x] `PASS` Next.js production build passes.
 - [x] `PASS` Production dependency audit reports zero vulnerabilities.
-- [x] `PASS` CI runs install, production audit, typecheck, lint, and build.
+- [x] `PASS` CI runs install, production audit, tests, typecheck, lint, and
+  build.
+- [x] `PASS` Seven focused regression tests cover internal redirect
+  sanitization, upload signatures, PDF restrictions, size limits, randomized
+  media paths, and private-path ownership checks.
 - [x] `PASS` Runtime is pinned to Node 24.
 - [x] `PASS` Security headers are present on the public domain.
 - [x] `PASS` Marketplace images render without depending on Vercel image
@@ -70,6 +74,9 @@ are cleared.
 - [x] `PASS` Anonymous users are directed to sign in before submitting an RFQ.
 - [x] `PASS` A localized sign-out action is available from both public and
   dashboard profile menus.
+- [x] `PASS` Login, registration, OAuth callback, sign-out, and supplier-upgrade
+  return paths share one internal-only redirect validator. Production tests
+  reject protocol-relative and backslash-normalized external destinations.
 - [ ] `PENDING` Create a real email/password account and verify confirmation,
   login, logout, reset password, and session persistence.
 - [ ] `PENDING` Test Google OAuth callback and authorized-domain configuration.
@@ -88,6 +95,8 @@ are cleared.
 - [x] `PASS` RFQ file types and sizes are validated, with private attachment
   storage defined in migrations.
 - [x] `PASS` Email requests include a reply-to address and idempotency key.
+- [x] `PASS` The application fails closed when required authenticated RFQ
+  columns are absent instead of inserting an ownerless legacy record.
 - [ ] `BLOCKED` Configure `RESEND_API_KEY`, `RFQ_NOTIFICATION_FROM`, and
   `RFQ_NOTIFICATION_TO` in Vercel production. A live test saved the RFQ but
   logged `Missing RFQ email notification environment variables`.
