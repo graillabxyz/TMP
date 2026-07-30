@@ -27,11 +27,8 @@ Supabase redirect allow list:
 
 ```text
 http://localhost:3000/auth/callback
-https://YOUR_VERCEL_DOMAIN/auth/callback
-https://YOUR_PRODUCTION_DOMAIN/auth/callback
+https://www.turkiyemarketplace.org/auth/callback
 ```
-
-Replace the Vercel and production domains once they are final.
 
 ## Google Cloud Checklist
 
@@ -39,8 +36,7 @@ Replace the Vercel and production domains once they are final.
 2. Configure the OAuth consent screen / Google Auth Platform branding.
 3. Add authorized domains:
    - `supabase.co`
-   - your Vercel domain
-   - your production domain once available
+   - `turkiyemarketplace.org`
 4. Create an OAuth client:
    - Application type: Web application
    - Authorized redirect URI: `https://gkydovzspwnwlyfsmgln.supabase.co/auth/v1/callback`
@@ -48,8 +44,10 @@ Replace the Vercel and production domains once they are final.
 6. In Supabase, go to Authentication > Sign In / Providers > Google.
 7. Enable Google and paste the Client ID and Client Secret.
 8. In Supabase Authentication > URL Configuration, set:
-   - Site URL: your production URL when ready
-   - Redirect URLs: local, Vercel preview/production, and final domain callback URLs
+   - Site URL: `https://www.turkiyemarketplace.org`
+   - Redirect URLs:
+     - `http://localhost:3000/auth/callback`
+     - `https://www.turkiyemarketplace.org/auth/callback`
 
 ## Ownership Transfer Notes
 

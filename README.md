@@ -75,17 +75,32 @@ Apply the SQL migrations in order from `supabase/migrations/`.
   authenticated private attachments with owner/admin Storage RLS.
 - `20260730003000_site_assets.sql` adds the public site-asset registry and
   protected site media bucket.
+- `20260730004000_immediate_supplier_listing.sql` separates immediate supplier
+  listing publication from the paid verified badge.
+- `20260730005000_profile_identity.sql` synchronizes account name and email with
+  Supabase Auth and prevents profile email changes through the public API.
+- `20260730006000_rfq_requester_contact.sql` stores private requester contact
+  details for replyable RFQ notifications.
+- `20260730007000_listing_input_hardening.sql` constrains supplier/product input
+  lengths, prices, currencies, image counts, and owner-scoped image URLs.
+- `20260730008000_repair_seed_media.sql` repairs the one unavailable seed image
+  before the media migration.
+- `20260730009000_require_authenticated_rfqs.sql` requires an authenticated
+  account for every RFQ.
+- `20260730010000_rfq_rate_limit.sql` enforces per-account hourly and daily RFQ
+  limits inside the database.
 
 Current RLS stance:
 
-- Public can read published categories, verified supplier accounts, and
-  published products from verified suppliers.
-- Public can insert validated text-only RFQs.
+- Public can read categories, listed supplier profiles, and published products.
+- Suppliers can publish listings immediately; verification controls only the
+  paid verified badge.
+- Only authenticated users can insert RFQs, and the requester email and owner ID
+  must match Supabase Auth.
 - Public cannot select, update, or delete RFQs.
 - Public cannot update or delete marketplace records.
 - Authenticated suppliers can create, update, archive, and delete only products
   connected to their own supplier profile.
-- Suppliers can publish listings immediately after adding a supplier profile.
 - Supplier approval and verification fields remain admin-only.
 - Supplier verification documents are private to the supplier owner and admins.
 - Supplier media writes are restricted to the authenticated owner path.
@@ -110,8 +125,8 @@ prefix it with `NEXT_PUBLIC_`, commit it, or add it to browser code.
 
 ## RFQ Email Routing
 
-RFQs are inserted into Supabase and then routed to the configured team inbox with
-Resend. Set these variables in production:
+Authenticated RFQs are inserted into Supabase and then routed to the configured
+team inbox with Resend. Set these variables in production:
 
 ```bash
 RESEND_API_KEY=
