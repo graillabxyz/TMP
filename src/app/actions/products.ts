@@ -3,6 +3,13 @@
 import { redirect } from "next/navigation";
 
 import { getDemoRole } from "@/lib/demo-session";
+import {
+  createMediaPath,
+  getOwnedMediaPath,
+  MAX_PRODUCT_IMAGE_BYTES,
+  SUPPLIER_ASSETS_BUCKET,
+  validateUpload,
+} from "@/lib/media";
 import { slugify } from "@/lib/slug";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import type { ProductInsert, ProductUpdate } from "@/lib/products";
@@ -64,22 +71,6 @@ function getCurrency(formData: FormData) {
   return allowedCurrencies.has(currency) ? currency : null;
 }
 
-function hasInvalidUrl(formData: FormData, key: string) {
-  const value = getString(formData, key);
-
-  if (!value) {
-    return false;
-  }
-
-  try {
-    const url = new URL(value);
-
-    return url.protocol !== "https:" && url.protocol !== "http:";
-  } catch {
-    return true;
-  }
-}
-
 function hasInvalidProductDetails(formData: FormData) {
   const priceMin = getNumber(formData, "price_min");
   const priceMax = getNumber(formData, "price_max");
@@ -89,8 +80,7 @@ function hasInvalidProductDetails(formData: FormData) {
     hasInvalidNumber(formData, "price_min", { min: 0 }) ||
     hasInvalidNumber(formData, "price_max", { min: 0 }) ||
     (priceMin !== null && priceMax !== null && priceMin > priceMax) ||
-    getCurrency(formData) === null ||
-    hasInvalidUrl(formData, "image_url")
+    getCurrency(formData) === null
   );
 }
 
@@ -102,20 +92,20 @@ function getStatus(formData: FormData): ProductStatus | null {
     : null;
 }
 
-function getImages(formData: FormData) {
-  const imageUrl = getString(formData, "image_url");
+function getFile(formData: FormData, key: string) {
+  const value = formData.get(key);
 
-  return imageUrl ? [imageUrl] : [];
+  return value instanceof File && value.size > 0 ? value : null;
 }
 
-async function getCurrentSupplierId() {
+async function getCurrentSupplierContext() {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { supabase, supplierId: null };
+    return { supabase, supplierId: null, userId: null };
   }
 
   const { data, error } = await supabase
@@ -129,7 +119,73 @@ async function getCurrentSupplierId() {
     console.error("Unable to load product owner supplier", error.message);
   }
 
-  return { supabase, supplierId: supplier?.id ?? null };
+  return {
+    supabase,
+    supplierId: supplier?.id ?? null,
+    userId: user.id,
+  };
+}
+
+async function uploadProductImage({
+  file,
+  supplierId,
+  supabase,
+  userId,
+}: {
+  file: File;
+  supplierId: string;
+  supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
+  userId: string;
+}) {
+  const detected = await validateUpload(file, {
+    maxBytes: MAX_PRODUCT_IMAGE_BYTES,
+  });
+
+  if (!detected) {
+    return null;
+  }
+
+  const path = createMediaPath({
+    userId,
+    supplierId,
+    area: "products",
+    extension: detected.extension,
+  });
+  const { error } = await supabase.storage
+    .from(SUPPLIER_ASSETS_BUCKET)
+    .upload(path, file, {
+      cacheControl: "31536000",
+      contentType: detected.contentType,
+      upsert: false,
+    });
+
+  if (error) {
+    console.error("Unable to upload product image", error.message);
+    return null;
+  }
+
+  return {
+    path,
+    url: supabase.storage.from(SUPPLIER_ASSETS_BUCKET).getPublicUrl(path).data
+      .publicUrl,
+  };
+}
+
+async function removeProductImage(
+  supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>,
+  path: string | null,
+) {
+  if (!path) {
+    return;
+  }
+
+  const { error } = await supabase.storage
+    .from(SUPPLIER_ASSETS_BUCKET)
+    .remove([path]);
+
+  if (error) {
+    console.error("Unable to remove replaced product image", error.message);
+  }
 }
 
 export async function createProduct(formData: FormData) {
@@ -154,10 +210,27 @@ export async function createProduct(formData: FormData) {
     redirect("/dashboard/products?status=created");
   }
 
-  const { supabase, supplierId } = await getCurrentSupplierId();
+  const { supabase, supplierId, userId } = await getCurrentSupplierContext();
 
-  if (!supplierId) {
+  if (!supplierId || !userId) {
     redirect("/dashboard/products?status=supplier-missing");
+  }
+
+  const imageFile = getFile(formData, "image");
+
+  if (!imageFile) {
+    redirect("/dashboard/products/new?status=image");
+  }
+
+  const uploadedImage = await uploadProductImage({
+    file: imageFile,
+    supplierId,
+    supabase,
+    userId,
+  });
+
+  if (!uploadedImage) {
+    redirect("/dashboard/products/new?status=image");
   }
 
   const payload: ProductInsert = {
@@ -171,7 +244,7 @@ export async function createProduct(formData: FormData) {
     currency,
     moq: getNumber(formData, "moq"),
     lead_time: getString(formData, "lead_time") || null,
-    images: getImages(formData),
+    images: [uploadedImage.url],
     status,
   };
 
@@ -181,6 +254,7 @@ export async function createProduct(formData: FormData) {
   const { error } = await productMutations.insert(payload);
 
   if (error) {
+    await removeProductImage(supabase, uploadedImage.path);
     console.error("Unable to create product", error.message);
     redirect("/dashboard/products/new?status=error");
   }
@@ -212,10 +286,48 @@ export async function updateProduct(formData: FormData) {
     redirect("/dashboard/products?status=updated");
   }
 
-  const { supabase, supplierId } = await getCurrentSupplierId();
+  const { supabase, supplierId, userId } = await getCurrentSupplierContext();
 
-  if (!supplierId) {
+  if (!supplierId || !userId) {
     redirect("/dashboard/products?status=supplier-missing");
+  }
+
+  const { data: existingData, error: existingError } = await supabase
+    .from("supplier_products")
+    .select("images")
+    .eq("id", productId)
+    .eq("supplier_id", supplierId)
+    .maybeSingle();
+  const existingProduct = existingData as { images: string[] } | null;
+
+  if (existingError || !existingProduct) {
+    if (existingError) {
+      console.error("Unable to load existing product", existingError.message);
+    }
+    redirect(`/dashboard/products/${productId}/edit?status=error`);
+  }
+
+  const imageFile = getFile(formData, "image");
+  const uploadedImage = imageFile
+    ? await uploadProductImage({
+        file: imageFile,
+        supplierId,
+        supabase,
+        userId,
+      })
+    : null;
+
+  if (imageFile && !uploadedImage) {
+    redirect(`/dashboard/products/${productId}/edit?status=image`);
+  }
+
+  const currentImageUrl = existingProduct.images[0] ?? null;
+  const nextImages = uploadedImage
+    ? [uploadedImage.url]
+    : existingProduct.images;
+
+  if (nextImages.length === 0) {
+    redirect(`/dashboard/products/${productId}/edit?status=image`);
   }
 
   const payload: ProductUpdate = {
@@ -227,7 +339,7 @@ export async function updateProduct(formData: FormData) {
     currency,
     moq: getNumber(formData, "moq"),
     lead_time: getString(formData, "lead_time") || null,
-    images: getImages(formData),
+    images: nextImages,
     status,
     updated_at: new Date().toISOString(),
   };
@@ -241,8 +353,20 @@ export async function updateProduct(formData: FormData) {
     .eq("supplier_id", supplierId);
 
   if (error) {
+    await removeProductImage(supabase, uploadedImage?.path ?? null);
     console.error("Unable to update product", error.message);
     redirect(`/dashboard/products/${productId}/edit?status=error`);
+  }
+
+  if (uploadedImage && currentImageUrl) {
+    const previousPath = getOwnedMediaPath({
+      url: currentImageUrl,
+      bucket: SUPPLIER_ASSETS_BUCKET,
+      userId,
+      supplierId,
+    });
+
+    await removeProductImage(supabase, previousPath);
   }
 
   redirect("/dashboard/products?status=updated");
@@ -255,7 +379,7 @@ export async function archiveProduct(formData: FormData) {
     redirect("/dashboard/products?status=archived");
   }
 
-  const { supabase, supplierId } = await getCurrentSupplierId();
+  const { supabase, supplierId } = await getCurrentSupplierContext();
 
   if (!productId || !supplierId) {
     redirect("/dashboard/products?status=error");

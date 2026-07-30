@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -21,8 +22,8 @@ type ProductFormLabels = {
   leadTime: string;
   leadTimePlaceholder: string;
   images: string;
-  imagePlaceholder: string;
   imageHelp: string;
+  replaceImage: string;
   status: string;
   draft: string;
   published: string;
@@ -158,15 +159,28 @@ export function ProductForm({
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="image_url">{labels.images}</Label>
+            <Label htmlFor="image">{labels.images}</Label>
+            {imageValue && (
+              <div className="relative aspect-[16/9] w-full max-w-sm overflow-hidden rounded-lg border border-white/10 bg-charcoal-800">
+                <Image
+                  src={imageValue}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, 384px"
+                />
+              </div>
+            )}
             <Input
-              id="image_url"
-              name="image_url"
-              type="url"
-              placeholder={labels.imagePlaceholder}
-              defaultValue={imageValue ?? ""}
+              id="image"
+              name="image"
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              required={!product}
             />
-            <p className="text-xs text-muted-foreground">{labels.imageHelp}</p>
+            <p className="text-xs leading-5 text-muted-foreground">
+              {imageValue ? labels.replaceImage : labels.imageHelp}
+            </p>
           </div>
 
           <div className="grid gap-2">

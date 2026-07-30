@@ -39,6 +39,8 @@ export default async function NewProductPage({
   const statusCopy =
     params.status === "missing"
       ? labels.missing
+      : params.status === "image"
+        ? labels.imageError
       : params.status === "error"
         ? labels.error
         : "";
@@ -99,8 +101,8 @@ export default async function NewProductPage({
               leadTime: labels.leadTime,
               leadTimePlaceholder: labels.leadTimePlaceholder,
               images: labels.images,
-              imagePlaceholder: labels.imagePlaceholder,
               imageHelp: labels.imageHelp,
+              replaceImage: labels.replaceImage,
               status: labels.status,
               draft: labels.draft,
               published: labels.published,

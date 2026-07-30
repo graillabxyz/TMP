@@ -85,6 +85,8 @@ export default async function EditProductPage({
   const statusCopy =
     query.status === "missing"
       ? labels.missing
+      : query.status === "image"
+        ? labels.imageError
       : query.status === "error"
         ? labels.error
         : "";
@@ -121,8 +123,8 @@ export default async function EditProductPage({
           leadTime: labels.leadTime,
           leadTimePlaceholder: labels.leadTimePlaceholder,
           images: labels.images,
-          imagePlaceholder: labels.imagePlaceholder,
           imageHelp: labels.imageHelp,
+          replaceImage: labels.replaceImage,
           status: labels.status,
           draft: labels.draft,
           published: labels.published,

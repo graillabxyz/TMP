@@ -440,10 +440,13 @@ const dictionaries = {
         currency: "Currency",
         leadTime: "Lead time",
         images: "Images",
-        imagePlaceholder: "Image URL placeholder",
         leadTimePlaceholder: "2-4 weeks",
         imageHelp:
-          "Use a public URL for now. Supabase Storage upload can plug into this field later.",
+          "Upload one JPG, PNG, or WebP image up to 5 MB. TMP stores it securely with your supplier account.",
+        replaceImage:
+          "Choose a new JPG, PNG, or WebP file only when you want to replace the current image.",
+        imageError:
+          "Add a valid JPG, PNG, or WebP image no larger than 5 MB.",
         status: "Status",
         draft: "Draft",
         published: "Published",
@@ -1148,10 +1151,13 @@ const dictionaries = {
         currency: "Devise",
         leadTime: "Délai",
         images: "Images",
-        imagePlaceholder: "URL d’image temporaire",
         leadTimePlaceholder: "2-4 semaines",
         imageHelp:
-          "Utilisez une URL publique pour l’instant. L’upload Supabase Storage pourra être branché ici plus tard.",
+          "Importez une image JPG, PNG ou WebP de 5 Mo maximum. TMP la stocke de façon sécurisée avec votre compte fournisseur.",
+        replaceImage:
+          "Choisissez un nouveau fichier JPG, PNG ou WebP uniquement pour remplacer l’image actuelle.",
+        imageError:
+          "Ajoutez une image JPG, PNG ou WebP valide de 5 Mo maximum.",
         status: "Statut",
         draft: "Brouillon",
         published: "Publié",
@@ -1850,10 +1856,13 @@ const turkishDictionary = {
       currency: "Para birimi",
       leadTime: "Teslim süresi",
       images: "Görseller",
-      imagePlaceholder: "Görsel URL yer tutucusu",
       leadTimePlaceholder: "2-4 hafta",
       imageHelp:
-        "Şimdilik herkese açık bir URL kullanın. Supabase Storage yükleme alanı daha sonra bu alana bağlanabilir.",
+        "En fazla 5 MB boyutunda JPG, PNG veya WebP görsel yükleyin. TMP görseli tedarikçi hesabınızla güvenli biçimde saklar.",
+      replaceImage:
+        "Mevcut görseli değiştirmek istediğinizde yeni bir JPG, PNG veya WebP dosyası seçin.",
+      imageError:
+        "En fazla 5 MB boyutunda geçerli bir JPG, PNG veya WebP görsel ekleyin.",
       status: "Durum",
       draft: "Taslak",
       published: "Yayında",
