@@ -107,6 +107,7 @@ export default async function HomePage() {
             </p>
 
             <form
+              id="marketplace-hero-search"
               action={productsHref}
               className="mt-8 max-w-4xl rounded-md border border-gold-300/35 bg-gold-50/[0.98] p-2 shadow-premium"
             >

@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, Factory, Search, ShieldCheck, Target } from "lucide-react";
+import { Factory, ShieldCheck, Target } from "lucide-react";
 
 import { CategoriesDropdown } from "@/components/layout/categories-dropdown";
 import { ContactDropdown } from "@/components/layout/contact-dropdown";
+import { HeaderSearch } from "@/components/layout/header-search";
 import { ProfileDropdown } from "@/components/layout/profile-dropdown";
 import { LanguageToggle } from "@/components/language-toggle";
 import { Logo } from "@/components/logo";
@@ -41,24 +42,13 @@ export async function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-white/10 bg-charcoal-900/[0.94] shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
       <div className="container flex min-h-14 items-center justify-between gap-2 py-2 sm:min-h-[4.25rem] sm:gap-4 sm:py-3">
         <Logo className="min-w-0" href={homeHref} />
-        <form
+        <HeaderSearch
           action={productsHref}
-          className="hidden h-10 min-w-0 max-w-[640px] flex-1 items-center overflow-hidden rounded-md border border-white/[0.12] bg-white/[0.065] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition focus-within:border-gold-300/50 focus-within:bg-white/[0.105] lg:flex"
-        >
-          <Search
-            className="ml-3 size-4 shrink-0 text-gold-200"
-            aria-hidden="true"
-          />
-          <input
-            name="q"
-            aria-label={t.common.search}
-            placeholder={t.home.headerSearchPlaceholder}
-            className="h-10 min-w-0 flex-1 bg-transparent px-3 text-sm text-white outline-none placeholder:text-muted-foreground"
-          />
-          <Button type="submit" className="m-1 h-8 rounded-md px-4 text-sm">
-            {t.common.search}
-          </Button>
-        </form>
+          label={t.common.search}
+          placeholder={t.home.headerSearchPlaceholder}
+          submitLabel={t.common.search}
+          variant="desktop"
+        />
         <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
           <LanguageToggle locale={locale} label={t.common.language} />
           <ContactDropdown labels={t.contact} />
@@ -94,27 +84,13 @@ export async function SiteHeader() {
           )}
         </div>
       </div>
-      <form action={productsHref} className="container flex pb-1.5 md:hidden">
-        <div className="flex h-9 min-w-0 flex-1 items-center overflow-hidden rounded-md border border-white/15 bg-white/[0.075] text-white shadow-none transition focus-within:border-gold-300/50 focus-within:bg-white/[0.11]">
-          <Search
-            className="ml-3 size-4 shrink-0 text-gold-200"
-            aria-hidden="true"
-          />
-          <input
-            name="q"
-            aria-label={t.common.search}
-            placeholder={t.home.headerSearchPlaceholder}
-            className="h-9 min-w-0 flex-1 bg-transparent px-3 text-sm text-white outline-none placeholder:text-muted-foreground"
-          />
-          <Button
-            type="submit"
-            aria-label={t.common.search}
-            className="m-0.5 size-8 shrink-0 rounded-md p-0"
-          >
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </Button>
-        </div>
-      </form>
+      <HeaderSearch
+        action={productsHref}
+        label={t.common.search}
+        placeholder={t.home.headerSearchPlaceholder}
+        submitLabel={t.common.search}
+        variant="mobile"
+      />
       <div className="hidden border-t border-white/10 bg-black/20 md:block">
         <div className="container flex min-h-10 items-center justify-between gap-4 py-1.5">
           <nav
