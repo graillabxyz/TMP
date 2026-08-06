@@ -167,7 +167,7 @@ export default async function HomePage() {
                 <Link
                   key={item.categorySlug}
                   href={`${productsHref}?category=${item.categorySlug}`}
-                  className="rounded-full border border-white/15 bg-white/[0.08] px-3 py-2 text-white transition hover:border-gold-300/45 hover:text-gold-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="whitespace-nowrap rounded-full border border-white/15 bg-white/[0.08] px-3 py-2 text-white transition hover:border-gold-300/45 hover:text-gold-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   {item.label}
                 </Link>
@@ -195,7 +195,13 @@ export default async function HomePage() {
                 <Activity className="size-4 text-gold-200" aria-hidden="true" />
                 {t.home.liveBoard}
               </div>
-              <Badge variant="secondary">{activity.stats[0]?.detail}</Badge>
+              <Link
+                href={productsHref}
+                className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-gold-100 underline-offset-4 transition hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              >
+                {activity.stats[0]?.detail}
+                <ArrowRight className="size-3.5" aria-hidden="true" />
+              </Link>
             </div>
             <div className="mt-5 grid grid-cols-3 gap-2">
               {activity.stats.map((stat) => (
