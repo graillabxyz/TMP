@@ -63,7 +63,7 @@ export default async function RegisterPage({
               {t.auth.supplierRegisterBody}
             </p>
           )}
-          <div className="mt-6 grid gap-3">
+          <div className="mt-6 hidden gap-3 lg:grid">
             {(supplierIntent
               ? [
                   {

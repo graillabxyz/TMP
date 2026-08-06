@@ -14,7 +14,6 @@ import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories, getSupplierBySlug } from "@/lib/marketplace";
-import { getPlatformActivity } from "@/lib/platform-activity";
 import { getProductBySlug } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
 
@@ -43,7 +42,6 @@ export const revalidate = 300;
 export default async function RFQPage({ searchParams }: RFQPageProps) {
   const locale = await getLocale();
   const t = getDictionary(locale);
-  const activity = getPlatformActivity(locale);
   const [categories, resolvedSearchParams, profile] = await Promise.all([
     getCategories(locale),
     searchParams,
@@ -92,28 +90,6 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                   <span>{item}</span>
                 </div>
               ))}
-            </div>
-            <div className="mt-6 hidden border-t border-white/10 pt-5 lg:block">
-              <p className="text-sm text-gold-200">
-                {activity.rfqExamplesTitle}
-              </p>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                {activity.rfqExamplesBody}
-              </p>
-              <div className="mt-4 grid gap-2">
-                {activity.rfqExamples.map((example) => (
-                  <div
-                    key={example}
-                    className="flex gap-3 text-sm leading-6 text-muted-foreground"
-                  >
-                    <CheckCircle2
-                      className="mt-1 size-4 shrink-0 text-gold-200"
-                      aria-hidden="true"
-                    />
-                    {example}
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
 

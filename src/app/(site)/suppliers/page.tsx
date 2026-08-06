@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   ChevronDown,
   PackageSearch,
-  Radio,
   Search,
   SlidersHorizontal,
 } from "lucide-react";
@@ -20,7 +19,6 @@ import { Select } from "@/components/ui/select";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories, getSuppliers } from "@/lib/marketplace";
-import { getPlatformActivity } from "@/lib/platform-activity";
 import { createMetadata } from "@/lib/seo";
 import { slugify } from "@/lib/slug";
 import { getSupplierCollectionJsonLd } from "@/lib/structured-data";
@@ -78,7 +76,6 @@ export default async function SuppliersPage({
   const locale = await getLocale();
   const params = await searchParams;
   const t = getDictionary(locale);
-  const activity = getPlatformActivity(locale);
   const query = (params.q ?? "").trim();
   const normalizedQuery = query.toLowerCase();
   const category = params.category ?? "";
@@ -89,7 +86,6 @@ export default async function SuppliersPage({
     getCategories(locale),
     getSuppliers(locale),
   ]);
-  const productsHref = getLocalizedPath(locale, "/products");
   const suppliersHref = getLocalizedPath(locale, "/suppliers");
   const selectedCategory = categories.find((item) => item.slug === category);
   const filteredSuppliers = suppliers.filter((supplier) => {
@@ -260,36 +256,6 @@ export default async function SuppliersPage({
                 </Card>
               </div>
             </ResponsiveDetails>
-            <Card className="hidden bg-white/[0.035] lg:block">
-              <CardContent className="p-5">
-                <div className="flex items-center gap-2 text-sm font-medium text-white">
-                  <Radio className="size-4 text-gold-200" aria-hidden="true" />
-                  {activity.activeBriefsTitle}
-                </div>
-                <div className="mt-4 grid gap-3">
-                  {activity.activeBriefs.slice(0, 2).map((brief) => (
-                    <Link
-                      key={`${brief.title}-${brief.market}`}
-                      href={`${productsHref}?category=${brief.categorySlug}`}
-                      className="rounded-md border border-white/10 bg-white/[0.035] p-3 transition hover:border-gold-300/35 hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                    >
-                      <p className="text-sm font-medium leading-5 text-white">
-                        {brief.title}
-                      </p>
-                      <p className="mt-2 text-xs text-muted-foreground">
-                        {brief.market} / {brief.quantity}
-                      </p>
-                      <div className="mt-3 flex items-center justify-between gap-3">
-                        <span className="text-xs text-gold-200">
-                          {brief.updated}
-                        </span>
-                        <Badge variant="secondary">{brief.stage}</Badge>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
           </aside>
 
           {filteredSuppliers.length > 0 ? (

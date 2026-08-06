@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { ArrowRight, Building2, Check, Chrome, UserRound } from "lucide-react";
+import { ArrowRight, Building2, Chrome } from "lucide-react";
 
 import {
   signInWithEmail,
@@ -105,18 +105,9 @@ export function OnboardingAuthCard({
     [labels, status],
   );
   const nextQuery = encodeURIComponent(nextPath);
-  const accountTitle = supplierIntent
-    ? labels.supplierAccountTitle
-    : labels.accountTitle;
-  const accountBody = supplierIntent
-    ? labels.supplierAccountBody
-    : labels.accountBody;
   const googleLabel = supplierIntent
     ? labels.supplierContinueWithGoogle
     : labels.continueWithGoogle;
-  const googleHelp = supplierIntent
-    ? labels.supplierGoogleHelp
-    : labels.googleHelp;
   const submitLabel = supplierIntent
     ? mode === "register"
       ? labels.supplierCreateAccount
@@ -128,40 +119,22 @@ export function OnboardingAuthCard({
   return (
     <Card className="bg-white/[0.035]">
       <CardContent className="p-5 sm:p-6">
-        <div className="grid gap-3">
-          <div className="relative flex items-start gap-3 rounded-md border border-gold-300/30 bg-gold-300/[0.07] p-3.5 text-sm text-white">
-            <UserRound
+        {supplierIntent && (
+          <div className="flex items-start gap-3 rounded-md border border-white/10 bg-white/[0.025] p-3.5 text-sm text-white">
+            <Building2
               className="mt-0.5 size-5 text-gold-100"
               aria-hidden="true"
             />
             <span>
-              <span className="block font-medium">{accountTitle}</span>
-              <span className="mt-1 block text-xs leading-5 text-muted-foreground">
-                {accountBody}
+              <span className="block font-medium">
+                {labels.supplierIntentTitle}
               </span>
-            </span>
-            <span className="text-charcoal-950 absolute right-3 top-3 flex size-5 items-center justify-center rounded-full bg-gold-300">
-              <Check className="size-3" aria-hidden="true" />
+              <span className="mt-1 block text-xs leading-5 text-muted-foreground">
+                {labels.supplierIntentBody}
+              </span>
             </span>
           </div>
-
-          {supplierIntent && (
-            <div className="flex items-start gap-3 rounded-md border border-white/10 bg-white/[0.025] p-3.5 text-sm text-white">
-              <Building2
-                className="mt-0.5 size-5 text-gold-100"
-                aria-hidden="true"
-              />
-              <span>
-                <span className="block font-medium">
-                  {labels.supplierIntentTitle}
-                </span>
-                <span className="mt-1 block text-xs leading-5 text-muted-foreground">
-                  {labels.supplierIntentBody}
-                </span>
-              </span>
-            </div>
-          )}
-        </div>
+        )}
 
         {statusMessage && (
           <div
@@ -176,7 +149,10 @@ export function OnboardingAuthCard({
           </div>
         )}
 
-        <form action={signInWithGoogle} className="mt-6">
+        <form
+          action={signInWithGoogle}
+          className={supplierIntent ? "mt-5" : undefined}
+        >
           <input type="hidden" name="auth_mode" value={mode} />
           <input type="hidden" name="next" value={nextPath} />
           <input type="hidden" name="locale" value={locale} />
@@ -189,9 +165,6 @@ export function OnboardingAuthCard({
             <Chrome aria-hidden="true" />
             {googleLabel}
           </Button>
-          <p className="mt-3 text-center text-xs leading-5 text-muted-foreground">
-            {googleHelp}
-          </p>
         </form>
 
         <div className="my-5 flex items-center gap-3 text-xs uppercase text-muted-foreground">

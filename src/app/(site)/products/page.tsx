@@ -5,7 +5,6 @@ import {
   PackageSearch,
   Search,
   SlidersHorizontal,
-  TrendingUp,
 } from "lucide-react";
 
 import { ProductCard } from "@/components/product-card";
@@ -20,7 +19,6 @@ import { Select } from "@/components/ui/select";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories, getSuppliers } from "@/lib/marketplace";
-import { getPlatformActivity } from "@/lib/platform-activity";
 import { getProducts } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
 import { getProductCollectionJsonLd } from "@/lib/structured-data";
@@ -54,7 +52,6 @@ export default async function ProductsPage({
   const locale = await getLocale();
   const params = await searchParams;
   const t = getDictionary(locale);
-  const activity = getPlatformActivity(locale);
   const query = params.q ?? "";
   const category = params.category ?? "";
   const supplier = params.supplier ?? "";
@@ -184,39 +181,6 @@ export default async function ProductsPage({
                 </Card>
               </div>
             </ResponsiveDetails>
-            <Card className="hidden bg-white/[0.035] lg:block">
-              <CardContent className="p-5">
-                <div className="flex items-center gap-2 text-sm font-medium text-white">
-                  <TrendingUp
-                    className="size-4 text-gold-200"
-                    aria-hidden="true"
-                  />
-                  {activity.demandTitle}
-                </div>
-                <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                  {activity.demandBody}
-                </p>
-                <div className="mt-5 grid gap-3">
-                  {activity.categoryDemand.map((item) => (
-                    <Link
-                      key={item.categorySlug}
-                      href={`${productsHref}?category=${item.categorySlug}`}
-                      className="rounded-md border border-white/10 bg-white/[0.035] p-3 transition hover:border-gold-300/35 hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                    >
-                      <div className="flex items-center justify-between gap-3">
-                        <span className="text-sm font-medium text-white">
-                          {item.label}
-                        </span>
-                        <Badge variant="secondary">{item.value}</Badge>
-                      </div>
-                      <p className="mt-2 text-xs leading-5 text-muted-foreground">
-                        {item.detail}
-                      </p>
-                    </Link>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
           </aside>
 
           {products.length > 0 ? (

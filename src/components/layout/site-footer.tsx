@@ -22,7 +22,7 @@ export async function SiteFooter() {
   const footerLinks = [
     { label: t.footer.suppliers, href: getLocalizedPath(locale, "/suppliers") },
     { label: t.footer.rfq, href: getLocalizedPath(locale, "/rfq") },
-    { label: t.footer.buyerLogin, href: getLocalizedPath(locale, "/login") },
+    { label: t.nav.join, href: getLocalizedPath(locale, "/register") },
     {
       label: t.footer.supplierOnboarding,
       href: supplierUpgradeHref,
