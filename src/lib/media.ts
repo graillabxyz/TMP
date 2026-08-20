@@ -11,6 +11,7 @@ export const SUPPLIER_ASSETS_BUCKET = "supplier-assets";
 export const VERIFICATION_DOCUMENTS_BUCKET = "verification-documents";
 export const RFQ_ATTACHMENTS_BUCKET = "rfq-attachments";
 export const MAX_PRODUCT_IMAGE_BYTES = 5 * 1024 * 1024;
+export const MAX_PRODUCT_IMAGES = 5;
 export const MAX_VERIFICATION_DOCUMENT_BYTES = 10 * 1024 * 1024;
 export const MAX_RFQ_ATTACHMENT_BYTES = 10 * 1024 * 1024;
 

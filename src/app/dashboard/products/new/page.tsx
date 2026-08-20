@@ -13,10 +13,6 @@ import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
 import { createMetadata } from "@/lib/seo";
 
-type NewProductPageProps = {
-  searchParams: Promise<{ status?: string }>;
-};
-
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   const t = getDictionary(locale);
@@ -28,11 +24,8 @@ export async function generateMetadata(): Promise<Metadata> {
   });
 }
 
-export default async function NewProductPage({
-  searchParams,
-}: NewProductPageProps) {
+export default async function NewProductPage() {
   const locale = await getLocale();
-  const params = await searchParams;
   const t = getDictionary(locale);
   const labels = t.dashboard.productManager;
   const profile = await getCurrentProfile();
@@ -48,14 +41,6 @@ export default async function NewProductPage({
   }
 
   const categories = await getCategories(locale);
-  const statusCopy =
-    params.status === "missing"
-      ? labels.missing
-      : params.status === "image"
-        ? labels.imageError
-        : params.status === "error"
-          ? labels.error
-          : "";
 
   return (
     <DashboardShell
@@ -92,40 +77,14 @@ export default async function NewProductPage({
           </CardContent>
         </Card>
       ) : (
-        <>
-          {statusCopy && (
-            <div className="mb-5 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-red-100">
-              {statusCopy}
-            </div>
-          )}
-          <ProductForm
-            action={createProduct}
-            categories={categories}
-            cancelHref={getLocalizedPath(locale, "/dashboard/products")}
-            locale={locale}
-            labels={{
-              title: labels.createProduct,
-              productTitle: labels.productTitle,
-              category: labels.category,
-              description: labels.productDescription,
-              minimumOrderQuantity: labels.minimumOrderQuantity,
-              priceMin: labels.priceMin,
-              priceMax: labels.priceMax,
-              currency: labels.currency,
-              leadTime: labels.leadTime,
-              leadTimePlaceholder: labels.leadTimePlaceholder,
-              images: labels.images,
-              imageHelp: labels.imageHelp,
-              replaceImage: labels.replaceImage,
-              status: labels.status,
-              draft: labels.draft,
-              published: labels.published,
-              archived: labels.archived,
-              submit: labels.saveDraft,
-              cancel: t.common.cancel,
-            }}
-          />
-        </>
+        <ProductForm
+          action={createProduct}
+          categories={categories}
+          cancelHref={getLocalizedPath(locale, "/dashboard/products")}
+          cancelLabel={t.common.cancel}
+          locale={locale}
+          labels={labels}
+        />
       )}
     </DashboardShell>
   );

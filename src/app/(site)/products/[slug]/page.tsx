@@ -1,10 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ArrowLeft, BadgeCheck, Factory } from "lucide-react";
 
 import { ProductCard } from "@/components/product-card";
+import { ProductGallery } from "@/components/product-gallery";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -111,22 +111,12 @@ export default async function ProductDetailPage({
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_400px]">
-          <div>
-            <div className="relative aspect-[16/11] overflow-hidden rounded-lg border border-white/10 bg-charcoal-800 shadow-premium">
-              <Image
-                src={product.images[0] ?? "/brand/tmp-logo.webp"}
-                alt={product.title}
-                fill
-                priority
-                sizes="(min-width: 1024px) 60vw, 100vw"
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
-              <Badge className="absolute left-5 top-5">
-                {product.category}
-              </Badge>
-            </div>
-          </div>
+          <ProductGallery
+            category={product.category}
+            images={product.images}
+            productTitle={product.title}
+            viewPhotoLabel={t.products.viewPhoto}
+          />
 
           <aside className="grid gap-5 self-start lg:sticky lg:top-24">
             <Card className="bg-white/[0.035]">

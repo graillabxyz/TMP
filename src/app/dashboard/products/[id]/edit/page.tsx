@@ -16,7 +16,6 @@ import { createMetadata } from "@/lib/seo";
 
 type EditProductPageProps = {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ status?: string }>;
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -32,10 +31,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function EditProductPage({
   params,
-  searchParams,
 }: EditProductPageProps) {
   const locale = await getLocale();
-  const [{ id }, query] = await Promise.all([params, searchParams]);
+  const { id } = await params;
   const t = getDictionary(locale);
   const labels = t.dashboard.productManager;
   const profile = await getCurrentProfile();
@@ -92,15 +90,6 @@ export default async function EditProductPage({
     getCategories(locale),
     getEditableProduct(id),
   ]);
-  const statusCopy =
-    query.status === "missing"
-      ? labels.missing
-      : query.status === "image"
-        ? labels.imageError
-        : query.status === "error"
-          ? labels.error
-          : "";
-
   if (!product) {
     notFound();
   }
@@ -112,38 +101,14 @@ export default async function EditProductPage({
       description={labels.description}
       active="products"
     >
-      {statusCopy && (
-        <div className="mb-5 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-red-100">
-          {statusCopy}
-        </div>
-      )}
       <ProductForm
         action={updateProduct}
         categories={categories}
         cancelHref={getLocalizedPath(locale, "/dashboard/products")}
+        cancelLabel={t.common.cancel}
         locale={locale}
         product={product}
-        labels={{
-          title: labels.editProduct,
-          productTitle: labels.productTitle,
-          category: labels.category,
-          description: labels.productDescription,
-          minimumOrderQuantity: labels.minimumOrderQuantity,
-          priceMin: labels.priceMin,
-          priceMax: labels.priceMax,
-          currency: labels.currency,
-          leadTime: labels.leadTime,
-          leadTimePlaceholder: labels.leadTimePlaceholder,
-          images: labels.images,
-          imageHelp: labels.imageHelp,
-          replaceImage: labels.replaceImage,
-          status: labels.status,
-          draft: labels.draft,
-          published: labels.published,
-          archived: labels.archived,
-          submit: labels.updateProduct,
-          cancel: t.common.cancel,
-        }}
+        labels={labels}
       />
     </DashboardShell>
   );
