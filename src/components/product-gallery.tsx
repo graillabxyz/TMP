@@ -34,8 +34,8 @@ export function ProductGallery({
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
-        <Badge className="absolute left-4 top-4 sm:left-5 sm:top-5">
-          {category}
+        <Badge className="absolute left-4 top-4 max-w-[calc(100%-2rem)] sm:left-5 sm:top-5 sm:max-w-[calc(100%-2.5rem)]">
+          <span className="truncate">{category}</span>
         </Badge>
       </div>
 

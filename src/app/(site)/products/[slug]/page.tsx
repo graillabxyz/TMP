@@ -106,7 +106,7 @@ export default async function ProductDetailPage({
 
         <div className="mb-6 max-w-4xl">
           <Badge>{t.products.productDetails}</Badge>
-          <h1 className="page-title">{product.title}</h1>
+          <h1 className="page-title break-words">{product.title}</h1>
           <p className="page-description max-w-3xl">{product.description}</p>
         </div>
 
@@ -118,7 +118,7 @@ export default async function ProductDetailPage({
             viewPhotoLabel={t.products.viewPhoto}
           />
 
-          <aside className="grid gap-5 self-start lg:sticky lg:top-24">
+          <aside className="grid gap-5 self-start lg:sticky lg:top-32">
             <Card className="bg-white/[0.035]">
               <CardContent className="p-6">
                 <p className="text-sm text-gold-200">
@@ -126,7 +126,10 @@ export default async function ProductDetailPage({
                 </p>
                 <div className="mt-4 flex items-start gap-3">
                   <div className="flex size-11 shrink-0 items-center justify-center rounded-md border border-gold-300/25 bg-gold-300/10">
-                    <Factory className="size-5 text-gold-100" />
+                    <Factory
+                      className="size-5 text-gold-100"
+                      aria-hidden="true"
+                    />
                   </div>
                   <div>
                     <h2 className="font-semibold text-white">
@@ -150,37 +153,37 @@ export default async function ProductDetailPage({
                 </div>
 
                 <div className="mt-6 grid gap-4 border-t border-white/10 pt-5 text-sm">
-                  <div className="flex items-center justify-between gap-4">
+                  <div className="flex min-w-0 items-start justify-between gap-4">
                     <span className="text-muted-foreground">
                       {t.common.moq}
                     </span>
-                    <span className="font-medium text-white">
+                    <span className="min-w-0 text-right font-medium text-white">
                       {product.moq
                         ? `${product.moq} ${t.common.units}`
                         : t.common.onRequest}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between gap-4">
+                  <div className="flex min-w-0 items-start justify-between gap-4">
                     <span className="text-muted-foreground">
                       {t.common.price}
                     </span>
-                    <span className="font-medium text-white">
+                    <span className="min-w-0 text-right font-medium text-white">
                       {formatPriceRange(product, t.products.quote)}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between gap-4">
+                  <div className="flex min-w-0 items-start justify-between gap-4">
                     <span className="text-muted-foreground">
                       {t.common.leadTime}
                     </span>
-                    <span className="font-medium text-white">
+                    <span className="min-w-0 text-right font-medium text-white">
                       {product.leadTime ?? t.common.onRequest}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between gap-4">
+                  <div className="flex min-w-0 items-start justify-between gap-4">
                     <span className="text-muted-foreground">
                       {t.common.category}
                     </span>
-                    <span className="font-medium text-white">
+                    <span className="min-w-0 break-words text-right font-medium text-white">
                       {product.category}
                     </span>
                   </div>
@@ -224,7 +227,6 @@ export default async function ProductDetailPage({
                     moq: t.common.moq,
                     price: t.common.price,
                     leadTime: t.common.leadTime,
-                    viewProduct: t.products.viewProduct,
                     quote: t.products.quote,
                     requestQuote: t.products.requestQuote,
                     units: t.common.units,

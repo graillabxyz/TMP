@@ -91,9 +91,9 @@ export default async function ProductsPage({
         </div>
 
         <div className="mt-7 grid gap-5 lg:grid-cols-[280px_1fr]">
-          <aside className="grid gap-4 self-start lg:sticky lg:top-24">
+          <aside className="grid gap-4 self-start lg:sticky lg:top-32">
             <ResponsiveDetails className="group">
-              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-md border border-white/10 bg-white/[0.035] px-4 text-sm font-medium text-white transition hover:border-gold-300/30 hover:bg-white/[0.05] lg:hidden">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-md border border-white/10 bg-white/[0.035] px-4 text-sm font-medium text-white transition hover:border-gold-300/30 hover:bg-white/[0.05] lg:hidden [&::-webkit-details-marker]:hidden">
                 <span className="flex items-center gap-2">
                   <SlidersHorizontal
                     className="size-4 text-gold-200"
@@ -170,7 +170,7 @@ export default async function ProductsPage({
 
                       <div className="grid grid-cols-[1fr_auto] gap-2">
                         <Button type="submit">{t.common.search}</Button>
-                        <Button asChild size="sm" variant="ghost">
+                        <Button asChild variant="ghost">
                           <Link href={productsHref}>
                             {t.common.clearFilters}
                           </Link>
@@ -199,7 +199,6 @@ export default async function ProductsPage({
                     moq: t.common.moq,
                     price: t.common.price,
                     leadTime: t.common.leadTime,
-                    viewProduct: t.products.viewProduct,
                     quote: t.products.quote,
                     requestQuote: t.products.requestQuote,
                     units: t.common.units,

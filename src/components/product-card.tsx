@@ -17,7 +17,6 @@ type ProductCardProps = {
     moq: string;
     price: string;
     leadTime: string;
-    viewProduct: string;
     quote: string;
     requestQuote: string;
     units: string;
@@ -49,22 +48,27 @@ export function ProductCard({
             className="object-cover transition duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-          <Badge className="absolute left-3 top-3" variant="secondary">
-            {product.category}
+          <Badge
+            className="absolute left-3 top-3 max-w-[calc(100%-1.5rem)]"
+            variant="secondary"
+          >
+            <span className="truncate">{product.category}</span>
           </Badge>
-          {product.supplierVerified && (
-            <Badge className="absolute right-3 top-3" variant="success">
-              <BadgeCheck className="mr-1 size-3" aria-hidden="true" />
-              {labels.verified}
-            </Badge>
-          )}
         </div>
       </Link>
       <CardContent className="p-4 sm:p-4">
-        <p className="line-clamp-1 text-xs text-gold-200">
-          {product.supplierName}
-        </p>
-        <h3 className="mt-1.5 min-h-11 text-base font-semibold leading-[1.4] text-white">
+        <div className="min-h-14">
+          <p className="line-clamp-1 text-xs text-gold-200">
+            {product.supplierName}
+          </p>
+          {product.supplierVerified && (
+            <Badge className="mt-2 max-w-full" variant="success">
+              <BadgeCheck className="mr-1 size-3" aria-hidden="true" />
+              <span className="truncate">{labels.verified}</span>
+            </Badge>
+          )}
+        </div>
+        <h3 className="mt-2 min-h-11 break-words text-base font-semibold leading-[1.4] text-white">
           <Link
             href={productHref}
             className="line-clamp-2 rounded-sm underline-offset-4 transition hover:text-gold-100 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -74,7 +78,9 @@ export function ProductCard({
         </h3>
 
         <p className="mt-3 text-xs text-muted-foreground">{labels.price}</p>
-        <p className="mt-0.5 text-xl font-semibold text-gold-100">{price}</p>
+        <p className="mt-0.5 break-words text-xl font-semibold text-gold-100">
+          {price}
+        </p>
 
         <p className="mt-2 line-clamp-2 text-sm leading-5 text-muted-foreground">
           {product.description}
@@ -83,17 +89,17 @@ export function ProductCard({
         <div className="mt-4 grid grid-cols-2 gap-3 border-t border-white/10 pt-3 text-xs">
           <div>
             <p className="text-muted-foreground">{labels.moq}</p>
-            <p className="mt-1 truncate font-medium text-white">{moq}</p>
+            <p className="mt-1 line-clamp-2 font-medium text-white">{moq}</p>
           </div>
           <div>
             <p className="text-muted-foreground">{labels.leadTime}</p>
-            <p className="mt-1 truncate font-medium text-white">
+            <p className="mt-1 line-clamp-2 font-medium text-white">
               {product.leadTime ?? labels.onRequest}
             </p>
           </div>
         </div>
 
-        <Button asChild className="mt-4 w-full" size="sm">
+        <Button asChild className="mt-4 w-full">
           <Link
             href={{
               pathname: rfqHref,
