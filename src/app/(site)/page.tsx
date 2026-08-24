@@ -91,8 +91,6 @@ export default async function HomePage() {
         />
         <div className="from-black/88 via-black/72 absolute inset-0 -z-10 bg-gradient-to-b to-background" />
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(0,0,0,.78),rgba(0,0,0,.52)_52%,rgba(0,0,0,.76))]" />
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_24%_28%,rgba(216,174,70,0.19),transparent_30rem)]" />
-
         <div className="container flex min-h-[52svh] items-center py-10 sm:min-h-[56svh] sm:py-12 lg:min-h-[560px]">
           <div className="w-full max-w-4xl animate-fade-up">
             <Badge>
@@ -151,7 +149,7 @@ export default async function HomePage() {
                 <Link
                   key={item.slug}
                   href={`${productsHref}?category=${item.slug}`}
-                  className="whitespace-nowrap rounded-full border border-white/15 bg-white/[0.08] px-3 py-2 text-white transition hover:border-gold-300/45 hover:text-gold-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="inline-flex min-h-11 items-center whitespace-nowrap rounded-full border border-white/15 bg-white/[0.08] px-3 py-2 text-white transition hover:border-gold-300/45 hover:text-gold-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   {item.name}
                 </Link>
@@ -186,7 +184,7 @@ export default async function HomePage() {
                   <Link
                     key={tool}
                     href={href}
-                    className="inline-flex items-center gap-2 rounded-md border border-white/10 bg-white/[0.045] px-3 py-2 text-sm text-white transition hover:border-gold-300/35 hover:bg-white/[0.075] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    className="inline-flex min-h-11 items-center gap-2 rounded-md border border-white/10 bg-white/[0.045] px-3 py-2 text-sm text-white transition hover:border-gold-300/35 hover:bg-white/[0.075] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                   >
                     <Icon className="size-4 text-gold-200" aria-hidden="true" />
                     {tool}
@@ -198,15 +196,9 @@ export default async function HomePage() {
 
           <div className="mt-6 grid gap-4 lg:grid-cols-[280px_1fr]">
             <div className="rounded-lg border border-white/10 bg-background/70 p-4 shadow-premium">
-              <div className="flex items-center justify-between gap-3">
-                <p className="font-semibold text-white">
-                  {t.home.categoriesForYou}
-                </p>
-                <ChevronRight
-                  className="size-4 text-gold-200"
-                  aria-hidden="true"
-                />
-              </div>
+              <p className="font-semibold text-white">
+                {t.home.categoriesForYou}
+              </p>
               <div className="mt-4 grid gap-1">
                 {categories.slice(0, 6).map((category) => {
                   const Icon = categoryIconMap[category.slug] ?? Factory;
@@ -215,7 +207,7 @@ export default async function HomePage() {
                     <Link
                       key={category.slug}
                       href={`${productsHref}?category=${category.slug}`}
-                      className="group flex items-center justify-between gap-3 rounded-md px-2 py-2.5 text-sm text-muted-foreground transition hover:bg-white/[0.055] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      className="group flex min-h-11 items-center justify-between gap-3 rounded-md px-2 py-2.5 text-sm text-muted-foreground transition hover:bg-white/[0.055] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
                       <span className="flex min-w-0 items-center gap-3">
                         <Icon
@@ -258,9 +250,9 @@ export default async function HomePage() {
                       className="object-cover transition duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <div className="flex items-center justify-between gap-3 p-4 text-xs text-muted-foreground">
-                    <span>{product.category}</span>
-                    <span className="text-gold-200">{product.moq}</span>
+                  <div className="flex min-w-0 items-center justify-between gap-3 p-4 text-xs text-muted-foreground">
+                    <span className="min-w-0 truncate">{product.category}</span>
+                    <span className="shrink-0 text-gold-200">{product.moq}</span>
                   </div>
                 </Link>
               ))}
@@ -388,9 +380,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section-shell pt-0">
-        <div className="relative overflow-hidden rounded-lg border border-gold-300/20 bg-gold-300/[0.08] p-8 shadow-glow sm:p-10 lg:p-12">
-          <div className="absolute inset-x-0 top-0 h-px bg-gold-line" />
+      <section className="border-y border-gold-300/20 bg-gold-300/[0.07]">
+        <div className="section-shell">
           <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
               <Badge variant="outline">
