@@ -12,6 +12,7 @@ type BillingActionsProps = {
   preparingLabel: string;
   openingLabel: string;
   canManageSubscription: boolean;
+  canStartSubscription: boolean;
   errorLabel: string;
   locale: Locale;
 };
@@ -39,6 +40,7 @@ export function BillingActions({
   preparingLabel,
   openingLabel,
   canManageSubscription,
+  canStartSubscription,
   errorLabel,
   locale,
 }: BillingActionsProps) {
@@ -59,19 +61,23 @@ export function BillingActions({
 
   return (
     <div className="grid min-w-0 gap-3">
-      <div className="grid min-w-0 gap-3 xl:grid-cols-2">
-        <Button
-          type="button"
-          size="lg"
-          className="h-auto min-h-12 min-w-0 whitespace-normal py-3 text-center leading-5"
-          disabled={loading !== null}
-          onClick={() =>
-            openBilling("/api/stripe/create-checkout-session", "checkout")
-          }
-        >
-          <CreditCard aria-hidden="true" />
-          {loading === "checkout" ? preparingLabel : subscribeLabel}
-        </Button>
+      <div
+        className={canStartSubscription ? "grid min-w-0 gap-3 xl:grid-cols-2" : "grid min-w-0 gap-3"}
+      >
+        {canStartSubscription && (
+          <Button
+            type="button"
+            size="lg"
+            className="h-auto min-h-12 min-w-0 whitespace-normal py-3 text-center leading-5"
+            disabled={loading !== null}
+            onClick={() =>
+              openBilling("/api/stripe/create-checkout-session", "checkout")
+            }
+          >
+            <CreditCard aria-hidden="true" />
+            {loading === "checkout" ? preparingLabel : subscribeLabel}
+          </Button>
+        )}
         <Button
           type="button"
           size="lg"

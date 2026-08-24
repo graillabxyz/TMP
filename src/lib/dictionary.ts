@@ -693,6 +693,9 @@ const dictionaries = {
       documentUploaded:
         "Uploaded securely. Choose a new file only to replace it.",
       notes: "Notes for review",
+      notesPlaceholder:
+        "Add context that will help the review team verify your business.",
+      openProfile: "Open profile",
       submitDocuments: "Submit for review",
       statusSubmitted: "Verification documents submitted for admin review.",
       statusSupplierStarted:
@@ -703,20 +706,20 @@ const dictionaries = {
       statusError:
         "We could not update verification details. Please try again.",
       checkoutPlaceholder:
-        "Checkout placeholder opened. Stripe is ready to connect when credentials are added.",
+        "Verification memberships are temporarily unavailable. Please try again later.",
       checkoutSuccess:
         "Checkout completed. Stripe will confirm the subscription by webhook.",
       checkoutExisting:
         "A verification membership already exists. Use Manage subscription to review billing.",
       checkoutCancelled: "Checkout cancelled. No subscription was started.",
       checkoutError:
-        "Stripe checkout could not be created. Check the subscription environment variables.",
+        "We could not open verification membership checkout. Please try again later.",
       billingActionError:
         "Stripe billing could not be opened. Please try again in a moment.",
       preparing: "Preparing...",
       opening: "Opening...",
       portalPlaceholder:
-        "Customer portal placeholder opened. Live portal sessions will work after Stripe is configured.",
+        "Membership management is temporarily unavailable. Please try again later.",
       portalMissingCustomer:
         "Start a verification subscription before opening the customer portal.",
       portalError:
@@ -1564,6 +1567,9 @@ const dictionaries = {
       documentUploaded:
         "Importé en toute sécurité. Choisissez un nouveau fichier uniquement pour le remplacer.",
       notes: "Notes pour la revue",
+      notesPlaceholder:
+        "Ajoutez les informations qui aideront l’équipe à vérifier votre entreprise.",
+      openProfile: "Ouvrir le profil",
       submitDocuments: "Soumettre pour revue",
       statusSubmitted: "Documents soumis pour revue admin.",
       statusSupplierStarted:
@@ -1575,20 +1581,20 @@ const dictionaries = {
       statusError:
         "Impossible de mettre à jour les détails de vérification. Veuillez réessayer.",
       checkoutPlaceholder:
-        "Placeholder Checkout ouvert. Stripe sera connecté dès que les identifiants seront ajoutés.",
+        "Les abonnements de vérification sont temporairement indisponibles. Veuillez réessayer plus tard.",
       checkoutSuccess:
         "Checkout terminé. Stripe confirmera l’abonnement via webhook.",
       checkoutExisting:
         "Un abonnement de vérification existe déjà. Utilisez Gérer l’abonnement pour consulter la facturation.",
       checkoutCancelled: "Checkout annulé. Aucun abonnement n’a été lancé.",
       checkoutError:
-        "Impossible de créer le checkout Stripe. Vérifiez les variables d’environnement.",
+        "Impossible d’ouvrir le paiement de l’abonnement de vérification. Veuillez réessayer plus tard.",
       billingActionError:
         "Impossible d’ouvrir la facturation Stripe. Veuillez réessayer dans un instant.",
       preparing: "Préparation...",
       opening: "Ouverture...",
       portalPlaceholder:
-        "Placeholder portail client ouvert. Les sessions live fonctionneront après configuration Stripe.",
+        "La gestion de l’abonnement est temporairement indisponible. Veuillez réessayer plus tard.",
       portalMissingCustomer:
         "Lancez un abonnement de vérification avant d’ouvrir le portail client.",
       portalError:
@@ -2422,6 +2428,9 @@ const turkishDictionary = {
     documentUploaded:
       "Güvenli biçimde yüklendi. Yalnızca değiştirmek için yeni dosya seçin.",
     notes: "İnceleme notları",
+    notesPlaceholder:
+      "İnceleme ekibinin işletmenizi doğrulamasına yardımcı olacak bilgileri ekleyin.",
+    openProfile: "Profili aç",
     submitDocuments: "İncelemeye gönder",
     statusSubmitted: "Doğrulama belgeleri yönetici incelemesine gönderildi.",
     statusSupplierStarted:
@@ -2431,18 +2440,18 @@ const turkishDictionary = {
       "Geçerli işletme lisansı ve şirket kayıt dosyaları ekleyin. En fazla 10 MB PDF, JPG, PNG veya WebP kullanın.",
     statusError: "Doğrulama detayları güncellenemedi. Lütfen tekrar deneyin.",
     checkoutPlaceholder:
-      "Checkout yer tutucusu açıldı. Kimlik bilgileri eklendiğinde Stripe bağlanmaya hazır.",
+      "Doğrulama üyelikleri geçici olarak kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
     checkoutSuccess:
       "Checkout tamamlandı. Stripe aboneliği webhook ile onaylayacak.",
     checkoutExisting:
       "Bir doğrulama üyeliği zaten mevcut. Faturalandırmayı incelemek için Aboneliği yönet seçeneğini kullanın.",
     checkoutCancelled: "Checkout iptal edildi. Abonelik başlatılmadı.",
     checkoutError:
-      "Stripe checkout oluşturulamadı. Abonelik ortam değişkenlerini kontrol edin.",
+      "Doğrulama üyeliği ödemesi açılamadı. Lütfen daha sonra tekrar deneyin.",
     billingActionError:
       "Stripe faturalandırma açılamadı. Lütfen birazdan tekrar deneyin.",
     portalPlaceholder:
-      "Müşteri portalı yer tutucusu açıldı. Canlı portal oturumları Stripe yapılandırıldıktan sonra çalışır.",
+      "Üyelik yönetimi geçici olarak kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
     portalMissingCustomer:
       "Müşteri portalını açmadan önce doğrulama aboneliği başlatın.",
     portalError: "Stripe müşteri portalı açılamadı. Lütfen tekrar deneyin.",

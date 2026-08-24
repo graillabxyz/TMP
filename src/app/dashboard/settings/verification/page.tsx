@@ -2,7 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import {
+  AlertCircle,
   BadgeCheck,
+  CheckCircle2,
   FileCheck2,
   SearchCheck,
   ShieldCheck,
@@ -22,6 +24,7 @@ import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 import { getVerificationWorkspace } from "@/lib/verification";
 
 type VerificationPageProps = {
@@ -54,6 +57,30 @@ function badgeVariant(status: string) {
   }
 
   return "secondary" as const;
+}
+
+function getStatusTone(params: Awaited<VerificationPageProps["searchParams"]>) {
+  if (
+    params.status === "error" ||
+    params.status === "document" ||
+    params.status === "missing-company" ||
+    params.checkout === "error" ||
+    params.portal === "error" ||
+    params.portal === "missing-customer"
+  ) {
+    return "error" as const;
+  }
+
+  if (
+    params.status === "submitted" ||
+    params.status === "supplier-started" ||
+    params.checkout === "success" ||
+    params.checkout === "existing"
+  ) {
+    return "success" as const;
+  }
+
+  return "neutral" as const;
 }
 
 export default async function VerificationSettingsPage({
@@ -109,6 +136,7 @@ export default async function VerificationSettingsPage({
                             : params.portal === "error"
                               ? copy.portalError
                               : "";
+  const statusTone = getStatusTone(params);
 
   return (
     <DashboardShell
@@ -119,7 +147,7 @@ export default async function VerificationSettingsPage({
     >
       {profile?.role === "buyer" && (
         <Card className="bg-white/[0.035]">
-          <CardContent className="p-8">
+          <CardContent className="p-5 sm:p-7">
             <ShieldCheck className="size-8 text-gold-200" aria-hidden="true" />
             <h2 className="mt-4 text-xl font-semibold text-white">
               {t.profileSettings.supplierUpgradeTitle}
@@ -127,7 +155,7 @@ export default async function VerificationSettingsPage({
             <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
               {t.profileSettings.verifiedLockedBody}
             </p>
-            <Button asChild className="mt-6">
+            <Button asChild className="mt-6 w-full sm:w-auto">
               <Link href={getLocalizedPath(locale, "/dashboard/profile")}>
                 {t.profileSettings.startSupplierUpgrade}
               </Link>
@@ -139,14 +167,31 @@ export default async function VerificationSettingsPage({
       {profile?.role !== "buyer" && (
         <>
           {statusMessage && (
-            <div className="mb-6 rounded-lg border border-gold-300/20 bg-gold-300/10 px-4 py-3 text-sm text-gold-50">
+            <div
+              role={statusTone === "error" ? "alert" : "status"}
+              aria-live="polite"
+              className={cn(
+                "mb-6 flex items-start gap-3 rounded-lg border px-4 py-3 text-sm leading-6",
+                statusTone === "error" &&
+                  "border-destructive/35 bg-destructive/10 text-red-100",
+                statusTone === "success" &&
+                  "border-emerald-400/25 bg-emerald-400/10 text-emerald-50",
+                statusTone === "neutral" &&
+                  "border-white/10 bg-white/[0.04] text-muted-foreground",
+              )}
+            >
+              {statusTone === "error" ? (
+                <AlertCircle className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+              ) : (
+                <CheckCircle2 className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+              )}
               {statusMessage}
             </div>
           )}
 
           {workspace.state !== "ready" && (
             <Card className="bg-white/[0.035]">
-              <CardContent className="p-8">
+              <CardContent className="p-5 sm:p-7">
                 <ShieldCheck
                   className="size-8 text-gold-200"
                   aria-hidden="true"
@@ -156,6 +201,13 @@ export default async function VerificationSettingsPage({
                     ? copy.loginRequired
                     : copy.missingSupplier}
                 </h2>
+                {workspace.state !== "unauthenticated" && (
+                  <Button asChild className="mt-6 w-full sm:w-auto">
+                    <Link href={getLocalizedPath(locale, "/dashboard/profile")}>
+                      {copy.openProfile}
+                    </Link>
+                  </Button>
+                )}
               </CardContent>
             </Card>
           )}
@@ -203,7 +255,7 @@ export default async function VerificationSettingsPage({
                   <CardHeader>
                     <CardTitle>{copy.benefits}</CardTitle>
                   </CardHeader>
-                  <CardContent className="grid gap-x-5 gap-y-0 sm:grid-cols-2">
+                  <CardContent className="grid gap-x-6 gap-y-0 sm:grid-cols-2">
                     {copy.benefitItems.map((item, index) => {
                       const icons = [
                         BadgeCheck,
@@ -216,13 +268,13 @@ export default async function VerificationSettingsPage({
                       return (
                         <div
                           key={item}
-                          className="flex items-start gap-3 border-b border-white/10 py-3 first:pt-0 last:border-0 last:pb-0"
+                          className="flex min-w-0 items-start gap-3 border-b border-white/10 py-3 sm:[&:nth-last-child(-n+2)]:border-b-0"
                         >
                           <Icon
                             className="mt-0.5 size-5 shrink-0 text-gold-100"
                             aria-hidden="true"
                           />
-                          <p className="text-sm leading-6 text-muted-foreground">
+                          <p className="min-w-0 text-sm leading-6 text-muted-foreground">
                             {item}
                           </p>
                         </div>
@@ -261,8 +313,18 @@ export default async function VerificationSettingsPage({
                             type="file"
                             accept="application/pdf,image/jpeg,image/png,image/webp"
                             required={!documents?.businessLicensePath}
+                            aria-describedby="business-license-help"
+                            className="h-auto min-h-12 py-2 file:mr-3 file:rounded-sm file:bg-gold-300/10 file:px-3 file:py-2 file:text-gold-100"
                           />
-                          <p className="text-xs leading-5 text-muted-foreground">
+                          <p
+                            id="business-license-help"
+                            className={cn(
+                              "text-xs leading-5",
+                              documents?.businessLicensePath
+                                ? "text-emerald-300"
+                                : "text-muted-foreground",
+                            )}
+                          >
                             {documents?.businessLicensePath
                               ? copy.documentUploaded
                               : copy.documentRequired}
@@ -278,8 +340,18 @@ export default async function VerificationSettingsPage({
                             type="file"
                             accept="application/pdf,image/jpeg,image/png,image/webp"
                             required={!documents?.companyRegistrationPath}
+                            aria-describedby="company-registration-help"
+                            className="h-auto min-h-12 py-2 file:mr-3 file:rounded-sm file:bg-gold-300/10 file:px-3 file:py-2 file:text-gold-100"
                           />
-                          <p className="text-xs leading-5 text-muted-foreground">
+                          <p
+                            id="company-registration-help"
+                            className={cn(
+                              "text-xs leading-5",
+                              documents?.companyRegistrationPath
+                                ? "text-emerald-300"
+                                : "text-muted-foreground",
+                            )}
+                          >
                             {documents?.companyRegistrationPath
                               ? copy.documentUploaded
                               : copy.documentRequired}
@@ -295,8 +367,18 @@ export default async function VerificationSettingsPage({
                           name="certifications"
                           type="file"
                           accept="application/pdf,image/jpeg,image/png,image/webp"
+                          aria-describedby="certifications-help"
+                          className="h-auto min-h-12 py-2 file:mr-3 file:rounded-sm file:bg-gold-300/10 file:px-3 file:py-2 file:text-gold-100"
                         />
-                        <p className="text-xs leading-5 text-muted-foreground">
+                        <p
+                          id="certifications-help"
+                          className={cn(
+                            "text-xs leading-5",
+                            documents?.certificationsPath
+                              ? "text-emerald-300"
+                              : "text-muted-foreground",
+                          )}
+                        >
                           {documents?.certificationsPath
                             ? copy.documentUploaded
                             : copy.documentOptional}
@@ -310,6 +392,7 @@ export default async function VerificationSettingsPage({
                           rows={5}
                           maxLength={3000}
                           defaultValue={documents?.notes ?? ""}
+                          placeholder={copy.notesPlaceholder}
                         />
                       </div>
                       <Button type="submit" className="w-full sm:w-auto">
@@ -320,7 +403,7 @@ export default async function VerificationSettingsPage({
                 </Card>
               </div>
 
-              <aside className="self-start lg:sticky lg:top-24">
+              <aside className="self-start xl:sticky xl:top-32">
                 <Card className="overflow-hidden bg-white/[0.035]">
                   <CardHeader className="border-b border-white/10 bg-gold-300/[0.08]">
                     <CardTitle>{copy.subscription}</CardTitle>
@@ -338,6 +421,10 @@ export default async function VerificationSettingsPage({
                       preparingLabel={copy.preparing}
                       openingLabel={copy.opening}
                       canManageSubscription={Boolean(supplier.stripeCustomerId)}
+                      canStartSubscription={
+                        supplier.subscriptionStatus !== "active" &&
+                        supplier.subscriptionStatus !== "past_due"
+                      }
                       errorLabel={copy.billingActionError}
                       locale={locale}
                     />

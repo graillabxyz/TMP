@@ -175,6 +175,10 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                     preparingLabel={verificationCopy.preparing}
                     openingLabel={verificationCopy.opening}
                     canManageSubscription={Boolean(supplier.stripeCustomerId)}
+                    canStartSubscription={
+                      supplier.subscriptionStatus !== "active" &&
+                      supplier.subscriptionStatus !== "past_due"
+                    }
                     errorLabel={verificationCopy.billingActionError}
                     locale={locale}
                   />
