@@ -350,8 +350,10 @@ const dictionaries = {
       buyerAccount: "Buyer account",
       supplierAccount: "Supplier profile",
       fullName: "Full name",
+      fullNamePlaceholder: "Aylin Demir",
       company: "Company",
       workEmail: "Work email",
+      emailPlaceholder: "you@company.com",
       primaryRole: "Primary role",
       selectRole: "Select role",
       buyer: "Buyer",
@@ -363,6 +365,9 @@ const dictionaries = {
       supplierGoogleHelp:
         "Continue with one TMP account. Supplier profile setup happens next; paid verification is optional.",
       orEmail: "or continue with email",
+      agreementStart: "By creating an account, you agree to the",
+      agreementTerms: "Terms of Service",
+      agreementPrivacy: "and acknowledge the Privacy Policy.",
       alreadyAccount: "Already have an account?",
       status: {
         missing: "Please complete the required fields.",
@@ -1197,8 +1202,10 @@ const dictionaries = {
       buyerAccount: "Compte acheteur",
       supplierAccount: "Profil fournisseur",
       fullName: "Nom complet",
+      fullNamePlaceholder: "Aylin Demir",
       company: "Entreprise",
       workEmail: "Email professionnel",
+      emailPlaceholder: "vous@entreprise.com",
       primaryRole: "Rôle principal",
       selectRole: "Sélectionner un rôle",
       buyer: "Acheteur",
@@ -1210,6 +1217,9 @@ const dictionaries = {
       supplierGoogleHelp:
         "Continuez avec un seul compte TMP. Le profil fournisseur se configure ensuite; la vérification payante est facultative.",
       orEmail: "ou continuer avec email",
+      agreementStart: "En créant un compte, vous acceptez les",
+      agreementTerms: "Conditions d’utilisation",
+      agreementPrivacy: "et reconnaissez la Politique de confidentialité.",
       alreadyAccount: "Vous avez déjà un compte ?",
       status: {
         missing: "Veuillez compléter les champs requis.",
@@ -2061,8 +2071,10 @@ const turkishDictionary = {
     buyerAccount: "Alıcı hesabı",
     supplierAccount: "Tedarikçi profili",
     fullName: "Ad soyad",
+    fullNamePlaceholder: "Aylin Demir",
     company: "Şirket",
     workEmail: "İş e-postası",
+    emailPlaceholder: "siz@sirket.com",
     primaryRole: "Ana rol",
     selectRole: "Rol seç",
     buyer: "Alıcı",
@@ -2074,6 +2086,9 @@ const turkishDictionary = {
     supplierGoogleHelp:
       "Tek TMP hesabıyla devam edin. Tedarikçi profili sonraki adımda kurulur; ücretli doğrulama isteğe bağlıdır.",
     orEmail: "veya e-posta ile devam et",
+    agreementStart: "Hesap oluşturarak",
+    agreementTerms: "Hizmet Şartları'nı",
+    agreementPrivacy: "ve Gizlilik Politikası'nı kabul edersiniz.",
     alreadyAccount: "Zaten hesabınız var mı?",
     status: {
       missing: "Lütfen zorunlu alanları tamamlayın.",

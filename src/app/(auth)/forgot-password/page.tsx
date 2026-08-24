@@ -50,14 +50,20 @@ export default async function ForgotPasswordPage({
           </p>
 
           {status === "sent" && (
-            <div className="mt-5 rounded-lg border border-emerald-300/25 bg-emerald-300/10 px-4 py-3 text-sm text-emerald-100">
+            <div
+              role="status"
+              className="mt-5 rounded-lg border border-emerald-300/25 bg-emerald-300/10 px-4 py-3 text-sm text-emerald-100"
+            >
               {t.auth.status.resetSent}
             </div>
           )}
           {(status === "missing" ||
             status === "error" ||
             status === "auth-error") && (
-            <div className="mt-5 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-red-100">
+            <div
+              role="alert"
+              className="mt-5 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-red-100"
+            >
               {status === "missing"
                 ? t.auth.status.invalidEmail
                 : t.auth.status.resetError}
@@ -75,7 +81,7 @@ export default async function ForgotPasswordPage({
                 required
                 maxLength={254}
                 autoComplete="email"
-                placeholder="you@company.com"
+                placeholder={t.auth.emailPlaceholder}
               />
             </div>
             <Button type="submit" size="lg">

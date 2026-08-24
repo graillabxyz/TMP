@@ -25,6 +25,8 @@ type OnboardingAuthCardProps = {
   loginHref: string;
   registerHref: string;
   forgotPasswordHref: string;
+  privacyHref: string;
+  termsHref: string;
   status?: string;
   labels: {
     accountTitle: string;
@@ -37,6 +39,8 @@ type OnboardingAuthCardProps = {
     email: string;
     workEmail: string;
     password: string;
+    fullNamePlaceholder: string;
+    emailPlaceholder: string;
     forgotPassword: string;
     login: string;
     createAccount: string;
@@ -55,6 +59,9 @@ type OnboardingAuthCardProps = {
     authRequired: string;
     oauthNotReady: string;
     passwordUpdated: string;
+    agreementStart: string;
+    agreementTerms: string;
+    agreementPrivacy: string;
   };
 };
 
@@ -97,6 +104,8 @@ export function OnboardingAuthCard({
   loginHref,
   registerHref,
   forgotPasswordHref,
+  privacyHref,
+  termsHref,
   status,
   labels,
 }: OnboardingAuthCardProps) {
@@ -115,10 +124,44 @@ export function OnboardingAuthCard({
     : mode === "register"
       ? labels.createAccount
       : labels.login;
+  const googleHelp = supplierIntent
+    ? labels.supplierGoogleHelp
+    : labels.googleHelp;
+  const intentQuery = supplierIntent ? "&intent=supplier" : "";
 
   return (
     <Card className="bg-white/[0.035]">
       <CardContent className="p-5 sm:p-6">
+        <nav
+          className="mb-5 grid grid-cols-2 rounded-md border border-white/10 bg-black/20 p-1"
+          aria-label={labels.accountTitle}
+        >
+          <Link
+            href={`${loginHref}?next=${nextQuery}${intentQuery}`}
+            aria-current={mode === "login" ? "page" : undefined}
+            className={cn(
+              "flex min-h-10 items-center justify-center rounded-sm px-3 text-center text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              mode === "login"
+                ? "bg-white/[0.1] text-white"
+                : "text-muted-foreground hover:text-white",
+            )}
+          >
+            {labels.login}
+          </Link>
+          <Link
+            href={`${registerHref}?next=${nextQuery}${intentQuery}`}
+            aria-current={mode === "register" ? "page" : undefined}
+            className={cn(
+              "flex min-h-10 items-center justify-center rounded-sm px-3 text-center text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              mode === "register"
+                ? "bg-white/[0.1] text-white"
+                : "text-muted-foreground hover:text-white",
+            )}
+          >
+            {labels.createAccount}
+          </Link>
+        </nav>
+
         {supplierIntent && (
           <div className="flex items-start gap-3 rounded-md border border-white/10 bg-white/[0.025] p-3.5 text-sm text-white">
             <Building2
@@ -138,6 +181,7 @@ export function OnboardingAuthCard({
 
         {statusMessage && (
           <div
+            role={statusMessage.tone === "success" ? "status" : "alert"}
             className={cn(
               "mt-5 rounded-lg border px-4 py-3 text-sm",
               statusMessage.tone === "success"
@@ -151,7 +195,7 @@ export function OnboardingAuthCard({
 
         <form
           action={signInWithGoogle}
-          className={supplierIntent ? "mt-5" : undefined}
+          className={supplierIntent || statusMessage ? "mt-5" : undefined}
         >
           <input type="hidden" name="auth_mode" value={mode} />
           <input type="hidden" name="next" value={nextPath} />
@@ -165,6 +209,9 @@ export function OnboardingAuthCard({
             <Chrome aria-hidden="true" />
             {googleLabel}
           </Button>
+          <p className="mt-2 text-center text-xs leading-5 text-muted-foreground">
+            {googleHelp}
+          </p>
         </form>
 
         <div className="my-5 flex items-center gap-3 text-xs uppercase text-muted-foreground">
@@ -190,7 +237,7 @@ export function OnboardingAuthCard({
                   minLength={2}
                   maxLength={100}
                   autoComplete="name"
-                  placeholder="Aylin Demir"
+                  placeholder={labels.fullNamePlaceholder}
                 />
               </div>
             </div>
@@ -207,7 +254,7 @@ export function OnboardingAuthCard({
               required
               maxLength={254}
               autoComplete="email"
-              placeholder="you@company.com"
+              placeholder={labels.emailPlaceholder}
             />
           </div>
 
@@ -242,6 +289,24 @@ export function OnboardingAuthCard({
             {submitLabel}
             <ArrowRight aria-hidden="true" />
           </Button>
+
+          {mode === "register" && (
+            <p className="text-center text-xs leading-5 text-muted-foreground">
+              {labels.agreementStart}{" "}
+              <Link
+                href={termsHref}
+                className="text-gold-100 underline underline-offset-4 hover:text-white"
+              >
+                {labels.agreementTerms}
+              </Link>{" "}
+              <Link
+                href={privacyHref}
+                className="text-gold-100 underline underline-offset-4 hover:text-white"
+              >
+                {labels.agreementPrivacy}
+              </Link>
+            </p>
+          )}
         </form>
 
         <p className="mt-5 text-center text-sm text-muted-foreground">

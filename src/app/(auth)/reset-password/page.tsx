@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { KeyRound } from "lucide-react";
 
 import { updatePassword } from "@/app/actions/auth";
@@ -7,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getDictionary } from "@/lib/dictionary";
-import { getLocale } from "@/lib/i18n";
+import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -48,7 +49,10 @@ export default async function ResetPasswordPage({
           </p>
 
           {status && (
-            <div className="mt-5 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-red-100">
+            <div
+              role="alert"
+              className="mt-5 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-red-100"
+            >
               {status === "expired"
                 ? t.auth.status.resetExpired
                 : status === "missing"
@@ -57,38 +61,46 @@ export default async function ResetPasswordPage({
             </div>
           )}
 
-          <form action={updatePassword} className="mt-7 grid gap-5">
-            <input type="hidden" name="locale" value={locale} />
-            <div className="grid gap-2">
-              <Label htmlFor="new-password">{t.auth.newPassword}</Label>
-              <Input
-                id="new-password"
-                name="password"
-                type="password"
-                required
-                minLength={8}
-                maxLength={128}
-                autoComplete="new-password"
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password-confirmation">
-                {t.auth.confirmPassword}
-              </Label>
-              <Input
-                id="password-confirmation"
-                name="password_confirmation"
-                type="password"
-                required
-                minLength={8}
-                maxLength={128}
-                autoComplete="new-password"
-              />
-            </div>
-            <Button type="submit" size="lg">
-              {t.auth.updatePassword}
+          {status === "expired" ? (
+            <Button asChild className="mt-6 w-full" size="lg">
+              <Link href={getLocalizedPath(locale, "/forgot-password")}>
+                {t.auth.sendResetLink}
+              </Link>
             </Button>
-          </form>
+          ) : (
+            <form action={updatePassword} className="mt-7 grid gap-5">
+              <input type="hidden" name="locale" value={locale} />
+              <div className="grid gap-2">
+                <Label htmlFor="new-password">{t.auth.newPassword}</Label>
+                <Input
+                  id="new-password"
+                  name="password"
+                  type="password"
+                  required
+                  minLength={8}
+                  maxLength={128}
+                  autoComplete="new-password"
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="password-confirmation">
+                  {t.auth.confirmPassword}
+                </Label>
+                <Input
+                  id="password-confirmation"
+                  name="password_confirmation"
+                  type="password"
+                  required
+                  minLength={8}
+                  maxLength={128}
+                  autoComplete="new-password"
+                />
+              </div>
+              <Button type="submit" size="lg">
+                {t.auth.updatePassword}
+              </Button>
+            </form>
+          )}
         </CardContent>
       </Card>
     </div>

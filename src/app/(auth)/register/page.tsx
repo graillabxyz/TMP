@@ -63,6 +63,11 @@ export default async function RegisterPage({
               {t.auth.supplierRegisterBody}
             </p>
           )}
+          {!supplierIntent && (
+            <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
+              {t.auth.accountBody}
+            </p>
+          )}
           <div className="mt-6 hidden gap-3 lg:grid">
             {(supplierIntent
               ? [
@@ -112,6 +117,8 @@ export default async function RegisterPage({
           loginHref={getLocalizedPath(locale, "/login")}
           registerHref={getLocalizedPath(locale, "/register")}
           forgotPasswordHref={getLocalizedPath(locale, "/forgot-password")}
+          privacyHref={getLocalizedPath(locale, "/privacy")}
+          termsHref={getLocalizedPath(locale, "/terms")}
           supplierIntent={supplierIntent}
           nextPath={nextPath}
           status={params.status}
@@ -126,6 +133,8 @@ export default async function RegisterPage({
             email: t.auth.email,
             workEmail: t.auth.workEmail,
             password: t.auth.password,
+            fullNamePlaceholder: t.auth.fullNamePlaceholder,
+            emailPlaceholder: t.auth.emailPlaceholder,
             forgotPassword: t.auth.forgotPassword,
             login: t.auth.login,
             createAccount: t.auth.createAccount,
@@ -144,6 +153,9 @@ export default async function RegisterPage({
             authRequired: t.auth.status.authRequired,
             oauthNotReady: t.auth.status.oauthNotReady,
             passwordUpdated: t.auth.status.passwordUpdated,
+            agreementStart: t.auth.agreementStart,
+            agreementTerms: t.auth.agreementTerms,
+            agreementPrivacy: t.auth.agreementPrivacy,
           }}
         />
       </div>
