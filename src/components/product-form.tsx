@@ -96,6 +96,7 @@ export type ProductFormLabels = {
   draftOnlyTitle: string;
   draftOnlyBody: string;
   addSupplierProfile: string;
+  previewMoq: string;
 };
 
 type ProductAction = (
@@ -313,7 +314,7 @@ export function ProductForm({
               </p>
             </div>
           </div>
-          <Button asChild variant="outline" size="sm" className="shrink-0">
+          <Button asChild variant="outline" className="w-full shrink-0 sm:w-auto">
             <Link href={supplierProfileHref}>{labels.addSupplierProfile}</Link>
           </Button>
         </div>
@@ -561,7 +562,7 @@ export function ProductForm({
           </section>
         </div>
 
-        <aside className="grid gap-5 xl:sticky xl:top-24">
+        <aside className="grid gap-5 xl:sticky xl:top-32">
           <section className="rounded-lg border border-white/10 bg-white/[0.025] p-5">
             <h2 className="text-base font-semibold text-white">
               {labels.mediaTitle}
@@ -626,7 +627,7 @@ export function ProductForm({
                       <button
                         type="button"
                         onClick={() => removeSelectedFile(index)}
-                        className="absolute right-1.5 top-1.5 flex size-8 items-center justify-center rounded-md bg-black/75 text-white transition hover:bg-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-300"
+                        className="absolute right-1.5 top-1.5 flex size-10 items-center justify-center rounded-md bg-black/75 text-white transition hover:bg-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-300"
                         aria-label={labels.removeImage}
                         title={labels.removeImage}
                       >
@@ -634,7 +635,7 @@ export function ProductForm({
                       </button>
                     )}
                     {selectedFiles[index] && (
-                      <span className="absolute bottom-1.5 left-1.5 rounded bg-black/75 px-1.5 py-0.5 text-[10px] text-white">
+                      <span className="absolute bottom-1.5 left-1.5 rounded bg-black/75 px-1.5 py-0.5 text-xs text-white">
                         {formatBytes(selectedFiles[index].size)}
                       </span>
                     )}
@@ -670,13 +671,17 @@ export function ProductForm({
               <p className="mt-4 line-clamp-2 min-h-12 text-base font-semibold leading-6 text-white">
                 {title || labels.previewEmptyTitle}
               </p>
-              <p className="mt-1 text-xs text-muted-foreground">
+              <p className="mt-1 truncate text-xs text-muted-foreground">
                 {selectedCategory?.name ?? labels.categoryPlaceholder}
               </p>
-              <div className="mt-4 flex items-end justify-between gap-3 border-t border-white/10 pt-3">
-                <p className="font-semibold text-gold-100">{previewPrice}</p>
+              <div className="mt-4 flex min-w-0 items-end justify-between gap-3 border-t border-white/10 pt-3">
+                <p className="min-w-0 break-words font-semibold text-gold-100">
+                  {previewPrice}
+                </p>
                 {moq && (
-                  <p className="text-xs text-muted-foreground">MOQ {moq}</p>
+                  <p className="shrink-0 text-xs text-muted-foreground">
+                    {labels.previewMoq} {moq}
+                  </p>
                 )}
               </div>
             </div>

@@ -12,8 +12,8 @@ import {
 } from "lucide-react";
 import { redirect } from "next/navigation";
 
-import { archiveProduct } from "@/app/actions/products";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
+import { ProductArchiveControl } from "@/components/product-archive-control";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getCurrentProfile } from "@/lib/account";
@@ -34,6 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t.dashboard.productMetadataTitle,
     description: t.dashboard.productMetadataDescription,
     path: "/dashboard/products",
+    locale,
   });
 }
 
@@ -102,7 +103,14 @@ export default async function DashboardProductsPage({
       active="products"
     >
       {statusCopy && (
-        <div className="mb-5 rounded-md border border-gold-300/25 bg-gold-300/[0.08] px-4 py-3 text-sm text-gold-50">
+        <div
+          role={params.status === "error" ? "alert" : "status"}
+          className={
+            params.status === "error"
+              ? "mb-5 rounded-md border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-100"
+              : "mb-5 rounded-md border border-emerald-400/30 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100"
+          }
+        >
           {statusCopy}
         </div>
       )}
@@ -122,7 +130,7 @@ export default async function DashboardProductsPage({
               </p>
             </div>
           </div>
-          <Button asChild variant="outline" className="shrink-0">
+          <Button asChild variant="outline" className="w-full shrink-0 sm:w-auto">
             <Link href={profileHref}>{labels.addSupplierProfile}</Link>
           </Button>
         </section>
@@ -137,7 +145,7 @@ export default async function DashboardProductsPage({
             {canPublish ? labels.publishHelp : labels.draftHelp}
           </p>
         </div>
-        <Button asChild>
+        <Button asChild className="w-full sm:w-auto">
           <Link href={createHref}>
             <Plus aria-hidden="true" />
             {labels.createProduct}
@@ -196,7 +204,9 @@ export default async function DashboardProductsPage({
                             {product.title}
                           </p>
                           <p className="mt-1 text-xs text-muted-foreground">
-                            {new Date(product.createdAt).toLocaleDateString()}
+                            {new Date(product.createdAt).toLocaleDateString(
+                              locale,
+                            )}
                           </p>
                         </div>
                       </div>
@@ -215,6 +225,10 @@ export default async function DashboardProductsPage({
                     <td className="px-5 py-4">
                       <ProductActions
                         archiveLabel={t.common.archive}
+                        archiveBody={labels.archiveConfirmBody}
+                        archiveConfirmLabel={labels.archiveConfirm}
+                        archiveTitle={labels.archiveConfirmTitle}
+                        cancelLabel={t.common.cancel}
                         editHref={getLocalizedPath(
                           locale,
                           `/dashboard/products/${product.id}/edit`,
@@ -222,6 +236,7 @@ export default async function DashboardProductsPage({
                         editLabel={t.common.edit}
                         locale={locale}
                         productId={product.id}
+                        productTitle={product.title}
                         status={product.status}
                       />
                     </td>
@@ -256,6 +271,10 @@ export default async function DashboardProductsPage({
                 <div className="mt-4 border-t border-white/10 pt-3">
                   <ProductActions
                     archiveLabel={t.common.archive}
+                    archiveBody={labels.archiveConfirmBody}
+                    archiveConfirmLabel={labels.archiveConfirm}
+                    archiveTitle={labels.archiveConfirmTitle}
+                    cancelLabel={t.common.cancel}
                     editHref={getLocalizedPath(
                       locale,
                       `/dashboard/products/${product.id}/edit`,
@@ -263,6 +282,7 @@ export default async function DashboardProductsPage({
                     editLabel={t.common.edit}
                     locale={locale}
                     productId={product.id}
+                    productTitle={product.title}
                     status={product.status}
                   />
                 </div>
@@ -310,32 +330,50 @@ function ProductThumbnail({ src }: { src: string | null }) {
 
 function ProductActions({
   archiveLabel,
+  archiveBody,
+  archiveConfirmLabel,
+  archiveTitle,
+  cancelLabel,
   editHref,
   editLabel,
   locale,
   productId,
+  productTitle,
   status,
 }: {
   archiveLabel: string;
+  archiveBody: string;
+  archiveConfirmLabel: string;
+  archiveTitle: string;
+  cancelLabel: string;
   editHref: string;
   editLabel: string;
   locale: string;
   productId: string;
+  productTitle: string;
   status: string;
 }) {
   return (
     <div className="flex items-center justify-end gap-2">
-      <Button asChild size="sm" variant="outline">
+      <Button
+        asChild
+        size="sm"
+        variant="outline"
+        className="h-11 flex-1 md:h-9 md:flex-none"
+      >
         <Link href={editHref}>{editLabel}</Link>
       </Button>
       {status !== "archived" && (
-        <form action={archiveProduct}>
-          <input type="hidden" name="locale" value={locale} />
-          <input type="hidden" name="id" value={productId} />
-          <Button type="submit" size="sm" variant="ghost">
-            {archiveLabel}
-          </Button>
-        </form>
+        <ProductArchiveControl
+          cancelLabel={cancelLabel}
+          confirmLabel={archiveConfirmLabel}
+          description={archiveBody}
+          locale={locale}
+          productId={productId}
+          productTitle={productTitle}
+          title={archiveTitle}
+          triggerLabel={archiveLabel}
+        />
       )}
     </div>
   );

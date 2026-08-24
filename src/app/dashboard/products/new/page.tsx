@@ -18,6 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: t.dashboard.createProductMetadataTitle,
     description: t.dashboard.createProductMetadataDescription,
     path: "/dashboard/products/new",
+    locale,
   });
 }
 

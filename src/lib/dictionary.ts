@@ -605,6 +605,11 @@ const dictionaries = {
         successCreate: "Product created.",
         successUpdate: "Product updated.",
         successArchive: "Product archived.",
+        archiveConfirmTitle: "Archive this product?",
+        archiveConfirmBody:
+          "The product will move to Archived and will no longer appear in the public marketplace.",
+        archiveConfirm: "Archive product",
+        previewMoq: "MOQ",
         missing: "Please add a title, category, description, and status.",
         error: "We could not save the product. Please try again.",
       },
@@ -1469,6 +1474,11 @@ const dictionaries = {
         successCreate: "Produit créé.",
         successUpdate: "Produit mis à jour.",
         successArchive: "Produit archivé.",
+        archiveConfirmTitle: "Archiver ce produit ?",
+        archiveConfirmBody:
+          "Le produit passera dans les archives et ne sera plus visible sur la marketplace publique.",
+        archiveConfirm: "Archiver le produit",
+        previewMoq: "MOQ",
         missing:
           "Veuillez ajouter un titre, une catégorie, une description et un statut.",
         error: "Impossible d’enregistrer le produit. Veuillez réessayer.",
@@ -2324,6 +2334,11 @@ const turkishDictionary = {
       successCreate: "Ürün oluşturuldu.",
       successUpdate: "Ürün güncellendi.",
       successArchive: "Ürün arşivlendi.",
+      archiveConfirmTitle: "Bu ürün arşivlensin mi?",
+      archiveConfirmBody:
+        "Ürün Arşivlenenler bölümüne taşınacak ve herkese açık pazar yerinde artık görünmeyecek.",
+      archiveConfirm: "Ürünü arşivle",
+      previewMoq: "Min. sipariş",
       missing: "Lütfen başlık, kategori, açıklama ve durum ekleyin.",
       error: "Ürün kaydedilemedi. Lütfen tekrar deneyin.",
     },
