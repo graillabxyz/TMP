@@ -291,9 +291,9 @@ const dictionaries = {
     },
     auth: {
       welcomeBack: "Welcome back",
-      loginTitle: "Continue with your TMP account.",
+      loginTitle: "Source from trusted Turkish suppliers.",
       loginBody:
-        "One account lets you source as a buyer, manage RFQs, and add a supplier profile when you are ready to sell on TMP.",
+        "Create an account or sign in to browse products, send detailed RFQs, and manage your sourcing activity.",
       supplierLoginTitle: "Sign in to start your supplier upgrade.",
       supplierLoginBody:
         "Use your existing TMP account to add company details and unlock supplier tools. Paid verification is optional.",
@@ -319,16 +319,16 @@ const dictionaries = {
       createAccount: "Create an account",
       supplierCreateAccount: "Create account and continue",
       onboarding: "TMP onboarding",
-      registerTitle: "Create one TMP account. Add supplier access when ready.",
+      registerTitle: "Source from trusted Turkish suppliers.",
       supplierRegisterTitle: "Create your TMP account to start selling.",
       supplierRegisterBody:
         "Next you will add your supplier profile and publish products from the same account. Paid verification can be added separately.",
-      accountPath: "One TMP account",
+      accountPath: "Discover the right products",
       accountPathBody:
-        "Browse suppliers, send RFQs, and manage sourcing from one login.",
-      supplierUpgradePath: "Supplier profile upgrade",
+        "Browse products and compare export-ready Turkish suppliers.",
+      supplierUpgradePath: "Request quotes with clarity",
       supplierUpgradePathBody:
-        "After creating an account, add company details and publish products. Verification is an optional paid upgrade.",
+        "Send structured RFQs with quantities, specifications, and delivery needs.",
       supplierStepAccount: "1. Create or sign in",
       supplierStepAccountBody:
         "Use one TMP login for buying, sourcing, and supplier tools.",
@@ -342,14 +342,14 @@ const dictionaries = {
         "Add a supplier profile and publish products. Verification is optional.",
       accountTitle: "TMP account",
       accountBody:
-        "Buyer sourcing is included by default. Supplier access can be added from the same account.",
+        "Create an account or sign in to browse products, send detailed RFQs, and manage your sourcing activity.",
       supplierAccountTitle: "Step 1: TMP account",
       supplierAccountBody:
         "Create or sign in to the same account you will use for sourcing and supplier tools.",
       supplierIntentTitle: "Step 2: Supplier upgrade",
       supplierIntentBody:
         "After sign-in, add company details and start publishing. Paid verification is optional.",
-      buyerAccount: "Buyer account",
+      buyerAccount: "Buyer sourcing",
       supplierAccount: "Supplier profile",
       fullName: "Full name",
       fullNamePlaceholder: "Aylin Demir",
@@ -363,7 +363,7 @@ const dictionaries = {
       continueWithGoogle: "Continue with Google",
       supplierContinueWithGoogle: "Continue with Google",
       googleHelp:
-        "Use Google to continue with one TMP account. Supplier setup happens after sign-in.",
+        "Use Google to sign in or create your TMP buyer account.",
       supplierGoogleHelp:
         "Continue with one TMP account. Supplier profile setup happens next; paid verification is optional.",
       orEmail: "or continue with email",
@@ -854,7 +854,7 @@ const dictionaries = {
       loginDescription: "Access your TMP account.",
       registerTitle: "Register | TMP",
       registerDescription:
-        "Create one TMP account for sourcing and supplier setup.",
+        "Create a TMP buyer account to discover suppliers and send RFQs.",
     },
   },
   fr: {
@@ -1154,9 +1154,9 @@ const dictionaries = {
     },
     auth: {
       welcomeBack: "Bon retour",
-      loginTitle: "Continuez avec votre compte TMP.",
+      loginTitle: "Sourcez auprès de fournisseurs turcs de confiance.",
       loginBody:
-        "Un seul compte permet de sourcer comme acheteur, gérer les demandes et ajouter un profil fournisseur quand vous êtes prêt à vendre sur TMP.",
+        "Créez un compte ou connectez-vous pour parcourir les produits, envoyer des demandes détaillées et gérer votre sourcing.",
       supplierLoginTitle: "Connectez-vous pour lancer l’upgrade fournisseur.",
       supplierLoginBody:
         "Utilisez votre compte TMP pour ajouter la société et débloquer les outils fournisseur. La vérification payante est facultative.",
@@ -1182,17 +1182,16 @@ const dictionaries = {
       createAccount: "Créer un compte",
       supplierCreateAccount: "Créer le compte et continuer",
       onboarding: "Onboarding TMP",
-      registerTitle:
-        "Créez un compte TMP. Ajoutez l’accès fournisseur quand vous êtes prêt.",
+      registerTitle: "Sourcez auprès de fournisseurs turcs de confiance.",
       supplierRegisterTitle: "Créez votre compte TMP pour commencer à vendre.",
       supplierRegisterBody:
         "Ensuite, ajoutez votre profil fournisseur et publiez vos produits depuis le même compte. La vérification payante reste facultative.",
-      accountPath: "Un compte TMP",
+      accountPath: "Trouvez les bons produits",
       accountPathBody:
-        "Parcourez les fournisseurs, envoyez des demandes et gérez le sourcing depuis une seule connexion.",
-      supplierUpgradePath: "Profil fournisseur",
+        "Parcourez les produits et comparez les fournisseurs turcs prêts pour l’export.",
+      supplierUpgradePath: "Demandez des devis précis",
       supplierUpgradePathBody:
-        "Après création du compte, ajoutez la société et publiez vos produits. La vérification est une option payante.",
+        "Envoyez des demandes structurées avec quantités, spécifications et besoins de livraison.",
       supplierStepAccount: "1. Créer ou se connecter",
       supplierStepAccountBody:
         "Utilisez une seule connexion TMP pour acheter, sourcer et gérer les outils fournisseur.",
@@ -1206,14 +1205,14 @@ const dictionaries = {
         "Ajoutez un profil fournisseur et publiez vos produits. La vérification est facultative.",
       accountTitle: "Compte TMP",
       accountBody:
-        "Le sourcing acheteur est inclus par défaut. L’accès fournisseur s’ajoute au même compte.",
+        "Créez un compte ou connectez-vous pour parcourir les produits, envoyer des demandes détaillées et gérer votre sourcing.",
       supplierAccountTitle: "Étape 1 : compte TMP",
       supplierAccountBody:
         "Créez ou connectez-vous au même compte utilisé pour le sourcing et les outils fournisseur.",
       supplierIntentTitle: "Étape 2 : upgrade fournisseur",
       supplierIntentBody:
         "Après connexion, ajoutez la société et commencez à publier. La vérification payante est facultative.",
-      buyerAccount: "Compte acheteur",
+      buyerAccount: "Sourcing acheteur",
       supplierAccount: "Profil fournisseur",
       fullName: "Nom complet",
       fullNamePlaceholder: "Aylin Demir",
@@ -1227,7 +1226,7 @@ const dictionaries = {
       continueWithGoogle: "Continuer avec Google",
       supplierContinueWithGoogle: "Continuer avec Google",
       googleHelp:
-        "Utilisez Google pour continuer avec un seul compte TMP. Le profil fournisseur se configure après connexion.",
+        "Utilisez Google pour vous connecter ou créer votre compte acheteur TMP.",
       supplierGoogleHelp:
         "Continuez avec un seul compte TMP. Le profil fournisseur se configure ensuite; la vérification payante est facultative.",
       orEmail: "ou continuer avec email",
@@ -1734,7 +1733,7 @@ const dictionaries = {
       loginDescription: "Accédez à votre compte TMP.",
       registerTitle: "Inscription | TMP",
       registerDescription:
-        "Créez un compte TMP unique pour le sourcing et la configuration fournisseur.",
+        "Créez un compte acheteur TMP pour découvrir des fournisseurs et envoyer des demandes.",
     },
   },
 } as const;
@@ -2034,9 +2033,9 @@ const turkishDictionary = {
   },
   auth: {
     welcomeBack: "Tekrar hoş geldiniz",
-    loginTitle: "TMP hesabınızla devam edin.",
+    loginTitle: "Güvenilir Türk tedarikçilerden ürün tedarik edin.",
     loginBody:
-      "Tek hesapla alıcı olarak tedarik yapabilir, RFQ'ları yönetebilir ve hazır olduğunuzda tedarikçi profili ekleyebilirsiniz.",
+      "Ürünleri incelemek, ayrıntılı teklif talepleri göndermek ve tedarik sürecinizi yönetmek için hesap oluşturun veya giriş yapın.",
     supplierLoginTitle: "Tedarikçi yükseltmesini başlatmak için giriş yapın.",
     supplierLoginBody:
       "Şirket bilgilerini eklemek ve tedarikçi araçlarını açmak için mevcut TMP hesabınızı kullanın. Ücretli doğrulama isteğe bağlıdır.",
@@ -2062,17 +2061,16 @@ const turkishDictionary = {
     createAccount: "Hesap oluştur",
     supplierCreateAccount: "Hesap oluştur ve devam et",
     onboarding: "TMP onboarding",
-    registerTitle:
-      "Tek TMP hesabı oluşturun. Hazır olduğunuzda tedarikçi erişimi ekleyin.",
+    registerTitle: "Güvenilir Türk tedarikçilerden ürün tedarik edin.",
     supplierRegisterTitle: "Satışa başlamak için TMP hesabınızı oluşturun.",
     supplierRegisterBody:
       "Sonraki adımda tedarikçi profilinizi ekleyip aynı hesaptan ürün yayınlayabilirsiniz. Ücretli doğrulama ayrıca eklenebilir.",
-    accountPath: "Tek TMP hesabı",
+    accountPath: "Doğru ürünleri keşfedin",
     accountPathBody:
-      "Tedarikçileri inceleyin, teklif talepleri gönderin ve sourcing sürecini tek girişle yönetin.",
-    supplierUpgradePath: "Tedarikçi profili yükseltmesi",
+      "Ürünleri inceleyin ve ihracata hazır Türk tedarikçileri karşılaştırın.",
+    supplierUpgradePath: "Net teklif talepleri gönderin",
     supplierUpgradePathBody:
-      "Hesap oluşturduktan sonra şirket bilgilerini ekleyip ürün yayınlayın. Doğrulama isteğe bağlı ücretli bir yükseltmedir.",
+      "Miktar, teknik özellik ve teslimat ihtiyaçlarını içeren yapılandırılmış talepler gönderin.",
     supplierStepAccount: "1. Oluştur veya giriş yap",
     supplierStepAccountBody:
       "Satın alma, sourcing ve tedarikçi araçları için tek TMP girişini kullanın.",
@@ -2087,14 +2085,14 @@ const turkishDictionary = {
       "Tedarikçi profili ekleyip ürün yayınlayın. Doğrulama isteğe bağlıdır.",
     accountTitle: "TMP hesabı",
     accountBody:
-      "Alıcı sourcing varsayılan olarak dahildir. Tedarikçi erişimi aynı hesaba eklenebilir.",
+      "Ürünleri incelemek, ayrıntılı teklif talepleri göndermek ve tedarik sürecinizi yönetmek için hesap oluşturun veya giriş yapın.",
     supplierAccountTitle: "Adım 1: TMP hesabı",
     supplierAccountBody:
       "Sourcing ve tedarikçi araçları için kullanacağınız aynı hesaba giriş yapın veya hesap oluşturun.",
     supplierIntentTitle: "Adım 2: Tedarikçi yükseltmesi",
     supplierIntentBody:
       "Girişten sonra şirket bilgilerini ekleyip yayınlamaya başlayın. Ücretli doğrulama isteğe bağlıdır.",
-    buyerAccount: "Alıcı hesabı",
+    buyerAccount: "Alıcı tedariki",
     supplierAccount: "Tedarikçi profili",
     fullName: "Ad soyad",
     fullNamePlaceholder: "Aylin Demir",
@@ -2108,7 +2106,7 @@ const turkishDictionary = {
     continueWithGoogle: "Google ile devam et",
     supplierContinueWithGoogle: "Google ile devam et",
     googleHelp:
-      "Tek TMP hesabıyla devam etmek için Google kullanın. Tedarikçi kurulumu girişten sonra yapılır.",
+      "TMP alıcı hesabınıza giriş yapmak veya hesap oluşturmak için Google'ı kullanın.",
     supplierGoogleHelp:
       "Tek TMP hesabıyla devam edin. Tedarikçi profili sonraki adımda kurulur; ücretli doğrulama isteğe bağlıdır.",
     orEmail: "veya e-posta ile devam et",
@@ -2595,7 +2593,7 @@ const turkishDictionary = {
     loginDescription: "TMP hesabınıza erişin.",
     registerTitle: "Kayıt | TMP",
     registerDescription:
-      "Sourcing ve tedarikçi kurulumu için tek TMP hesabı oluşturun.",
+      "Tedarikçileri keşfetmek ve teklif talepleri göndermek için bir TMP alıcı hesabı oluşturun.",
   },
 };
 

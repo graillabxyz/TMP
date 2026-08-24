@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { OnboardingAuthCard } from "@/components/auth/onboarding-auth-card";
+import { OnboardingIntro } from "@/components/auth/onboarding-intro";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getSafeInternalPath } from "@/lib/safe-redirect";
@@ -42,17 +43,44 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   );
 
   return (
-    <div className="w-full max-w-5xl">
-      <div className="grid gap-7 lg:grid-cols-[.82fr_1.18fr] lg:items-center">
-        <div>
-          <p className="text-sm text-gold-200">{t.auth.welcomeBack}</p>
-          <h1 className="mt-3 text-3xl font-semibold leading-tight text-white sm:text-4xl">
-            {supplierIntent ? t.auth.supplierLoginTitle : t.auth.loginTitle}
-          </h1>
-          <p className="mt-3 max-w-lg text-sm leading-6 text-muted-foreground">
-            {supplierIntent ? t.auth.supplierLoginBody : t.auth.loginBody}
-          </p>
-        </div>
+    <div className="w-full max-w-5xl self-start">
+      <div className="grid gap-7 lg:grid-cols-[.82fr_1.18fr] lg:items-start">
+        <OnboardingIntro
+          eyebrow={
+            supplierIntent ? t.auth.supplierAccount : t.auth.buyerAccount
+          }
+          title={
+            supplierIntent
+              ? t.auth.supplierRegisterTitle
+              : t.auth.registerTitle
+          }
+          body={
+            supplierIntent ? t.auth.supplierRegisterBody : t.auth.accountBody
+          }
+          items={
+            supplierIntent
+              ? [
+                  {
+                    label: t.auth.supplierStepAccount,
+                    body: t.auth.supplierStepAccountBody,
+                  },
+                  {
+                    label: t.auth.supplierStepUpgrade,
+                    body: t.auth.supplierStepUpgradeBody,
+                  },
+                ]
+              : [
+                  {
+                    label: t.auth.accountPath,
+                    body: t.auth.accountPathBody,
+                  },
+                  {
+                    label: t.auth.supplierUpgradePath,
+                    body: t.auth.supplierUpgradePathBody,
+                  },
+                ]
+          }
+        />
         <OnboardingAuthCard
           mode="login"
           locale={locale}
@@ -64,13 +92,20 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           supplierIntent={supplierIntent}
           nextPath={nextPath}
           status={params.status}
+          supplierLabels={
+            supplierIntent
+              ? {
+                  continueWithGoogle: t.auth.supplierContinueWithGoogle,
+                  createAccount: t.auth.supplierCreateAccount,
+                  googleHelp: t.auth.supplierGoogleHelp,
+                  intentBody: t.auth.supplierIntentBody,
+                  intentTitle: t.auth.supplierIntentTitle,
+                  login: t.auth.supplierLoginCta,
+                }
+              : undefined
+          }
           labels={{
             accountTitle: t.auth.accountTitle,
-            accountBody: t.auth.accountBody,
-            supplierIntentTitle: t.auth.supplierIntentTitle,
-            supplierIntentBody: t.auth.supplierIntentBody,
-            supplierAccountTitle: t.auth.supplierAccountTitle,
-            supplierAccountBody: t.auth.supplierAccountBody,
             fullName: t.auth.fullName,
             email: t.auth.email,
             workEmail: t.auth.workEmail,
@@ -80,15 +115,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             forgotPassword: t.auth.forgotPassword,
             login: t.auth.login,
             createAccount: t.auth.createAccount,
-            supplierLogin: t.auth.supplierLoginCta,
-            supplierCreateAccount: t.auth.supplierCreateAccount,
             continueWithGoogle: t.auth.continueWithGoogle,
-            supplierContinueWithGoogle: t.auth.supplierContinueWithGoogle,
             googleHelp: t.auth.googleHelp,
-            supplierGoogleHelp: t.auth.supplierGoogleHelp,
             orEmail: t.auth.orEmail,
-            alreadyAccount: t.auth.alreadyAccount,
-            newToTmp: t.auth.newToTmp,
             missing: t.auth.status.missing,
             error: t.auth.status.error,
             checkEmail: t.auth.status.checkEmail,

@@ -18,7 +18,7 @@ export async function SiteFooter() {
     ? supplierProfileHref
     : `${getLocalizedPath(locale, "/register")}?next=${encodeURIComponent(
         supplierProfileHref,
-      )}`;
+      )}&intent=supplier`;
   const footerLinks = [
     { label: t.footer.suppliers, href: getLocalizedPath(locale, "/suppliers") },
     { label: t.footer.rfq, href: getLocalizedPath(locale, "/rfq") },

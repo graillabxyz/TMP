@@ -28,13 +28,16 @@ type OnboardingAuthCardProps = {
   privacyHref: string;
   termsHref: string;
   status?: string;
+  supplierLabels?: {
+    continueWithGoogle: string;
+    createAccount: string;
+    googleHelp: string;
+    intentBody: string;
+    intentTitle: string;
+    login: string;
+  };
   labels: {
     accountTitle: string;
-    accountBody: string;
-    supplierIntentTitle: string;
-    supplierIntentBody: string;
-    supplierAccountTitle: string;
-    supplierAccountBody: string;
     fullName: string;
     email: string;
     workEmail: string;
@@ -44,15 +47,9 @@ type OnboardingAuthCardProps = {
     forgotPassword: string;
     login: string;
     createAccount: string;
-    supplierLogin: string;
-    supplierCreateAccount: string;
     continueWithGoogle: string;
-    supplierContinueWithGoogle: string;
     googleHelp: string;
-    supplierGoogleHelp: string;
     orEmail: string;
-    alreadyAccount: string;
-    newToTmp: string;
     missing: string;
     error: string;
     checkEmail: string;
@@ -107,6 +104,7 @@ export function OnboardingAuthCard({
   privacyHref,
   termsHref,
   status,
+  supplierLabels,
   labels,
 }: OnboardingAuthCardProps) {
   const statusMessage = useMemo(
@@ -114,25 +112,26 @@ export function OnboardingAuthCard({
     [labels, status],
   );
   const nextQuery = encodeURIComponent(nextPath);
-  const googleLabel = supplierIntent
-    ? labels.supplierContinueWithGoogle
+  const supplierCopy = supplierIntent ? supplierLabels : undefined;
+  const googleLabel = supplierCopy
+    ? supplierCopy.continueWithGoogle
     : labels.continueWithGoogle;
-  const submitLabel = supplierIntent
+  const submitLabel = supplierCopy
     ? mode === "register"
-      ? labels.supplierCreateAccount
-      : labels.supplierLogin
+      ? supplierCopy.createAccount
+      : supplierCopy.login
     : mode === "register"
       ? labels.createAccount
       : labels.login;
-  const googleHelp = supplierIntent
-    ? labels.supplierGoogleHelp
+  const googleHelp = supplierCopy
+    ? supplierCopy.googleHelp
     : labels.googleHelp;
   const intentQuery = supplierIntent ? "&intent=supplier" : "";
 
   return (
     <Card className="bg-white/[0.035]">
       <CardContent className="p-5 sm:p-6">
-        {supplierIntent && (
+        {supplierCopy && (
           <div className="flex items-start gap-3 rounded-md border border-white/10 bg-white/[0.025] p-3.5 text-sm text-white">
             <Building2
               className="mt-0.5 size-5 text-gold-100"
@@ -140,10 +139,10 @@ export function OnboardingAuthCard({
             />
             <span>
               <span className="block font-medium">
-                {labels.supplierIntentTitle}
+                {supplierCopy.intentTitle}
               </span>
               <span className="mt-1 block text-xs leading-5 text-muted-foreground">
-                {labels.supplierIntentBody}
+                {supplierCopy.intentBody}
               </span>
             </span>
           </div>
@@ -165,7 +164,7 @@ export function OnboardingAuthCard({
 
         <form
           action={signInWithGoogle}
-          className={supplierIntent || statusMessage ? "mt-5" : undefined}
+          className={supplierCopy || statusMessage ? "mt-5" : undefined}
         >
           <input type="hidden" name="auth_mode" value={mode} />
           <input type="hidden" name="next" value={nextPath} />
@@ -184,15 +183,21 @@ export function OnboardingAuthCard({
           </p>
         </form>
 
+        <div className="mt-5 flex items-center gap-3 text-xs uppercase text-muted-foreground">
+          <span className="h-px flex-1 bg-white/10" />
+          {labels.orEmail}
+          <span className="h-px flex-1 bg-white/10" />
+        </div>
+
         <nav
-          className="mt-5 grid grid-cols-2 rounded-md border border-white/10 bg-black/20 p-1"
+          className="mx-auto mt-3 grid w-full max-w-sm grid-cols-2 rounded-md border border-white/10 bg-black/20 p-1"
           aria-label={labels.accountTitle}
         >
           <Link
             href={`${loginHref}?next=${nextQuery}${intentQuery}`}
             aria-current={mode === "login" ? "page" : undefined}
             className={cn(
-              "flex min-h-10 items-center justify-center rounded-sm px-3 text-center text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "flex min-h-10 items-center justify-center rounded-sm px-3 text-center text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-sm",
               mode === "login"
                 ? "bg-white/[0.1] text-white"
                 : "text-muted-foreground hover:text-white",
@@ -204,7 +209,7 @@ export function OnboardingAuthCard({
             href={`${registerHref}?next=${nextQuery}${intentQuery}`}
             aria-current={mode === "register" ? "page" : undefined}
             className={cn(
-              "flex min-h-10 items-center justify-center rounded-sm px-3 text-center text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              "flex min-h-10 items-center justify-center rounded-sm px-3 text-center text-xs font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-sm",
               mode === "register"
                 ? "bg-white/[0.1] text-white"
                 : "text-muted-foreground hover:text-white",
@@ -214,15 +219,9 @@ export function OnboardingAuthCard({
           </Link>
         </nav>
 
-        <div className="my-5 flex items-center gap-3 text-xs uppercase text-muted-foreground">
-          <span className="h-px flex-1 bg-white/10" />
-          {labels.orEmail}
-          <span className="h-px flex-1 bg-white/10" />
-        </div>
-
         <form
           action={mode === "register" ? signUpWithEmail : signInWithEmail}
-          className="grid gap-4"
+          className="mt-5 grid gap-4"
         >
           <input type="hidden" name="next" value={nextPath} />
           <input type="hidden" name="locale" value={locale} />
@@ -308,20 +307,6 @@ export function OnboardingAuthCard({
             </p>
           )}
         </form>
-
-        <p className="mt-5 text-center text-sm text-muted-foreground">
-          {mode === "register" ? labels.alreadyAccount : labels.newToTmp}{" "}
-          <Link
-            href={
-              mode === "register"
-                ? `${loginHref}?next=${nextQuery}`
-                : `${registerHref}?next=${nextQuery}`
-            }
-            className="rounded-sm text-gold-100 underline-offset-4 hover:text-white hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          >
-            {mode === "register" ? labels.login : labels.createAccount}
-          </Link>
-        </p>
       </CardContent>
     </Card>
   );

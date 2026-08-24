@@ -53,7 +53,7 @@ export default async function HomePage() {
     ? supplierProfileHref
     : `${getLocalizedPath(locale, "/register")}?next=${encodeURIComponent(
         supplierProfileHref,
-      )}`;
+      )}&intent=supplier`;
   const verifiedSuppliers = suppliers.filter((supplier) => supplier.verified);
   const featuredSuppliers = (
     verifiedSuppliers.length > 0 ? verifiedSuppliers : suppliers

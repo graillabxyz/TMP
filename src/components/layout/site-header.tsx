@@ -36,7 +36,7 @@ export async function SiteHeader() {
     ? supplierProfileHref
     : `${getLocalizedPath(locale, "/register")}?next=${encodeURIComponent(
         supplierProfileHref,
-      )}`;
+      )}&intent=supplier`;
 
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-charcoal-900/[0.94] shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
