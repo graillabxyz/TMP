@@ -58,7 +58,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
 
   const workspace = await getVerificationWorkspace();
   const supplier = workspace.supplier;
-  const isSupplier = profile.role === "supplier";
+  const isSupplier = profile.role === "supplier" || profile.role === "admin";
   const statusMessage =
     params.status === "supplier-started"
       ? verificationCopy.statusSupplierStarted
@@ -76,12 +76,19 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
       active="profile"
     >
       {statusMessage && (
-        <div className="mb-6 rounded-lg border border-gold-300/20 bg-gold-300/10 px-4 py-3 text-sm text-gold-50">
+        <div
+          role={params.status === "supplier-started" ? "status" : "alert"}
+          className={
+            params.status === "supplier-started"
+              ? "mb-6 rounded-lg border border-emerald-400/30 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100"
+              : "mb-6 rounded-lg border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-100"
+          }
+        >
           {statusMessage}
         </div>
       )}
 
-      <div className="grid gap-5 xl:grid-cols-[.85fr_1.15fr]">
+      <div className="grid items-start gap-5 xl:grid-cols-[.85fr_1.15fr]">
         <div className="grid gap-5">
           <Card className="bg-white/[0.035]">
             <CardHeader>
@@ -191,7 +198,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
           </Card>
         </div>
 
-        <Card className="bg-white/[0.035]">
+        <Card className="self-start bg-white/[0.035]">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Building2 className="size-5 text-gold-200" aria-hidden="true" />
@@ -227,7 +234,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
             ) : (
               <form
                 action={startSupplierProfile}
-                className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end"
+                className="mt-5 grid gap-3 lg:grid-cols-[1fr_auto] lg:items-end"
               >
                 <input
                   type="hidden"
@@ -247,7 +254,9 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                     placeholder={copy.businessNamePlaceholder}
                   />
                 </div>
-                <Button type="submit">{copy.startSupplierUpgrade}</Button>
+                <Button type="submit" className="w-full lg:w-auto">
+                  {copy.startSupplierUpgrade}
+                </Button>
               </form>
             )}
           </CardContent>

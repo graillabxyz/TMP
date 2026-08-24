@@ -674,7 +674,7 @@ const dictionaries = {
       subscription: "Monthly subscription",
       price: "€1 / month",
       priceNote:
-        "Introductory monthly verification subscription for distributor onboarding and Stripe testing.",
+        "Early-access verification membership for pilot suppliers. Pricing may change after the pilot period.",
       subscribe: "Start subscription",
       manage: "Manage subscription",
       documents: "Business verification",
@@ -1522,7 +1522,7 @@ const dictionaries = {
         "Passez d’abord en fournisseur en ajoutant le nom de l’entreprise. Vous pourrez ensuite démarrer l’abonnement payant pour le badge vérifié.",
       verificationSettings: "Paramètres de vérification",
       manageProducts: "Gérer les produits",
-      businessNamePlaceholder: "Anatolia Distribution",
+      businessNamePlaceholder: "Distribution Anatolie",
       metadataTitle: "Profil | TMP",
       metadataDescription:
         "Gérez votre profil TMP, l’upgrade fournisseur et la vérification.",
@@ -1545,7 +1545,7 @@ const dictionaries = {
       subscription: "Abonnement mensuel",
       price: "1 € / mois",
       priceNote:
-        "Abonnement mensuel de lancement pour l’onboarding distributeur et le test Stripe.",
+        "Abonnement de vérification en accès anticipé pour les fournisseurs pilotes. Le tarif pourra évoluer après la période pilote.",
       subscribe: "Démarrer l’abonnement",
       manage: "Gérer l’abonnement",
       documents: "Vérification entreprise",
@@ -2380,7 +2380,7 @@ const turkishDictionary = {
       "Önce işletme adınızı ekleyerek tedarikçiye yükseltin. Ardından doğrulanmış rozet için ücretli üyeliği başlatabilirsiniz.",
     verificationSettings: "Doğrulama ayarları",
     manageProducts: "Ürünleri yönet",
-    businessNamePlaceholder: "Anatolia Distribution",
+    businessNamePlaceholder: "Anadolu Dağıtım",
     metadataTitle: "Profil | TMP",
     metadataDescription:
       "TMP profilinizi, tedarikçi yükseltmesini ve doğrulamayı yönetin.",
@@ -2403,7 +2403,7 @@ const turkishDictionary = {
     subscription: "Aylık abonelik",
     price: "€1 / ay",
     priceNote:
-      "Distribütör onboarding'i ve Stripe testi için tanıtım amaçlı aylık doğrulama aboneliği.",
+      "Pilot tedarikçiler için erken erişim doğrulama üyeliği. Pilot dönemden sonra fiyat değişebilir.",
     subscribe: "Aboneliği başlat",
     manage: "Aboneliği yönet",
     documents: "İşletme doğrulaması",
