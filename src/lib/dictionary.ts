@@ -70,6 +70,7 @@ const dictionaries = {
       rfq: "Request a quote",
       buyerLogin: "Buyer login",
       supplierOnboarding: "Supplier onboarding",
+      contact: "Contact TMP",
       privacy: "Privacy",
       terms: "Terms",
       rights: "© 2026 TMP. All rights reserved.",
@@ -760,7 +761,8 @@ const dictionaries = {
         "Keep reviewer notes close to approval decisions, verification evidence, category quality, and supplier readiness signals.",
     },
     legal: {
-      lastUpdated: "Last updated: May 16, 2026.",
+      lastUpdated: "Last updated: August 24, 2026",
+      contentsLabel: "On this page",
       privacyBadge: "Privacy",
       privacyTitle: "Privacy Policy",
       privacyIntro:
@@ -795,7 +797,7 @@ const dictionaries = {
         ],
         [
           "Contact",
-          "For privacy questions or data requests, contact the TMP team through the official marketplace contact channel. A dedicated privacy inbox may be added as the company setup matures.",
+          "For privacy questions, data requests, or account support, contact the TMP team at o.biyik@outlook.fr.",
         ],
       ],
       termsBadge: "Terms",
@@ -838,9 +840,10 @@ const dictionaries = {
     },
     notFound: {
       metadataTitle: "Page Not Found | TMP",
-      title: "This route is still being sourced.",
-      body: "The page may have moved, or it is waiting for the next marketplace sprint.",
+      title: "We couldn’t find that page.",
+      body: "The link may be outdated, or the page may have moved. Return home or continue browsing the marketplace.",
       cta: "Return home",
+      browseCatalog: "Browse products",
     },
     metadata: {
       rootTitle: "TMP | Turkiye Market Place",
@@ -922,6 +925,7 @@ const dictionaries = {
       rfq: "Demander un devis",
       buyerLogin: "Connexion acheteur",
       supplierOnboarding: "Inscription fournisseur",
+      contact: "Contacter TMP",
       privacy: "Confidentialité",
       terms: "Conditions",
       rights: "© 2026 TMP. Tous droits réservés.",
@@ -1636,7 +1640,8 @@ const dictionaries = {
         "Gardez les notes reviewer proches des décisions, preuves, qualité catégorie et signaux de maturité.",
     },
     legal: {
-      lastUpdated: "Dernière mise à jour : 16 mai 2026.",
+      lastUpdated: "Dernière mise à jour : 24 août 2026",
+      contentsLabel: "Sur cette page",
       privacyBadge: "Confidentialité",
       privacyTitle: "Politique de confidentialité",
       privacyIntro:
@@ -1671,7 +1676,7 @@ const dictionaries = {
         ],
         [
           "Contact",
-          "Pour les questions de confidentialité ou les demandes liées aux données, contactez l’équipe TMP via le canal officiel de la marketplace. Une boîte de réception dédiée pourra être ajoutée à mesure que la structure mûrit.",
+          "Pour toute question de confidentialité, demande liée aux données ou assistance de compte, contactez l’équipe TMP à o.biyik@outlook.fr.",
         ],
       ],
       termsBadge: "Conditions",
@@ -1714,9 +1719,10 @@ const dictionaries = {
     },
     notFound: {
       metadataTitle: "Page introuvable | TMP",
-      title: "Cette route est encore en cours de sourcing.",
-      body: "La page a peut-être été déplacée ou attend le prochain sprint marketplace.",
+      title: "Cette page est introuvable.",
+      body: "Le lien est peut-être obsolète ou la page a été déplacée. Revenez à l’accueil ou continuez à parcourir la marketplace.",
       cta: "Retour à l’accueil",
+      browseCatalog: "Voir les produits",
     },
     metadata: {
       rootTitle: "TMP | Turkiye Market Place",
@@ -1800,6 +1806,7 @@ const turkishDictionary = {
     rfq: "Teklif iste",
     buyerLogin: "Alıcı girişi",
     supplierOnboarding: "Tedarikçi başvurusu",
+    contact: "TMP ile iletişime geç",
     privacy: "Gizlilik",
     terms: "Şartlar",
     rights: "© 2026 TMP. Tüm hakları saklıdır.",
@@ -2493,7 +2500,8 @@ const turkishDictionary = {
       "İnceleyici notlarını onay kararları, doğrulama kanıtları, kategori kalitesi ve tedarikçi hazırlık sinyallerinin yanında tutun.",
   },
   legal: {
-    lastUpdated: "Son güncelleme: 16 Mayıs 2026.",
+    lastUpdated: "Son güncelleme: 24 Ağustos 2026",
+    contentsLabel: "Bu sayfada",
     privacyBadge: "Gizlilik",
     privacyTitle: "Gizlilik Politikası",
     privacyIntro:
@@ -2528,7 +2536,7 @@ const turkishDictionary = {
       ],
       [
         "İletişim",
-        "Gizlilik soruları veya veri talepleri için resmi pazar yeri iletişim kanalı üzerinden TMP ekibiyle iletişime geçin. Şirket yapısı olgunlaştıkça özel bir gizlilik gelen kutusu eklenebilir.",
+        "Gizlilik soruları, veri talepleri veya hesap desteği için o.biyik@outlook.fr adresinden TMP ekibiyle iletişime geçin.",
       ],
     ],
     termsBadge: "Şartlar",
@@ -2571,9 +2579,10 @@ const turkishDictionary = {
   },
   notFound: {
     metadataTitle: "Sayfa Bulunamadı | TMP",
-    title: "Bu rota hâlâ tedarik ediliyor.",
-    body: "Sayfa taşınmış olabilir veya bir sonraki pazar yeri sprintini bekliyor olabilir.",
+    title: "Bu sayfayı bulamadık.",
+    body: "Bağlantı güncel olmayabilir veya sayfa taşınmış olabilir. Ana sayfaya dönün ya da pazar yerini incelemeye devam edin.",
     cta: "Ana sayfaya dön",
+    browseCatalog: "Ürünleri incele",
   },
   metadata: {
     rootTitle: "TMP | Turkiye Market Place",

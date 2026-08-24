@@ -13,7 +13,10 @@ export function Logo({ compact = false, className, href = "/" }: LogoProps) {
   return (
     <Link
       href={href}
-      className={cn("inline-flex min-w-0 items-center gap-3", className)}
+      className={cn(
+        "inline-flex min-w-0 items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        className,
+      )}
     >
       <span className="relative flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-gold-300/[0.35] bg-gold-300/10 shadow-glow">
         <Image
