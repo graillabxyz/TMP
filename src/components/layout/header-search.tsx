@@ -92,7 +92,7 @@ export function HeaderSearch({
   return (
     <div
       className={cn(
-        "container grid transition-[grid-template-rows,opacity,padding] duration-300 md:hidden",
+        "container grid transition-[grid-template-rows,opacity,padding] duration-300 lg:hidden",
         showHeaderSearch
           ? "grid-rows-[1fr] pb-1.5 opacity-100"
           : "grid-rows-[0fr] pb-0 opacity-0",
@@ -103,7 +103,7 @@ export function HeaderSearch({
           action={action}
           aria-hidden={!showHeaderSearch}
           inert={!showHeaderSearch}
-          className="flex h-9 min-w-0 items-center overflow-hidden rounded-md border border-white/15 bg-white/[0.075] text-white shadow-none transition focus-within:border-gold-300/50 focus-within:bg-white/[0.11]"
+          className="flex h-11 min-w-0 items-center overflow-hidden rounded-md border border-white/15 bg-white/[0.075] text-white shadow-none transition focus-within:border-gold-300/50 focus-within:bg-white/[0.11]"
         >
           <Search
             className="ml-3 size-4 shrink-0 text-gold-200"
@@ -113,7 +113,7 @@ export function HeaderSearch({
             name="q"
             aria-label={label}
             placeholder={placeholder}
-            className="h-9 min-w-0 flex-1 bg-transparent px-3 text-sm text-white outline-none placeholder:text-muted-foreground"
+            className="h-11 min-w-0 flex-1 bg-transparent px-3 text-base text-white outline-none placeholder:text-muted-foreground sm:text-sm"
           />
           <Button
             type="submit"

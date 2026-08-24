@@ -10,7 +10,9 @@ import {
 } from "lucide-react";
 
 import { Logo } from "@/components/logo";
+import { ContactDropdown } from "@/components/layout/contact-dropdown";
 import { ProfileDropdown } from "@/components/layout/profile-dropdown";
+import { LanguageToggle } from "@/components/language-toggle";
 import { Button } from "@/components/ui/button";
 import { getCurrentProfile, type AccountRole } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
@@ -112,8 +114,8 @@ export async function DashboardShell({
   return (
     <div className="min-h-screen bg-surface-radial">
       <header className="sticky top-0 z-50 border-b border-white/10 bg-charcoal-900/[0.94] shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
-        <div className="container flex min-h-[4.25rem] items-center justify-between gap-4 py-3">
-          <Logo href={getLocalizedPath(locale, "/")} />
+        <div className="container flex min-h-14 items-center justify-between gap-2 py-2 sm:min-h-[4.25rem] sm:gap-4 sm:py-3">
+          <Logo className="min-w-0" href={getLocalizedPath(locale, "/")} />
           <form
             action={productsHref}
             className="hidden h-10 min-w-0 max-w-[640px] flex-1 items-center overflow-hidden rounded-md border border-white/[0.12] bg-white/[0.065] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition focus-within:border-gold-300/50 focus-within:bg-white/[0.105] lg:flex"
@@ -132,10 +134,12 @@ export async function DashboardShell({
               {t.common.search}
             </Button>
           </form>
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <Button asChild variant="ghost" className="hidden sm:inline-flex">
               <Link href={productsHref}>{t.nav.products}</Link>
             </Button>
+            <LanguageToggle locale={locale} label={t.common.language} />
+            <ContactDropdown labels={t.contact} />
             {profile ? (
               <ProfileDropdown
                 email={profile.email}
@@ -167,8 +171,8 @@ export async function DashboardShell({
             )}
           </div>
         </div>
-        <form action={productsHref} className="container flex pb-3 md:hidden">
-          <div className="flex h-10 min-w-0 flex-1 items-center overflow-hidden rounded-md border border-white/15 bg-white/[0.075] text-white shadow-none transition focus-within:border-gold-300/50 focus-within:bg-white/[0.11]">
+        <form action={productsHref} className="container flex pb-2 lg:hidden">
+          <div className="flex h-11 min-w-0 flex-1 items-center overflow-hidden rounded-md border border-white/15 bg-white/[0.075] text-white shadow-none transition focus-within:border-gold-300/50 focus-within:bg-white/[0.11]">
             <Search
               className="ml-3 size-4 shrink-0 text-gold-200"
               aria-hidden="true"
@@ -177,7 +181,7 @@ export async function DashboardShell({
               name="q"
               aria-label={t.common.search}
               placeholder={t.home.headerSearchPlaceholder}
-              className="h-10 min-w-0 flex-1 bg-transparent px-3 text-sm text-white outline-none placeholder:text-muted-foreground"
+              className="h-11 min-w-0 flex-1 bg-transparent px-3 text-base text-white outline-none placeholder:text-muted-foreground sm:text-sm"
             />
             <Button type="submit" className="m-1 h-8 rounded-md px-3">
               {t.common.search}
@@ -186,8 +190,8 @@ export async function DashboardShell({
         </form>
         <div className="border-t border-white/10 bg-black/20">
           <nav
-            className="container flex min-h-10 items-center gap-1 overflow-x-auto py-1.5"
-            aria-label="Dashboard"
+            className="container flex min-h-10 items-center gap-1 overflow-x-auto py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            aria-label={t.nav.dashboard}
           >
             {navItems.map((item) => {
               const Icon = item.icon;

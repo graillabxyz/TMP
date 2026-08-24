@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LogOut, UserRound } from "lucide-react";
+import { ChevronDown, LogOut, UserRound } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { signOut } from "@/app/actions/auth";
@@ -28,6 +28,7 @@ export function ProfileDropdown({
 }: ProfileDropdownProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!open) {
@@ -43,6 +44,7 @@ export function ProfileDropdown({
     function closeOnEscape(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setOpen(false);
+        triggerRef.current?.focus();
       }
     }
 
@@ -58,6 +60,7 @@ export function ProfileDropdown({
   return (
     <div ref={rootRef} className="relative">
       <button
+        ref={triggerRef}
         type="button"
         aria-label={label}
         aria-expanded={open}
@@ -67,6 +70,10 @@ export function ProfileDropdown({
       >
         <UserRound className="size-4 text-gold-200" aria-hidden="true" />
         <span className="hidden sm:inline">{label}</span>
+        <ChevronDown
+          className={`hidden size-4 transition-transform sm:block ${open ? "rotate-180" : ""}`}
+          aria-hidden="true"
+        />
       </button>
       {open && (
         <div

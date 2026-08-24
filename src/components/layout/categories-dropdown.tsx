@@ -21,6 +21,7 @@ export function CategoriesDropdown({
 }: CategoriesDropdownProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function clearCloseTimer() {
@@ -49,6 +50,7 @@ export function CategoriesDropdown({
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setOpen(false);
+        triggerRef.current?.focus();
       }
     }
 
@@ -71,6 +73,7 @@ export function CategoriesDropdown({
       onPointerLeave={closeSoon}
     >
       <button
+        ref={triggerRef}
         type="button"
         aria-expanded={open}
         aria-haspopup="menu"
@@ -85,7 +88,7 @@ export function CategoriesDropdown({
       {open && (
         <div
           role="menu"
-          className="absolute left-0 top-full z-50 mt-2 w-[340px] overflow-hidden rounded-lg border border-white/10 bg-charcoal-900 shadow-premium"
+          className="absolute left-0 top-full z-50 mt-2 w-[min(340px,calc(100vw-2rem))] overflow-hidden rounded-lg border border-white/10 bg-charcoal-900 shadow-premium"
         >
           <div className="grid max-h-[70vh] gap-1 overflow-y-auto p-2">
             {categories.map((category) => (

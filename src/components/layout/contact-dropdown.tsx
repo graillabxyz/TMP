@@ -54,7 +54,7 @@ export function ContactDropdown({ labels }: ContactDropdownProps) {
       <button
         type="button"
         className={cn(
-          "inline-flex size-10 items-center justify-center gap-2 rounded-md text-sm font-medium text-muted-foreground transition hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:size-11 xl:w-auto xl:px-3",
+          "inline-flex size-11 items-center justify-center gap-2 rounded-md text-sm font-medium text-muted-foreground transition hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background xl:w-auto xl:px-3",
           isOpen && "bg-white/[0.08] text-white",
         )}
         aria-expanded={isOpen}
@@ -71,7 +71,7 @@ export function ContactDropdown({ labels }: ContactDropdownProps) {
         <div
           role="dialog"
           aria-label={labels.title}
-          className="fixed left-4 right-4 top-16 z-50 overflow-hidden rounded-lg border border-white/10 bg-charcoal-900 shadow-premium sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-80"
+          className="fixed left-3 right-3 top-[4.5rem] z-50 overflow-hidden rounded-lg border border-white/10 bg-charcoal-900 shadow-premium sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-80"
         >
           <div className="flex items-start justify-between gap-4 border-b border-white/10 px-4 py-3.5">
             <div>
