@@ -232,10 +232,10 @@ const dictionaries = {
       requesterEmailPlaceholder: "you@company.com",
       requesterCompany: "Company (optional)",
       requesterCompanyPlaceholder: "Company name",
-      signInRequiredTitle: "Sign in before sending an RFQ",
+      signInRequiredTitle: "Join or sign in before sending an RFQ",
       signInRequiredBody:
         "A TMP account keeps your request private, lets you add attachments, and gives suppliers a verified reply address.",
-      signInToSubmit: "Sign in to submit",
+      signInToSubmit: "Join / Login to submit",
       productRequest: "Product specification",
       productPlaceholder:
         "Organic cotton hoodie, 320gsm fleece, OEKO-TEX, 500 pcs",
@@ -262,6 +262,7 @@ const dictionaries = {
       upload: "Upload attachment",
       uploadHelp:
         "Private PDF, JPG, PNG, or WebP up to 10 MB. Only TMP reviewers can access it.",
+      attachmentSelected: "Selected file",
       uploadSignIn:
         "Sign in to add a private technical drawing, reference image, or specification sheet.",
       submit: "Submit RFQ",
@@ -273,7 +274,8 @@ const dictionaries = {
           "Please make the product request more specific with material, spec, certification, or target quantity.",
         context:
           "That product, supplier, or category is no longer available. Please choose a current marketplace option.",
-        config: "Supabase is not configured for this environment yet.",
+        config:
+          "RFQ submissions are temporarily unavailable. Please contact TMP support.",
         notification:
           "The RFQ was saved, but we could not send the email notification. Please contact TMP support.",
         attachmentAuth: "Sign in before adding a private attachment.",
@@ -1075,14 +1077,15 @@ const dictionaries = {
       requesterEmailPlaceholder: "vous@entreprise.com",
       requesterCompany: "Entreprise (optionnel)",
       requesterCompanyPlaceholder: "Nom de l’entreprise",
-      signInRequiredTitle: "Connectez-vous avant d’envoyer une demande",
+      signInRequiredTitle:
+        "Inscrivez-vous ou connectez-vous avant d’envoyer une demande",
       signInRequiredBody:
         "Un compte TMP protège votre demande, permet d’ajouter des pièces jointes et fournit aux fournisseurs une adresse de réponse vérifiée.",
-      signInToSubmit: "Se connecter pour envoyer",
-      productRequest: "Specification produit",
+      signInToSubmit: "Inscription / Connexion pour envoyer",
+      productRequest: "Spécification produit",
       productPlaceholder: "Sweat coton bio, molleton 320gsm, OEKO-TEX, 500 pcs",
       productHelp:
-        'Ajoutez le type de produit, la matiere ou specification, la certification souhaitee et la quantite cible. Les demandes vagues comme "sweats" ou "boites" sont difficiles a router.',
+        'Ajoutez le type de produit, la matière ou spécification, la certification souhaitée et la quantité cible. Les demandes vagues comme « sweats » ou « boîtes » sont difficiles à orienter.',
       selectCategory: "Sélectionner une catégorie",
       quantity: "Quantité",
       quantityPlaceholder: "500 unités",
@@ -1103,7 +1106,8 @@ const dictionaries = {
         "Partagez matériaux, certifications, emballage, Incoterms et références existantes.",
       upload: "Ajouter une pièce jointe",
       uploadHelp:
-        "PDF, JPG, PNG ou WebP privé de 10 Mo maximum. Seuls les reviewers TMP peuvent y accéder.",
+        "PDF, JPG, PNG ou WebP privé de 10 Mo maximum. Seule l’équipe TMP peut y accéder.",
+      attachmentSelected: "Fichier sélectionné",
       uploadSignIn:
         "Connectez-vous pour ajouter un plan technique, une image de référence ou un cahier des charges privé.",
       submit: "Envoyer la demande",
@@ -1112,10 +1116,11 @@ const dictionaries = {
         missing:
           "Veuillez ajouter une demande produit, une quantité et un pays de destination.",
         specific:
-          "Veuillez preciser la demande produit avec matiere, specification, certification ou quantite cible.",
+          "Veuillez préciser la demande produit avec une matière, une spécification, une certification ou une quantité cible.",
         context:
           "Ce produit, fournisseur ou cette catégorie n’est plus disponible. Veuillez choisir une option actuelle de la marketplace.",
-        config: "Supabase n’est pas encore configuré pour cet environnement.",
+        config:
+          "Les demandes sont temporairement indisponibles. Veuillez contacter le support TMP.",
         notification:
           "La demande a été enregistrée, mais la notification email n’a pas pu être envoyée. Veuillez contacter le support TMP.",
         attachmentAuth:
@@ -1936,10 +1941,10 @@ const turkishDictionary = {
     requesterEmailPlaceholder: "siz@sirket.com",
     requesterCompany: "Şirket (isteğe bağlı)",
     requesterCompanyPlaceholder: "Şirket adı",
-    signInRequiredTitle: "RFQ göndermeden önce giriş yapın",
+    signInRequiredTitle: "RFQ göndermeden önce katılın veya giriş yapın",
     signInRequiredBody:
       "TMP hesabı talebinizi gizli tutar, ek yüklemenizi sağlar ve tedarikçilere doğrulanmış bir yanıt adresi sunar.",
-    signInToSubmit: "Göndermek için giriş yap",
+    signInToSubmit: "Göndermek için Katıl / Giriş yap",
     productRequest: "Ürün spesifikasyonu",
     productPlaceholder:
       "Organik pamuk hoodie, 320gsm polar, OEKO-TEX, 500 adet",
@@ -1966,6 +1971,7 @@ const turkishDictionary = {
     upload: "Ek yükle",
     uploadHelp:
       "En fazla 10 MB özel PDF, JPG, PNG veya WebP. Yalnızca TMP inceleyicileri erişebilir.",
+    attachmentSelected: "Seçilen dosya",
     uploadSignIn:
       "Özel teknik çizim, referans görsel veya teknik föy eklemek için giriş yapın.",
     submit: "Teklif talebini gönder",
@@ -1977,7 +1983,8 @@ const turkishDictionary = {
         "Lütfen ürün talebini malzeme, teknik özellik, sertifika veya hedef miktarla daha belirgin hale getirin.",
       context:
         "Bu ürün, tedarikçi veya kategori artık kullanılamıyor. Lütfen güncel bir pazar yeri seçeneği belirleyin.",
-      config: "Supabase bu ortam için henüz yapılandırılmadı.",
+      config:
+        "Teklif talepleri geçici olarak kullanılamıyor. Lütfen TMP destek ekibiyle iletişime geçin.",
       notification:
         "Teklif talebi kaydedildi, ancak e-posta bildirimi gönderilemedi. Lütfen TMP destek ekibiyle iletişime geçin.",
       attachmentAuth: "Özel ek eklemeden önce giriş yapın.",

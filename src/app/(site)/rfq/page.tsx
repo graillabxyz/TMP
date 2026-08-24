@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircle2, FileUp, PackageSearch, Send } from "lucide-react";
+import { CheckCircle2, PackageSearch, Send } from "lucide-react";
 
+import { RfqAttachmentField } from "@/components/rfq-attachment-field";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -16,6 +17,7 @@ import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories, getSupplierBySlug } from "@/lib/marketplace";
 import { getProductBySlug } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -62,9 +64,10 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
     status && status in t.rfq.status
       ? t.rfq.status[status as keyof typeof t.rfq.status]
       : null;
-  const loginHref = `${getLocalizedPath(locale, "/login")}?next=${encodeURIComponent(
+  const authHref = `${getLocalizedPath(locale, "/register")}?next=${encodeURIComponent(
     getLocalizedPath(locale, "/rfq"),
   )}`;
+  const statusIsSuccess = status === "success";
 
   return (
     <section className="section-shell">
@@ -96,7 +99,15 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
           <Card className="bg-white/[0.035]">
             <CardContent className="p-5 sm:p-6">
               {statusMessage && (
-                <div className="mb-5 rounded-lg border border-gold-300/25 bg-gold-300/[0.08] px-4 py-3 text-sm text-gold-50">
+                <div
+                  role={statusIsSuccess ? "status" : "alert"}
+                  className={cn(
+                    "mb-5 rounded-lg border px-4 py-3 text-sm leading-6",
+                    statusIsSuccess
+                      ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-100"
+                      : "border-red-400/30 bg-red-500/10 text-red-100",
+                  )}
+                >
                   {statusMessage}
                 </div>
               )}
@@ -109,13 +120,17 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                   <p className="mt-1 text-sm leading-6 text-muted-foreground">
                     {t.rfq.signInRequiredBody}
                   </p>
-                  <Button asChild className="mt-3" size="sm">
-                    <Link href={loginHref}>{t.rfq.signInToSubmit}</Link>
+                  <Button asChild className="mt-4 w-full sm:w-auto">
+                    <Link href={authHref}>{t.rfq.signInToSubmit}</Link>
                   </Button>
                 </div>
               )}
 
-              <form action={submitRfq} className="grid gap-4">
+              <form
+                action={submitRfq}
+                className={cn("grid gap-4", !profile && "hidden")}
+                aria-hidden={!profile}
+              >
                 <input type="hidden" name="locale" value={locale} />
                 <input
                   type="hidden"
@@ -216,7 +231,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                       id="product"
                       name="product_request"
                       required
-                      minLength={18}
+                      minLength={12}
                       maxLength={180}
                       aria-describedby="product-request-help"
                       defaultValue={prefillProduct?.title ?? ""}
@@ -303,46 +318,11 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                     />
                   </div>
 
-                  {profile ? (
-                    <label
-                      htmlFor="attachment"
-                      className="flex min-h-28 cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-gold-300/30 bg-gold-300/[0.04] px-5 py-5 text-center transition focus-within:border-gold-300/60 focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background hover:border-gold-300/50 hover:bg-gold-300/[0.07]"
-                    >
-                      <FileUp
-                        className="size-6 text-gold-100"
-                        aria-hidden="true"
-                      />
-                      <span className="mt-3 text-sm font-medium text-white">
-                        {t.rfq.upload}
-                      </span>
-                      <span className="mt-1 max-w-sm text-xs leading-5 text-muted-foreground">
-                        {t.rfq.uploadHelp}
-                      </span>
-                      <input
-                        id="attachment"
-                        name="attachment"
-                        type="file"
-                        accept=".pdf,.png,.jpg,.jpeg,.webp"
-                        className="sr-only"
-                      />
-                    </label>
-                  ) : (
-                    <div className="flex min-h-28 flex-col items-center justify-center rounded-md border border-dashed border-white/15 bg-white/[0.025] px-5 py-5 text-center">
-                      <FileUp
-                        className="size-7 text-muted-foreground"
-                        aria-hidden="true"
-                      />
-                      <p className="mt-3 text-sm text-muted-foreground">
-                        {t.rfq.uploadSignIn}
-                      </p>
-                      <Link
-                        href={loginHref}
-                        className="mt-2 text-sm font-medium text-gold-100 underline-offset-4 hover:underline"
-                      >
-                        {t.nav.login}
-                      </Link>
-                    </div>
-                  )}
+                  <RfqAttachmentField
+                    help={t.rfq.uploadHelp}
+                    label={t.rfq.upload}
+                    selectedLabel={t.rfq.attachmentSelected}
+                  />
 
                   {profile && (
                     <Button type="submit" size="lg" className="w-full">
@@ -351,11 +331,6 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
                     </Button>
                   )}
                 </fieldset>
-                {!profile && (
-                  <Button asChild size="lg" className="w-full">
-                    <Link href={loginHref}>{t.rfq.signInToSubmit}</Link>
-                  </Button>
-                )}
               </form>
             </CardContent>
           </Card>
