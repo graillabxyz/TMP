@@ -50,7 +50,11 @@ export async function generateMetadata({
   }
 
   return createMetadata({
-    title: `${supplier.name} | ${t.supplierDetail.metadataVerifiedTitle} | TMP`,
+    title: `${supplier.name} | ${
+      supplier.verified
+        ? t.supplierDetail.metadataVerifiedTitle
+        : t.common.supplier
+    } | TMP`,
     description: `${supplier.summary} ${t.supplierDetail.metadataBasedIn}: ${supplier.city}, ${supplier.country}. ${t.supplierDetail.metadataCategory}: ${supplier.category}.`,
     path: `/suppliers/${supplier.slug}`,
     image: supplier.image,
@@ -114,14 +118,14 @@ export default async function SupplierDetailPage({
                 </Badge>
               )}
             </div>
-            <h1 className="mt-5 text-4xl font-semibold text-white sm:text-5xl">
+            <h1 className="mt-5 break-words text-4xl font-semibold text-white sm:text-5xl">
               {supplier.name}
             </h1>
             <p className="mt-5 max-w-3xl text-base leading-8 text-muted-foreground">
               {supplier.description}
             </p>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
               {[
                 {
                   label: "Founded",
@@ -159,7 +163,7 @@ export default async function SupplierDetailPage({
                     <p className="mt-4 text-xs text-muted-foreground">
                       {item.localizedLabel}
                     </p>
-                    <p className="mt-1 font-semibold text-white">
+                    <p className="mt-1 break-words font-semibold text-white">
                       {item.value}
                     </p>
                   </div>
@@ -189,8 +193,8 @@ export default async function SupplierDetailPage({
               </div>
               <div className="mt-5 flex flex-wrap gap-2">
                 {supplier.tags.map((tag) => (
-                  <Badge key={tag} variant="secondary">
-                    {tag}
+                  <Badge key={tag} className="max-w-full" variant="secondary">
+                    <span className="truncate">{tag}</span>
                   </Badge>
                 ))}
               </div>
@@ -211,7 +215,7 @@ export default async function SupplierDetailPage({
 
         <div className="mt-14 grid gap-6 lg:grid-cols-[1fr_360px]">
           <div>
-            <div className="flex items-end justify-between gap-4">
+            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-sm text-gold-200">
                   {t.supplierDetail.productCatalog}
@@ -233,29 +237,37 @@ export default async function SupplierDetailPage({
             </div>
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               {supplier.products.map((product) => (
-                <Card
+                <Link
                   key={product.name}
-                  className="overflow-hidden bg-white/[0.035] transition hover:border-gold-300/25"
+                  href={{
+                    pathname: productsHref,
+                    query: { q: product.name, supplier: supplier.slug },
+                  }}
+                  className="group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      sizes="(min-width: 640px) 50vw, 100vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <CardContent className="p-5">
-                    <Badge variant="secondary">{product.category}</Badge>
-                    <h3 className="mt-4 font-semibold text-white">
-                      {product.name}
-                    </h3>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {t.common.moq}: {product.moq}
-                    </p>
-                  </CardContent>
-                </Card>
+                  <Card className="h-full overflow-hidden bg-white/[0.035] transition group-hover:-translate-y-0.5 group-hover:border-gold-300/25">
+                    <div className="relative aspect-[16/10] overflow-hidden">
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        sizes="(min-width: 640px) 50vw, 100vw"
+                        className="object-cover transition duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                    <CardContent className="p-5">
+                      <Badge className="max-w-full" variant="secondary">
+                        <span className="truncate">{product.category}</span>
+                      </Badge>
+                      <h3 className="mt-4 break-words font-semibold text-white">
+                        {product.name}
+                      </h3>
+                      <p className="mt-2 break-words text-sm text-muted-foreground">
+                        {t.common.moq}: {product.moq}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>
@@ -298,7 +310,9 @@ export default async function SupplierDetailPage({
                   {t.supplierDetail.exportMarkets}
                 </div>
                 <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                  {supplier.exportMarkets.join(", ")}
+                  {supplier.exportMarkets.length > 0
+                    ? supplier.exportMarkets.join(", ")
+                    : t.common.onRequest}
                 </p>
               </div>
             </CardContent>
