@@ -2,7 +2,13 @@ import type { ProductFieldErrors } from "@/lib/product-input";
 
 export type ProductFormState = {
   status: "idle" | "error";
-  formError?: "invalid" | "category" | "image" | "save" | "notFound";
+  formError?:
+    | "invalid"
+    | "category"
+    | "image"
+    | "save"
+    | "notFound"
+    | "supplierRequired";
   fieldErrors?: ProductFieldErrors;
 };
 

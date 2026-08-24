@@ -6,5 +6,6 @@ node_modules/
 out/
 dist/
 coverage/
+supabase/.temp/
 *.tsbuildinfo
 next-env.d.ts

@@ -59,6 +59,7 @@ export type DashboardProduct = {
   priceMin: number | null;
   priceMax: number | null;
   currency: string;
+  imageUrl: string | null;
   createdAt: string;
 };
 
@@ -279,16 +280,8 @@ export async function getSupplierProductWorkspace(locale: Locale) {
     slug: string;
   } | null;
 
-  if (supplierError || !supplier) {
-    if (supplierError) {
-      console.error("Unable to load supplier workspace", supplierError.message);
-    }
-
-    return {
-      state: "missing-supplier" as const,
-      supplier: null,
-      products: [] as DashboardProduct[],
-    };
+  if (supplierError) {
+    console.error("Unable to load supplier workspace", supplierError.message);
   }
 
   const { data, error } = await supabase
@@ -304,11 +297,12 @@ export async function getSupplierProductWorkspace(locale: Locale) {
         price_min,
         price_max,
         currency,
+        images,
         created_at,
         category:categories(name, name_fr, slug)
       `,
     )
-    .eq("supplier_id", supplier.id)
+    .eq("owner_id", user.id)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -317,15 +311,17 @@ export async function getSupplierProductWorkspace(locale: Locale) {
 
   return {
     state: "ready" as const,
-    supplier: {
-      id: supplier.id,
-      name: localizedValue(
-        locale,
-        supplier.company_name,
-        supplier.company_name_fr,
-      ),
-      slug: supplier.slug,
-    },
+    supplier: supplier
+      ? {
+          id: supplier.id,
+          name: localizedValue(
+            locale,
+            supplier.company_name,
+            supplier.company_name_fr,
+          ),
+          slug: supplier.slug,
+        }
+      : null,
     products: (
       (data ?? []) as unknown as Array<{
         id: string;
@@ -337,6 +333,7 @@ export async function getSupplierProductWorkspace(locale: Locale) {
         price_min: number | null;
         price_max: number | null;
         currency: string;
+        images: string[];
         created_at: string;
         category: { name: string; name_fr: string | null; slug: string } | null;
       }>
@@ -359,6 +356,7 @@ export async function getSupplierProductWorkspace(locale: Locale) {
       priceMin: product.price_min,
       priceMax: product.price_max,
       currency: product.currency,
+      imageUrl: product.images[0] ?? null,
       createdAt: product.created_at,
     })),
   };
@@ -375,10 +373,17 @@ export async function getEditableProduct(productId: string) {
     return null;
   }
 
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
   const { data, error } = await supabase
     .from("supplier_products")
     .select("*")
     .eq("id", productId)
+    .eq("owner_id", user.id)
     .maybeSingle();
 
   if (error) {

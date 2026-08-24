@@ -12,6 +12,7 @@ import {
 import {
   CheckCircle2,
   ImagePlus,
+  LockKeyhole,
   PackageOpen,
   Save,
   Send,
@@ -89,6 +90,12 @@ export type ProductFormLabels = {
   categoryError: string;
   saveError: string;
   notFoundError: string;
+  supplierRequiredError: string;
+  draftOnlyNoticeTitle: string;
+  draftOnlyNoticeBody: string;
+  draftOnlyTitle: string;
+  draftOnlyBody: string;
+  addSupplierProfile: string;
 };
 
 type ProductAction = (
@@ -101,9 +108,11 @@ type ProductFormProps = {
   categories: Category[];
   cancelHref: string;
   cancelLabel: string;
+  canPublish: boolean;
   locale: Locale;
   labels: ProductFormLabels;
   product?: ProductUpdate & { id: string };
+  supplierProfileHref: string;
 };
 
 const acceptedImageTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
@@ -117,9 +126,11 @@ export function ProductForm({
   categories,
   cancelHref,
   cancelLabel,
+  canPublish,
   locale,
   labels,
   product,
+  supplierProfileHref,
 }: ProductFormProps) {
   const [state, formAction, isPending] = useActionState(
     action,
@@ -244,13 +255,15 @@ export function ProductForm({
   };
 
   const formError =
-    state.formError === "category"
-      ? labels.categoryError
-      : state.formError === "save"
-        ? labels.saveError
-        : state.formError === "notFound"
-          ? labels.notFoundError
-          : labels.formError;
+    state.formError === "supplierRequired"
+      ? labels.supplierRequiredError
+      : state.formError === "category"
+        ? labels.categoryError
+        : state.formError === "save"
+          ? labels.saveError
+          : state.formError === "notFound"
+            ? labels.notFoundError
+            : labels.formError;
   const selectedCategory = categories.find(
     (category) => category.id === categoryId,
   );
@@ -281,6 +294,28 @@ export function ProductForm({
           className="mb-6 rounded-md border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-red-100 outline-none focus-visible:ring-2 focus-visible:ring-destructive"
         >
           <p className="font-medium">{formError}</p>
+        </div>
+      )}
+
+      {!canPublish && (
+        <div className="mb-6 flex flex-col gap-4 rounded-lg border border-gold-300/20 bg-gold-300/[0.045] p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+          <div className="flex items-start gap-3">
+            <LockKeyhole
+              className="mt-0.5 size-5 shrink-0 text-gold-200"
+              aria-hidden="true"
+            />
+            <div>
+              <h2 className="font-semibold text-white">
+                {labels.draftOnlyNoticeTitle}
+              </h2>
+              <p className="mt-1 max-w-2xl text-sm leading-6 text-muted-foreground">
+                {labels.draftOnlyNoticeBody}
+              </p>
+            </div>
+          </div>
+          <Button asChild variant="outline" size="sm" className="shrink-0">
+            <Link href={supplierProfileHref}>{labels.addSupplierProfile}</Link>
+          </Button>
         </div>
       )}
 
@@ -649,41 +684,50 @@ export function ProductForm({
 
           <section className="rounded-lg border border-gold-300/20 bg-gold-300/[0.04] p-5">
             <div className="flex items-start gap-3">
-              <CheckCircle2
-                className="mt-0.5 size-5 shrink-0 text-gold-200"
-                aria-hidden="true"
-              />
+              {canPublish ? (
+                <CheckCircle2
+                  className="mt-0.5 size-5 shrink-0 text-gold-200"
+                  aria-hidden="true"
+                />
+              ) : (
+                <LockKeyhole
+                  className="mt-0.5 size-5 shrink-0 text-gold-200"
+                  aria-hidden="true"
+                />
+              )}
               <div>
                 <h2 className="text-base font-semibold text-white">
-                  {labels.publishingTitle}
+                  {canPublish ? labels.publishingTitle : labels.draftOnlyTitle}
                 </h2>
                 <p className="mt-1 text-sm leading-5 text-muted-foreground">
-                  {labels.publishingBody}
+                  {canPublish ? labels.publishingBody : labels.draftOnlyBody}
                 </p>
               </div>
             </div>
 
             <div className="mt-5 grid gap-2">
-              <Button
-                type="submit"
-                name="status"
-                value="published"
-                disabled={isPending}
-                onClick={() => setPendingIntent("published")}
-                className="w-full"
-              >
-                <Send aria-hidden="true" />
-                {isPending && pendingIntent === "published"
-                  ? labels.publishing
-                  : product?.status === "published"
-                    ? labels.updatePublished
-                    : labels.publishProduct}
-              </Button>
+              {canPublish && (
+                <Button
+                  type="submit"
+                  name="status"
+                  value="published"
+                  disabled={isPending}
+                  onClick={() => setPendingIntent("published")}
+                  className="w-full"
+                >
+                  <Send aria-hidden="true" />
+                  {isPending && pendingIntent === "published"
+                    ? labels.publishing
+                    : product?.status === "published"
+                      ? labels.updatePublished
+                      : labels.publishProduct}
+                </Button>
+              )}
               <Button
                 type="submit"
                 name="status"
                 value="draft"
-                variant="outline"
+                variant={canPublish ? "outline" : "default"}
                 disabled={isPending}
                 onClick={() => setPendingIntent("draft")}
                 className="w-full"
@@ -693,12 +737,19 @@ export function ProductForm({
                   ? labels.saving
                   : labels.saveDraft}
               </Button>
+              {!canPublish && (
+                <Button asChild variant="outline" className="w-full">
+                  <Link href={supplierProfileHref}>
+                    {labels.addSupplierProfile}
+                  </Link>
+                </Button>
+              )}
               <Button asChild variant="ghost" className="w-full">
                 <Link href={cancelHref}>{cancelLabel}</Link>
               </Button>
             </div>
             <p className="mt-4 text-xs leading-5 text-muted-foreground">
-              {pendingIntent === "published"
+              {canPublish && pendingIntent === "published"
                 ? labels.publishHelp
                 : labels.draftHelp}
             </p>

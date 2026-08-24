@@ -43,28 +43,46 @@ function getImageFiles(formData: FormData) {
     .filter((value): value is File => value instanceof File && value.size > 0);
 }
 
-async function getCurrentSupplierContext() {
+async function getCurrentProductContext() {
   const supabase = await createServerSupabaseClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { supabase, supplierId: null, userId: null };
+    return {
+      canPublish: false,
+      supabase,
+      supplierId: null,
+      userId: null,
+    };
   }
 
-  const { data, error } = await supabase
-    .from("suppliers")
-    .select("id")
-    .eq("owner_id", user.id)
-    .maybeSingle();
+  const [{ data, error }, { data: profileData, error: profileError }] =
+    await Promise.all([
+      supabase
+        .from("suppliers")
+        .select("id")
+        .eq("owner_id", user.id)
+        .maybeSingle(),
+      supabase.from("profiles").select("role").eq("id", user.id).maybeSingle(),
+    ]);
   const supplier = data as unknown as { id: string } | null;
+  const profile = profileData as unknown as {
+    role: "buyer" | "supplier" | "admin";
+  } | null;
 
   if (error) {
     console.error("Unable to load product owner supplier", error.message);
   }
+  if (profileError) {
+    console.error("Unable to load product owner profile", profileError.message);
+  }
 
   return {
+    canPublish:
+      Boolean(supplier?.id) &&
+      (profile?.role === "supplier" || profile?.role === "admin"),
     supabase,
     supplierId: supplier?.id ?? null,
     userId: user.id,
@@ -176,9 +194,16 @@ export async function createProduct(
 
   if (!parsed.values) return invalidState(parsed.errors);
 
-  const { supabase, supplierId, userId } = await getCurrentSupplierContext();
-  if (!supplierId || !userId) {
-    redirect(`${productsPath}?status=supplier-missing`);
+  const { canPublish, supabase, supplierId, userId } =
+    await getCurrentProductContext();
+  if (!userId) {
+    const nextPath = getLocalizedPath(locale, "/dashboard/products/new");
+    redirect(
+      `${getLocalizedPath(locale, "/login")}?status=auth-required&next=${encodeURIComponent(nextPath)}`,
+    );
+  }
+  if (parsed.values.status === "published" && !canPublish) {
+    return { status: "error", formError: "supplierRequired" };
   }
 
   if (!(await categoryExists(supabase, parsed.values.categoryId))) {
@@ -199,7 +224,7 @@ export async function createProduct(
 
   const uploadedImages = await uploadProductImages({
     files: imageFiles,
-    supplierId,
+    supplierId: supplierId ?? "drafts",
     supabase,
     userId,
   });
@@ -214,6 +239,7 @@ export async function createProduct(
 
   const values = parsed.values;
   const payload: ProductInsert = {
+    owner_id: userId,
     supplier_id: supplierId,
     category_id: values.categoryId,
     title: values.title,
@@ -259,9 +285,15 @@ export async function updateProduct(
   }
   if (!parsed.values) return invalidState(parsed.errors);
 
-  const { supabase, supplierId, userId } = await getCurrentSupplierContext();
-  if (!supplierId || !userId) {
-    redirect(`${productsPath}?status=supplier-missing`);
+  const { canPublish, supabase, supplierId, userId } =
+    await getCurrentProductContext();
+  if (!userId) {
+    redirect(
+      `${getLocalizedPath(locale, "/login")}?status=auth-required&next=${encodeURIComponent(productsPath)}`,
+    );
+  }
+  if (parsed.values.status === "published" && !canPublish) {
+    return { status: "error", formError: "supplierRequired" };
   }
 
   if (!(await categoryExists(supabase, parsed.values.categoryId))) {
@@ -274,11 +306,14 @@ export async function updateProduct(
 
   const { data: existingData, error: existingError } = await supabase
     .from("supplier_products")
-    .select("images")
+    .select("images, supplier_id")
     .eq("id", productId)
-    .eq("supplier_id", supplierId)
+    .eq("owner_id", userId)
     .maybeSingle();
-  const existingProduct = existingData as { images: string[] } | null;
+  const existingProduct = existingData as {
+    images: string[];
+    supplier_id: string | null;
+  } | null;
 
   if (existingError || !existingProduct) {
     if (existingError) {
@@ -295,7 +330,7 @@ export async function updateProduct(
   const uploadedImages = imageFiles.length
     ? await uploadProductImages({
         files: imageFiles,
-        supplierId,
+        supplierId: supplierId ?? "drafts",
         supabase,
         userId,
       })
@@ -318,6 +353,8 @@ export async function updateProduct(
 
   const values = parsed.values;
   const payload: ProductUpdate = {
+    owner_id: userId,
+    supplier_id: supplierId ?? existingProduct.supplier_id,
     category_id: values.categoryId,
     title: values.title,
     description: values.description,
@@ -337,7 +374,7 @@ export async function updateProduct(
   const { error } = await productMutations
     .update(payload)
     .eq("id", productId)
-    .eq("supplier_id", supplierId);
+    .eq("owner_id", userId);
 
   if (error) {
     await removeProductImages(
@@ -355,7 +392,7 @@ export async function updateProduct(
           url,
           bucket: SUPPLIER_ASSETS_BUCKET,
           userId,
-          supplierId,
+          supplierId: existingProduct.supplier_id ?? "drafts",
         }),
       )
       .filter((path): path is string => Boolean(path));
@@ -369,9 +406,9 @@ export async function archiveProduct(formData: FormData) {
   const locale = getFormLocale(formData);
   const productId = getString(formData, "id");
   const productsPath = getLocalizedPath(locale, "/dashboard/products");
-  const { supabase, supplierId } = await getCurrentSupplierContext();
+  const { supabase, userId } = await getCurrentProductContext();
 
-  if (!isUuid(productId) || !supplierId) {
+  if (!isUuid(productId) || !userId) {
     redirect(`${productsPath}?status=error`);
   }
 
@@ -379,7 +416,7 @@ export async function archiveProduct(formData: FormData) {
     .from("supplier_products")
     .select("id")
     .eq("id", productId)
-    .eq("supplier_id", supplierId)
+    .eq("owner_id", userId)
     .maybeSingle();
 
   if (ownedProductError || !ownedProduct) {
@@ -398,7 +435,7 @@ export async function archiveProduct(formData: FormData) {
   const { error } = await productMutations
     .update({ status: "archived", updated_at: new Date().toISOString() })
     .eq("id", productId)
-    .eq("supplier_id", supplierId);
+    .eq("owner_id", userId);
 
   if (error) {
     console.error("Unable to archive product", error.message);

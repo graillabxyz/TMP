@@ -429,6 +429,23 @@ const dictionaries = {
       upgradeBody:
         "Start the monthly verification subscription and submit documents for admin review.",
       upgradeCta: "Open verification settings",
+      listingOverview: "Listing overview",
+      publishedProducts: "Published",
+      draftProducts: "Drafts",
+      archivedProducts: "Archived",
+      recentProducts: "Recent products",
+      noProductsYet: "No product listings yet",
+      createFirstProduct: "Create your first product",
+      viewAllProducts: "View all products",
+      buyerDraftTitle: "Build your catalog before you sell",
+      buyerDraftBody:
+        "Create private product drafts now. Add a free supplier profile when you are ready to publish them on the marketplace.",
+      freeSupplierAccess: "Add free supplier profile",
+      supplierCatalogTitle: "Keep your catalog ready for buyers",
+      supplierCatalogBody:
+        "Complete product details, use clear photos, and publish listings when they are ready for buyer discovery.",
+      optionalVerificationBody:
+        "Supplier tools are free. Paid verification is optional and adds a verified badge after review.",
       buyerWorkspace: {
         eyebrow: "Buyer workspace",
         description:
@@ -462,13 +479,13 @@ const dictionaries = {
           "Create a structured RFQ with quantity, destination, timing, and sourcing notes.",
       },
       productManager: {
-        eyebrow: "Supplier products",
+        eyebrow: "Product catalog",
         title: "Products",
         description:
-          "Create, publish, and maintain the product listings buyers discover on TMP.",
+          "Create, refine, and manage the product listings buyers can discover on TMP.",
         createProduct: "Create product",
         editProduct: "Edit product",
-        noProducts: "No supplier products yet",
+        noProducts: "No products yet",
         noProductsBody:
           "Create a first product listing to make it available for marketplace discovery once published.",
         loginRequired: "Login required",
@@ -525,7 +542,7 @@ const dictionaries = {
         updatePublished: "Update published product",
         saving: "Saving draft...",
         publishing: "Publishing...",
-        draftHelp: "Drafts are visible only in your supplier workspace.",
+        draftHelp: "Drafts are visible only in your account workspace.",
         publishHelp:
           "Published products appear in marketplace search immediately.",
         requiredError: "This field is required.",
@@ -563,6 +580,20 @@ const dictionaries = {
           "Add a supplier profile before editing supplier product listings.",
         supplierAccessBody:
           "Product posting is available after adding a supplier profile. Your TMP account can still browse products, save suppliers, and submit RFQs.",
+        draftOnlyNoticeTitle: "Drafts are available on every account",
+        draftOnlyNoticeBody:
+          "Create and edit private product drafts now. To make a listing live, add a free supplier profile with your business name.",
+        draftOnlyTitle: "Save this as a private draft",
+        draftOnlyBody:
+          "You can finish your listing now. Publishing becomes available after you add a free supplier profile.",
+        addSupplierProfile: "Add free supplier profile",
+        supplierRequiredError:
+          "This account can save drafts, but it needs a supplier profile before publishing.",
+        yourDraftWorkspace: "Your private product workspace",
+        allListings: "All products",
+        publishedListings: "Published",
+        draftListings: "Drafts",
+        archivedListings: "Archived",
         browseProducts: "Browse products",
         successCreate: "Product created.",
         successUpdate: "Product updated.",
@@ -573,12 +604,12 @@ const dictionaries = {
       metadataTitle: "Dashboard | TMP",
       metadataDescription:
         "TMP workspace for RFQs, product discovery, and supplier tools.",
-      productMetadataTitle: "Supplier Products | TMP",
+      productMetadataTitle: "Product Catalog | TMP",
       productMetadataDescription:
-        "Create and manage TMP supplier product listings.",
+        "Create and manage product drafts and published listings on TMP.",
       createProductMetadataTitle: "Create Product | TMP",
       createProductMetadataDescription:
-        "Create a supplier product listing on TMP.",
+        "Create a private product draft or published supplier listing on TMP.",
       editProductMetadataTitle: "Edit Product | TMP",
       editProductMetadataDescription: "Edit a TMP supplier product listing.",
     },
@@ -1244,6 +1275,23 @@ const dictionaries = {
       upgradeBody:
         "Lancez l’abonnement mensuel de vérification et soumettez vos documents pour revue admin.",
       upgradeCta: "Ouvrir la vérification",
+      listingOverview: "Aperçu du catalogue",
+      publishedProducts: "Publiés",
+      draftProducts: "Brouillons",
+      archivedProducts: "Archivés",
+      recentProducts: "Produits récents",
+      noProductsYet: "Aucun listing produit",
+      createFirstProduct: "Créer votre premier produit",
+      viewAllProducts: "Voir tous les produits",
+      buyerDraftTitle: "Préparez votre catalogue avant de vendre",
+      buyerDraftBody:
+        "Créez maintenant des brouillons produit privés. Ajoutez un profil fournisseur gratuit lorsque vous êtes prêt à les publier sur la marketplace.",
+      freeSupplierAccess: "Ajouter un profil fournisseur gratuit",
+      supplierCatalogTitle: "Gardez votre catalogue prêt pour les acheteurs",
+      supplierCatalogBody:
+        "Complétez les détails, utilisez des photos nettes et publiez les listings prêts à être découverts.",
+      optionalVerificationBody:
+        "Les outils fournisseur sont gratuits. La vérification payante est facultative et ajoute un badge après examen.",
       buyerWorkspace: {
         eyebrow: "Espace acheteur",
         description:
@@ -1281,13 +1329,13 @@ const dictionaries = {
           "Créez une RFQ structurée avec quantité, destination, calendrier et notes de sourcing.",
       },
       productManager: {
-        eyebrow: "Produits fournisseur",
+        eyebrow: "Catalogue produit",
         title: "Produits",
         description:
-          "Créez, publiez et maintenez les listings produits découverts par les acheteurs sur TMP.",
+          "Créez, améliorez et gérez les listings produits que les acheteurs peuvent découvrir sur TMP.",
         createProduct: "Créer un produit",
         editProduct: "Modifier le produit",
-        noProducts: "Aucun produit fournisseur",
+        noProducts: "Aucun produit",
         noProductsBody:
           "Créez un premier listing produit pour le rendre découvrable une fois publié.",
         loginRequired: "Connexion requise",
@@ -1347,7 +1395,7 @@ const dictionaries = {
         saving: "Enregistrement...",
         publishing: "Publication...",
         draftHelp:
-          "Les brouillons ne sont visibles que dans votre espace fournisseur.",
+          "Les brouillons ne sont visibles que dans l’espace de votre compte.",
         publishHelp:
           "Les produits publiés apparaissent immédiatement dans la recherche.",
         requiredError: "Ce champ est obligatoire.",
@@ -1387,6 +1435,21 @@ const dictionaries = {
           "Ajoutez un profil fournisseur avant de modifier les listings produits.",
         supplierAccessBody:
           "La publication produit est disponible après ajout d’un profil fournisseur. Votre compte TMP peut toujours parcourir les produits, enregistrer des fournisseurs et envoyer des demandes.",
+        draftOnlyNoticeTitle:
+          "Les brouillons sont disponibles pour tous les comptes",
+        draftOnlyNoticeBody:
+          "Créez et modifiez vos brouillons produit privés. Pour publier un listing, ajoutez gratuitement un profil fournisseur avec le nom de votre entreprise.",
+        draftOnlyTitle: "Enregistrer comme brouillon privé",
+        draftOnlyBody:
+          "Vous pouvez terminer votre listing maintenant. La publication sera disponible après l’ajout gratuit d’un profil fournisseur.",
+        addSupplierProfile: "Ajouter un profil fournisseur gratuit",
+        supplierRequiredError:
+          "Ce compte peut enregistrer des brouillons, mais un profil fournisseur est requis pour publier.",
+        yourDraftWorkspace: "Votre espace produit privé",
+        allListings: "Tous les produits",
+        publishedListings: "Publiés",
+        draftListings: "Brouillons",
+        archivedListings: "Archivés",
         browseProducts: "Parcourir les produits",
         successCreate: "Produit créé.",
         successUpdate: "Produit mis à jour.",
@@ -1398,12 +1461,12 @@ const dictionaries = {
       metadataTitle: "Tableau de bord | TMP",
       metadataDescription:
         "Espace TMP pour les RFQ, la découverte produit et les outils fournisseur.",
-      productMetadataTitle: "Produits fournisseur | TMP",
+      productMetadataTitle: "Catalogue produit | TMP",
       productMetadataDescription:
-        "Créez et gérez les listings produits fournisseur TMP.",
+        "Créez et gérez les brouillons produit et listings publiés sur TMP.",
       createProductMetadataTitle: "Créer un produit | TMP",
       createProductMetadataDescription:
-        "Créez un listing produit fournisseur sur TMP.",
+        "Créez un brouillon produit privé ou un listing fournisseur publié sur TMP.",
       editProductMetadataTitle: "Modifier le produit | TMP",
       editProductMetadataDescription:
         "Modifiez un listing produit fournisseur TMP.",
@@ -2069,6 +2132,23 @@ const turkishDictionary = {
     upgradeBody:
       "Aylık doğrulama aboneliğini başlatın ve belgeleri yönetici incelemesine gönderin.",
     upgradeCta: "Doğrulama ayarlarını aç",
+    listingOverview: "İlan özeti",
+    publishedProducts: "Yayında",
+    draftProducts: "Taslaklar",
+    archivedProducts: "Arşivlenenler",
+    recentProducts: "Son ürünler",
+    noProductsYet: "Henüz ürün ilanı yok",
+    createFirstProduct: "İlk ürününüzü oluşturun",
+    viewAllProducts: "Tüm ürünleri görüntüle",
+    buyerDraftTitle: "Satışa başlamadan kataloğunuzu hazırlayın",
+    buyerDraftBody:
+      "Şimdi özel ürün taslakları oluşturun. Pazar yerinde yayınlamaya hazır olduğunuzda ücretsiz bir tedarikçi profili ekleyin.",
+    freeSupplierAccess: "Ücretsiz tedarikçi profili ekle",
+    supplierCatalogTitle: "Kataloğunuzu alıcılara hazır tutun",
+    supplierCatalogBody:
+      "Ürün bilgilerini tamamlayın, net fotoğraflar kullanın ve alıcı keşfine hazır ilanları yayınlayın.",
+    optionalVerificationBody:
+      "Tedarikçi araçları ücretsizdir. Ücretli doğrulama isteğe bağlıdır ve inceleme sonrasında doğrulanmış rozet ekler.",
     buyerWorkspace: {
       eyebrow: "Alıcı çalışma alanı",
       description:
@@ -2102,13 +2182,13 @@ const turkishDictionary = {
         "Miktar, varış ülkesi, zamanlama ve sourcing notlarıyla yapılandırılmış RFQ oluşturun.",
     },
     productManager: {
-      eyebrow: "Tedarikçi ürünleri",
+      eyebrow: "Ürün kataloğu",
       title: "Ürünler",
       description:
-        "Alıcıların TMP'de keşfettiği ürün ilanlarını oluşturun, yayınlayın ve yönetin.",
+        "Alıcıların TMP'de keşfedebileceği ürün ilanlarını oluşturun, geliştirin ve yönetin.",
       createProduct: "Ürün oluştur",
       editProduct: "Ürünü düzenle",
-      noProducts: "Henüz tedarikçi ürünü yok",
+      noProducts: "Henüz ürün yok",
       noProductsBody:
         "Yayınlandığında pazar yerinde görünmesi için ilk ürün ilanını oluşturun.",
       loginRequired: "Giriş gerekli",
@@ -2165,8 +2245,7 @@ const turkishDictionary = {
       updatePublished: "Yayındaki ürünü güncelle",
       saving: "Taslak kaydediliyor...",
       publishing: "Yayınlanıyor...",
-      draftHelp:
-        "Taslakları yalnızca tedarikçi çalışma alanınızda görebilirsiniz.",
+      draftHelp: "Taslakları yalnızca hesap çalışma alanınızda görebilirsiniz.",
       publishHelp: "Yayınlanan ürünler pazar yeri aramasında hemen görünür.",
       requiredError: "Bu alan zorunludur.",
       titleLengthError: "3 ile 160 karakter arasında yazın.",
@@ -2205,6 +2284,20 @@ const turkishDictionary = {
         "Tedarikçi ürün ilanlarını düzenlemeden önce tedarikçi profili ekleyin.",
       supplierAccessBody:
         "Ürün yayınlama, tedarikçi profili eklendikten sonra kullanılabilir. TMP hesabınız yine ürünleri inceleyebilir, tedarikçileri kaydedebilir ve RFQ gönderebilir.",
+      draftOnlyNoticeTitle: "Taslaklar tüm hesaplarda kullanılabilir",
+      draftOnlyNoticeBody:
+        "Şimdi özel ürün taslakları oluşturup düzenleyin. Bir ilanı yayına almak için işletme adınızla ücretsiz bir tedarikçi profili ekleyin.",
+      draftOnlyTitle: "Özel taslak olarak kaydedin",
+      draftOnlyBody:
+        "İlanınızı şimdi tamamlayabilirsiniz. Ücretsiz tedarikçi profili ekledikten sonra yayınlama açılır.",
+      addSupplierProfile: "Ücretsiz tedarikçi profili ekle",
+      supplierRequiredError:
+        "Bu hesap taslak kaydedebilir, ancak yayınlamak için tedarikçi profili gerekir.",
+      yourDraftWorkspace: "Özel ürün çalışma alanınız",
+      allListings: "Tüm ürünler",
+      publishedListings: "Yayında",
+      draftListings: "Taslaklar",
+      archivedListings: "Arşivlenenler",
       browseProducts: "Ürünlere göz at",
       successCreate: "Ürün oluşturuldu.",
       successUpdate: "Ürün güncellendi.",
@@ -2215,11 +2308,12 @@ const turkishDictionary = {
     metadataTitle: "Panel | TMP",
     metadataDescription:
       "RFQ'lar, ürün keşfi ve tedarikçi araçları için TMP çalışma alanı.",
-    productMetadataTitle: "Tedarikçi Ürünleri | TMP",
+    productMetadataTitle: "Ürün Kataloğu | TMP",
     productMetadataDescription:
-      "TMP tedarikçi ürün ilanlarını oluşturun ve yönetin.",
+      "TMP'de ürün taslaklarını ve yayınlanan ilanları oluşturup yönetin.",
     createProductMetadataTitle: "Ürün Oluştur | TMP",
-    createProductMetadataDescription: "TMP'de tedarikçi ürün ilanı oluşturun.",
+    createProductMetadataDescription:
+      "TMP'de özel ürün taslağı veya yayınlanan tedarikçi ilanı oluşturun.",
     editProductMetadataTitle: "Ürünü Düzenle | TMP",
     editProductMetadataDescription: "TMP tedarikçi ürün ilanını düzenleyin.",
   },

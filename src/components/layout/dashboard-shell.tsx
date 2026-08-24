@@ -83,6 +83,12 @@ export async function DashboardShell({
       icon: LayoutDashboard,
     },
     {
+      id: "products",
+      label: t.dashboard.products,
+      href: getLocalizedPath(locale, "/dashboard/products"),
+      icon: PackagePlus,
+    },
+    {
       id: "rfqs",
       label: t.dashboard.rfqs,
       href: `${dashboardHref}#rfqs`,
@@ -101,7 +107,7 @@ export async function DashboardShell({
       icon: UserRound,
     },
   ];
-  const navItems = role === "supplier" ? supplierNavItems : buyerNavItems;
+  const navItems = role === "buyer" ? buyerNavItems : supplierNavItems;
 
   return (
     <div className="min-h-screen bg-surface-radial">

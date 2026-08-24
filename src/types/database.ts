@@ -352,7 +352,8 @@ export type Database = {
       supplier_products: {
         Row: {
           id: string;
-          supplier_id: string;
+          owner_id: string | null;
+          supplier_id: string | null;
           category_id: string | null;
           title: string;
           title_fr: string | null;
@@ -371,7 +372,8 @@ export type Database = {
         };
         Insert: {
           id?: string;
-          supplier_id: string;
+          owner_id?: string | null;
+          supplier_id?: string | null;
           category_id?: string | null;
           title: string;
           title_fr?: string | null;
@@ -397,6 +399,13 @@ export type Database = {
             columns: ["supplier_id"];
             isOneToOne: false;
             referencedRelation: "suppliers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "supplier_products_owner_id_fkey";
+            columns: ["owner_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
           {
