@@ -23,6 +23,7 @@ const ADMIN_EMAIL = "o.biyik@outlook.fr";
 export function ContactDropdown({ labels }: ContactDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -35,6 +36,7 @@ export function ContactDropdown({ labels }: ContactDropdownProps) {
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsOpen(false);
+        triggerRef.current?.focus();
       }
     };
 
@@ -52,6 +54,7 @@ export function ContactDropdown({ labels }: ContactDropdownProps) {
   return (
     <div ref={rootRef} className="relative">
       <button
+        ref={triggerRef}
         type="button"
         className={cn(
           "inline-flex size-11 items-center justify-center gap-2 rounded-md text-sm font-medium text-muted-foreground transition hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background xl:w-auto xl:px-3",
@@ -82,9 +85,12 @@ export function ContactDropdown({ labels }: ContactDropdownProps) {
             </div>
             <button
               type="button"
-              className="inline-flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex size-10 shrink-0 items-center justify-center rounded-md text-muted-foreground transition hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               aria-label={labels.close}
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false);
+                triggerRef.current?.focus();
+              }}
             >
               <X className="size-4" aria-hidden="true" />
             </button>

@@ -6,6 +6,7 @@ import {
   BadgeCheck,
   CheckCircle2,
   FileCheck2,
+  Info,
   SearchCheck,
   ShieldCheck,
   Sparkles,
@@ -182,8 +183,10 @@ export default async function VerificationSettingsPage({
             >
               {statusTone === "error" ? (
                 <AlertCircle className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
-              ) : (
+              ) : statusTone === "success" ? (
                 <CheckCircle2 className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
+              ) : (
+                <Info className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
               )}
               {statusMessage}
             </div>

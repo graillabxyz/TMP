@@ -102,7 +102,7 @@ export function CategoriesDropdown({
                 <span className="flex items-center justify-between gap-3 text-sm font-medium text-white">
                   {category.name}
                   <ArrowRight
-                    className="size-4 text-gold-200 opacity-0 transition group-hover/item:opacity-100"
+                    className="size-4 shrink-0 text-gold-200 opacity-0 transition group-hover/item:opacity-100 group-focus-visible/item:opacity-100"
                     aria-hidden="true"
                   />
                 </span>

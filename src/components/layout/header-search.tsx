@@ -46,7 +46,7 @@ export function HeaderSearch({
     const observer = new IntersectionObserver(
       ([entry]) => setHeroSearchVisible(entry.isIntersecting),
       {
-        rootMargin: "-76px 0px 0px 0px",
+        rootMargin: "-132px 0px 0px 0px",
         threshold: 0,
       },
     );
@@ -118,7 +118,7 @@ export function HeaderSearch({
           <Button
             type="submit"
             aria-label={label}
-            className="m-0.5 size-8 shrink-0 rounded-md p-0"
+            className="m-0.5 size-10 shrink-0 rounded-md p-0"
           >
             <ArrowRight className="size-4" aria-hidden="true" />
           </Button>

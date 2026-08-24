@@ -11,6 +11,7 @@ import {
 
 import { Logo } from "@/components/logo";
 import { ContactDropdown } from "@/components/layout/contact-dropdown";
+import { HeaderSearch } from "@/components/layout/header-search";
 import { ProfileDropdown } from "@/components/layout/profile-dropdown";
 import { LanguageToggle } from "@/components/language-toggle";
 import { Button } from "@/components/ui/button";
@@ -113,27 +114,22 @@ export async function DashboardShell({
 
   return (
     <div className="min-h-screen bg-surface-radial">
+      <a
+        href="#main-content"
+        className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-md bg-gold-300 px-4 py-2 text-sm font-semibold text-charcoal-950 shadow-premium transition-transform focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-white"
+      >
+        {t.common.skipToContent}
+      </a>
       <header className="sticky top-0 z-50 border-b border-white/10 bg-charcoal-900/[0.94] shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
         <div className="container flex min-h-14 items-center justify-between gap-2 py-2 sm:min-h-[4.25rem] sm:gap-4 sm:py-3">
           <Logo className="min-w-0" href={getLocalizedPath(locale, "/")} />
-          <form
+          <HeaderSearch
             action={productsHref}
-            className="hidden h-10 min-w-0 max-w-[640px] flex-1 items-center overflow-hidden rounded-md border border-white/[0.12] bg-white/[0.065] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition focus-within:border-gold-300/50 focus-within:bg-white/[0.105] lg:flex"
-          >
-            <Search
-              className="ml-3 size-4 shrink-0 text-gold-200"
-              aria-hidden="true"
-            />
-            <input
-              name="q"
-              aria-label={t.common.search}
-              placeholder={t.home.headerSearchPlaceholder}
-              className="h-10 min-w-0 flex-1 bg-transparent px-3 text-sm text-white outline-none placeholder:text-muted-foreground"
-            />
-            <Button type="submit" className="m-1 h-8 rounded-md px-4 text-sm">
-              {t.common.search}
-            </Button>
-          </form>
+            label={t.common.search}
+            placeholder={t.home.headerSearchPlaceholder}
+            submitLabel={t.common.search}
+            variant="desktop"
+          />
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <Button asChild variant="ghost" className="hidden sm:inline-flex">
               <Link href={productsHref}>{t.nav.products}</Link>
@@ -171,23 +167,13 @@ export async function DashboardShell({
             )}
           </div>
         </div>
-        <form action={productsHref} className="container flex pb-2 lg:hidden">
-          <div className="flex h-11 min-w-0 flex-1 items-center overflow-hidden rounded-md border border-white/15 bg-white/[0.075] text-white shadow-none transition focus-within:border-gold-300/50 focus-within:bg-white/[0.11]">
-            <Search
-              className="ml-3 size-4 shrink-0 text-gold-200"
-              aria-hidden="true"
-            />
-            <input
-              name="q"
-              aria-label={t.common.search}
-              placeholder={t.home.headerSearchPlaceholder}
-              className="h-11 min-w-0 flex-1 bg-transparent px-3 text-base text-white outline-none placeholder:text-muted-foreground sm:text-sm"
-            />
-            <Button type="submit" className="m-1 h-8 rounded-md px-3">
-              {t.common.search}
-            </Button>
-          </div>
-        </form>
+        <HeaderSearch
+          action={productsHref}
+          label={t.common.search}
+          placeholder={t.home.headerSearchPlaceholder}
+          submitLabel={t.common.search}
+          variant="mobile"
+        />
         <div className="border-t border-white/10 bg-black/20">
           <nav
             className="container flex min-h-10 items-center gap-1 overflow-x-auto py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -202,7 +188,7 @@ export async function DashboardShell({
                   href={item.href}
                   aria-current={item.id === active ? "page" : undefined}
                   className={cn(
-                    "inline-flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    "inline-flex min-h-10 shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                     item.id === active && "bg-white/[0.08] text-white",
                   )}
                 >
@@ -214,7 +200,7 @@ export async function DashboardShell({
           </nav>
         </div>
       </header>
-      <main className="container py-6 sm:py-8 lg:py-10">
+      <main id="main-content" className="container py-6 sm:py-8 lg:py-10">
         <div className="mb-5 border-b border-white/10 pb-5">
           <p className="text-sm text-gold-200">{eyebrow}</p>
           <h1 className="mt-1.5 text-2xl font-semibold leading-tight text-white sm:text-3xl">

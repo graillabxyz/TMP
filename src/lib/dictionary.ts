@@ -62,6 +62,7 @@ const dictionaries = {
       marketplaceNavigation: "Marketplace navigation",
       buyerToolsNavigation: "Buyer tools",
       mobileNavigation: "Mobile navigation",
+      skipToContent: "Skip to main content",
     },
     footer: {
       intro:
@@ -917,6 +918,7 @@ const dictionaries = {
       marketplaceNavigation: "Navigation de la marketplace",
       buyerToolsNavigation: "Outils acheteur",
       mobileNavigation: "Navigation mobile",
+      skipToContent: "Aller au contenu principal",
     },
     footer: {
       intro:
@@ -1798,6 +1800,7 @@ const turkishDictionary = {
     marketplaceNavigation: "Pazar yeri navigasyonu",
     buyerToolsNavigation: "Alıcı araçları",
     mobileNavigation: "Mobil navigasyon",
+    skipToContent: "Ana içeriğe geç",
   },
   footer: {
     intro:
