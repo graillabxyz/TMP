@@ -132,36 +132,6 @@ export function OnboardingAuthCard({
   return (
     <Card className="bg-white/[0.035]">
       <CardContent className="p-5 sm:p-6">
-        <nav
-          className="mb-5 grid grid-cols-2 rounded-md border border-white/10 bg-black/20 p-1"
-          aria-label={labels.accountTitle}
-        >
-          <Link
-            href={`${loginHref}?next=${nextQuery}${intentQuery}`}
-            aria-current={mode === "login" ? "page" : undefined}
-            className={cn(
-              "flex min-h-10 items-center justify-center rounded-sm px-3 text-center text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-              mode === "login"
-                ? "bg-white/[0.1] text-white"
-                : "text-muted-foreground hover:text-white",
-            )}
-          >
-            {labels.login}
-          </Link>
-          <Link
-            href={`${registerHref}?next=${nextQuery}${intentQuery}`}
-            aria-current={mode === "register" ? "page" : undefined}
-            className={cn(
-              "flex min-h-10 items-center justify-center rounded-sm px-3 text-center text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-              mode === "register"
-                ? "bg-white/[0.1] text-white"
-                : "text-muted-foreground hover:text-white",
-            )}
-          >
-            {labels.createAccount}
-          </Link>
-        </nav>
-
         {supplierIntent && (
           <div className="flex items-start gap-3 rounded-md border border-white/10 bg-white/[0.025] p-3.5 text-sm text-white">
             <Building2
@@ -213,6 +183,36 @@ export function OnboardingAuthCard({
             {googleHelp}
           </p>
         </form>
+
+        <nav
+          className="mt-5 grid grid-cols-2 rounded-md border border-white/10 bg-black/20 p-1"
+          aria-label={labels.accountTitle}
+        >
+          <Link
+            href={`${loginHref}?next=${nextQuery}${intentQuery}`}
+            aria-current={mode === "login" ? "page" : undefined}
+            className={cn(
+              "flex min-h-10 items-center justify-center rounded-sm px-3 text-center text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              mode === "login"
+                ? "bg-white/[0.1] text-white"
+                : "text-muted-foreground hover:text-white",
+            )}
+          >
+            {labels.login}
+          </Link>
+          <Link
+            href={`${registerHref}?next=${nextQuery}${intentQuery}`}
+            aria-current={mode === "register" ? "page" : undefined}
+            className={cn(
+              "flex min-h-10 items-center justify-center rounded-sm px-3 text-center text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+              mode === "register"
+                ? "bg-white/[0.1] text-white"
+                : "text-muted-foreground hover:text-white",
+            )}
+          >
+            {labels.createAccount}
+          </Link>
+        </nav>
 
         <div className="my-5 flex items-center gap-3 text-xs uppercase text-muted-foreground">
           <span className="h-px flex-1 bg-white/10" />
