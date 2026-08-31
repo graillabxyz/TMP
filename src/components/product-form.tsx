@@ -283,7 +283,13 @@ export function ProductForm({
     );
 
   return (
-    <form action={formAction} className="mx-auto w-full max-w-7xl">
+    <form
+      action={formAction}
+      className={cn(
+        "mx-auto w-full max-w-7xl",
+        canPublish ? "pb-36 sm:pb-28" : "pb-24",
+      )}
+    >
       <input type="hidden" name="locale" value={locale} />
       {product?.id && <input type="hidden" name="id" value={product.id} />}
 
@@ -562,7 +568,7 @@ export function ProductForm({
           </section>
         </div>
 
-        <aside className="grid gap-5 xl:sticky xl:top-32">
+        <aside className="grid gap-5">
           <section className="rounded-lg border border-white/10 bg-white/[0.025] p-5">
             <h2 className="text-base font-semibold text-white">
               {labels.mediaTitle}
@@ -687,79 +693,89 @@ export function ProductForm({
             </div>
           </section>
 
-          <section className="rounded-lg border border-gold-300/20 bg-gold-300/[0.04] p-5">
-            <div className="flex items-start gap-3">
-              {canPublish ? (
-                <CheckCircle2
-                  className="mt-0.5 size-5 shrink-0 text-gold-200"
-                  aria-hidden="true"
-                />
-              ) : (
-                <LockKeyhole
-                  className="mt-0.5 size-5 shrink-0 text-gold-200"
-                  aria-hidden="true"
-                />
-              )}
-              <div>
-                <h2 className="text-base font-semibold text-white">
-                  {canPublish ? labels.publishingTitle : labels.draftOnlyTitle}
-                </h2>
-                <p className="mt-1 text-sm leading-5 text-muted-foreground">
-                  {canPublish ? labels.publishingBody : labels.draftOnlyBody}
-                </p>
-              </div>
-            </div>
+        </aside>
+      </div>
 
-            <div className="mt-5 grid gap-2">
-              {canPublish && (
-                <Button
-                  type="submit"
-                  name="status"
-                  value="published"
-                  disabled={isPending}
-                  onClick={() => setPendingIntent("published")}
-                  className="w-full"
-                >
-                  <Send aria-hidden="true" />
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-charcoal-950/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_32px_rgba(0,0,0,0.32)] backdrop-blur-xl">
+        <div className="container mx-auto flex max-w-7xl items-center gap-5 px-4 py-3 sm:px-6 lg:px-8">
+          <div className="hidden min-w-0 flex-1 items-center gap-3 lg:flex">
+            {canPublish ? (
+              <CheckCircle2
+                className="size-5 shrink-0 text-gold-200"
+                aria-hidden="true"
+              />
+            ) : (
+              <LockKeyhole
+                className="size-5 shrink-0 text-gold-200"
+                aria-hidden="true"
+              />
+            )}
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold text-white">
+                {canPublish ? labels.publishingTitle : labels.draftOnlyTitle}
+              </p>
+              <p className="truncate text-xs text-muted-foreground">
+                {canPublish && pendingIntent === "published"
+                  ? labels.publishHelp
+                  : labels.draftHelp}
+              </p>
+            </div>
+          </div>
+
+          <div
+            className={cn(
+              "grid w-full grid-cols-[44px_minmax(0,1fr)] gap-2 sm:flex sm:w-auto sm:items-center",
+              canPublish && "grid-rows-2 sm:grid-rows-none",
+            )}
+          >
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="size-11 shrink-0 sm:w-auto sm:px-4"
+            >
+              <Link href={cancelHref} title={cancelLabel}>
+                <X className="size-4 sm:hidden" aria-hidden="true" />
+                <span className="sr-only sm:not-sr-only">{cancelLabel}</span>
+              </Link>
+            </Button>
+            <Button
+              type="submit"
+              name="status"
+              value="draft"
+              variant={canPublish ? "outline" : "default"}
+              disabled={isPending}
+              onClick={() => setPendingIntent("draft")}
+              className="h-11 min-w-0 sm:w-auto"
+            >
+              <Save aria-hidden="true" />
+              <span className="truncate">
+                {isPending && pendingIntent === "draft"
+                  ? labels.saving
+                  : labels.saveDraft}
+              </span>
+            </Button>
+            {canPublish && (
+              <Button
+                type="submit"
+                name="status"
+                value="published"
+                disabled={isPending}
+                onClick={() => setPendingIntent("published")}
+                className="col-span-2 h-11 min-w-0 sm:w-auto"
+              >
+                <Send aria-hidden="true" />
+                <span className="truncate">
                   {isPending && pendingIntent === "published"
                     ? labels.publishing
                     : product?.status === "published"
                       ? labels.updatePublished
                       : labels.publishProduct}
-                </Button>
-              )}
-              <Button
-                type="submit"
-                name="status"
-                value="draft"
-                variant={canPublish ? "outline" : "default"}
-                disabled={isPending}
-                onClick={() => setPendingIntent("draft")}
-                className="w-full"
-              >
-                <Save aria-hidden="true" />
-                {isPending && pendingIntent === "draft"
-                  ? labels.saving
-                  : labels.saveDraft}
+                </span>
               </Button>
-              {!canPublish && (
-                <Button asChild variant="outline" className="w-full">
-                  <Link href={supplierProfileHref}>
-                    {labels.addSupplierProfile}
-                  </Link>
-                </Button>
-              )}
-              <Button asChild variant="ghost" className="w-full">
-                <Link href={cancelHref}>{cancelLabel}</Link>
-              </Button>
-            </div>
-            <p className="mt-4 text-xs leading-5 text-muted-foreground">
-              {canPublish && pendingIntent === "published"
-                ? labels.publishHelp
-                : labels.draftHelp}
-            </p>
-          </section>
-        </aside>
+            )}
+          </div>
+        </div>
       </div>
     </form>
   );
