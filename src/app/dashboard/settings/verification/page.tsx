@@ -2,11 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import {
-  AlertCircle,
   BadgeCheck,
-  CheckCircle2,
   FileCheck2,
-  Info,
   SearchCheck,
   ShieldCheck,
   Sparkles,
@@ -20,6 +17,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ToastNotice } from "@/components/ui/toast-notice";
 import { BillingActions } from "@/components/verification/billing-actions";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
@@ -168,28 +166,15 @@ export default async function VerificationSettingsPage({
       {profile?.role !== "buyer" && (
         <>
           {statusMessage && (
-            <div
-              role={statusTone === "error" ? "alert" : "status"}
-              aria-live="polite"
-              className={cn(
-                "mb-6 flex items-start gap-3 rounded-lg border px-4 py-3 text-sm leading-6",
-                statusTone === "error" &&
-                  "border-destructive/35 bg-destructive/10 text-red-100",
-                statusTone === "success" &&
-                  "border-emerald-400/25 bg-emerald-400/10 text-emerald-50",
-                statusTone === "neutral" &&
-                  "border-white/10 bg-white/[0.04] text-muted-foreground",
-              )}
-            >
-              {statusTone === "error" ? (
-                <AlertCircle className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
-              ) : statusTone === "success" ? (
-                <CheckCircle2 className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
-              ) : (
-                <Info className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
-              )}
-              {statusMessage}
-            </div>
+            <ToastNotice
+              message={statusMessage}
+              dismissLabel={t.common.dismissNotification}
+              tone={
+                statusTone === "neutral"
+                  ? "info"
+                  : statusTone
+              }
+            />
           )}
 
           {workspace.state !== "ready" && (
@@ -428,6 +413,7 @@ export default async function VerificationSettingsPage({
                         supplier.subscriptionStatus !== "active" &&
                         supplier.subscriptionStatus !== "past_due"
                       }
+                      dismissNotificationLabel={t.common.dismissNotification}
                       errorLabel={copy.billingActionError}
                       locale={locale}
                     />

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CreditCard, ExternalLink } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { ToastNotice } from "@/components/ui/toast-notice";
 import type { Locale } from "@/lib/i18n";
 
 type BillingActionsProps = {
@@ -14,6 +15,7 @@ type BillingActionsProps = {
   canManageSubscription: boolean;
   canStartSubscription: boolean;
   errorLabel: string;
+  dismissNotificationLabel: string;
   locale: Locale;
 };
 
@@ -42,6 +44,7 @@ export function BillingActions({
   canManageSubscription,
   canStartSubscription,
   errorLabel,
+  dismissNotificationLabel,
   locale,
 }: BillingActionsProps) {
   const [loading, setLoading] = useState<"checkout" | "portal" | null>(null);
@@ -91,9 +94,11 @@ export function BillingActions({
         </Button>
       </div>
       {error && (
-        <p role="alert" className="rounded-md border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-red-100">
-          {error}
-        </p>
+        <ToastNotice
+          message={error}
+          dismissLabel={dismissNotificationLabel}
+          tone="error"
+        />
       )}
     </div>
   );

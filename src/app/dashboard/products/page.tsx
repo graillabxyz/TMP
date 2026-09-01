@@ -19,6 +19,7 @@ import { ProductRowActions } from "@/components/product-row-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ToastNotice } from "@/components/ui/toast-notice";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
@@ -157,16 +158,11 @@ export default async function DashboardProductsPage({
       active="products"
     >
       {statusCopy && (
-        <div
-          role={params.status === "error" ? "alert" : "status"}
-          className={
-            params.status === "error"
-              ? "mb-5 rounded-md border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-100"
-              : "mb-5 rounded-md border border-emerald-400/30 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100"
-          }
-        >
-          {statusCopy}
-        </div>
+        <ToastNotice
+          message={statusCopy}
+          dismissLabel={t.common.dismissNotification}
+          tone={params.status === "error" ? "error" : "success"}
+        />
       )}
 
       {!canPublish && (

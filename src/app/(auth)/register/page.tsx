@@ -130,6 +130,7 @@ export default async function RegisterPage({
             agreementStart: t.auth.agreementStart,
             agreementTerms: t.auth.agreementTerms,
             agreementPrivacy: t.auth.agreementPrivacy,
+            dismissNotification: t.common.dismissNotification,
           }}
         />
       </div>

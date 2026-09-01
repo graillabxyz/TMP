@@ -63,6 +63,7 @@ const dictionaries = {
       buyerToolsNavigation: "Buyer tools",
       mobileNavigation: "Mobile navigation",
       skipToContent: "Skip to main content",
+      dismissNotification: "Dismiss notification",
     },
     footer: {
       intro:
@@ -945,6 +946,7 @@ const dictionaries = {
       buyerToolsNavigation: "Outils acheteur",
       mobileNavigation: "Navigation mobile",
       skipToContent: "Aller au contenu principal",
+      dismissNotification: "Fermer la notification",
     },
     footer: {
       intro:
@@ -1854,6 +1856,7 @@ const turkishDictionary = {
     buyerToolsNavigation: "Alıcı araçları",
     mobileNavigation: "Mobil navigasyon",
     skipToContent: "Ana içeriğe geç",
+    dismissNotification: "Bildirimi kapat",
   },
   footer: {
     intro:

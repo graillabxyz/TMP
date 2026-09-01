@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ToastNotice } from "@/components/ui/toast-notice";
 import { BillingActions } from "@/components/verification/billing-actions";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
@@ -76,16 +77,11 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
       active="profile"
     >
       {statusMessage && (
-        <div
-          role={params.status === "supplier-started" ? "status" : "alert"}
-          className={
-            params.status === "supplier-started"
-              ? "mb-6 rounded-lg border border-emerald-400/30 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-100"
-              : "mb-6 rounded-lg border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-100"
-          }
-        >
-          {statusMessage}
-        </div>
+        <ToastNotice
+          message={statusMessage}
+          dismissLabel={t.common.dismissNotification}
+          tone={params.status === "supplier-started" ? "success" : "error"}
+        />
       )}
 
       <div className="grid items-start gap-5 xl:grid-cols-[.85fr_1.15fr]">
@@ -179,6 +175,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                       supplier.subscriptionStatus !== "active" &&
                       supplier.subscriptionStatus !== "past_due"
                     }
+                    dismissNotificationLabel={t.common.dismissNotification}
                     errorLabel={verificationCopy.billingActionError}
                     locale={locale}
                   />

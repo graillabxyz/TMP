@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ToastNotice } from "@/components/ui/toast-notice";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
@@ -50,24 +51,24 @@ export default async function ForgotPasswordPage({
           </p>
 
           {status === "sent" && (
-            <div
-              role="status"
-              className="mt-5 rounded-lg border border-emerald-300/25 bg-emerald-300/10 px-4 py-3 text-sm text-emerald-100"
-            >
-              {t.auth.status.resetSent}
-            </div>
+            <ToastNotice
+              message={t.auth.status.resetSent}
+              dismissLabel={t.common.dismissNotification}
+              tone="success"
+            />
           )}
           {(status === "missing" ||
             status === "error" ||
             status === "auth-error") && (
-            <div
-              role="alert"
-              className="mt-5 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-red-100"
-            >
-              {status === "missing"
-                ? t.auth.status.invalidEmail
-                : t.auth.status.resetError}
-            </div>
+            <ToastNotice
+              message={
+                status === "missing"
+                  ? t.auth.status.invalidEmail
+                  : t.auth.status.resetError
+              }
+              dismissLabel={t.common.dismissNotification}
+              tone="error"
+            />
           )}
 
           <form action={requestPasswordReset} className="mt-7 grid gap-5">

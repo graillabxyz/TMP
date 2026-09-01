@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ToastNotice } from "@/components/ui/toast-notice";
 import { cn } from "@/lib/utils";
 
 type AuthMode = "login" | "register";
@@ -59,6 +60,7 @@ type OnboardingAuthCardProps = {
     agreementStart: string;
     agreementTerms: string;
     agreementPrivacy: string;
+    dismissNotification: string;
   };
 };
 
@@ -149,22 +151,16 @@ export function OnboardingAuthCard({
         )}
 
         {statusMessage && (
-          <div
-            role={statusMessage.tone === "success" ? "status" : "alert"}
-            className={cn(
-              "mt-5 rounded-lg border px-4 py-3 text-sm",
-              statusMessage.tone === "success"
-                ? "border-emerald-300/25 bg-emerald-300/10 text-emerald-100"
-                : "border-destructive/30 bg-destructive/10 text-red-100",
-            )}
-          >
-            {statusMessage.copy}
-          </div>
+          <ToastNotice
+            message={statusMessage.copy}
+            dismissLabel={labels.dismissNotification}
+            tone={statusMessage.tone}
+          />
         )}
 
         <form
           action={signInWithGoogle}
-          className={supplierCopy || statusMessage ? "mt-5" : undefined}
+          className={supplierCopy ? "mt-5" : undefined}
         >
           <input type="hidden" name="auth_mode" value={mode} />
           <input type="hidden" name="next" value={nextPath} />

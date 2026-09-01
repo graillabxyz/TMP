@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { ToastNotice } from "@/components/ui/toast-notice";
 import { submitRfq } from "@/app/actions/rfq";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
@@ -99,17 +100,11 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
           <Card>
             <CardContent className="p-5 sm:p-6">
               {statusMessage && (
-                <div
-                  role={statusIsSuccess ? "status" : "alert"}
-                  className={cn(
-                    "mb-5 rounded-lg border px-4 py-3 text-sm leading-6",
-                    statusIsSuccess
-                      ? "border-emerald-400/30 bg-emerald-400/10 text-emerald-100"
-                      : "border-red-400/30 bg-red-500/10 text-red-100",
-                  )}
-                >
-                  {statusMessage}
-                </div>
+                <ToastNotice
+                  message={statusMessage}
+                  dismissLabel={t.common.dismissNotification}
+                  tone={statusIsSuccess ? "success" : "error"}
+                />
               )}
 
               {!profile && (

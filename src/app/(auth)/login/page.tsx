@@ -127,6 +127,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             agreementStart: t.auth.agreementStart,
             agreementTerms: t.auth.agreementTerms,
             agreementPrivacy: t.auth.agreementPrivacy,
+            dismissNotification: t.common.dismissNotification,
           }}
         />
       </div>

@@ -29,6 +29,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { ToastNotice } from "@/components/ui/toast-notice";
 import { cn } from "@/lib/utils";
 import type { ProductFormState } from "@/lib/product-form-state";
 import { initialProductFormState } from "@/lib/product-form-state";
@@ -298,9 +299,12 @@ export function ProductForm({
         fileInputRef.current.files = transfer.files;
       }
 
-      errorSummaryRef.current?.focus();
     }
   }, [selectedFiles, state]);
+
+  useEffect(() => {
+    if (showError) errorSummaryRef.current?.focus();
+  }, [showError]);
 
   useEffect(() => {
     return () => previewUrls.forEach((url) => URL.revokeObjectURL(url));
@@ -497,27 +501,14 @@ export function ProductForm({
       )}
 
       {state.status === "error" && showError && (
-        <div
+        <ToastNotice
           ref={errorSummaryRef}
-          role="alert"
-          tabIndex={-1}
-          className="fixed right-4 top-24 z-[70] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-lg border border-destructive/40 bg-charcoal-800/95 p-4 text-sm text-red-100 shadow-[0_18px_48px_rgba(0,0,0,0.28)] outline-none backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-destructive sm:right-6 sm:top-28"
-        >
-          <CircleAlert
-            className="mt-0.5 size-5 shrink-0 text-red-300"
-            aria-hidden="true"
-          />
-          <p className="min-w-0 flex-1 font-medium leading-5">{formError}</p>
-          <button
-            type="button"
-            onClick={() => setShowError(false)}
-            className="-mr-2 -mt-2 flex size-10 shrink-0 items-center justify-center rounded-md text-red-100/70 transition hover:bg-white/[0.07] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            aria-label={labels.dismissError}
-            title={labels.dismissError}
-          >
-            <X className="size-4" aria-hidden="true" />
-          </button>
-        </div>
+          message={formError}
+          dismissLabel={labels.dismissError}
+          tone="error"
+          autoDismissMs={0}
+          onDismiss={() => setShowError(false)}
+        />
       )}
 
       {!canPublish && (
