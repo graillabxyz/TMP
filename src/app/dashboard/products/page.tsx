@@ -279,10 +279,10 @@ export default async function DashboardProductsPage({
       </div>
 
       {filteredProducts.length > 0 ? (
-        <section className="workspace-panel mt-6 overflow-hidden">
+        <section className="workspace-panel mt-6">
           <div className="hidden md:block">
             <table className="w-full table-fixed text-left text-sm">
-              <thead className="border-b border-white/10 bg-black/15 text-muted-foreground">
+              <thead className="border-b border-white/10 text-muted-foreground">
                 <tr>
                   <th className="w-[40%] px-5 py-3 font-medium lg:w-[34%]">
                     {labels.tableProduct}

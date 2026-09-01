@@ -74,7 +74,7 @@ export function ContactDropdown({ labels }: ContactDropdownProps) {
         <div
           role="dialog"
           aria-label={labels.title}
-          className="fixed left-3 right-3 top-[4.5rem] z-50 overflow-hidden rounded-lg border border-white/[0.12] bg-charcoal-800 shadow-premium sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-80"
+          className="fixed left-3 right-3 top-[4.5rem] z-50 rounded-lg border border-white/[0.12] bg-charcoal-800 shadow-premium sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-80"
         >
           <div className="flex items-start justify-between gap-4 border-b border-white/10 px-4 py-3.5">
             <div>

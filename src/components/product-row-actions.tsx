@@ -162,7 +162,7 @@ export function ProductRowActions({
           {menuOpen && (
             <div
               role="menu"
-              className="absolute right-0 top-full z-30 mt-2 w-52 overflow-hidden rounded-md border border-white/[0.12] bg-charcoal-800 p-1.5 shadow-premium"
+              className="absolute bottom-full right-0 z-[60] mb-2 w-52 rounded-md border border-white/[0.12] bg-charcoal-800 p-1.5 shadow-premium"
             >
               {viewHref && (
                 <Link
