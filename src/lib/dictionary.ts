@@ -541,6 +541,7 @@ const dictionaries = {
         replaceImage:
           "Choose new photos only when you want to replace the current set.",
         removeImage: "Remove photo",
+        dismissError: "Dismiss error",
         listingPreview: "Marketplace preview",
         previewEmptyTitle: "Your product title will appear here",
         priceOnRequest: "Price on request",
@@ -1412,6 +1413,7 @@ const dictionaries = {
         replaceImage:
           "Choisissez de nouvelles photos uniquement pour remplacer la série actuelle.",
         removeImage: "Supprimer la photo",
+        dismissError: "Fermer l’erreur",
         listingPreview: "Aperçu du marketplace",
         previewEmptyTitle: "Le titre de votre produit apparaîtra ici",
         priceOnRequest: "Prix sur demande",
@@ -2281,6 +2283,7 @@ const turkishDictionary = {
       replaceImage:
         "Mevcut fotoğraf grubunu değiştirmek istiyorsanız yeni fotoğraflar seçin.",
       removeImage: "Fotoğrafı kaldır",
+      dismissError: "Hatayı kapat",
       listingPreview: "Pazar yeri önizlemesi",
       previewEmptyTitle: "Ürün başlığınız burada görünecek",
       priceOnRequest: "Teklif üzerine fiyat",

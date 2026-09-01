@@ -11,6 +11,7 @@ import {
 } from "react";
 import {
   CheckCircle2,
+  CircleAlert,
   ImagePlus,
   LockKeyhole,
   PackageOpen,
@@ -64,6 +65,7 @@ export type ProductFormLabels = {
   imageHelp: string;
   replaceImage: string;
   removeImage: string;
+  dismissError: string;
   listingPreview: string;
   previewEmptyTitle: string;
   priceOnRequest: string;
@@ -157,6 +159,7 @@ export function ProductForm({
   const [clientImageError, setClientImageError] = useState<
     "imageInvalid" | "imageCount" | null
   >(null);
+  const [showError, setShowError] = useState(false);
   const [editedFields, setEditedFields] = useState<Set<ProductField>>(
     new Set(),
   );
@@ -168,9 +171,17 @@ export function ProductForm({
   useEffect(() => {
     if (state.status === "error") {
       setEditedFields(new Set());
+      setShowError(true);
+
+      if (selectedFiles.length > 0 && fileInputRef.current) {
+        const transfer = new DataTransfer();
+        selectedFiles.forEach((file) => transfer.items.add(file));
+        fileInputRef.current.files = transfer.files;
+      }
+
       errorSummaryRef.current?.focus();
     }
-  }, [state]);
+  }, [selectedFiles, state]);
 
   useEffect(() => {
     return () => previewUrls.forEach((url) => URL.revokeObjectURL(url));
@@ -262,9 +273,11 @@ export function ProductForm({
         ? labels.categoryError
         : state.formError === "save"
           ? labels.saveError
-          : state.formError === "notFound"
-            ? labels.notFoundError
-            : labels.formError;
+          : state.formError === "image"
+            ? labels.imageInvalidError
+            : state.formError === "notFound"
+              ? labels.notFoundError
+              : labels.formError;
   const selectedCategory = categories.find(
     (category) => category.id === categoryId,
   );
@@ -293,14 +306,27 @@ export function ProductForm({
       <input type="hidden" name="locale" value={locale} />
       {product?.id && <input type="hidden" name="id" value={product.id} />}
 
-      {state.status === "error" && (
+      {state.status === "error" && showError && (
         <div
           ref={errorSummaryRef}
           role="alert"
           tabIndex={-1}
-          className="mb-6 rounded-md border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-red-100 outline-none focus-visible:ring-2 focus-visible:ring-destructive"
+          className="fixed right-4 top-24 z-[70] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-lg border border-destructive/40 bg-charcoal-900/95 p-4 text-sm text-red-100 shadow-[0_18px_55px_rgba(0,0,0,0.45)] outline-none backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-destructive sm:right-6 sm:top-28"
         >
-          <p className="font-medium">{formError}</p>
+          <CircleAlert
+            className="mt-0.5 size-5 shrink-0 text-red-300"
+            aria-hidden="true"
+          />
+          <p className="min-w-0 flex-1 font-medium leading-5">{formError}</p>
+          <button
+            type="button"
+            onClick={() => setShowError(false)}
+            className="-mr-2 -mt-2 flex size-10 shrink-0 items-center justify-center rounded-md text-red-100/70 transition hover:bg-white/[0.07] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            aria-label={labels.dismissError}
+            title={labels.dismissError}
+          >
+            <X className="size-4" aria-hidden="true" />
+          </button>
         </div>
       )}
 
