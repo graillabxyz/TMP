@@ -157,7 +157,7 @@ export default async function SupplierDetailPage({
                 return (
                   <div
                     key={item.label}
-                    className="rounded-lg border border-white/10 bg-white/[0.035] p-4"
+                    className="subtle-panel p-4"
                   >
                     <Icon className="size-4 text-gold-200" aria-hidden="true" />
                     <p className="mt-4 text-xs text-muted-foreground">
@@ -172,7 +172,7 @@ export default async function SupplierDetailPage({
             </div>
           </div>
 
-          <Card className="overflow-hidden bg-white/[0.035]">
+          <Card className="overflow-hidden">
             <div className="relative aspect-[4/3]">
               <Image
                 src={supplier.image}
@@ -245,7 +245,7 @@ export default async function SupplierDetailPage({
                   }}
                   className="group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  <Card className="h-full overflow-hidden bg-white/[0.035] transition group-hover:-translate-y-0.5 group-hover:border-gold-300/25">
+                  <Card className="h-full overflow-hidden transition group-hover:-translate-y-0.5 group-hover:border-gold-300/25 group-hover:bg-secondary/80">
                     <div className="relative aspect-[16/10] overflow-hidden">
                       <Image
                         src={product.image}
@@ -272,7 +272,7 @@ export default async function SupplierDetailPage({
             </div>
           </div>
 
-          <Card className="bg-white/[0.035]">
+          <Card>
             <CardContent className="p-6">
               <div className="flex items-center gap-3">
                 <div className="flex size-10 items-center justify-center rounded-md border border-gold-300/25 bg-gold-300/10">
@@ -294,7 +294,7 @@ export default async function SupplierDetailPage({
                 {supplier.certifications.map((certification) => (
                   <div
                     key={certification}
-                    className="flex items-center gap-3 rounded-md border border-white/10 bg-white/[0.035] p-3 text-sm text-muted-foreground"
+                    className="flex items-center gap-3 rounded-md border border-white/10 bg-black/15 p-3 text-sm text-muted-foreground"
                   >
                     <CheckCircle2
                       className="size-4 text-gold-200"

@@ -135,7 +135,7 @@ export default async function SuppliersPage({
             <h1 className="page-title">{t.suppliers.title}</h1>
             <p className="page-description">{t.suppliers.body}</p>
           </div>
-          <div className="rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground">
+          <div className="rounded-md border border-white/10 bg-card px-3 py-2 text-sm text-muted-foreground shadow-[0_10px_28px_rgba(0,0,0,0.12)]">
             <span className="font-semibold text-white">
               {filteredSuppliers.length}
             </span>{" "}
@@ -148,7 +148,7 @@ export default async function SuppliersPage({
         <div className="mt-7 grid gap-5 lg:grid-cols-[280px_1fr]">
           <aside className="grid gap-4 self-start lg:sticky lg:top-32">
             <ResponsiveDetails className="group">
-              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-md border border-white/10 bg-white/[0.035] px-4 text-sm font-medium text-white transition hover:border-gold-300/30 hover:bg-white/[0.05] lg:hidden [&::-webkit-details-marker]:hidden">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-md border border-white/10 bg-card px-4 text-sm font-medium text-white transition hover:border-gold-300/30 hover:bg-secondary lg:hidden [&::-webkit-details-marker]:hidden">
                 <span className="flex items-center gap-2">
                   <SlidersHorizontal
                     className="size-4 text-gold-200"
@@ -162,7 +162,7 @@ export default async function SuppliersPage({
                 />
               </summary>
               <div className="mt-3 hidden group-open:block lg:mt-0 lg:block">
-                <Card className="bg-white/[0.035]">
+                <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-base">
                       <SlidersHorizontal
@@ -211,7 +211,7 @@ export default async function SuppliersPage({
 
                       <div className="grid gap-3">
                         <Label>{t.suppliers.verification}</Label>
-                        <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground transition focus-within:border-gold-300/45 hover:border-gold-300/35 hover:bg-white/[0.055]">
+                        <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-white/10 bg-black/15 px-3 py-2 text-sm text-muted-foreground transition focus-within:border-gold-300/45 hover:border-gold-300/35 hover:bg-white/[0.06]">
                           <input
                             type="checkbox"
                             name="verified"
@@ -221,7 +221,7 @@ export default async function SuppliersPage({
                           />
                           {t.suppliers.checks[0]}
                         </label>
-                        <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground transition focus-within:border-gold-300/45 hover:border-gold-300/35 hover:bg-white/[0.055]">
+                        <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-white/10 bg-black/15 px-3 py-2 text-sm text-muted-foreground transition focus-within:border-gold-300/45 hover:border-gold-300/35 hover:bg-white/[0.06]">
                           <input
                             type="checkbox"
                             name="eu"
@@ -231,7 +231,7 @@ export default async function SuppliersPage({
                           />
                           {t.suppliers.checks[1]}
                         </label>
-                        <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground transition focus-within:border-gold-300/45 hover:border-gold-300/35 hover:bg-white/[0.055]">
+                        <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-md border border-white/10 bg-black/15 px-3 py-2 text-sm text-muted-foreground transition focus-within:border-gold-300/45 hover:border-gold-300/35 hover:bg-white/[0.06]">
                           <input
                             type="checkbox"
                             name="low_moq"
@@ -279,7 +279,7 @@ export default async function SuppliersPage({
               ))}
             </div>
           ) : (
-            <Card className="bg-white/[0.035]">
+            <Card>
               <CardContent className="flex min-h-80 flex-col items-center justify-center p-8 text-center">
                 <PackageSearch
                   className="size-10 text-gold-200"

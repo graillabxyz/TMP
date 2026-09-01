@@ -220,7 +220,7 @@ export default async function DashboardProductsPage({
             className={
               activeView === view
                 ? "bg-gold-300/[0.08] p-4 outline outline-1 -outline-offset-1 outline-gold-300/40 transition sm:p-5"
-                : "bg-charcoal-900/95 p-4 transition hover:bg-white/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:p-5"
+                : "bg-card p-4 transition hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:p-5"
             }
           >
             <div className="flex items-center justify-between gap-3">
@@ -279,10 +279,10 @@ export default async function DashboardProductsPage({
       </div>
 
       {filteredProducts.length > 0 ? (
-        <section className="mt-6 rounded-lg border border-white/10 bg-white/[0.025]">
+        <section className="workspace-panel mt-6 overflow-hidden">
           <div className="hidden md:block">
             <table className="w-full table-fixed text-left text-sm">
-              <thead className="border-b border-white/10 bg-white/[0.025] text-muted-foreground">
+              <thead className="border-b border-white/10 bg-black/15 text-muted-foreground">
                 <tr>
                   <th className="w-[40%] px-5 py-3 font-medium lg:w-[34%]">
                     {labels.tableProduct}
@@ -428,7 +428,7 @@ export default async function DashboardProductsPage({
           </div>
         </section>
       ) : (
-        <section className="mt-6 flex min-h-56 flex-col items-center justify-center rounded-lg border border-dashed border-white/15 bg-white/[0.02] px-6 py-10 text-center">
+        <section className="mt-6 flex min-h-56 flex-col items-center justify-center rounded-lg border border-dashed border-white/15 bg-card/75 px-6 py-10 text-center">
           <span className="flex size-12 items-center justify-center rounded-md bg-gold-300/10 text-gold-100">
             <PackagePlus className="size-6" aria-hidden="true" />
           </span>

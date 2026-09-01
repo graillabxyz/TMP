@@ -159,7 +159,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="border-y border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.018))]">
+      <section className="border-y border-white/10 bg-card/45">
         <div className="container py-10 sm:py-12 lg:py-14">
           <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
@@ -195,7 +195,7 @@ export default async function HomePage() {
           </div>
 
           <div className="mt-6 grid gap-4 lg:grid-cols-[280px_1fr]">
-            <div className="rounded-lg border border-white/10 bg-background/70 p-4 shadow-premium">
+            <div className="workspace-panel p-4">
               <p className="font-semibold text-white">
                 {t.home.categoriesForYou}
               </p>
@@ -231,7 +231,7 @@ export default async function HomePage() {
                 <Link
                   key={`${product.supplierSlug}-${product.name}`}
                   href={`${productsHref}?q=${encodeURIComponent(product.name)}`}
-                  className="group overflow-hidden rounded-lg border border-white/10 bg-background/70 shadow-premium transition hover:-translate-y-0.5 hover:border-gold-300/35 hover:bg-white/[0.055] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  className="group overflow-hidden rounded-lg border border-white/10 bg-card shadow-[0_14px_36px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:border-gold-300/35 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   <div className="p-4">
                     <p className="text-sm font-semibold text-white">
@@ -294,7 +294,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="border-y border-white/10 bg-white/[0.025]">
+      <section className="border-y border-white/10 bg-card/35">
         <div className="section-shell">
           <div className="grid gap-8 lg:grid-cols-[.85fr_1.15fr] lg:items-end">
             <div>
@@ -361,7 +361,7 @@ export default async function HomePage() {
             return (
               <Card
                 key={benefit.title}
-                className="bg-white/[0.035] transition hover:border-gold-300/25"
+                className="transition hover:border-gold-300/25 hover:bg-secondary/80"
               >
                 <CardContent className="p-6">
                   <div className="flex size-11 items-center justify-center rounded-md border border-gold-300/25 bg-gold-300/10 text-gold-100">

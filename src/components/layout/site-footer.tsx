@@ -33,7 +33,7 @@ export async function SiteFooter() {
   ];
 
   return (
-    <footer className="border-t border-white/10 bg-charcoal-900">
+    <footer className="border-t border-white/10 bg-charcoal-950/80">
       <div className="container py-12">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.2fr_.8fr_.8fr]">
           <div>

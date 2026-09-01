@@ -82,7 +82,7 @@ export default async function ProductsPage({
             <h1 className="page-title">{t.products.title}</h1>
             <p className="page-description">{t.products.body}</p>
           </div>
-          <div className="rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-sm text-muted-foreground">
+          <div className="rounded-md border border-white/10 bg-card px-3 py-2 text-sm text-muted-foreground shadow-[0_10px_28px_rgba(0,0,0,0.12)]">
             <span className="font-semibold text-white">{products.length}</span>{" "}
             {products.length === 1
               ? t.products.indexedSingular
@@ -93,7 +93,7 @@ export default async function ProductsPage({
         <div className="mt-7 grid gap-5 lg:grid-cols-[280px_1fr]">
           <aside className="grid gap-4 self-start lg:sticky lg:top-32">
             <ResponsiveDetails className="group">
-              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-md border border-white/10 bg-white/[0.035] px-4 text-sm font-medium text-white transition hover:border-gold-300/30 hover:bg-white/[0.05] lg:hidden [&::-webkit-details-marker]:hidden">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between rounded-md border border-white/10 bg-card px-4 text-sm font-medium text-white transition hover:border-gold-300/30 hover:bg-secondary lg:hidden [&::-webkit-details-marker]:hidden">
                 <span className="flex items-center gap-2">
                   <SlidersHorizontal
                     className="size-4 text-gold-200"
@@ -107,7 +107,7 @@ export default async function ProductsPage({
                 />
               </summary>
               <div className="mt-3 hidden group-open:block lg:mt-0 lg:block">
-                <Card className="bg-white/[0.035]">
+                <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-base">
                       <SlidersHorizontal
@@ -208,7 +208,7 @@ export default async function ProductsPage({
               ))}
             </div>
           ) : (
-            <Card className="bg-white/[0.035]">
+            <Card>
               <CardContent className="flex min-h-80 flex-col items-center justify-center p-8 text-center">
                 <PackageSearch
                   className="size-10 text-gold-200"

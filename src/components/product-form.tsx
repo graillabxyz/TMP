@@ -428,7 +428,7 @@ export function ProductForm({
       {product?.id && <input type="hidden" name="id" value={product.id} />}
 
       {product?.id && (
-        <section className="mb-6 flex flex-col gap-4 rounded-lg border border-white/10 bg-white/[0.025] p-4 sm:flex-row sm:items-center sm:p-5">
+        <section className="mb-6 flex flex-col gap-4 rounded-lg border border-white/10 bg-card p-4 shadow-[0_14px_36px_rgba(0,0,0,0.14)] sm:flex-row sm:items-center sm:p-5">
           <div className="relative size-16 shrink-0 overflow-hidden rounded-md border border-white/10 bg-charcoal-800">
             {currentImages[0] ? (
               <Image
@@ -501,7 +501,7 @@ export function ProductForm({
           ref={errorSummaryRef}
           role="alert"
           tabIndex={-1}
-          className="fixed right-4 top-24 z-[70] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-lg border border-destructive/40 bg-charcoal-900/95 p-4 text-sm text-red-100 shadow-[0_18px_55px_rgba(0,0,0,0.45)] outline-none backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-destructive sm:right-6 sm:top-28"
+          className="fixed right-4 top-24 z-[70] flex w-[calc(100%-2rem)] max-w-sm items-start gap-3 rounded-lg border border-destructive/40 bg-charcoal-800/95 p-4 text-sm text-red-100 shadow-[0_18px_48px_rgba(0,0,0,0.28)] outline-none backdrop-blur-xl focus-visible:ring-2 focus-visible:ring-destructive sm:right-6 sm:top-28"
         >
           <CircleAlert
             className="mt-0.5 size-5 shrink-0 text-red-300"
@@ -547,7 +547,7 @@ export function ProductForm({
       )}
 
       <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
-        <div className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.025]">
+        <div className="workspace-panel overflow-hidden">
           <section className="p-5 sm:p-7 lg:p-8">
             <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
               <div className="max-w-2xl">
@@ -822,7 +822,7 @@ export function ProductForm({
         </div>
 
         <aside className="grid gap-5">
-          <section className="rounded-lg border border-white/10 bg-white/[0.025] p-5">
+          <section className="workspace-panel p-5">
             <h2 className="text-base font-semibold text-white">
               {labels.mediaTitle}
             </h2>
@@ -914,7 +914,7 @@ export function ProductForm({
             )}
           </section>
 
-          <section className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.025]">
+          <section className="workspace-panel overflow-hidden">
             <div className="border-b border-white/10 px-5 py-4">
               <h2 className="text-sm font-semibold text-white">
                 {labels.listingPreview}
@@ -958,7 +958,7 @@ export function ProductForm({
         </aside>
       </div>
 
-      <div className="bg-charcoal-950/95 fixed inset-x-0 bottom-0 z-40 border-t border-white/10 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_32px_rgba(0,0,0,0.32)] backdrop-blur-xl">
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/[0.12] bg-charcoal-900/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_32px_rgba(0,0,0,0.24)] backdrop-blur-xl">
         <div className="container mx-auto flex max-w-7xl items-center gap-5 px-4 py-3 sm:px-6 lg:px-8">
           <div className="hidden min-w-0 flex-1 items-center gap-3 lg:flex">
             {canPublish ? (

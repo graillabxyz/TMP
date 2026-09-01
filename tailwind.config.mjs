@@ -58,10 +58,11 @@ const config = {
           700: "#523d14",
         },
         charcoal: {
-          900: "#0a0a0b",
-          800: "#111113",
-          700: "#19191c",
-          600: "#242429",
+          950: "#0d0d0f",
+          900: "#141417",
+          800: "#1b1b1f",
+          700: "#242429",
+          600: "#303036",
         },
       },
       borderRadius: {
@@ -70,14 +71,14 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        premium: "0 24px 80px rgba(0, 0, 0, 0.34)",
-        glow: "0 0 0 1px rgba(216, 174, 70, 0.18), 0 18px 60px rgba(216, 174, 70, 0.08)",
+        premium: "0 18px 48px rgba(0, 0, 0, 0.24)",
+        glow: "0 0 0 1px rgba(216, 174, 70, 0.18), 0 12px 36px rgba(216, 174, 70, 0.08)",
       },
       backgroundImage: {
         "gold-line":
           "linear-gradient(90deg, transparent, rgba(216,174,70,.65), transparent)",
         "surface-radial":
-          "radial-gradient(circle at 50% 0%, rgba(216,174,70,.13), transparent 36rem)",
+          "linear-gradient(180deg, rgba(216,174,70,.055), transparent 24rem)",
       },
       keyframes: {
         "fade-up": {

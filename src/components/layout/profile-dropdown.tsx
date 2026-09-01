@@ -78,7 +78,7 @@ export function ProfileDropdown({
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-50 mt-2 w-60 overflow-hidden rounded-lg border border-white/10 bg-charcoal-900 p-2 shadow-premium"
+          className="absolute right-0 top-full z-50 mt-2 w-60 overflow-hidden rounded-lg border border-white/[0.12] bg-charcoal-800 p-2 shadow-premium"
         >
           <p className="truncate px-3 py-2 text-xs text-muted-foreground">
             {email}

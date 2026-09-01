@@ -27,7 +27,7 @@ export default async function AuthLayout({
   return (
     <main className="min-h-screen bg-surface-radial">
       <div className="container flex min-h-screen flex-col">
-        <header className="flex min-w-0 items-center justify-between gap-3 py-5 sm:py-7">
+        <header className="flex min-w-0 items-center justify-between gap-3 border-b border-white/[0.08] py-4 sm:py-5">
           <Logo href={homeHref} />
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             <LanguageToggle locale={locale} label={t.common.language} />
@@ -44,7 +44,7 @@ export default async function AuthLayout({
             </Button>
           </div>
         </header>
-        <div className="flex flex-1 items-center justify-center py-10 sm:py-14 lg:py-16">
+        <div className="flex flex-1 items-center justify-center py-12 sm:py-16 lg:py-20">
           {children}
         </div>
       </div>

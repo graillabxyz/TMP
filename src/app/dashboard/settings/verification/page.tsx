@@ -147,7 +147,7 @@ export default async function VerificationSettingsPage({
       active="verification"
     >
       {profile?.role === "buyer" && (
-        <Card className="bg-white/[0.035]">
+        <Card>
           <CardContent className="p-5 sm:p-7">
             <ShieldCheck className="size-8 text-gold-200" aria-hidden="true" />
             <h2 className="mt-4 text-xl font-semibold text-white">
@@ -193,7 +193,7 @@ export default async function VerificationSettingsPage({
           )}
 
           {workspace.state !== "ready" && (
-            <Card className="bg-white/[0.035]">
+            <Card>
               <CardContent className="p-5 sm:p-7">
                 <ShieldCheck
                   className="size-8 text-gold-200"
@@ -218,7 +218,7 @@ export default async function VerificationSettingsPage({
           {workspace.state === "ready" && supplier && (
             <div className="grid gap-5 xl:grid-cols-[1fr_380px]">
               <div className="grid gap-5">
-                <Card className="bg-white/[0.035]">
+                <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <ShieldCheck
@@ -254,7 +254,7 @@ export default async function VerificationSettingsPage({
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/[0.035]">
+                <Card>
                   <CardHeader>
                     <CardTitle>{copy.benefits}</CardTitle>
                   </CardHeader>
@@ -286,7 +286,7 @@ export default async function VerificationSettingsPage({
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/[0.035]">
+                <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <FileCheck2
@@ -407,7 +407,7 @@ export default async function VerificationSettingsPage({
               </div>
 
               <aside className="self-start xl:sticky xl:top-32">
-                <Card className="overflow-hidden bg-white/[0.035]">
+                <Card className="overflow-hidden">
                   <CardHeader className="border-b border-white/10 bg-gold-300/[0.08]">
                     <CardTitle>{copy.subscription}</CardTitle>
                     <p className="text-3xl font-semibold text-white">

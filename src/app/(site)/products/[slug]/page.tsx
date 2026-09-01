@@ -119,7 +119,7 @@ export default async function ProductDetailPage({
           />
 
           <aside className="grid gap-5 self-start lg:sticky lg:top-32">
-            <Card className="bg-white/[0.035]">
+            <Card>
               <CardContent className="p-6">
                 <p className="text-sm text-gold-200">
                   {t.products.supplierInfo}

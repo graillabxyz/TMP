@@ -88,7 +88,7 @@ export function CategoriesDropdown({
       {open && (
         <div
           role="menu"
-          className="absolute left-0 top-full z-50 mt-2 w-[min(340px,calc(100vw-2rem))] overflow-hidden rounded-lg border border-white/10 bg-charcoal-900 shadow-premium"
+          className="absolute left-0 top-full z-50 mt-2 w-[min(340px,calc(100vw-2rem))] overflow-hidden rounded-lg border border-white/[0.12] bg-charcoal-800 shadow-premium"
         >
           <div className="grid max-h-[70vh] gap-1 overflow-y-auto p-2">
             {categories.map((category) => (

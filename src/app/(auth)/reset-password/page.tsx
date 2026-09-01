@@ -36,7 +36,7 @@ export default async function ResetPasswordPage({
 
   return (
     <div className="w-full max-w-lg">
-      <Card className="bg-white/[0.035]">
+      <Card>
         <CardContent className="p-6 sm:p-8">
           <div className="flex size-11 items-center justify-center rounded-md border border-gold-300/25 bg-gold-300/10 text-gold-100">
             <KeyRound className="size-5" aria-hidden="true" />

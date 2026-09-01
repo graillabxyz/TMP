@@ -90,7 +90,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
 
       <div className="grid items-start gap-5 xl:grid-cols-[.85fr_1.15fr]">
         <div className="grid gap-5">
-          <Card className="bg-white/[0.035]">
+          <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <UserRound
@@ -123,7 +123,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/[0.035]">
+          <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BadgeCheck
@@ -202,7 +202,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
           </Card>
         </div>
 
-        <Card className="self-start bg-white/[0.035]">
+        <Card className="self-start">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Building2 className="size-5 text-gold-200" aria-hidden="true" />

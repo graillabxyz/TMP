@@ -109,7 +109,7 @@ export function ProductArchiveControl({
             aria-modal="true"
             aria-labelledby={titleId}
             aria-describedby={descriptionId}
-            className="w-full max-w-md rounded-lg border border-white/10 bg-charcoal-900 p-5 shadow-premium sm:p-6"
+            className="w-full max-w-md rounded-lg border border-white/[0.12] bg-charcoal-800 p-5 shadow-premium sm:p-6"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">

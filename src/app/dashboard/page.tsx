@@ -83,7 +83,7 @@ export default async function DashboardPage() {
       }
       active="overview"
     >
-      <section className="flex flex-col gap-5 rounded-lg border border-gold-300/20 bg-gold-300/[0.045] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+      <section className="flex flex-col gap-5 rounded-lg border border-gold-300/25 bg-card p-5 shadow-[0_14px_36px_rgba(0,0,0,0.16)] sm:flex-row sm:items-center sm:justify-between sm:p-6">
         <div className="flex min-w-0 items-start gap-4">
           <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-gold-300/[0.12] text-gold-100">
             {isSupplier ? (
@@ -122,7 +122,7 @@ export default async function DashboardPage() {
           [t.dashboard.draftProducts, draftCount],
           [t.dashboard.archivedProducts, archivedCount],
         ].map(([label, value]) => (
-          <div key={String(label)} className="bg-charcoal-900/95 p-4 sm:p-5">
+          <div key={String(label)} className="bg-card p-4 sm:p-5">
             <p className="text-xs leading-5 text-muted-foreground">
               {String(label)}
             </p>
@@ -134,7 +134,7 @@ export default async function DashboardPage() {
       </section>
 
       <div className="mt-6 grid items-start gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(300px,0.75fr)]">
-        <section className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.025]">
+        <section className="workspace-panel overflow-hidden">
           <div className="flex items-center justify-between gap-4 border-b border-white/10 px-5 py-4">
             <h2 className="font-semibold text-white">
               {t.dashboard.recentProducts}
@@ -212,7 +212,7 @@ export default async function DashboardPage() {
 
         <aside className="grid gap-4">
           {isSupplier ? (
-            <section className="rounded-lg border border-white/10 bg-white/[0.025] p-5">
+            <section className="workspace-panel p-5">
               <div className="flex items-start gap-3">
                 <ShieldCheck
                   className="mt-0.5 size-5 shrink-0 text-gold-200"
@@ -261,7 +261,7 @@ export default async function DashboardPage() {
               </Button>
             </section>
           ) : (
-            <section className="rounded-lg border border-white/10 bg-white/[0.025] p-5">
+            <section className="workspace-panel p-5">
               <BadgeCheck className="size-5 text-gold-200" aria-hidden="true" />
               <h2 className="mt-3 font-semibold text-white">
                 {t.profileSettings.supplierUpgradeTitle}

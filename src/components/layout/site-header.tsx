@@ -39,7 +39,7 @@ export async function SiteHeader() {
       )}&intent=supplier`;
 
   return (
-    <header className="sticky top-0 z-50 border-b border-white/10 bg-charcoal-900/[0.94] shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-white/[0.11] bg-charcoal-900/95 shadow-[0_8px_28px_rgba(0,0,0,0.18)] backdrop-blur-xl">
       <a
         href="#main-content"
         className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-md bg-gold-300 px-4 py-2 text-sm font-semibold text-charcoal-950 shadow-premium transition-transform focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-white"
@@ -97,7 +97,7 @@ export async function SiteHeader() {
         submitLabel={t.common.search}
         variant="mobile"
       />
-      <div className="hidden border-t border-white/10 bg-black/20 md:block">
+      <div className="hidden border-t border-white/[0.08] bg-charcoal-950/55 md:block">
         <div className="container flex min-h-10 items-center justify-between gap-4 py-1.5">
           <nav
             className="flex items-center gap-1"
@@ -152,7 +152,7 @@ export async function SiteHeader() {
         </div>
       </div>
       <nav
-        className="border-t border-white/10 md:hidden"
+        className="border-t border-white/[0.08] bg-charcoal-950/35 md:hidden"
         aria-label={t.common.mobileNavigation}
       >
         <div className="container flex items-center gap-1 py-1.5">

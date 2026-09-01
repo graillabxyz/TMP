@@ -34,7 +34,7 @@ export function ProductCard({
   const moq = product.moq ? `${product.moq} ${labels.units}` : labels.onRequest;
 
   return (
-    <Card className="group overflow-hidden bg-white/[0.03] transition duration-300 focus-within:border-gold-300/45 hover:-translate-y-0.5 hover:border-gold-300/30 hover:bg-white/[0.05]">
+    <Card className="group overflow-hidden transition duration-300 focus-within:border-gold-300/45 hover:-translate-y-0.5 hover:border-gold-300/30 hover:bg-secondary/90">
       <Link
         href={productHref}
         className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"

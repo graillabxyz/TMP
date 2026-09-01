@@ -67,7 +67,7 @@ export function LanguageToggle({ locale, label }: LanguageToggleProps) {
         {open && (
           <div
             role="menu"
-            className="absolute right-0 top-full z-50 mt-2 grid min-w-32 gap-1 rounded-lg border border-white/10 bg-charcoal-900 p-1.5 shadow-premium"
+            className="absolute right-0 top-full z-50 mt-2 grid min-w-32 gap-1 rounded-lg border border-white/[0.12] bg-charcoal-800 p-1.5 shadow-premium"
             aria-label={label}
           >
             {options.map((option) => (

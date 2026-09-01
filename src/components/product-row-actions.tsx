@@ -162,7 +162,7 @@ export function ProductRowActions({
           {menuOpen && (
             <div
               role="menu"
-              className="absolute right-0 top-full z-30 mt-2 w-52 overflow-hidden rounded-md border border-white/10 bg-charcoal-900 p-1.5 shadow-premium"
+              className="absolute right-0 top-full z-30 mt-2 w-52 overflow-hidden rounded-md border border-white/[0.12] bg-charcoal-800 p-1.5 shadow-premium"
             >
               {viewHref && (
                 <Link
@@ -219,7 +219,7 @@ export function ProductRowActions({
             aria-modal="true"
             aria-labelledby="product-action-title"
             aria-describedby="product-action-description"
-            className="w-full max-w-md rounded-lg border border-white/10 bg-charcoal-900 p-5 shadow-premium sm:p-6"
+            className="w-full max-w-md rounded-lg border border-white/[0.12] bg-charcoal-800 p-5 shadow-premium sm:p-6"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">

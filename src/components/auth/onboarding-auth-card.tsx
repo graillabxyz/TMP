@@ -129,8 +129,8 @@ export function OnboardingAuthCard({
   const intentQuery = supplierIntent ? "&intent=supplier" : "";
 
   return (
-    <Card className="border-white/[0.11] bg-charcoal-900/80 shadow-[0_24px_70px_rgba(0,0,0,0.32)] backdrop-blur-sm">
-      <CardContent className="p-5 sm:p-7">
+    <Card className="border-white/[0.12] bg-card shadow-[0_20px_56px_rgba(0,0,0,0.22)]">
+      <CardContent className="p-5 sm:p-7 lg:p-8">
         {supplierCopy && (
           <div className="flex items-start gap-3 rounded-md border border-white/10 bg-white/[0.025] p-3.5 text-sm text-white">
             <Building2
@@ -190,7 +190,7 @@ export function OnboardingAuthCard({
         </div>
 
         <nav
-          className="mx-auto mt-3 grid w-full max-w-sm grid-cols-2 rounded-md border border-white/10 bg-black/20 p-1"
+          className="mx-auto mt-3 grid w-full max-w-sm grid-cols-2 rounded-md border border-white/10 bg-charcoal-950/45 p-1"
           aria-label={labels.accountTitle}
         >
           <Link

@@ -120,7 +120,7 @@ export async function DashboardShell({
       >
         {t.common.skipToContent}
       </a>
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-charcoal-900/[0.94] shadow-[0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-white/[0.11] bg-charcoal-900/95 shadow-[0_8px_28px_rgba(0,0,0,0.18)] backdrop-blur-xl">
         <div className="container flex min-h-14 items-center justify-between gap-2 py-2 sm:min-h-[4.25rem] sm:gap-4 sm:py-3">
           <Logo className="min-w-0" href={getLocalizedPath(locale, "/")} />
           <HeaderSearch
@@ -174,7 +174,7 @@ export async function DashboardShell({
           submitLabel={t.common.search}
           variant="mobile"
         />
-        <div className="border-t border-white/10 bg-black/20">
+        <div className="border-t border-white/[0.08] bg-charcoal-950/55">
           <nav
             className="container flex min-h-10 items-center gap-1 overflow-x-auto py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             aria-label={t.nav.dashboard}
@@ -189,7 +189,8 @@ export async function DashboardShell({
                   aria-current={item.id === active ? "page" : undefined}
                   className={cn(
                     "inline-flex min-h-10 shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm text-muted-foreground transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-                    item.id === active && "bg-white/[0.08] text-white",
+                    item.id === active &&
+                      "bg-white/[0.1] text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.04)]",
                   )}
                 >
                   <Icon className="size-4 text-gold-200" aria-hidden="true" />
@@ -200,8 +201,8 @@ export async function DashboardShell({
           </nav>
         </div>
       </header>
-      <main id="main-content" className="container py-6 sm:py-8 lg:py-10">
-        <div className="mb-5 border-b border-white/10 pb-5">
+      <main id="main-content" className="container py-8 sm:py-10 lg:py-12">
+        <div className="mb-6 border-b border-white/10 pb-6">
           <p className="text-sm text-gold-200">{eyebrow}</p>
           <h1 className="mt-1.5 text-2xl font-semibold leading-tight text-white sm:text-3xl">
             {title}

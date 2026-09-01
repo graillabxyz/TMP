@@ -96,7 +96,7 @@ export default async function RFQPage({ searchParams }: RFQPageProps) {
             </div>
           </div>
 
-          <Card className="bg-white/[0.035]">
+          <Card>
             <CardContent className="p-5 sm:p-6">
               {statusMessage && (
                 <div
