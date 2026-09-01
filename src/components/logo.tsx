@@ -5,11 +5,17 @@ import { cn } from "@/lib/utils";
 
 type LogoProps = {
   compact?: boolean;
+  compactOnMobile?: boolean;
   className?: string;
   href?: string;
 };
 
-export function Logo({ compact = false, className, href = "/" }: LogoProps) {
+export function Logo({
+  compact = false,
+  compactOnMobile = false,
+  className,
+  href = "/",
+}: LogoProps) {
   return (
     <Link
       href={href}
@@ -33,7 +39,12 @@ export function Logo({ compact = false, className, href = "/" }: LogoProps) {
           <span className="text-base font-semibold leading-5 text-white">
             TMP
           </span>
-          <span className="mt-0.5 whitespace-nowrap text-xs leading-4 text-muted-foreground">
+          <span
+            className={cn(
+              "mt-0.5 whitespace-nowrap text-xs leading-4 text-muted-foreground",
+              compactOnMobile && "hidden sm:block",
+            )}
+          >
             Turkiye Market Place
           </span>
         </span>

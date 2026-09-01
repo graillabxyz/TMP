@@ -90,7 +90,7 @@ export function CategoriesDropdown({
           setOpen(true);
           focusMenuEdge(menuRef, event.key === "ArrowDown" ? "first" : "last");
         }}
-        className="inline-flex cursor-pointer list-none items-center rounded-md px-3 py-2 text-sm font-medium text-gold-50 transition hover:bg-white/[0.06] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="inline-flex cursor-pointer list-none items-center rounded-md px-3 py-2 text-sm font-semibold text-white transition hover:bg-white/[0.07] hover:text-gold-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         {label}
       </button>

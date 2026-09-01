@@ -87,10 +87,10 @@ export default async function HomePage() {
           fill
           priority
           sizes="100vw"
-          className="-z-20 object-cover object-[72%_center] opacity-90 md:object-center"
+          className="-z-20 object-cover object-[72%_center] md:object-center"
         />
-        <div className="from-black/88 via-black/72 absolute inset-0 -z-10 bg-gradient-to-b to-background" />
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(0,0,0,.78),rgba(0,0,0,.52)_52%,rgba(0,0,0,.76))]" />
+        <div className="from-black/72 via-black/58 absolute inset-0 -z-10 bg-gradient-to-b to-background" />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(0,0,0,.68),rgba(0,0,0,.38)_52%,rgba(0,0,0,.62))]" />
         <div className="container flex min-h-[52svh] items-center py-10 sm:min-h-[56svh] sm:py-12 lg:min-h-[560px]">
           <div className="w-full max-w-4xl animate-fade-up">
             <Badge>
@@ -107,7 +107,7 @@ export default async function HomePage() {
             <form
               id="marketplace-hero-search"
               action={productsHref}
-              className="mt-8 max-w-4xl rounded-md border border-gold-300/35 bg-gold-50/[0.98] p-2 shadow-premium"
+              className="mt-8 max-w-4xl rounded-md border border-gold-300/40 bg-[#f4efe3]/[0.98] p-2 shadow-[0_20px_55px_rgba(0,0,0,0.32)]"
             >
               <div className="grid gap-3 md:grid-cols-[1fr_180px_auto]">
                 <div className="relative">
@@ -252,7 +252,9 @@ export default async function HomePage() {
                   </div>
                   <div className="flex min-w-0 items-center justify-between gap-3 p-4 text-xs text-muted-foreground">
                     <span className="min-w-0 truncate">{product.category}</span>
-                    <span className="shrink-0 text-gold-200">{product.moq}</span>
+                    <span className="shrink-0 text-gold-200">
+                      {product.moq}
+                    </span>
                   </div>
                 </Link>
               ))}
