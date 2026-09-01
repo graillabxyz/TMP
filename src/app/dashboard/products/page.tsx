@@ -8,14 +8,17 @@ import {
   LockKeyhole,
   PackagePlus,
   Plus,
+  Search,
   type LucideIcon,
+  X,
 } from "lucide-react";
 import { redirect } from "next/navigation";
 
 import { DashboardShell } from "@/components/layout/dashboard-shell";
-import { ProductArchiveControl } from "@/components/product-archive-control";
+import { ProductRowActions } from "@/components/product-row-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
@@ -23,8 +26,10 @@ import { formatPriceRange, getSupplierProductWorkspace } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
 
 type DashboardProductsPageProps = {
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{ q?: string; status?: string; view?: string }>;
 };
+
+type ProductView = "all" | "published" | "draft" | "archived";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -68,9 +73,11 @@ export default async function DashboardProductsPage({
         ? labels.successUpdate
         : params.status === "archived"
           ? labels.successArchive
-          : params.status === "error"
-            ? labels.error
-            : "";
+          : params.status === "deleted"
+            ? labels.successDelete
+            : params.status === "error"
+              ? labels.error
+              : "";
   const products = workspace.products;
   const publishedCount = products.filter(
     (product) => product.status === "published",
@@ -82,17 +89,64 @@ export default async function DashboardProductsPage({
     (product) => product.status === "archived",
   ).length;
   const canPublish = profile.role === "supplier" || profile.role === "admin";
+  const query = params.q?.trim().slice(0, 80) ?? "";
+  const normalizedQuery = query.toLocaleLowerCase(locale);
+  const activeView: ProductView = ["published", "draft", "archived"].includes(
+    params.view ?? "",
+  )
+    ? (params.view as ProductView)
+    : "all";
+  const productsInView =
+    activeView === "all"
+      ? products
+      : products.filter((product) => product.status === activeView);
+  const filteredProducts = normalizedQuery
+    ? productsInView.filter((product) =>
+        `${product.title} ${product.categoryName}`
+          .toLocaleLowerCase(locale)
+          .includes(normalizedQuery),
+      )
+    : productsInView;
   const createHref = getLocalizedPath(locale, "/dashboard/products/new");
+  const productsHref = getLocalizedPath(locale, "/dashboard/products");
   const profileHref = getLocalizedPath(locale, "/dashboard/profile");
+  const getViewHref = (view: ProductView, preserveQuery = true) => {
+    const searchParams = new URLSearchParams();
+    if (view !== "all") searchParams.set("view", view);
+    if (query && preserveQuery) searchParams.set("q", query);
+    const search = searchParams.toString();
+    return search ? `${productsHref}?${search}` : productsHref;
+  };
   const summaries: Array<{
     icon: LucideIcon;
     label: string;
     value: number;
+    view: ProductView;
   }> = [
-    { icon: PackagePlus, label: labels.allListings, value: products.length },
-    { icon: Eye, label: labels.publishedListings, value: publishedCount },
-    { icon: FilePenLine, label: labels.draftListings, value: draftCount },
-    { icon: Archive, label: labels.archivedListings, value: archivedCount },
+    {
+      icon: PackagePlus,
+      label: labels.allListings,
+      value: products.length,
+      view: "all",
+    },
+    {
+      icon: Eye,
+      label: labels.publishedListings,
+      value: publishedCount,
+      view: "published",
+    },
+    {
+      icon: FilePenLine,
+      label: labels.draftListings,
+      value: draftCount,
+      view: "draft",
+    },
+    {
+      icon: Archive,
+      label: labels.archivedListings,
+      value: archivedCount,
+      view: "archived",
+    },
   ];
 
   return (
@@ -130,7 +184,11 @@ export default async function DashboardProductsPage({
               </p>
             </div>
           </div>
-          <Button asChild variant="outline" className="w-full shrink-0 sm:w-auto">
+          <Button
+            asChild
+            variant="outline"
+            className="w-full shrink-0 sm:w-auto"
+          >
             <Link href={profileHref}>{labels.addSupplierProfile}</Link>
           </Button>
         </section>
@@ -154,8 +212,17 @@ export default async function DashboardProductsPage({
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-white/10 bg-white/10 sm:grid-cols-4">
-        {summaries.map(({ icon: Icon, label, value }) => (
-          <div key={label} className="bg-charcoal-900/95 p-4 sm:p-5">
+        {summaries.map(({ icon: Icon, label, value, view }) => (
+          <Link
+            key={label}
+            href={getViewHref(view)}
+            aria-current={activeView === view ? "page" : undefined}
+            className={
+              activeView === view
+                ? "bg-gold-300/[0.08] p-4 outline outline-1 -outline-offset-1 outline-gold-300/40 transition sm:p-5"
+                : "bg-charcoal-900/95 p-4 transition hover:bg-white/[0.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:p-5"
+            }
+          >
             <div className="flex items-center justify-between gap-3">
               <p className="text-xs font-medium text-muted-foreground">
                 {label}
@@ -165,33 +232,77 @@ export default async function DashboardProductsPage({
             <p className="mt-3 text-2xl font-semibold tabular-nums text-white">
               {value}
             </p>
-          </div>
+          </Link>
         ))}
       </div>
 
-      {products.length > 0 ? (
-        <section className="mt-6 overflow-hidden rounded-lg border border-white/10 bg-white/[0.025]">
-          <div className="hidden overflow-x-auto md:block">
-            <table className="w-full min-w-[800px] text-left text-sm">
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <form
+          action={productsHref}
+          className="flex w-full max-w-xl items-center gap-2"
+        >
+          {activeView !== "all" && (
+            <input type="hidden" name="view" value={activeView} />
+          )}
+          <div className="relative min-w-0 flex-1">
+            <Search
+              className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-gold-200"
+              aria-hidden="true"
+            />
+            <Input
+              type="search"
+              name="q"
+              defaultValue={query}
+              maxLength={80}
+              placeholder={labels.searchProductsPlaceholder}
+              aria-label={labels.searchProducts}
+              className="h-11 pl-10"
+            />
+          </div>
+          <Button type="submit" variant="outline" className="h-11">
+            {t.common.search}
+          </Button>
+        </form>
+        {query && (
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="self-start sm:self-auto"
+          >
+            <Link href={getViewHref(activeView, false)}>
+              <X aria-hidden="true" />
+              {labels.clearSearch}
+            </Link>
+          </Button>
+        )}
+      </div>
+
+      {filteredProducts.length > 0 ? (
+        <section className="mt-6 rounded-lg border border-white/10 bg-white/[0.025]">
+          <div className="hidden md:block">
+            <table className="w-full table-fixed text-left text-sm">
               <thead className="border-b border-white/10 bg-white/[0.025] text-muted-foreground">
                 <tr>
-                  <th className="px-5 py-3 font-medium">
+                  <th className="w-[40%] px-5 py-3 font-medium lg:w-[34%]">
                     {labels.tableProduct}
                   </th>
-                  <th className="px-4 py-3 font-medium">
+                  <th className="hidden w-[20%] px-4 py-3 font-medium lg:table-cell">
                     {labels.tableCategory}
                   </th>
-                  <th className="px-4 py-3 font-medium">
+                  <th className="w-[20%] px-4 py-3 font-medium lg:w-[16%]">
                     {labels.tablePricing}
                   </th>
-                  <th className="px-4 py-3 font-medium">{labels.status}</th>
-                  <th className="px-5 py-3 text-right font-medium">
+                  <th className="w-[18%] px-4 py-3 font-medium lg:w-[14%]">
+                    {labels.status}
+                  </th>
+                  <th className="w-[22%] px-5 py-3 text-right font-medium lg:w-[16%]">
                     {t.common.action}
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/10">
-                {products.map((product) => (
+                {filteredProducts.map((product) => (
                   <tr
                     key={product.id}
                     className="transition hover:bg-white/[0.025]"
@@ -204,14 +315,15 @@ export default async function DashboardProductsPage({
                             {product.title}
                           </p>
                           <p className="mt-1 text-xs text-muted-foreground">
-                            {new Date(product.createdAt).toLocaleDateString(
+                            {labels.tableUpdated}{" "}
+                            {new Date(product.updatedAt).toLocaleDateString(
                               locale,
                             )}
                           </p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-4 text-muted-foreground">
+                    <td className="hidden px-4 py-4 text-muted-foreground lg:table-cell">
                       {product.categoryName}
                     </td>
                     <td className="px-4 py-4 text-white">
@@ -223,21 +335,35 @@ export default async function DashboardProductsPage({
                       </Badge>
                     </td>
                     <td className="px-5 py-4">
-                      <ProductActions
+                      <ProductRowActions
                         archiveLabel={t.common.archive}
                         archiveBody={labels.archiveConfirmBody}
                         archiveConfirmLabel={labels.archiveConfirm}
                         archiveTitle={labels.archiveConfirmTitle}
                         cancelLabel={t.common.cancel}
+                        deleteBody={labels.deleteConfirmBody}
+                        deleteConfirmLabel={labels.deleteConfirm}
+                        deleteLabel={labels.deleteProduct}
+                        deleteTitle={labels.deleteConfirmTitle}
                         editHref={getLocalizedPath(
                           locale,
                           `/dashboard/products/${product.id}/edit`,
                         )}
                         editLabel={t.common.edit}
                         locale={locale}
+                        menuLabel={t.common.action}
                         productId={product.id}
                         productTitle={product.title}
                         status={product.status}
+                        viewHref={
+                          product.status === "published"
+                            ? getLocalizedPath(
+                                locale,
+                                `/products/${product.slug}`,
+                              )
+                            : null
+                        }
+                        viewLabel={labels.viewListing}
                       />
                     </td>
                   </tr>
@@ -247,7 +373,7 @@ export default async function DashboardProductsPage({
           </div>
 
           <div className="divide-y divide-white/10 md:hidden">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <article key={product.id} className="p-4">
                 <div className="flex gap-3">
                   <ProductThumbnail src={product.imageUrl} />
@@ -269,21 +395,32 @@ export default async function DashboardProductsPage({
                   </div>
                 </div>
                 <div className="mt-4 border-t border-white/10 pt-3">
-                  <ProductActions
+                  <ProductRowActions
                     archiveLabel={t.common.archive}
                     archiveBody={labels.archiveConfirmBody}
                     archiveConfirmLabel={labels.archiveConfirm}
                     archiveTitle={labels.archiveConfirmTitle}
                     cancelLabel={t.common.cancel}
+                    deleteBody={labels.deleteConfirmBody}
+                    deleteConfirmLabel={labels.deleteConfirm}
+                    deleteLabel={labels.deleteProduct}
+                    deleteTitle={labels.deleteConfirmTitle}
                     editHref={getLocalizedPath(
                       locale,
                       `/dashboard/products/${product.id}/edit`,
                     )}
                     editLabel={t.common.edit}
                     locale={locale}
+                    menuLabel={t.common.action}
                     productId={product.id}
                     productTitle={product.title}
                     status={product.status}
+                    viewHref={
+                      product.status === "published"
+                        ? getLocalizedPath(locale, `/products/${product.slug}`)
+                        : null
+                    }
+                    viewLabel={labels.viewListing}
                   />
                 </div>
               </article>
@@ -296,15 +433,25 @@ export default async function DashboardProductsPage({
             <PackagePlus className="size-6" aria-hidden="true" />
           </span>
           <h2 className="mt-4 text-lg font-semibold text-white">
-            {labels.noProducts}
+            {query
+              ? labels.noProductsMatch
+              : products.length > 0
+                ? labels.noProductsInView
+                : labels.noProducts}
           </h2>
           <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
-            {labels.noProductsBody}
+            {query
+              ? labels.noProductsMatchBody
+              : products.length > 0
+                ? labels.noProductsInViewBody
+                : labels.noProductsBody}
           </p>
           <Button asChild className="mt-5">
-            <Link href={createHref}>
-              <Plus aria-hidden="true" />
-              {labels.createProduct}
+            <Link href={products.length > 0 ? productsHref : createHref}>
+              {products.length > 0 ? null : <Plus aria-hidden="true" />}
+              {products.length > 0
+                ? labels.showAllProducts
+                : labels.createProduct}
             </Link>
           </Button>
         </section>
@@ -322,57 +469,6 @@ function ProductThumbnail({ src }: { src: string | null }) {
         <PackagePlus
           className="absolute inset-0 m-auto size-5 text-muted-foreground"
           aria-hidden="true"
-        />
-      )}
-    </div>
-  );
-}
-
-function ProductActions({
-  archiveLabel,
-  archiveBody,
-  archiveConfirmLabel,
-  archiveTitle,
-  cancelLabel,
-  editHref,
-  editLabel,
-  locale,
-  productId,
-  productTitle,
-  status,
-}: {
-  archiveLabel: string;
-  archiveBody: string;
-  archiveConfirmLabel: string;
-  archiveTitle: string;
-  cancelLabel: string;
-  editHref: string;
-  editLabel: string;
-  locale: string;
-  productId: string;
-  productTitle: string;
-  status: string;
-}) {
-  return (
-    <div className="flex items-center justify-end gap-2">
-      <Button
-        asChild
-        size="sm"
-        variant="outline"
-        className="h-11 flex-1 md:h-9 md:flex-none"
-      >
-        <Link href={editHref}>{editLabel}</Link>
-      </Button>
-      {status !== "archived" && (
-        <ProductArchiveControl
-          cancelLabel={cancelLabel}
-          confirmLabel={archiveConfirmLabel}
-          description={archiveBody}
-          locale={locale}
-          productId={productId}
-          productTitle={productTitle}
-          title={archiveTitle}
-          triggerLabel={archiveLabel}
         />
       )}
     </div>

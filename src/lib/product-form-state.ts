@@ -1,7 +1,8 @@
 import type { ProductFieldErrors } from "@/lib/product-input";
 
 export type ProductFormState = {
-  status: "idle" | "error";
+  status: "idle" | "error" | "success";
+  redirectTo?: string;
   formError?:
     | "invalid"
     | "category"

@@ -61,6 +61,7 @@ export type DashboardProduct = {
   currency: string;
   imageUrl: string | null;
   createdAt: string;
+  updatedAt: string;
 };
 
 function fallbackImage(images: string[], productSlug: string) {
@@ -299,6 +300,7 @@ export async function getSupplierProductWorkspace(locale: Locale) {
         currency,
         images,
         created_at,
+        updated_at,
         category:categories(name, name_fr, slug)
       `,
     )
@@ -335,6 +337,7 @@ export async function getSupplierProductWorkspace(locale: Locale) {
         currency: string;
         images: string[];
         created_at: string;
+        updated_at: string;
         category: { name: string; name_fr: string | null; slug: string } | null;
       }>
     ).map((product) => ({
@@ -358,6 +361,7 @@ export async function getSupplierProductWorkspace(locale: Locale) {
       currency: product.currency,
       imageUrl: product.images[0] ?? null,
       createdAt: product.created_at,
+      updatedAt: product.updated_at,
     })),
   };
 }

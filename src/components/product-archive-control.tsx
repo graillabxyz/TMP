@@ -1,12 +1,13 @@
 "use client";
 
-import { Archive, X } from "lucide-react";
+import { Archive, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { archiveProduct } from "@/app/actions/products";
+import { archiveProduct, deleteProduct } from "@/app/actions/products";
 import { Button } from "@/components/ui/button";
 
 type ProductArchiveControlProps = {
+  action?: "archive" | "delete";
   cancelLabel: string;
   confirmLabel: string;
   description: string;
@@ -18,6 +19,7 @@ type ProductArchiveControlProps = {
 };
 
 export function ProductArchiveControl({
+  action = "archive",
   cancelLabel,
   confirmLabel,
   description,
@@ -30,6 +32,10 @@ export function ProductArchiveControl({
   const [open, setOpen] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const Icon = action === "delete" ? Trash2 : Archive;
+  const formAction = action === "delete" ? deleteProduct : archiveProduct;
+  const titleId = `${action}-product-title`;
+  const descriptionId = `${action}-product-description`;
 
   useEffect(() => {
     if (!open) return;
@@ -38,7 +44,7 @@ export function ProductArchiveControl({
     const previousFocus = document.activeElement as HTMLElement | null;
     const dialog = dialogRef.current;
     const focusable = dialog?.querySelectorAll<HTMLElement>(
-      'button:not([disabled]), [href], input:not([disabled])',
+      "button:not([disabled]), [href], input:not([disabled])",
     );
     focusable?.[0]?.focus();
     document.body.style.overflow = "hidden";
@@ -79,10 +85,14 @@ export function ProductArchiveControl({
         type="button"
         variant="ghost"
         size="sm"
-        className="h-11 flex-1 md:h-9 md:flex-none"
+        className={
+          action === "delete"
+            ? "h-11 flex-1 text-red-200 hover:bg-red-500/10 hover:text-red-100 md:h-9 md:flex-none"
+            : "h-11 flex-1 md:h-9 md:flex-none"
+        }
         onClick={() => setOpen(true)}
       >
-        <Archive aria-hidden="true" />
+        <Icon aria-hidden="true" />
         {triggerLabel}
       </Button>
 
@@ -97,16 +107,13 @@ export function ProductArchiveControl({
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
-            aria-labelledby="archive-product-title"
-            aria-describedby="archive-product-description"
+            aria-labelledby={titleId}
+            aria-describedby={descriptionId}
             className="w-full max-w-md rounded-lg border border-white/10 bg-charcoal-900 p-5 shadow-premium sm:p-6"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
-                <h2
-                  id="archive-product-title"
-                  className="text-lg font-semibold text-white"
-                >
+                <h2 id={titleId} className="text-lg font-semibold text-white">
                   {title}
                 </h2>
                 <p className="mt-2 break-words text-sm font-medium text-gold-100">
@@ -123,7 +130,7 @@ export function ProductArchiveControl({
               </button>
             </div>
             <p
-              id="archive-product-description"
+              id={descriptionId}
               className="mt-4 text-sm leading-6 text-muted-foreground"
             >
               {description}
@@ -136,11 +143,11 @@ export function ProductArchiveControl({
               >
                 {cancelLabel}
               </Button>
-              <form action={archiveProduct}>
+              <form action={formAction}>
                 <input type="hidden" name="locale" value={locale} />
                 <input type="hidden" name="id" value={productId} />
                 <Button type="submit" variant="destructive" className="w-full">
-                  <Archive aria-hidden="true" />
+                  <Icon aria-hidden="true" />
                   {confirmLabel}
                 </Button>
               </form>

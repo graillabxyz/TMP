@@ -58,10 +58,11 @@ export default async function EditProductPage({
     <DashboardShell
       eyebrow={labels.eyebrow}
       title={labels.editProduct}
-      description={labels.description}
+      description={labels.editDescription}
       active="products"
     >
       <ProductForm
+        accountId={profile.id}
         action={updateProduct}
         canPublish={profile.role === "supplier" || profile.role === "admin"}
         categories={categories}

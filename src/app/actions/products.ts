@@ -23,6 +23,7 @@ type FilterBuilder = {
   eq: (column: string, value: string) => FilterBuilder;
 } & PromiseLike<{ error: MutationError }>;
 type SupplierProductsMutationTable = {
+  delete: () => FilterBuilder;
   insert: (payload: ProductInsert) => MutationResult;
   update: (payload: ProductUpdate) => FilterBuilder;
 };
@@ -102,6 +103,37 @@ async function removeProductImages(
   if (error) {
     console.error("Unable to remove product images", error.message);
   }
+}
+
+function getProductImagePaths({
+  images,
+  supplierId,
+  userId,
+}: {
+  images: string[];
+  supplierId: string | null;
+  userId: string;
+}) {
+  const supplierFolders = [supplierId, "drafts"].filter(
+    (folder, index, folders): folder is string =>
+      Boolean(folder) && folders.indexOf(folder) === index,
+  );
+
+  return images
+    .map((url) => {
+      for (const folder of supplierFolders) {
+        const path = getOwnedMediaPath({
+          url,
+          bucket: SUPPLIER_ASSETS_BUCKET,
+          userId,
+          supplierId: folder,
+        });
+        if (path) return path;
+      }
+
+      return null;
+    })
+    .filter((path): path is string => Boolean(path));
 }
 
 async function uploadProductImages({
@@ -268,7 +300,10 @@ export async function createProduct(
     return { status: "error", formError: "save" };
   }
 
-  redirect(`${productsPath}?status=created`);
+  return {
+    status: "success",
+    redirectTo: `${productsPath}?status=created`,
+  };
 }
 
 export async function updateProduct(
@@ -386,20 +421,74 @@ export async function updateProduct(
   }
 
   if (uploadedImages?.length) {
-    const previousPaths = existingProduct.images
-      .map((url) =>
-        getOwnedMediaPath({
-          url,
-          bucket: SUPPLIER_ASSETS_BUCKET,
-          userId,
-          supplierId: existingProduct.supplier_id ?? "drafts",
-        }),
-      )
-      .filter((path): path is string => Boolean(path));
+    const previousPaths = getProductImagePaths({
+      images: existingProduct.images,
+      supplierId: existingProduct.supplier_id,
+      userId,
+    });
     await removeProductImages(supabase, previousPaths);
   }
 
-  redirect(`${productsPath}?status=updated`);
+  return {
+    status: "success",
+    redirectTo: `${productsPath}?status=updated`,
+  };
+}
+
+export async function deleteProduct(formData: FormData) {
+  const locale = getFormLocale(formData);
+  const productId = getString(formData, "id");
+  const productsPath = getLocalizedPath(locale, "/dashboard/products");
+  const { supabase, userId } = await getCurrentProductContext();
+
+  if (!isUuid(productId) || !userId) {
+    redirect(`${productsPath}?status=error`);
+  }
+
+  const { data, error: productError } = await supabase
+    .from("supplier_products")
+    .select("images, supplier_id")
+    .eq("id", productId)
+    .eq("owner_id", userId)
+    .maybeSingle();
+  const product = data as {
+    images: string[];
+    supplier_id: string | null;
+  } | null;
+
+  if (productError || !product) {
+    if (productError) {
+      console.error(
+        "Unable to load product before deletion",
+        productError.message,
+      );
+    }
+    redirect(`${productsPath}?status=error`);
+  }
+
+  const productMutations = supabase.from(
+    "supplier_products",
+  ) as unknown as SupplierProductsMutationTable;
+  const { error } = await productMutations
+    .delete()
+    .eq("id", productId)
+    .eq("owner_id", userId);
+
+  if (error) {
+    console.error("Unable to delete product", error.message);
+    redirect(`${productsPath}?status=error`);
+  }
+
+  await removeProductImages(
+    supabase,
+    getProductImagePaths({
+      images: product.images,
+      supplierId: product.supplier_id,
+      userId,
+    }),
+  );
+
+  redirect(`${productsPath}?status=deleted`);
 }
 
 export async function archiveProduct(formData: FormData) {

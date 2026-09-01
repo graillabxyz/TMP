@@ -48,6 +48,7 @@ export default async function NewProductPage() {
       active="products"
     >
       <ProductForm
+        accountId={profile.id}
         action={createProduct}
         canPublish={profile.role === "supplier" || profile.role === "admin"}
         categories={categories}

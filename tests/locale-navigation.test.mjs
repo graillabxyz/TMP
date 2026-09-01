@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { getLocaleHref } from "../src/lib/locale-navigation.ts";
+import {
+  getLocaleHref,
+  getLocalizedHref,
+} from "../src/lib/locale-navigation.ts";
 
 test("adds and replaces locale prefixes while preserving query parameters", () => {
   const query = new URLSearchParams("q=hoodie&category=packaging");
@@ -26,4 +29,16 @@ test("handles localized home routes without adding a trailing slash", () => {
   assert.equal(getLocaleHref("/", query, "tr"), "/tr");
   assert.equal(getLocaleHref("/tr", query, "fr"), "/fr");
   assert.equal(getLocaleHref("/fr", query, "en"), "/");
+});
+
+test("builds browser-safe localized links", () => {
+  assert.equal(
+    getLocalizedHref("/products/example", "en"),
+    "/products/example",
+  );
+  assert.equal(
+    getLocalizedHref("/products/example", "fr"),
+    "/fr/products/example",
+  );
+  assert.equal(getLocalizedHref("/", "tr"), "/tr");
 });

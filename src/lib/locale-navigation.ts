@@ -1,5 +1,10 @@
 type NavigationLocale = "en" | "fr" | "tr";
 
+export function getLocalizedHref(pathname: string, locale: NavigationLocale) {
+  if (locale === "en") return pathname;
+  return pathname === "/" ? `/${locale}` : `/${locale}${pathname}`;
+}
+
 export function getLocaleHref(
   pathname: string,
   searchParams: URLSearchParams,
@@ -15,12 +20,7 @@ export function getLocaleHref(
     pathWithoutLocale === "/" || pathWithoutLocale === ""
       ? "/"
       : pathWithoutLocale.replace(/\/$/, "");
-  const localizedPath =
-    locale === "en"
-      ? normalizedPath
-      : normalizedPath === "/"
-        ? `/${locale}`
-        : `/${locale}${normalizedPath}`;
+  const localizedPath = getLocalizedHref(normalizedPath, locale);
   const query = searchParams.toString();
 
   return query ? `${localizedPath}?${query}` : localizedPath;

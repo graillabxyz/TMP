@@ -362,8 +362,7 @@ const dictionaries = {
       supplier: "Supplier",
       continueWithGoogle: "Continue with Google",
       supplierContinueWithGoogle: "Continue with Google",
-      googleHelp:
-        "Use Google to sign in or create your TMP buyer account.",
+      googleHelp: "Use Google to sign in or create your TMP buyer account.",
       supplierGoogleHelp:
         "Continue with one TMP account. Supplier profile setup happens next; paid verification is optional.",
       orEmail: "or continue with email",
@@ -492,11 +491,23 @@ const dictionaries = {
         title: "Products",
         description:
           "Create, refine, and manage the product listings buyers can discover on TMP.",
+        editDescription:
+          "Update listing details, visibility, pricing, and product media from one workspace.",
         createProduct: "Create product",
         editProduct: "Edit product",
         noProducts: "No products yet",
         noProductsBody:
           "Create a first product listing to make it available for marketplace discovery once published.",
+        noProductsInView: "No products in this view",
+        noProductsInViewBody:
+          "Choose another status or return to all products to continue managing your catalog.",
+        showAllProducts: "Show all products",
+        searchProducts: "Search your products",
+        searchProductsPlaceholder: "Search by product or category",
+        clearSearch: "Clear search",
+        noProductsMatch: "No matching products",
+        noProductsMatchBody:
+          "Try a broader product name or category, or clear the search to see your catalog.",
         loginRequired: "Login required",
         loginRequiredBody:
           "Sign in to your TMP account and add a supplier profile before managing product listings.",
@@ -555,6 +566,11 @@ const dictionaries = {
         draftHelp: "Drafts are visible only in your account workspace.",
         publishHelp:
           "Published products appear in marketplace search immediately.",
+        localDraftSaved: "Changes saved on this device",
+        localDraftRestored: "Recovered unsaved changes from this device",
+        localDraftSaveError: "Browser recovery is unavailable",
+        localDraftImagesNeedReselect:
+          "Your written changes were recovered. For security, select the product photos again before saving.",
         requiredError: "This field is required.",
         titleLengthError: "Use between 3 and 160 characters.",
         descriptionLengthError: "Use between 20 and 5,000 characters.",
@@ -582,7 +598,7 @@ const dictionaries = {
         tableProduct: "Product",
         tableCategory: "Category",
         tablePricing: "Pricing",
-        tableUpdated: "Created",
+        tableUpdated: "Updated",
         supplierAccessRequired: "Supplier access required",
         supplierAccessCreateBody:
           "Add a supplier profile before creating supplier product listings. You can keep browsing products or submit a sourcing request from the same account.",
@@ -608,6 +624,15 @@ const dictionaries = {
         successCreate: "Product created.",
         successUpdate: "Product updated.",
         successArchive: "Product archived.",
+        successDelete: "Product deleted permanently.",
+        editingProduct: "Editing product",
+        currentStatus: "Current status",
+        viewListing: "View live listing",
+        deleteProduct: "Delete",
+        deleteConfirmTitle: "Delete this product permanently?",
+        deleteConfirmBody:
+          "This removes the listing and its uploaded photos. This action cannot be undone.",
+        deleteConfirm: "Delete product",
         archiveConfirmTitle: "Archive this product?",
         archiveConfirmBody:
           "The product will move to Archived and will no longer appear in the public marketplace.",
@@ -1105,7 +1130,7 @@ const dictionaries = {
       productRequest: "Spécification produit",
       productPlaceholder: "Sweat coton bio, molleton 320gsm, OEKO-TEX, 500 pcs",
       productHelp:
-        'Ajoutez le type de produit, la matière ou spécification, la certification souhaitée et la quantité cible. Les demandes vagues comme « sweats » ou « boîtes » sont difficiles à orienter.',
+        "Ajoutez le type de produit, la matière ou spécification, la certification souhaitée et la quantité cible. Les demandes vagues comme « sweats » ou « boîtes » sont difficiles à orienter.",
       selectCategory: "Sélectionner une catégorie",
       quantity: "Quantité",
       quantityPlaceholder: "500 unités",
@@ -1362,11 +1387,23 @@ const dictionaries = {
         title: "Produits",
         description:
           "Créez, améliorez et gérez les listings produits que les acheteurs peuvent découvrir sur TMP.",
+        editDescription:
+          "Mettez à jour les détails, la visibilité, les prix et les photos depuis un seul espace.",
         createProduct: "Créer un produit",
         editProduct: "Modifier le produit",
         noProducts: "Aucun produit",
         noProductsBody:
           "Créez un premier listing produit pour le rendre découvrable une fois publié.",
+        noProductsInView: "Aucun produit dans cette vue",
+        noProductsInViewBody:
+          "Choisissez un autre statut ou revenez à tous les produits pour continuer à gérer votre catalogue.",
+        showAllProducts: "Afficher tous les produits",
+        searchProducts: "Rechercher dans vos produits",
+        searchProductsPlaceholder: "Rechercher par produit ou catégorie",
+        clearSearch: "Effacer la recherche",
+        noProductsMatch: "Aucun produit correspondant",
+        noProductsMatchBody:
+          "Essayez un nom de produit ou une catégorie plus large, ou effacez la recherche pour voir votre catalogue.",
         loginRequired: "Connexion requise",
         loginRequiredBody:
           "Connectez-vous à votre compte TMP et ajoutez un profil fournisseur avant de gérer les listings produits.",
@@ -1428,6 +1465,12 @@ const dictionaries = {
           "Les brouillons ne sont visibles que dans l’espace de votre compte.",
         publishHelp:
           "Les produits publiés apparaissent immédiatement dans la recherche.",
+        localDraftSaved: "Modifications enregistrées sur cet appareil",
+        localDraftRestored:
+          "Modifications non enregistrées récupérées sur cet appareil",
+        localDraftSaveError: "La récupération locale est indisponible",
+        localDraftImagesNeedReselect:
+          "Vos modifications écrites ont été récupérées. Pour des raisons de sécurité, sélectionnez à nouveau les photos avant d’enregistrer.",
         requiredError: "Ce champ est obligatoire.",
         titleLengthError: "Utilisez entre 3 et 160 caractères.",
         descriptionLengthError: "Utilisez entre 20 et 5 000 caractères.",
@@ -1457,7 +1500,7 @@ const dictionaries = {
         tableProduct: "Produit",
         tableCategory: "Catégorie",
         tablePricing: "Prix",
-        tableUpdated: "Créé",
+        tableUpdated: "Mis à jour",
         supplierAccessRequired: "Accès fournisseur requis",
         supplierAccessCreateBody:
           "Ajoutez un profil fournisseur avant de créer des listings produits. Vous pouvez continuer à parcourir les produits ou envoyer une demande de sourcing avec le même compte.",
@@ -1484,6 +1527,15 @@ const dictionaries = {
         successCreate: "Produit créé.",
         successUpdate: "Produit mis à jour.",
         successArchive: "Produit archivé.",
+        successDelete: "Produit supprimé définitivement.",
+        editingProduct: "Modification du produit",
+        currentStatus: "Statut actuel",
+        viewListing: "Voir le listing publié",
+        deleteProduct: "Supprimer",
+        deleteConfirmTitle: "Supprimer définitivement ce produit ?",
+        deleteConfirmBody:
+          "Cette action supprime le listing et ses photos importées. Elle est irréversible.",
+        deleteConfirm: "Supprimer le produit",
         archiveConfirmTitle: "Archiver ce produit ?",
         archiveConfirmBody:
           "Le produit passera dans les archives et ne sera plus visible sur la marketplace publique.",
@@ -2234,11 +2286,23 @@ const turkishDictionary = {
       title: "Ürünler",
       description:
         "Alıcıların TMP'de keşfedebileceği ürün ilanlarını oluşturun, geliştirin ve yönetin.",
+      editDescription:
+        "İlan ayrıntılarını, görünürlüğü, fiyatları ve ürün görsellerini tek bir çalışma alanından güncelleyin.",
       createProduct: "Ürün oluştur",
       editProduct: "Ürünü düzenle",
       noProducts: "Henüz ürün yok",
       noProductsBody:
         "Yayınlandığında pazar yerinde görünmesi için ilk ürün ilanını oluşturun.",
+      noProductsInView: "Bu görünümde ürün yok",
+      noProductsInViewBody:
+        "Kataloğunuzu yönetmeye devam etmek için başka bir durum seçin veya tüm ürünlere dönün.",
+      showAllProducts: "Tüm ürünleri göster",
+      searchProducts: "Ürünlerinizde ara",
+      searchProductsPlaceholder: "Ürün veya kategoriye göre ara",
+      clearSearch: "Aramayı temizle",
+      noProductsMatch: "Eşleşen ürün yok",
+      noProductsMatchBody:
+        "Daha genel bir ürün adı veya kategori deneyin ya da kataloğunuzu görmek için aramayı temizleyin.",
       loginRequired: "Giriş gerekli",
       loginRequiredBody:
         "Ürün ilanlarını yönetmeden önce TMP hesabınıza giriş yapın ve tedarikçi profili ekleyin.",
@@ -2296,6 +2360,12 @@ const turkishDictionary = {
       publishing: "Yayınlanıyor...",
       draftHelp: "Taslakları yalnızca hesap çalışma alanınızda görebilirsiniz.",
       publishHelp: "Yayınlanan ürünler pazar yeri aramasında hemen görünür.",
+      localDraftSaved: "Değişiklikler bu cihaza kaydedildi",
+      localDraftRestored:
+        "Kaydedilmemiş değişiklikler bu cihazdan geri yüklendi",
+      localDraftSaveError: "Tarayıcı kurtarma özelliği kullanılamıyor",
+      localDraftImagesNeedReselect:
+        "Yazılı değişiklikleriniz geri yüklendi. Güvenlik nedeniyle kaydetmeden önce ürün fotoğraflarını yeniden seçin.",
       requiredError: "Bu alan zorunludur.",
       titleLengthError: "3 ile 160 karakter arasında yazın.",
       descriptionLengthError: "20 ile 5.000 karakter arasında yazın.",
@@ -2325,7 +2395,7 @@ const turkishDictionary = {
       tableProduct: "Ürün",
       tableCategory: "Kategori",
       tablePricing: "Fiyatlandırma",
-      tableUpdated: "Oluşturulma",
+      tableUpdated: "Güncellenme",
       supplierAccessRequired: "Tedarikçi erişimi gerekli",
       supplierAccessCreateBody:
         "Tedarikçi ürün ilanları oluşturmadan önce tedarikçi profili ekleyin. Aynı hesaptan ürünleri incelemeye veya sourcing talebi göndermeye devam edebilirsiniz.",
@@ -2351,6 +2421,15 @@ const turkishDictionary = {
       successCreate: "Ürün oluşturuldu.",
       successUpdate: "Ürün güncellendi.",
       successArchive: "Ürün arşivlendi.",
+      successDelete: "Ürün kalıcı olarak silindi.",
+      editingProduct: "Ürün düzenleniyor",
+      currentStatus: "Mevcut durum",
+      viewListing: "Yayındaki ilanı görüntüle",
+      deleteProduct: "Sil",
+      deleteConfirmTitle: "Bu ürün kalıcı olarak silinsin mi?",
+      deleteConfirmBody:
+        "Bu işlem ilanı ve yüklenen fotoğrafları siler. İşlem geri alınamaz.",
+      deleteConfirm: "Ürünü sil",
       archiveConfirmTitle: "Bu ürün arşivlensin mi?",
       archiveConfirmBody:
         "Ürün Arşivlenenler bölümüne taşınacak ve herkese açık pazar yerinde artık görünmeyecek.",

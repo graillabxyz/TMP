@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   useActionState,
   useEffect,
@@ -12,6 +13,7 @@ import {
 import {
   CheckCircle2,
   CircleAlert,
+  ExternalLink,
   ImagePlus,
   LockKeyhole,
   PackageOpen,
@@ -21,6 +23,8 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ProductArchiveControl } from "@/components/product-archive-control";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
@@ -29,8 +33,15 @@ import { cn } from "@/lib/utils";
 import type { ProductFormState } from "@/lib/product-form-state";
 import { initialProductFormState } from "@/lib/product-form-state";
 import type { ProductErrorCode, ProductField } from "@/lib/product-input";
+import {
+  hasProductLocalDraftContent,
+  parseProductLocalDraft,
+  PRODUCT_LOCAL_DRAFT_VERSION,
+  type ProductLocalDraft,
+} from "@/lib/product-local-draft";
 import { MAX_PRODUCT_IMAGE_BYTES, MAX_PRODUCT_IMAGES } from "@/lib/media";
 import type { Locale } from "@/lib/i18n";
+import { getLocalizedHref } from "@/lib/locale-navigation";
 import type { ProductUpdate } from "@/lib/products";
 import type { Category } from "@/types";
 
@@ -99,6 +110,20 @@ export type ProductFormLabels = {
   draftOnlyBody: string;
   addSupplierProfile: string;
   previewMoq: string;
+  draft: string;
+  published: string;
+  archived: string;
+  localDraftSaved: string;
+  localDraftRestored: string;
+  localDraftSaveError: string;
+  localDraftImagesNeedReselect: string;
+  editingProduct: string;
+  currentStatus: string;
+  viewListing: string;
+  deleteProduct: string;
+  deleteConfirmTitle: string;
+  deleteConfirmBody: string;
+  deleteConfirm: string;
 };
 
 type ProductAction = (
@@ -107,6 +132,7 @@ type ProductAction = (
 ) => Promise<ProductFormState>;
 
 type ProductFormProps = {
+  accountId: string;
   action: ProductAction;
   categories: Category[];
   cancelHref: string;
@@ -125,6 +151,7 @@ function formatBytes(bytes: number) {
 }
 
 export function ProductForm({
+  accountId,
   action,
   categories,
   cancelHref,
@@ -135,6 +162,7 @@ export function ProductForm({
   product,
   supplierProfileHref,
 }: ProductFormProps) {
+  const router = useRouter();
   const [state, formAction, isPending] = useActionState(
     action,
     initialProductFormState,
@@ -160,13 +188,104 @@ export function ProductForm({
     "imageInvalid" | "imageCount" | null
   >(null);
   const [showError, setShowError] = useState(false);
+  const [localDraftStatus, setLocalDraftStatus] = useState<
+    "idle" | "restored" | "saved" | "error"
+  >("idle");
+  const [hasUserChanges, setHasUserChanges] = useState(false);
+  const [needsImageReselection, setNeedsImageReselection] = useState(false);
   const [editedFields, setEditedFields] = useState<Set<ProductField>>(
     new Set(),
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
+  const localDraftHydratedRef = useRef(false);
   const currentImages = Array.isArray(product?.images) ? product.images : [];
   const displayImages = previewUrls.length > 0 ? previewUrls : currentImages;
+  const localDraftKey = `tmp:product-draft:${accountId}:${product?.id ?? "new"}`;
+
+  useEffect(() => {
+    let localDraft: ProductLocalDraft | null = null;
+
+    try {
+      localDraft = parseProductLocalDraft(
+        window.localStorage.getItem(localDraftKey),
+      );
+    } catch {
+      setLocalDraftStatus("error");
+    }
+
+    if (localDraft) {
+      setTitle(localDraft.title);
+      setCategoryId(localDraft.categoryId);
+      setDescription(localDraft.description);
+      setMoq(localDraft.moq);
+      setLeadTime(localDraft.leadTime);
+      setPriceMin(localDraft.priceMin);
+      setPriceMax(localDraft.priceMax);
+      setCurrency(localDraft.currency);
+      setNeedsImageReselection(
+        localDraft.hadSelectedImages && currentImages.length === 0,
+      );
+      setLocalDraftStatus("restored");
+    }
+
+    localDraftHydratedRef.current = true;
+  }, [currentImages.length, localDraftKey]);
+
+  useEffect(() => {
+    if (!localDraftHydratedRef.current || !hasUserChanges) return;
+
+    const localDraft: ProductLocalDraft = {
+      version: PRODUCT_LOCAL_DRAFT_VERSION,
+      savedAt: new Date().toISOString(),
+      title,
+      categoryId,
+      description,
+      moq,
+      leadTime,
+      priceMin,
+      priceMax,
+      currency: currency as ProductLocalDraft["currency"],
+      hadSelectedImages: selectedFiles.length > 0 || needsImageReselection,
+    };
+
+    try {
+      if (product?.id || hasProductLocalDraftContent(localDraft)) {
+        window.localStorage.setItem(localDraftKey, JSON.stringify(localDraft));
+        setLocalDraftStatus("saved");
+      } else {
+        window.localStorage.removeItem(localDraftKey);
+        setLocalDraftStatus("idle");
+      }
+    } catch {
+      setLocalDraftStatus("error");
+    }
+  }, [
+    categoryId,
+    currency,
+    description,
+    hasUserChanges,
+    leadTime,
+    localDraftKey,
+    moq,
+    needsImageReselection,
+    priceMax,
+    priceMin,
+    product?.id,
+    selectedFiles.length,
+    title,
+  ]);
+
+  useEffect(() => {
+    if (state.status !== "success" || !state.redirectTo) return;
+
+    try {
+      window.localStorage.removeItem(localDraftKey);
+    } catch {
+      // The server save succeeded, so navigation must not depend on storage.
+    }
+    router.replace(state.redirectTo);
+  }, [localDraftKey, router, state]);
 
   useEffect(() => {
     if (state.status === "error") {
@@ -190,6 +309,7 @@ export function ProductForm({
   const setFiles = (files: File[]) => {
     markEdited("images");
     setClientImageError(null);
+    setNeedsImageReselection(false);
 
     if (files.length > MAX_PRODUCT_IMAGES) {
       setClientImageError("imageCount");
@@ -228,6 +348,7 @@ export function ProductForm({
   };
 
   const markEdited = (field: ProductField) => {
+    setHasUserChanges(true);
     setEditedFields((current) => new Set(current).add(field));
   };
 
@@ -306,6 +427,75 @@ export function ProductForm({
       <input type="hidden" name="locale" value={locale} />
       {product?.id && <input type="hidden" name="id" value={product.id} />}
 
+      {product?.id && (
+        <section className="mb-6 flex flex-col gap-4 rounded-lg border border-white/10 bg-white/[0.025] p-4 sm:flex-row sm:items-center sm:p-5">
+          <div className="relative size-16 shrink-0 overflow-hidden rounded-md border border-white/10 bg-charcoal-800">
+            {currentImages[0] ? (
+              <Image
+                src={currentImages[0]}
+                alt=""
+                fill
+                className="object-cover"
+                sizes="64px"
+              />
+            ) : (
+              <PackageOpen
+                className="absolute inset-0 m-auto size-6 text-muted-foreground"
+                aria-hidden="true"
+              />
+            )}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-xs font-medium uppercase text-gold-200">
+              {labels.editingProduct}
+            </p>
+            <h2 className="mt-1 truncate text-lg font-semibold text-white">
+              {product.title}
+            </h2>
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+              <span>{labels.currentStatus}</span>
+              <Badge
+                variant={
+                  product.status === "published"
+                    ? "success"
+                    : product.status === "archived"
+                      ? "secondary"
+                      : "outline"
+                }
+              >
+                {product.status
+                  ? labels[product.status]
+                  : labels.draftOnlyTitle}
+              </Badge>
+            </div>
+          </div>
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+            {product.status === "published" && product.slug && (
+              <Button asChild variant="outline" size="sm">
+                <Link
+                  href={getLocalizedHref(`/products/${product.slug}`, locale)}
+                  target="_blank"
+                >
+                  <ExternalLink aria-hidden="true" />
+                  {labels.viewListing}
+                </Link>
+              </Button>
+            )}
+            <ProductArchiveControl
+              action="delete"
+              cancelLabel={cancelLabel}
+              confirmLabel={labels.deleteConfirm}
+              description={labels.deleteConfirmBody}
+              locale={locale}
+              productId={product.id}
+              productTitle={product.title ?? ""}
+              title={labels.deleteConfirmTitle}
+              triggerLabel={labels.deleteProduct}
+            />
+          </div>
+        </section>
+      )}
+
       {state.status === "error" && showError && (
         <div
           ref={errorSummaryRef}
@@ -346,7 +536,11 @@ export function ProductForm({
               </p>
             </div>
           </div>
-          <Button asChild variant="outline" className="w-full shrink-0 sm:w-auto">
+          <Button
+            asChild
+            variant="outline"
+            className="w-full shrink-0 sm:w-auto"
+          >
             <Link href={supplierProfileHref}>{labels.addSupplierProfile}</Link>
           </Button>
         </div>
@@ -355,13 +549,46 @@ export function ProductForm({
       <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_360px]">
         <div className="overflow-hidden rounded-lg border border-white/10 bg-white/[0.025]">
           <section className="p-5 sm:p-7 lg:p-8">
-            <div className="mb-6 max-w-2xl">
-              <h2 className="text-xl font-semibold text-white">
-                {labels.detailsTitle}
-              </h2>
-              <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
-                {labels.detailsBody}
-              </p>
+            <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
+              <div className="max-w-2xl">
+                <h2 className="text-xl font-semibold text-white">
+                  {labels.detailsTitle}
+                </h2>
+                <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
+                  {labels.detailsBody}
+                </p>
+              </div>
+              {localDraftStatus !== "idle" && (
+                <div
+                  className={cn(
+                    "flex items-center gap-2 pt-1 text-xs",
+                    localDraftStatus === "error"
+                      ? "text-red-200"
+                      : "text-muted-foreground",
+                  )}
+                  role={localDraftStatus === "error" ? "alert" : "status"}
+                  aria-live="polite"
+                >
+                  {localDraftStatus === "error" ? (
+                    <CircleAlert
+                      className="size-4 shrink-0"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <CheckCircle2
+                      className="size-4 shrink-0 text-gold-200"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span>
+                    {localDraftStatus === "restored"
+                      ? labels.localDraftRestored
+                      : localDraftStatus === "error"
+                        ? labels.localDraftSaveError
+                        : labels.localDraftSaved}
+                  </span>
+                </div>
+              )}
             </div>
 
             <div className="grid gap-5">
@@ -603,6 +830,16 @@ export function ProductForm({
               {labels.mediaBody}
             </p>
 
+            {needsImageReselection && (
+              <div className="mt-4 flex items-start gap-2.5 rounded-md border border-gold-300/20 bg-gold-300/[0.05] p-3 text-xs leading-5 text-gold-100">
+                <CircleAlert
+                  className="mt-0.5 size-4 shrink-0"
+                  aria-hidden="true"
+                />
+                <p>{labels.localDraftImagesNeedReselect}</p>
+              </div>
+            )}
+
             <label
               htmlFor="images"
               className={cn(
@@ -718,11 +955,10 @@ export function ProductForm({
               </div>
             </div>
           </section>
-
         </aside>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-charcoal-950/95 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_32px_rgba(0,0,0,0.32)] backdrop-blur-xl">
+      <div className="bg-charcoal-950/95 fixed inset-x-0 bottom-0 z-40 border-t border-white/10 pb-[env(safe-area-inset-bottom)] shadow-[0_-12px_32px_rgba(0,0,0,0.32)] backdrop-blur-xl">
         <div className="container mx-auto flex max-w-7xl items-center gap-5 px-4 py-3 sm:px-6 lg:px-8">
           <div className="hidden min-w-0 flex-1 items-center gap-3 lg:flex">
             {canPublish ? (
