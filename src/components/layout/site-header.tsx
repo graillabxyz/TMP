@@ -42,7 +42,7 @@ export async function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-white/[0.11] bg-charcoal-900/95 shadow-[0_8px_28px_rgba(0,0,0,0.18)] backdrop-blur-xl">
       <a
         href="#main-content"
-        className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-md bg-gold-300 px-4 py-2 text-sm font-semibold text-charcoal-950 shadow-premium transition-transform focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-white"
+        className="fixed left-4 top-4 z-[120] -translate-y-24 rounded-md bg-gold-300 px-4 py-2 text-sm font-semibold text-charcoal-950 shadow-premium transition-transform focus:translate-y-0 focus:outline-none focus:ring-2 focus:ring-white"
       >
         {t.common.skipToContent}
       </a>
@@ -80,7 +80,7 @@ export async function SiteHeader() {
           {!profile && (
             <Button
               asChild
-              className="h-10 shrink-0 px-3 text-sm sm:h-11 sm:px-4"
+              className="h-10 min-h-0 shrink-0 px-3 text-sm sm:h-11 sm:min-h-11 sm:px-4"
             >
               <Link href={getLocalizedPath(locale, "/register")}>
                 <span className="hidden sm:inline">{t.nav.join}</span>

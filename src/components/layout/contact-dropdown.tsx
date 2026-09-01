@@ -1,7 +1,8 @@
 "use client";
 
 import { Mail, Phone, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -22,8 +23,20 @@ const ADMIN_EMAIL = "o.biyik@outlook.fr";
 
 export function ContactDropdown({ labels }: ContactDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [mobilePanelTop, setMobilePanelTop] = useState(72);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+
+  const syncMobilePanelPosition = useCallback(() => {
+    const trigger = triggerRef.current;
+    if (!trigger) return;
+
+    const triggerBottom = trigger.getBoundingClientRect().bottom;
+    const headerBottom = trigger
+      .closest("header")
+      ?.getBoundingClientRect().bottom;
+    setMobilePanelTop(Math.max(triggerBottom, headerBottom ?? 0) + 8);
+  }, []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -43,13 +56,15 @@ export function ContactDropdown({ labels }: ContactDropdownProps) {
     document.addEventListener("mousedown", closeOnOutsideClick);
     document.addEventListener("touchstart", closeOnOutsideClick);
     document.addEventListener("keydown", closeOnEscape);
+    window.addEventListener("resize", syncMobilePanelPosition);
 
     return () => {
       document.removeEventListener("mousedown", closeOnOutsideClick);
       document.removeEventListener("touchstart", closeOnOutsideClick);
       document.removeEventListener("keydown", closeOnEscape);
+      window.removeEventListener("resize", syncMobilePanelPosition);
     };
-  }, [isOpen]);
+  }, [isOpen, syncMobilePanelPosition]);
 
   return (
     <div ref={rootRef} className="relative">
@@ -64,7 +79,10 @@ export function ContactDropdown({ labels }: ContactDropdownProps) {
         aria-haspopup="dialog"
         aria-label={labels.contact}
         title={labels.contact}
-        onClick={() => setIsOpen((open) => !open)}
+        onClick={() => {
+          if (!isOpen) syncMobilePanelPosition();
+          setIsOpen((open) => !open);
+        }}
       >
         <Phone className="size-4 text-gold-200" aria-hidden="true" />
         <span className="hidden xl:inline">{labels.contact}</span>
@@ -74,7 +92,12 @@ export function ContactDropdown({ labels }: ContactDropdownProps) {
         <div
           role="dialog"
           aria-label={labels.title}
-          className="fixed left-3 right-3 top-[4.5rem] z-50 rounded-lg border border-white/[0.12] bg-charcoal-800 shadow-premium sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-80"
+          style={
+            {
+              "--contact-panel-top": `${mobilePanelTop}px`,
+            } as CSSProperties
+          }
+          className="fixed right-3 top-[var(--contact-panel-top)] z-50 w-[min(20rem,calc(100vw-1.5rem))] rounded-lg border border-white/[0.12] bg-charcoal-800 shadow-premium sm:right-5"
         >
           <div className="flex items-start justify-between gap-4 border-b border-white/10 px-4 py-3.5">
             <div>

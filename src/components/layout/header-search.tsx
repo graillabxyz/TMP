@@ -81,7 +81,10 @@ export function HeaderSearch({
             placeholder={placeholder}
             className="h-10 min-w-0 flex-1 bg-transparent px-3 text-sm text-white outline-none placeholder:text-muted-foreground"
           />
-          <Button type="submit" className="m-1 h-8 rounded-md px-4 text-sm">
+          <Button
+            type="submit"
+            className="m-1 h-8 min-h-0 rounded-md px-4 text-sm"
+          >
             {submitLabel}
           </Button>
         </form>
@@ -118,7 +121,7 @@ export function HeaderSearch({
           <Button
             type="submit"
             aria-label={label}
-            className="m-0.5 size-10 shrink-0 rounded-md p-0"
+            className="m-0.5 size-10 min-h-0 shrink-0 rounded-md p-0"
           >
             <ArrowRight className="size-4" aria-hidden="true" />
           </Button>

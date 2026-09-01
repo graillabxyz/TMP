@@ -37,7 +37,7 @@ export function ProductCard({
     <Card className="group overflow-hidden transition duration-300 focus-within:border-gold-300/45 hover:-translate-y-0.5 hover:border-gold-300/30 hover:bg-secondary/90">
       <Link
         href={productHref}
-        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
       >
         <div className="relative aspect-[4/3] overflow-hidden bg-charcoal-800">
           <Image
@@ -56,7 +56,7 @@ export function ProductCard({
           </Badge>
         </div>
       </Link>
-      <CardContent className="p-4 sm:p-4">
+      <CardContent className="p-4">
         <div className="min-h-14">
           <p className="line-clamp-1 text-xs text-gold-200">
             {product.supplierName}

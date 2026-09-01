@@ -9,10 +9,11 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 import { archiveProduct, deleteProduct } from "@/app/actions/products";
 import { Button } from "@/components/ui/button";
+import { focusMenuEdge, handleMenuKeyDown } from "@/lib/menu-keyboard";
 
 type ConfirmAction = "archive" | "delete";
 
@@ -62,8 +63,12 @@ export function ProductRowActions({
     null,
   );
   const menuRef = useRef<HTMLDivElement>(null);
+  const menuPanelRef = useRef<HTMLDivElement>(null);
   const menuTriggerRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
+  const dialogId = useId();
+  const dialogTitleId = `${dialogId}-title`;
+  const dialogDescriptionId = `${dialogId}-description`;
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -156,13 +161,30 @@ export function ProductRowActions({
             aria-expanded={menuOpen}
             aria-haspopup="menu"
             onClick={() => setMenuOpen((open) => !open)}
+            onKeyDown={(event) => {
+              if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+              event.preventDefault();
+              setMenuOpen(true);
+              focusMenuEdge(
+                menuPanelRef,
+                event.key === "ArrowDown" ? "first" : "last",
+              );
+            }}
           >
             <MoreHorizontal aria-hidden="true" />
           </Button>
           {menuOpen && (
             <div
+              ref={menuPanelRef}
               role="menu"
-              className="absolute bottom-full right-0 z-[60] mb-2 w-52 rounded-md border border-white/[0.12] bg-charcoal-800 p-1.5 shadow-premium"
+              aria-label={menuLabel}
+              onKeyDown={(event) =>
+                handleMenuKeyDown(event, () => {
+                  setMenuOpen(false);
+                  menuTriggerRef.current?.focus();
+                })
+              }
+              className="absolute bottom-full right-0 z-[60] mb-2 w-[min(13rem,calc(100vw-1.5rem))] rounded-md border border-white/[0.12] bg-charcoal-800 p-1.5 shadow-premium"
             >
               {viewHref && (
                 <Link
@@ -208,7 +230,7 @@ export function ProductRowActions({
 
       {confirmAction && (
         <div
-          className="fixed inset-0 z-[80] grid items-end bg-black/75 p-3 backdrop-blur-sm sm:place-items-center sm:p-5"
+          className="fixed inset-0 z-[80] grid items-end overflow-y-auto overscroll-contain bg-black/75 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur-sm sm:place-items-center sm:p-5"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) setConfirmAction(null);
           }}
@@ -217,14 +239,14 @@ export function ProductRowActions({
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
-            aria-labelledby="product-action-title"
-            aria-describedby="product-action-description"
-            className="w-full max-w-md rounded-lg border border-white/[0.12] bg-charcoal-800 p-5 shadow-premium sm:p-6"
+            aria-labelledby={dialogTitleId}
+            aria-describedby={dialogDescriptionId}
+            className="max-h-[calc(100dvh-1.5rem)] w-full max-w-md overflow-y-auto overscroll-contain rounded-lg border border-white/[0.12] bg-charcoal-800 p-5 shadow-premium sm:max-h-[calc(100dvh-2.5rem)] sm:p-6"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <h2
-                  id="product-action-title"
+                  id={dialogTitleId}
                   className="text-lg font-semibold text-white"
                 >
                   {title}
@@ -243,7 +265,7 @@ export function ProductRowActions({
               </button>
             </div>
             <p
-              id="product-action-description"
+              id={dialogDescriptionId}
               className="mt-4 text-sm leading-6 text-muted-foreground"
             >
               {description}

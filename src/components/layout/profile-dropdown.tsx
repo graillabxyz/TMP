@@ -5,6 +5,7 @@ import { ChevronDown, LogOut, UserRound } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { signOut } from "@/app/actions/auth";
+import { focusMenuEdge, handleMenuKeyDown } from "@/lib/menu-keyboard";
 
 type ProfileDropdownProps = {
   email: string;
@@ -29,6 +30,7 @@ export function ProfileDropdown({
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) {
@@ -66,6 +68,12 @@ export function ProfileDropdown({
         aria-expanded={open}
         aria-haspopup="menu"
         onClick={() => setOpen((current) => !current)}
+        onKeyDown={(event) => {
+          if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+          event.preventDefault();
+          setOpen(true);
+          focusMenuEdge(menuRef, event.key === "ArrowDown" ? "first" : "last");
+        }}
         className="inline-flex h-11 items-center justify-center gap-2 whitespace-nowrap rounded-md px-3 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-white/[0.08] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:px-4"
       >
         <UserRound className="size-4 text-gold-200" aria-hidden="true" />
@@ -77,8 +85,16 @@ export function ProfileDropdown({
       </button>
       {open && (
         <div
+          ref={menuRef}
           role="menu"
-          className="absolute right-0 top-full z-50 mt-2 w-60 rounded-lg border border-white/[0.12] bg-charcoal-800 p-2 shadow-premium"
+          aria-label={label}
+          onKeyDown={(event) =>
+            handleMenuKeyDown(event, () => {
+              setOpen(false);
+              triggerRef.current?.focus();
+            })
+          }
+          className="absolute right-0 top-full z-50 mt-2 w-[min(15rem,calc(100vw-1.5rem))] rounded-lg border border-white/[0.12] bg-charcoal-800 p-2 shadow-premium"
         >
           <p className="truncate px-3 py-2 text-xs text-muted-foreground">
             {email}

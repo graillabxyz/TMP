@@ -298,7 +298,6 @@ export function ProductForm({
         selectedFiles.forEach((file) => transfer.items.add(file));
         fileInputRef.current.files = transfer.files;
       }
-
     }
   }, [selectedFiles, state]);
 
@@ -999,10 +998,10 @@ export function ProductForm({
               variant={canPublish ? "outline" : "default"}
               disabled={isPending}
               onClick={() => setPendingIntent("draft")}
-              className="h-11 min-w-0 sm:w-auto"
+              className="min-h-11 min-w-0 py-2 sm:w-auto"
             >
               <Save aria-hidden="true" />
-              <span className="truncate">
+              <span className="text-wrap leading-4">
                 {isPending && pendingIntent === "draft"
                   ? labels.saving
                   : labels.saveDraft}
@@ -1015,10 +1014,10 @@ export function ProductForm({
                 value="published"
                 disabled={isPending}
                 onClick={() => setPendingIntent("published")}
-                className="col-span-2 h-11 min-w-0 sm:w-auto"
+                className="col-span-2 min-h-11 min-w-0 py-2 sm:w-auto"
               >
                 <Send aria-hidden="true" />
-                <span className="truncate">
+                <span className="text-wrap leading-4">
                   {isPending && pendingIntent === "published"
                     ? labels.publishing
                     : product?.status === "published"

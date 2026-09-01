@@ -98,7 +98,7 @@ export function ProductArchiveControl({
 
       {open && (
         <div
-          className="fixed inset-0 z-[80] grid items-end bg-black/75 p-3 backdrop-blur-sm sm:place-items-center sm:p-5"
+          className="fixed inset-0 z-[80] grid items-end overflow-y-auto overscroll-contain bg-black/75 p-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur-sm sm:place-items-center sm:p-5"
           onMouseDown={(event) => {
             if (event.target === event.currentTarget) setOpen(false);
           }}
@@ -109,7 +109,7 @@ export function ProductArchiveControl({
             aria-modal="true"
             aria-labelledby={titleId}
             aria-describedby={descriptionId}
-            className="w-full max-w-md rounded-lg border border-white/[0.12] bg-charcoal-800 p-5 shadow-premium sm:p-6"
+            className="max-h-[calc(100dvh-1.5rem)] w-full max-w-md overflow-y-auto overscroll-contain rounded-lg border border-white/[0.12] bg-charcoal-800 p-5 shadow-premium sm:max-h-[calc(100dvh-2.5rem)] sm:p-6"
           >
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">

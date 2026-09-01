@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 
 import type { Locale } from "@/lib/i18n";
 import { getLocaleHref } from "@/lib/locale-navigation";
+import { focusMenuEdge, handleMenuKeyDown } from "@/lib/menu-keyboard";
 import { cn } from "@/lib/utils";
 
 type LanguageToggleProps = {
@@ -20,6 +21,7 @@ export function LanguageToggle({ locale, label }: LanguageToggleProps) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!open) return;
@@ -56,6 +58,15 @@ export function LanguageToggle({ locale, label }: LanguageToggleProps) {
           aria-expanded={open}
           aria-haspopup="menu"
           onClick={() => setOpen((current) => !current)}
+          onKeyDown={(event) => {
+            if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+            event.preventDefault();
+            setOpen(true);
+            focusMenuEdge(
+              menuRef,
+              event.key === "ArrowDown" ? "first" : "last",
+            );
+          }}
           className="inline-flex h-11 min-w-14 items-center justify-center gap-1.5 rounded-md border border-white/10 bg-white/[0.06] px-3 text-sm font-semibold uppercase text-white transition hover:border-gold-300/35 hover:bg-white/[0.09] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           {locale}
@@ -66,8 +77,15 @@ export function LanguageToggle({ locale, label }: LanguageToggleProps) {
         </button>
         {open && (
           <div
+            ref={menuRef}
             role="menu"
-            className="absolute right-0 top-full z-50 mt-2 grid min-w-32 gap-1 rounded-lg border border-white/[0.12] bg-charcoal-800 p-1.5 shadow-premium"
+            onKeyDown={(event) =>
+              handleMenuKeyDown(event, () => {
+                setOpen(false);
+                triggerRef.current?.focus();
+              })
+            }
+            className="absolute right-0 top-full z-50 mt-2 grid w-[min(8rem,calc(100vw-1.5rem))] gap-1 rounded-lg border border-white/[0.12] bg-charcoal-800 p-1.5 shadow-premium"
             aria-label={label}
           >
             {options.map((option) => (

@@ -42,7 +42,6 @@
       hsl(240 5% 10%) 0,
       hsl(var(--background)) 34rem
     );
-    background-attachment: fixed;
     font-family:
       Inter,
       ui-sans-serif,
@@ -55,6 +54,27 @@
 
   ::selection {
     @apply bg-gold-300 text-charcoal-900;
+  }
+
+  @media (min-width: 768px) {
+    body {
+      background-attachment: fixed;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
