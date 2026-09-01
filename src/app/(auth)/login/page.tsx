@@ -43,8 +43,8 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   );
 
   return (
-    <div className="w-full max-w-5xl self-start">
-      <div className="grid gap-7 lg:grid-cols-[.82fr_1.18fr] lg:items-start">
+    <div className="w-full max-w-6xl">
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,.86fr)_minmax(520px,1.14fr)] lg:items-center lg:gap-12 xl:gap-16">
         <OnboardingIntro
           eyebrow={
             supplierIntent ? t.auth.supplierAccount : t.auth.buyerAccount

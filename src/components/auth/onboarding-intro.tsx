@@ -19,18 +19,18 @@ export function OnboardingIntro({
   title,
 }: OnboardingIntroProps) {
   return (
-    <div>
+    <div className="max-w-xl lg:py-4">
       <Badge>
         <BadgeCheck className="mr-1 size-3" aria-hidden="true" />
         {eyebrow}
       </Badge>
-      <h1 className="mt-4 text-3xl font-semibold leading-tight text-white sm:text-4xl">
+      <h1 className="mt-5 max-w-lg text-3xl font-semibold leading-tight text-white sm:text-4xl lg:text-[2.5rem]">
         {title}
       </h1>
-      <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
+      <p className="mt-4 max-w-lg text-sm leading-6 text-muted-foreground">
         {body}
       </p>
-      <div className="mt-6 hidden gap-3 lg:grid">
+      <div className="mt-7 hidden gap-4 lg:grid">
         {items.map((item) => (
           <div
             key={item.label}
