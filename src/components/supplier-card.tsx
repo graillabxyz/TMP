@@ -48,7 +48,7 @@ export function SupplierCard({
           )}
         </div>
       </Link>
-      <CardContent className="p-4">
+      <CardContent className="p-5">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="line-clamp-1 text-xs text-gold-200">

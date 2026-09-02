@@ -209,7 +209,7 @@ export default async function VerificationSettingsPage({
                       {copy.overview}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="grid gap-0 divide-y divide-white/10 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+                  <CardContent className="grid gap-0 divide-y divide-white/10 pt-0 sm:grid-cols-2 sm:divide-x sm:divide-y-0 sm:pt-0">
                     <div className="pb-4 sm:pb-0 sm:pr-5">
                       <p className="text-sm text-muted-foreground">
                         {copy.currentStatus}
@@ -239,7 +239,7 @@ export default async function VerificationSettingsPage({
                   <CardHeader>
                     <CardTitle>{copy.benefits}</CardTitle>
                   </CardHeader>
-                  <CardContent className="grid gap-x-6 gap-y-0 sm:grid-cols-2">
+                  <CardContent className="grid gap-x-6 gap-y-0 pt-0 sm:grid-cols-2 sm:pt-0">
                     {copy.benefitItems.map((item, index) => {
                       const icons = [
                         BadgeCheck,
@@ -280,7 +280,7 @@ export default async function VerificationSettingsPage({
                       {copy.documentsBody}
                     </p>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="pt-0 sm:pt-0">
                     <form
                       action={submitVerificationDocuments}
                       className="grid gap-4"

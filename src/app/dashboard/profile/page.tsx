@@ -96,7 +96,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                 {copy.accountTitle}
               </CardTitle>
             </CardHeader>
-            <CardContent className="divide-y divide-white/10">
+            <CardContent className="divide-y divide-white/10 pt-0 sm:pt-0">
               <div className="flex flex-col gap-1 py-3 first:pt-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                 <p className="text-sm text-muted-foreground">{copy.email}</p>
                 <p className="break-all font-medium text-white">
@@ -129,7 +129,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                 {copy.verifiedTitle}
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-0 sm:pt-0">
               <p className="text-sm leading-6 text-muted-foreground">
                 {isSupplier ? copy.verifiedBody : copy.verifiedLockedBody}
               </p>
@@ -206,7 +206,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
               {isSupplier ? copy.supplierReadyTitle : copy.supplierUpgradeTitle}
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0 sm:pt-0">
             <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
               {isSupplier ? copy.supplierReadyBody : copy.supplierUpgradeBody}
             </p>

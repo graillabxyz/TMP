@@ -56,7 +56,7 @@ export function ProductCard({
           </Badge>
         </div>
       </Link>
-      <CardContent className="p-4">
+      <CardContent className="p-5">
         <div className="min-h-14">
           <p className="line-clamp-1 text-xs text-gold-200">
             {product.supplierName}

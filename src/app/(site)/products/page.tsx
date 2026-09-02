@@ -117,7 +117,7 @@ export default async function ProductsPage({
                       {t.products.filters}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="pt-0 sm:pt-0">
                     <form className="grid gap-4">
                       <div className="grid gap-2">
                         <Label htmlFor="q">{t.common.search}</Label>

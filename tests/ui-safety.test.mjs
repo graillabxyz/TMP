@@ -61,3 +61,18 @@ test("the visual system respects reduced motion preferences", async () => {
   assert.match(globalStyles, /prefers-reduced-motion: reduce/);
   assert.match(globalStyles, /scroll-behavior: auto/);
 });
+
+test("standalone and media card content keeps a complete inner inset", async () => {
+  const [cardSource, productCardSource, supplierCardSource] = await Promise.all(
+    [
+      source("../src/components/ui/card.tsx"),
+      source("../src/components/product-card.tsx"),
+      source("../src/components/supplier-card.tsx"),
+    ],
+  );
+
+  assert.match(cardSource, /cn\("p-5 sm:p-6", className\)/);
+  assert.doesNotMatch(cardSource, /"p-5 pt-0 sm:p-6 sm:pt-0"/);
+  assert.match(productCardSource, /<CardContent className="p-5">/);
+  assert.match(supplierCardSource, /<CardContent className="p-5">/);
+});
