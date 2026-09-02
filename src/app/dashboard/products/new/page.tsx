@@ -26,7 +26,10 @@ export default async function NewProductPage() {
   const locale = await getLocale();
   const t = getDictionary(locale);
   const labels = t.dashboard.productManager;
-  const profile = await getCurrentProfile();
+  const [profile, categories] = await Promise.all([
+    getCurrentProfile(),
+    getCategories(locale),
+  ]);
 
   if (!profile) {
     const nextPath = getLocalizedPath(locale, "/dashboard/products/new");
@@ -37,8 +40,6 @@ export default async function NewProductPage() {
       )}`,
     );
   }
-
-  const categories = await getCategories(locale);
 
   return (
     <DashboardShell

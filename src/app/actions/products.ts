@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 
 import type { ProductFormState } from "@/lib/product-form-state";
 import { isUuid, validateProductInput } from "@/lib/product-input";
@@ -17,7 +18,7 @@ import { slugify } from "@/lib/slug";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import type { ProductInsert, ProductUpdate } from "@/lib/products";
 
-type MutationError = { message: string } | null;
+type MutationError = { code?: string; message: string } | null;
 type MutationResult = Promise<{ error: MutationError }>;
 type FilterBuilder = {
   eq: (column: string, value: string) => FilterBuilder;
@@ -90,6 +91,18 @@ async function getCurrentProductContext() {
   };
 }
 
+async function getAuthenticatedProductContext() {
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  return {
+    supabase,
+    userId: user?.id ?? null,
+  };
+}
+
 async function removeProductImages(
   supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>,
   paths: string[],
@@ -147,67 +160,61 @@ async function uploadProductImages({
   supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
   userId: string;
 }) {
-  const uploads: Array<{ path: string; url: string }> = [];
+  const validatedFiles = await Promise.all(
+    files.map(async (file) => ({
+      detected: await validateUpload(file, {
+        maxBytes: MAX_PRODUCT_IMAGE_BYTES,
+      }),
+      file,
+    })),
+  );
+  const readyFiles = validatedFiles.flatMap(({ detected, file }) =>
+    detected ? [{ detected, file }] : [],
+  );
 
-  for (const file of files) {
-    const detected = await validateUpload(file, {
-      maxBytes: MAX_PRODUCT_IMAGE_BYTES,
-    });
+  if (readyFiles.length !== files.length) return null;
 
-    if (!detected) {
-      await removeProductImages(
-        supabase,
-        uploads.map((upload) => upload.path),
-      );
-      return null;
-    }
-
-    const path = createMediaPath({
-      userId,
-      supplierId,
-      area: "products",
-      extension: detected.extension,
-    });
-    const { error } = await supabase.storage
-      .from(SUPPLIER_ASSETS_BUCKET)
-      .upload(path, file, {
-        cacheControl: "31536000",
-        contentType: detected.contentType,
-        upsert: false,
+  const uploads = await Promise.all(
+    readyFiles.map(async ({ detected, file }) => {
+      const path = createMediaPath({
+        userId,
+        supplierId,
+        area: "products",
+        extension: detected.extension,
       });
+      const { error } = await supabase.storage
+        .from(SUPPLIER_ASSETS_BUCKET)
+        .upload(path, file, {
+          cacheControl: "31536000",
+          contentType: detected.contentType,
+          upsert: false,
+        });
 
-    if (error) {
-      console.error("Unable to upload product image", error.message);
-      await removeProductImages(
-        supabase,
-        uploads.map((upload) => upload.path),
-      );
-      return null;
-    }
+      return {
+        error,
+        path,
+        url: error
+          ? ""
+          : supabase.storage.from(SUPPLIER_ASSETS_BUCKET).getPublicUrl(path)
+              .data.publicUrl,
+      };
+    }),
+  );
+  const failedUpload = uploads.find((upload) => upload.error);
 
-    uploads.push({
-      path,
-      url: supabase.storage.from(SUPPLIER_ASSETS_BUCKET).getPublicUrl(path).data
-        .publicUrl,
-    });
+  if (failedUpload) {
+    console.error(
+      "Unable to upload product image",
+      failedUpload.error?.message,
+    );
+    await removeProductImages(
+      supabase,
+      uploads.filter((upload) => !upload.error).map((upload) => upload.path),
+    );
+    return null;
   }
 
-  return uploads;
-}
-
-async function categoryExists(
-  supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>,
-  categoryId: string,
-) {
-  const { data, error } = await supabase
-    .from("categories")
-    .select("id")
-    .eq("id", categoryId)
-    .maybeSingle();
-
-  if (error)
-    console.error("Unable to validate product category", error.message);
-  return Boolean(data && !error);
+  return uploads.map(({ path, url }) => ({ path, url }));
 }
 
 function invalidState(
@@ -236,14 +243,6 @@ export async function createProduct(
   }
   if (parsed.values.status === "published" && !canPublish) {
     return { status: "error", formError: "supplierRequired" };
-  }
-
-  if (!(await categoryExists(supabase, parsed.values.categoryId))) {
-    return {
-      status: "error",
-      formError: "category",
-      fieldErrors: { category_id: "invalidOption" },
-    };
   }
 
   const imageFiles = getImageFiles(formData);
@@ -297,6 +296,13 @@ export async function createProduct(
       uploadedImages.map((image) => image.path),
     );
     console.error("Unable to create product", error.message);
+    if (error.code === "23503") {
+      return {
+        status: "error",
+        formError: "category",
+        fieldErrors: { category_id: "invalidOption" },
+      };
+    }
     return { status: "error", formError: "save" };
   }
 
@@ -329,14 +335,6 @@ export async function updateProduct(
   }
   if (parsed.values.status === "published" && !canPublish) {
     return { status: "error", formError: "supplierRequired" };
-  }
-
-  if (!(await categoryExists(supabase, parsed.values.categoryId))) {
-    return {
-      status: "error",
-      formError: "category",
-      fieldErrors: { category_id: "invalidOption" },
-    };
   }
 
   const { data: existingData, error: existingError } = await supabase
@@ -417,6 +415,13 @@ export async function updateProduct(
       (uploadedImages ?? []).map((image) => image.path),
     );
     console.error("Unable to update product", error.message);
+    if (error.code === "23503") {
+      return {
+        status: "error",
+        formError: "category",
+        fieldErrors: { category_id: "invalidOption" },
+      };
+    }
     return { status: "error", formError: "save" };
   }
 
@@ -426,7 +431,7 @@ export async function updateProduct(
       supplierId: existingProduct.supplier_id,
       userId,
     });
-    await removeProductImages(supabase, previousPaths);
+    after(() => removeProductImages(supabase, previousPaths));
   }
 
   return {
@@ -439,7 +444,7 @@ export async function deleteProduct(formData: FormData) {
   const locale = getFormLocale(formData);
   const productId = getString(formData, "id");
   const productsPath = getLocalizedPath(locale, "/dashboard/products");
-  const { supabase, userId } = await getCurrentProductContext();
+  const { supabase, userId } = await getAuthenticatedProductContext();
 
   if (!isUuid(productId) || !userId) {
     redirect(`${productsPath}?status=error`);
@@ -479,14 +484,12 @@ export async function deleteProduct(formData: FormData) {
     redirect(`${productsPath}?status=error`);
   }
 
-  await removeProductImages(
-    supabase,
-    getProductImagePaths({
-      images: product.images,
-      supplierId: product.supplier_id,
-      userId,
-    }),
-  );
+  const imagePaths = getProductImagePaths({
+    images: product.images,
+    supplierId: product.supplier_id,
+    userId,
+  });
+  after(() => removeProductImages(supabase, imagePaths));
 
   redirect(`${productsPath}?status=deleted`);
 }
@@ -495,7 +498,7 @@ export async function archiveProduct(formData: FormData) {
   const locale = getFormLocale(formData);
   const productId = getString(formData, "id");
   const productsPath = getLocalizedPath(locale, "/dashboard/products");
-  const { supabase, userId } = await getCurrentProductContext();
+  const { supabase, userId } = await getAuthenticatedProductContext();
 
   if (!isUuid(productId) || !userId) {
     redirect(`${productsPath}?status=error`);

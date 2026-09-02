@@ -66,7 +66,7 @@ export default async function DashboardProductsPage({
     );
   }
 
-  const workspace = await getSupplierProductWorkspace(locale);
+  const workspace = await getSupplierProductWorkspace(locale, profile.id);
   const statusCopy =
     params.status === "created"
       ? labels.successCreate

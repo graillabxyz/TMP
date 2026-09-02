@@ -34,7 +34,9 @@ export default async function EditProductPage({
   const { id } = await params;
   const t = getDictionary(locale);
   const labels = t.dashboard.productManager;
-  const profile = await getCurrentProfile();
+  const profilePromise = getCurrentProfile();
+  const categoriesPromise = getCategories(locale);
+  const profile = await profilePromise;
 
   if (!profile) {
     const nextPath = getLocalizedPath(locale, `/dashboard/products/${id}/edit`);
@@ -47,8 +49,8 @@ export default async function EditProductPage({
   }
 
   const [categories, product] = await Promise.all([
-    getCategories(locale),
-    getEditableProduct(id),
+    categoriesPromise,
+    getEditableProduct(id, profile.id),
   ]);
   if (!product) {
     notFound();

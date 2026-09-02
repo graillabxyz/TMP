@@ -1,3 +1,5 @@
+import { cache } from "react";
+
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 
 export type AccountRole = "buyer" | "supplier" | "admin";
@@ -9,7 +11,7 @@ export type CurrentProfile = {
   role: AccountRole;
 } | null;
 
-export async function getCurrentProfile(): Promise<CurrentProfile> {
+export const getCurrentProfile = cache(async (): Promise<CurrentProfile> => {
   let supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
   try {
@@ -68,4 +70,4 @@ export async function getCurrentProfile(): Promise<CurrentProfile> {
         fullName,
         role: "buyer",
       };
-}
+});

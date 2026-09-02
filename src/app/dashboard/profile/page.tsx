@@ -57,7 +57,7 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
     );
   }
 
-  const workspace = await getVerificationWorkspace();
+  const workspace = await getVerificationWorkspace(profile.id);
   const supplier = workspace.supplier;
   const isSupplier = profile.role === "supplier" || profile.role === "admin";
   const statusMessage =

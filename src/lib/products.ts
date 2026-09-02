@@ -241,7 +241,10 @@ export async function getRelatedProducts(
     .slice(0, 3);
 }
 
-export async function getSupplierProductWorkspace(locale: Locale) {
+export async function getSupplierProductWorkspace(
+  locale: Locale,
+  userId: string,
+) {
   const t = getDictionary(locale);
 
   let supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
@@ -257,23 +260,35 @@ export async function getSupplierProductWorkspace(locale: Locale) {
       products: [] as DashboardProduct[],
     };
   }
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return {
-      state: "unauthenticated" as const,
-      supplier: null,
-      products: [] as DashboardProduct[],
-    };
-  }
-
-  const { data: supplierData, error: supplierError } = await supabase
-    .from("suppliers")
-    .select("id, company_name, company_name_fr, slug")
-    .eq("owner_id", user.id)
-    .maybeSingle();
+  const [{ data: supplierData, error: supplierError }, { data, error }] =
+    await Promise.all([
+      supabase
+        .from("suppliers")
+        .select("id, company_name, company_name_fr, slug")
+        .eq("owner_id", userId)
+        .maybeSingle(),
+      supabase
+        .from("supplier_products")
+        .select(
+          `
+          id,
+          slug,
+          title,
+          title_fr,
+          status,
+          moq,
+          price_min,
+          price_max,
+          currency,
+          images,
+          created_at,
+          updated_at,
+          category:categories(name, name_fr, slug)
+        `,
+        )
+        .eq("owner_id", userId)
+        .order("created_at", { ascending: false }),
+    ]);
   const supplier = supplierData as unknown as {
     id: string;
     company_name: string;
@@ -284,28 +299,6 @@ export async function getSupplierProductWorkspace(locale: Locale) {
   if (supplierError) {
     console.error("Unable to load supplier workspace", supplierError.message);
   }
-
-  const { data, error } = await supabase
-    .from("supplier_products")
-    .select(
-      `
-        id,
-        slug,
-        title,
-        title_fr,
-        status,
-        moq,
-        price_min,
-        price_max,
-        currency,
-        images,
-        created_at,
-        updated_at,
-        category:categories(name, name_fr, slug)
-      `,
-    )
-    .eq("owner_id", user.id)
-    .order("created_at", { ascending: false });
 
   if (error) {
     console.error("Unable to load supplier products", error.message);
@@ -366,7 +359,7 @@ export async function getSupplierProductWorkspace(locale: Locale) {
   };
 }
 
-export async function getEditableProduct(productId: string) {
+export async function getEditableProduct(productId: string, userId: string) {
   let supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
   try {
@@ -377,17 +370,11 @@ export async function getEditableProduct(productId: string) {
     return null;
   }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return null;
-
   const { data, error } = await supabase
     .from("supplier_products")
     .select("*")
     .eq("id", productId)
-    .eq("owner_id", user.id)
+    .eq("owner_id", userId)
     .maybeSingle();
 
   if (error) {

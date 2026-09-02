@@ -18,7 +18,7 @@ import { ResponsiveDetails } from "@/components/ui/responsive-details";
 import { Select } from "@/components/ui/select";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
-import { getCategories, getSuppliers } from "@/lib/marketplace";
+import { getCategories, getSupplierOptions } from "@/lib/marketplace";
 import { getProducts } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
 import { getProductCollectionJsonLd } from "@/lib/structured-data";
@@ -57,7 +57,7 @@ export default async function ProductsPage({
   const supplier = params.supplier ?? "";
   const [categories, suppliers, products] = await Promise.all([
     getCategories(locale),
-    getSuppliers(locale),
+    getSupplierOptions(locale),
     getProducts({ locale, query, category, supplier }),
   ]);
   const productsHref = getLocalizedPath(locale, "/products");

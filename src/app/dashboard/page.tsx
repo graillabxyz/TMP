@@ -46,8 +46,8 @@ export default async function DashboardPage() {
   }
 
   const [productWorkspace, verificationWorkspace] = await Promise.all([
-    getSupplierProductWorkspace(locale),
-    getVerificationWorkspace(),
+    getSupplierProductWorkspace(locale, profile.id),
+    getVerificationWorkspace(profile.id),
   ]);
   const products = productWorkspace.products;
   const publishedCount = products.filter(

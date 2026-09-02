@@ -45,7 +45,9 @@ type DocumentRow = {
   submitted_at: string | null;
 };
 
-export async function getVerificationWorkspace(): Promise<VerificationWorkspace> {
+export async function getVerificationWorkspace(
+  userId: string,
+): Promise<VerificationWorkspace> {
   let supabase: Awaited<ReturnType<typeof createServerSupabaseClient>>;
 
   try {
@@ -56,20 +58,12 @@ export async function getVerificationWorkspace(): Promise<VerificationWorkspace>
     return { state: "unauthenticated", supplier: null, documents: null };
   }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return { state: "unauthenticated", supplier: null, documents: null };
-  }
-
   const { data: supplierData, error: supplierError } = await supabase
     .from("suppliers")
     .select(
       "id, company_name, verification_status, verification_subscription_status, stripe_customer_id, verification_started_at, verification_expires_at",
     )
-    .eq("owner_id", user.id)
+    .eq("owner_id", userId)
     .maybeSingle();
   const supplier = supplierData as unknown as SupplierRow | null;
 

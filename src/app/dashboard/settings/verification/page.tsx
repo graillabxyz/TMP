@@ -104,7 +104,7 @@ export default async function VerificationSettingsPage({
     );
   }
 
-  const workspace = await getVerificationWorkspace();
+  const workspace = await getVerificationWorkspace(profile.id);
   const supplier = workspace.supplier;
   const documents = workspace.documents;
   const statusMessage =
@@ -169,11 +169,7 @@ export default async function VerificationSettingsPage({
             <ToastNotice
               message={statusMessage}
               dismissLabel={t.common.dismissNotification}
-              tone={
-                statusTone === "neutral"
-                  ? "info"
-                  : statusTone
-              }
+              tone={statusTone === "neutral" ? "info" : statusTone}
             />
           )}
 

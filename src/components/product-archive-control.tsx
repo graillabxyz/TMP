@@ -4,6 +4,7 @@ import { Archive, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { archiveProduct, deleteProduct } from "@/app/actions/products";
+import { ProductMutationSubmit } from "@/components/product-mutation-submit";
 import { Button } from "@/components/ui/button";
 
 type ProductArchiveControlProps = {
@@ -146,10 +147,7 @@ export function ProductArchiveControl({
               <form action={formAction}>
                 <input type="hidden" name="locale" value={locale} />
                 <input type="hidden" name="id" value={productId} />
-                <Button type="submit" variant="destructive" className="w-full">
-                  <Icon aria-hidden="true" />
-                  {confirmLabel}
-                </Button>
+                <ProductMutationSubmit action={action} label={confirmLabel} />
               </form>
             </div>
           </div>

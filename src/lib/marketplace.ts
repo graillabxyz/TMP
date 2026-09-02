@@ -1,4 +1,5 @@
 import { getDictionary } from "@/lib/dictionary";
+import { cache } from "react";
 import {
   localizedArray,
   localizedValue,
@@ -300,7 +301,7 @@ function normalizeSupplier(row: SupplierRow, locale: Locale): Supplier {
   return supplier;
 }
 
-export async function getCategories(
+export const getCategories = cache(async function getCategories(
   locale: Locale = defaultLocale,
 ): Promise<Category[]> {
   const supabase = createPublicSupabaseClient();
@@ -324,9 +325,42 @@ export async function getCategories(
   }
 
   return data.map((category) => normalizeCategory(category, locale));
-}
+});
 
-export async function getSuppliers(
+export const getSupplierOptions = cache(async function getSupplierOptions(
+  locale: Locale = defaultLocale,
+) {
+  const supabase = createPublicSupabaseClient();
+
+  if (!supabase) {
+    console.error(
+      "Supabase is not configured; supplier options are unavailable.",
+    );
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from("suppliers")
+    .select("slug, company_name, company_name_fr")
+    .order("display_order", { ascending: true });
+
+  if (error || !data) {
+    if (error) {
+      console.error("Unable to load Supabase supplier options", error.message);
+    }
+
+    return [];
+  }
+
+  return data.map((supplier) => ({
+    slug: getSupplierSlugOverride(supplier.slug),
+    name:
+      getSupplierNameOverride(locale, supplier.slug) ??
+      localizedValue(locale, supplier.company_name, supplier.company_name_fr),
+  }));
+});
+
+export const getSuppliers = cache(async function getSuppliers(
   locale: Locale = defaultLocale,
 ): Promise<Supplier[]> {
   const supabase = createPublicSupabaseClient();
@@ -381,7 +415,7 @@ export async function getSuppliers(
   return (data as unknown as SupplierRow[]).map((supplier) =>
     normalizeSupplier(supplier, locale),
   );
-}
+});
 
 export async function getSupplierBySlug(
   slug: string,

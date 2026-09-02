@@ -12,6 +12,7 @@ import {
 import { useEffect, useId, useRef, useState } from "react";
 
 import { archiveProduct, deleteProduct } from "@/app/actions/products";
+import { ProductMutationSubmit } from "@/components/product-mutation-submit";
 import { Button } from "@/components/ui/button";
 import { focusMenuEdge, handleMenuKeyDown } from "@/lib/menu-keyboard";
 
@@ -129,7 +130,6 @@ export function ProductRowActions({
   }, [confirmAction]);
 
   const isDelete = confirmAction === "delete";
-  const ConfirmIcon = isDelete ? Trash2 : Archive;
   const title = isDelete ? deleteTitle : archiveTitle;
   const description = isDelete ? deleteBody : archiveBody;
   const confirmLabel = isDelete ? deleteConfirmLabel : archiveConfirmLabel;
@@ -281,10 +281,10 @@ export function ProductRowActions({
               <form action={formAction}>
                 <input type="hidden" name="locale" value={locale} />
                 <input type="hidden" name="id" value={productId} />
-                <Button type="submit" variant="destructive" className="w-full">
-                  <ConfirmIcon aria-hidden="true" />
-                  {confirmLabel}
-                </Button>
+                <ProductMutationSubmit
+                  action={isDelete ? "delete" : "archive"}
+                  label={confirmLabel}
+                />
               </form>
             </div>
           </div>
