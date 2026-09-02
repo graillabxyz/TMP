@@ -4,12 +4,13 @@ import { ArrowRight, BadgeCheck, MapPin } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import type { Supplier } from "@/types";
 
 type SupplierCardProps = {
   supplier: Supplier;
   supplierHref: string;
+  headingLevel?: "h2" | "h3";
   labels: {
     verified: string;
     moq: string;
@@ -22,10 +23,13 @@ type SupplierCardProps = {
 export function SupplierCard({
   supplier,
   supplierHref,
+  headingLevel = "h3",
   labels,
 }: SupplierCardProps) {
+  const Heading = headingLevel;
+
   return (
-    <Card className="group overflow-hidden transition duration-300 focus-within:border-gold-300/45 hover:-translate-y-0.5 hover:border-gold-300/30 hover:bg-secondary/90">
+    <Card className="group flex h-full flex-col overflow-hidden transition duration-300 focus-within:border-gold-300/45 hover:-translate-y-0.5 hover:border-gold-300/30 hover:bg-secondary/90">
       <Link
         href={supplierHref}
         className="block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
@@ -48,23 +52,23 @@ export function SupplierCard({
           )}
         </div>
       </Link>
-      <CardContent className="p-5">
+      <CardContent className="flex flex-1 flex-col p-5 pb-4">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="line-clamp-1 text-xs text-gold-200">
               {supplier.category}
             </p>
-            <h3 className="mt-1.5 min-h-11 break-words text-base font-semibold leading-[1.4] text-white">
+            <Heading className="mt-1.5 min-h-11 break-words text-base font-semibold leading-[1.4] text-white">
               <Link
                 href={supplierHref}
-                className="rounded-sm underline-offset-4 transition hover:text-gold-100 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="line-clamp-2 min-h-11 rounded-sm underline-offset-4 transition hover:text-gold-100 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 {supplier.name}
               </Link>
-            </h3>
+            </Heading>
           </div>
         </div>
-        <p className="mt-2 line-clamp-2 text-sm leading-5 text-muted-foreground">
+        <p className="mt-2 line-clamp-2 min-h-10 text-sm leading-5 text-muted-foreground">
           {supplier.summary}
         </p>
         <div className="mt-3 flex min-w-0 items-center gap-2 text-xs text-muted-foreground">
@@ -83,7 +87,9 @@ export function SupplierCard({
             </Badge>
           ))}
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-3 border-t border-white/10 pt-3 text-xs">
+      </CardContent>
+      <CardFooter className="mt-auto block p-5 pt-0">
+        <div className="grid grid-cols-2 gap-3 border-t border-white/10 pt-4 text-xs">
           <div>
             <p className="text-muted-foreground">{labels.moq}</p>
             <p className="mt-1 line-clamp-2 font-medium text-white">
@@ -103,7 +109,7 @@ export function SupplierCard({
             <ArrowRight aria-hidden="true" />
           </Link>
         </Button>
-      </CardContent>
+      </CardFooter>
     </Card>
   );
 }

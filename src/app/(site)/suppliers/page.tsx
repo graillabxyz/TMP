@@ -263,6 +263,7 @@ export default async function SuppliersPage({
               {filteredSuppliers.map((supplier) => (
                 <SupplierCard
                   key={supplier.slug}
+                  headingLevel="h2"
                   supplier={supplier}
                   supplierHref={getLocalizedPath(
                     locale,

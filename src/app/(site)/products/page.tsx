@@ -188,6 +188,7 @@ export default async function ProductsPage({
               {products.map((product) => (
                 <ProductCard
                   key={product.id}
+                  headingLevel="h2"
                   product={product}
                   productHref={getLocalizedPath(
                     locale,

@@ -43,9 +43,9 @@ export async function SiteFooter() {
             </p>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-white">
+            <h2 className="text-sm font-semibold text-white">
               {t.common.marketplace}
-            </h3>
+            </h2>
             <div className="mt-4 grid gap-3">
               {footerLinks.map((link) => (
                 <Link
@@ -59,9 +59,9 @@ export async function SiteFooter() {
             </div>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-white">
+            <h2 className="text-sm font-semibold text-white">
               {t.common.categories}
-            </h3>
+            </h2>
             <div className="mt-4 grid gap-3">
               {categories.map((category) => (
                 <Link

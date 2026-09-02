@@ -18,7 +18,7 @@ import {
 import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getSupplierBySlug } from "@/lib/marketplace";
@@ -155,10 +155,7 @@ export default async function SupplierDetailPage({
                 const Icon = item.icon;
 
                 return (
-                  <div
-                    key={item.label}
-                    className="subtle-panel p-4"
-                  >
+                  <div key={item.label} className="subtle-panel p-4">
                     <Icon className="size-4 text-gold-200" aria-hidden="true" />
                     <p className="mt-4 text-xs text-muted-foreground">
                       {item.localizedLabel}
@@ -245,7 +242,7 @@ export default async function SupplierDetailPage({
                   }}
                   className="group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
-                  <Card className="h-full overflow-hidden transition group-hover:-translate-y-0.5 group-hover:border-gold-300/25 group-hover:bg-secondary/80">
+                  <Card className="flex h-full flex-col overflow-hidden transition group-hover:-translate-y-0.5 group-hover:border-gold-300/25 group-hover:bg-secondary/80">
                     <div className="relative aspect-[16/10] overflow-hidden">
                       <Image
                         src={product.image}
@@ -255,17 +252,19 @@ export default async function SupplierDetailPage({
                         className="object-cover transition duration-500 group-hover:scale-105"
                       />
                     </div>
-                    <CardContent className="p-5">
+                    <CardContent className="flex flex-1 flex-col p-5 pb-4">
                       <Badge className="max-w-full" variant="secondary">
                         <span className="truncate">{product.category}</span>
                       </Badge>
-                      <h3 className="mt-4 break-words font-semibold text-white">
+                      <h3 className="mt-4 line-clamp-2 min-h-12 break-words font-semibold leading-6 text-white">
                         {product.name}
                       </h3>
-                      <p className="mt-2 break-words text-sm text-muted-foreground">
+                    </CardContent>
+                    <CardFooter className="mt-auto block p-5 pt-0">
+                      <p className="break-words border-t border-white/10 pt-4 text-sm text-muted-foreground">
                         {t.common.moq}: {product.moq}
                       </p>
-                    </CardContent>
+                    </CardFooter>
                   </Card>
                 </Link>
               ))}

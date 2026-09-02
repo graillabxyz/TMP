@@ -62,17 +62,47 @@ test("the visual system respects reduced motion preferences", async () => {
   assert.match(globalStyles, /scroll-behavior: auto/);
 });
 
-test("standalone and media card content keeps a complete inner inset", async () => {
-  const [cardSource, productCardSource, supplierCardSource] = await Promise.all(
-    [
+test("standalone and media cards keep complete insets and anchored actions", async () => {
+  const [cardSource, productCardSource, supplierCardSource, rfqSource] =
+    await Promise.all([
       source("../src/components/ui/card.tsx"),
       source("../src/components/product-card.tsx"),
       source("../src/components/supplier-card.tsx"),
-    ],
-  );
+      source("../src/app/(site)/rfq/page.tsx"),
+    ]);
 
   assert.match(cardSource, /cn\("p-5 sm:p-6", className\)/);
   assert.doesNotMatch(cardSource, /"p-5 pt-0 sm:p-6 sm:pt-0"/);
-  assert.match(productCardSource, /<CardContent className="p-5">/);
-  assert.match(supplierCardSource, /<CardContent className="p-5">/);
+  for (const card of [productCardSource, supplierCardSource]) {
+    assert.match(card, /<Card className="group flex h-full flex-col/);
+    assert.match(
+      card,
+      /<CardContent className="flex flex-1 flex-col p-5 pb-4">/,
+    );
+    assert.match(card, /<CardFooter className="mt-auto block p-5 pt-0">/);
+    assert.match(card, /line-clamp-2 min-h-11 rounded-sm/);
+    assert.match(card, /headingLevel = "h3"/);
+  }
+
+  assert.match(rfqSource, /<Card className="self-start border-gold/);
+  assert.doesNotMatch(
+    rfqSource,
+    /<CardContent[^>]*>[\s\S]{0,800}<div className="[^\"]*rounded-lg border border-gold/,
+  );
+});
+
+test("directory cards and footer sections preserve heading hierarchy", async () => {
+  const [productsPage, suppliersPage, footerSource] = await Promise.all([
+    source("../src/app/(site)/products/page.tsx"),
+    source("../src/app/(site)/suppliers/page.tsx"),
+    source("../src/components/layout/site-footer.tsx"),
+  ]);
+
+  assert.match(productsPage, /<ProductCard[\s\S]{0,100}headingLevel="h2"/);
+  assert.match(suppliersPage, /<SupplierCard[\s\S]{0,100}headingLevel="h2"/);
+  assert.doesNotMatch(footerSource, /<h3/);
+  assert.match(
+    footerSource,
+    /<h2 className="text-sm font-semibold text-white">/,
+  );
 });
