@@ -203,6 +203,7 @@ export default async function ProductsPage({
                     quote: t.products.quote,
                     requestQuote: t.products.requestQuote,
                     units: t.common.units,
+                    days: t.common.days,
                     onRequest: t.common.onRequest,
                   }}
                 />

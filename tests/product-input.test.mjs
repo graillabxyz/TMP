@@ -12,7 +12,7 @@ function validProduct(overrides = {}) {
     description:
       "A 320 gsm organic cotton hoodie available in custom colors and sizes.",
     moq: "100",
-    lead_time: "3-4 weeks",
+    lead_time: "21",
     price_min: "18.50",
     price_max: "24.00",
     currency: "EUR",
@@ -29,6 +29,7 @@ test("accepts a complete product listing", () => {
 
   assert.deepEqual(result.errors, {});
   assert.equal(result.values?.moq, 100);
+  assert.equal(result.values?.leadTimeDays, 21);
   assert.equal(result.values?.priceMin, 18.5);
   assert.equal(result.values?.status, "published");
 });
@@ -39,7 +40,7 @@ test("allows optional commercial terms to be omitted", () => {
   );
 
   assert.equal(result.values?.moq, null);
-  assert.equal(result.values?.leadTime, null);
+  assert.equal(result.values?.leadTimeDays, null);
   assert.equal(result.values?.priceMin, null);
   assert.equal(result.values?.priceMax, null);
 });
@@ -51,6 +52,7 @@ test("returns precise errors for vague or malformed listing details", () => {
       category_id: "not-a-category",
       description: "Too short",
       moq: "1.5",
+      lead_time: "3-4 weeks",
       price_min: "30",
       price_max: "20",
       currency: "BTC",
@@ -62,6 +64,7 @@ test("returns precise errors for vague or malformed listing details", () => {
     category_id: "required",
     description: "descriptionLength",
     moq: "integer",
+    lead_time: "integer",
     price_max: "priceRange",
     currency: "invalidOption",
   });

@@ -29,6 +29,7 @@ type PublicProductRow = {
   currency: string;
   moq: number | null;
   lead_time: string | null;
+  lead_time_days: number | null;
   images: string[];
   status: ProductStatus;
   created_at: string;
@@ -124,7 +125,7 @@ function normalizeProduct(
     priceMax: product.price_max,
     currency: product.currency,
     moq: product.moq,
-    leadTime: product.lead_time,
+    leadTimeDays: product.lead_time_days,
     images: fallbackImage(product.images, product.slug),
     status: product.status,
     createdAt: product.created_at,
@@ -150,6 +151,14 @@ export function formatPriceRange(
   }
 
   return formatter.format(product.priceMin ?? product.priceMax ?? 0);
+}
+
+export function formatLeadTime(
+  leadTimeDays: number | null,
+  daysLabel: string,
+  fallback: string,
+) {
+  return leadTimeDays === null ? fallback : `${leadTimeDays} ${daysLabel}`;
 }
 
 export async function getProducts({
@@ -184,6 +193,7 @@ export async function getProducts({
         currency,
         moq,
         lead_time,
+        lead_time_days,
         images,
         status,
         created_at,

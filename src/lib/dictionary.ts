@@ -51,6 +51,7 @@ const dictionaries = {
       supplier: "Supplier",
       product: "Product",
       units: "units",
+      days: "days",
       onRequest: "On request",
       uncategorized: "Uncategorized",
       generalSourcing: "General sourcing",
@@ -541,14 +542,15 @@ const dictionaries = {
         pricePlaceholder: "0.00",
         priceHelp: "Enter per-unit prices before shipping and taxes.",
         currency: "Currency",
-        leadTime: "Lead time",
-        leadTimeHelp: "Typical production time after an order is confirmed.",
+        leadTime: "Lead time (days)",
+        leadTimeHelp:
+          "Enter the typical number of calendar days after an order is confirmed.",
         images: "Images",
         mediaTitle: "Product photos",
         mediaBody:
           "Add up to five clear photos. The first photo becomes the marketplace cover.",
         uploadImages: "Choose product photos",
-        leadTimePlaceholder: "2-4 weeks",
+        leadTimePlaceholder: "e.g. 21",
         imageHelp: "1-5 JPG, PNG, or WebP files, up to 5 MB each.",
         replaceImage:
           "Choose new photos only when you want to replace the current set.",
@@ -680,6 +682,46 @@ const dictionaries = {
         "First upgrade to a supplier by adding your business name. Then you can start the paid membership for a verified badge.",
       verificationSettings: "Verification settings",
       manageProducts: "Manage products",
+      editSupplierProfile: "Edit supplier profile",
+      supplierProfileEyebrow: "Supplier profile",
+      supplierProfileTitle: "Business information",
+      supplierProfileDescription:
+        "Keep the company details buyers use to evaluate and contact your business accurate.",
+      publicProfile: "View public profile",
+      profileBasics: "Marketplace profile",
+      profileBasicsBody:
+        "Describe your company clearly so buyers can understand your capabilities at a glance.",
+      companyName: "Company name",
+      category: "Primary category",
+      selectCategory: "Select a category",
+      city: "City",
+      country: "Country",
+      countryHelp: "TMP currently lists suppliers based in Türkiye.",
+      summary: "Short summary",
+      summaryPlaceholder:
+        "Describe your products and strongest buyer value in one sentence.",
+      supplierDescription: "Company description",
+      supplierDescriptionPlaceholder:
+        "Explain your production capabilities, buyer types, materials, and export experience.",
+      companyDetails: "Company details",
+      companyDetailsBody:
+        "Add structured details that help buyers compare suppliers.",
+      yearFounded: "Year founded",
+      employees: "Company size",
+      exportMarkets: "Export markets",
+      exportMarketsPlaceholder: "Germany, France, Netherlands",
+      tags: "Capabilities",
+      tagsPlaceholder: "Private label, CNC, FSC packaging",
+      commaSeparatedHelp: "Separate entries with commas.",
+      saveSupplierProfile: "Save profile",
+      supplierProfileSaved: "Supplier profile updated.",
+      supplierProfileInvalid:
+        "Review the highlighted business details and try again.",
+      supplierProfileError:
+        "The supplier profile could not be saved. Please try again.",
+      supplierProfileMetadataTitle: "Supplier Profile | TMP",
+      supplierProfileMetadataDescription:
+        "Manage the public business information on your TMP supplier profile.",
       businessNamePlaceholder: "Anatolia Distribution",
       metadataTitle: "Profile | TMP",
       metadataDescription:
@@ -934,6 +976,7 @@ const dictionaries = {
       supplier: "Fournisseur",
       product: "Produit",
       units: "unités",
+      days: "jours",
       onRequest: "Sur demande",
       uncategorized: "Non catégorisé",
       generalSourcing: "Sourcing général",
@@ -1439,15 +1482,15 @@ const dictionaries = {
         pricePlaceholder: "0,00",
         priceHelp: "Indiquez les prix unitaires hors livraison et taxes.",
         currency: "Devise",
-        leadTime: "Délai",
+        leadTime: "Délai (jours)",
         leadTimeHelp:
-          "Délai de production habituel après confirmation de commande.",
+          "Indiquez le nombre habituel de jours calendaires après confirmation de la commande.",
         images: "Images",
         mediaTitle: "Photos du produit",
         mediaBody:
           "Ajoutez jusqu’à cinq photos nettes. La première devient l’image principale du marketplace.",
         uploadImages: "Choisir les photos",
-        leadTimePlaceholder: "2-4 semaines",
+        leadTimePlaceholder: "ex. 21",
         imageHelp: "1 à 5 fichiers JPG, PNG ou WebP, 5 Mo maximum chacun.",
         replaceImage:
           "Choisissez de nouvelles photos uniquement pour remplacer la série actuelle.",
@@ -1586,6 +1629,47 @@ const dictionaries = {
         "Passez d’abord en fournisseur en ajoutant le nom de l’entreprise. Vous pourrez ensuite démarrer l’abonnement payant pour le badge vérifié.",
       verificationSettings: "Paramètres de vérification",
       manageProducts: "Gérer les produits",
+      editSupplierProfile: "Modifier le profil fournisseur",
+      supplierProfileEyebrow: "Profil fournisseur",
+      supplierProfileTitle: "Informations de l’entreprise",
+      supplierProfileDescription:
+        "Gardez à jour les informations utilisées par les acheteurs pour évaluer et contacter votre entreprise.",
+      publicProfile: "Voir le profil public",
+      profileBasics: "Profil marketplace",
+      profileBasicsBody:
+        "Présentez clairement votre entreprise afin que les acheteurs comprennent rapidement vos capacités.",
+      companyName: "Nom de l’entreprise",
+      category: "Catégorie principale",
+      selectCategory: "Sélectionner une catégorie",
+      city: "Ville",
+      country: "Pays",
+      countryHelp:
+        "TMP référence actuellement les fournisseurs basés en Türkiye.",
+      summary: "Résumé court",
+      summaryPlaceholder:
+        "Décrivez vos produits et votre principal avantage acheteur en une phrase.",
+      supplierDescription: "Description de l’entreprise",
+      supplierDescriptionPlaceholder:
+        "Expliquez vos capacités de production, types d’acheteurs, matières et expérience export.",
+      companyDetails: "Détails de l’entreprise",
+      companyDetailsBody:
+        "Ajoutez des informations structurées pour faciliter la comparaison des fournisseurs.",
+      yearFounded: "Année de création",
+      employees: "Taille de l’entreprise",
+      exportMarkets: "Marchés export",
+      exportMarketsPlaceholder: "Allemagne, France, Pays-Bas",
+      tags: "Capacités",
+      tagsPlaceholder: "Marque blanche, CNC, emballage FSC",
+      commaSeparatedHelp: "Séparez les éléments par des virgules.",
+      saveSupplierProfile: "Enregistrer le profil",
+      supplierProfileSaved: "Profil fournisseur mis à jour.",
+      supplierProfileInvalid:
+        "Vérifiez les informations de l’entreprise et réessayez.",
+      supplierProfileError:
+        "Impossible d’enregistrer le profil fournisseur. Veuillez réessayer.",
+      supplierProfileMetadataTitle: "Profil fournisseur | TMP",
+      supplierProfileMetadataDescription:
+        "Gérez les informations publiques de votre profil fournisseur TMP.",
       businessNamePlaceholder: "Distribution Anatolie",
       metadataTitle: "Profil | TMP",
       metadataDescription:
@@ -1844,6 +1928,7 @@ const turkishDictionary = {
     supplier: "Tedarikçi",
     product: "Ürün",
     units: "adet",
+    days: "gün",
     onRequest: "Talep üzerine",
     uncategorized: "Kategorisiz",
     generalSourcing: "Genel sourcing",
@@ -2338,14 +2423,15 @@ const turkishDictionary = {
       pricePlaceholder: "0,00",
       priceHelp: "Kargo ve vergiler hariç birim fiyatları girin.",
       currency: "Para birimi",
-      leadTime: "Teslim süresi",
-      leadTimeHelp: "Sipariş onaylandıktan sonraki tipik üretim süresi.",
+      leadTime: "Teslim süresi (gün)",
+      leadTimeHelp:
+        "Sipariş onaylandıktan sonraki tipik takvim günü sayısını girin.",
       images: "Görseller",
       mediaTitle: "Ürün fotoğrafları",
       mediaBody:
         "En fazla beş net fotoğraf ekleyin. İlk fotoğraf pazar yeri kapak görseli olur.",
       uploadImages: "Ürün fotoğraflarını seçin",
-      leadTimePlaceholder: "2-4 hafta",
+      leadTimePlaceholder: "ör. 21",
       imageHelp: "Her biri en fazla 5 MB olan 1-5 JPG, PNG veya WebP dosyası.",
       replaceImage:
         "Mevcut fotoğraf grubunu değiştirmek istiyorsanız yeni fotoğraflar seçin.",
@@ -2479,6 +2565,45 @@ const turkishDictionary = {
       "Önce işletme adınızı ekleyerek tedarikçiye yükseltin. Ardından doğrulanmış rozet için ücretli üyeliği başlatabilirsiniz.",
     verificationSettings: "Doğrulama ayarları",
     manageProducts: "Ürünleri yönet",
+    editSupplierProfile: "Tedarikçi profilini düzenle",
+    supplierProfileEyebrow: "Tedarikçi profili",
+    supplierProfileTitle: "İşletme bilgileri",
+    supplierProfileDescription:
+      "Alıcıların işletmenizi değerlendirmek ve sizinle iletişim kurmak için kullandığı bilgileri güncel tutun.",
+    publicProfile: "Herkese açık profili görüntüle",
+    profileBasics: "Pazar yeri profili",
+    profileBasicsBody:
+      "Alıcıların yetkinliklerinizi hızla anlayabilmesi için şirketinizi açıkça tanımlayın.",
+    companyName: "Şirket adı",
+    category: "Ana kategori",
+    selectCategory: "Kategori seçin",
+    city: "Şehir",
+    country: "Ülke",
+    countryHelp: "TMP şu anda Türkiye merkezli tedarikçileri listeler.",
+    summary: "Kısa özet",
+    summaryPlaceholder:
+      "Ürünlerinizi ve alıcıya sunduğunuz en güçlü değeri tek cümlede açıklayın.",
+    supplierDescription: "Şirket açıklaması",
+    supplierDescriptionPlaceholder:
+      "Üretim kapasitenizi, alıcı türlerini, malzemeleri ve ihracat deneyiminizi açıklayın.",
+    companyDetails: "Şirket detayları",
+    companyDetailsBody:
+      "Alıcıların tedarikçileri karşılaştırmasına yardımcı olacak yapılandırılmış bilgiler ekleyin.",
+    yearFounded: "Kuruluş yılı",
+    employees: "Şirket büyüklüğü",
+    exportMarkets: "İhracat pazarları",
+    exportMarketsPlaceholder: "Almanya, Fransa, Hollanda",
+    tags: "Yetkinlikler",
+    tagsPlaceholder: "Private label, CNC, FSC ambalaj",
+    commaSeparatedHelp: "Girdileri virgülle ayırın.",
+    saveSupplierProfile: "Profili kaydet",
+    supplierProfileSaved: "Tedarikçi profili güncellendi.",
+    supplierProfileInvalid: "İşletme bilgilerini kontrol edip tekrar deneyin.",
+    supplierProfileError:
+      "Tedarikçi profili kaydedilemedi. Lütfen tekrar deneyin.",
+    supplierProfileMetadataTitle: "Tedarikçi Profili | TMP",
+    supplierProfileMetadataDescription:
+      "TMP tedarikçi profilinizdeki herkese açık işletme bilgilerini yönetin.",
     businessNamePlaceholder: "Anadolu Dağıtım",
     metadataTitle: "Profil | TMP",
     metadataDescription:

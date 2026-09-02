@@ -46,6 +46,10 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
     locale,
     "/dashboard/settings/verification",
   );
+  const supplierDetailsHref = getLocalizedPath(
+    locale,
+    "/dashboard/profile/supplier",
+  );
 
   if (!profile) {
     const nextPath = getLocalizedPath(locale, "/dashboard/profile");
@@ -228,9 +232,16 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                       : verificationCopy.states.none}
                   </Badge>
                 </div>
-                <Button asChild className="mt-2 w-full sm:w-auto">
-                  <Link href={productsHref}>{copy.manageProducts}</Link>
-                </Button>
+                <div className="mt-2 grid gap-2 sm:grid-cols-2">
+                  <Button asChild variant="outline" className="w-full">
+                    <Link href={supplierDetailsHref}>
+                      {copy.editSupplierProfile}
+                    </Link>
+                  </Button>
+                  <Button asChild className="w-full">
+                    <Link href={productsHref}>{copy.manageProducts}</Link>
+                  </Button>
+                </div>
               </div>
             ) : (
               <form

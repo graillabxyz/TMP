@@ -12,6 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import {
+  formatLeadTime,
   formatPriceRange,
   getProductBySlug,
   getRelatedProducts,
@@ -176,7 +177,11 @@ export default async function ProductDetailPage({
                       {t.common.leadTime}
                     </span>
                     <span className="min-w-0 text-right font-medium text-white">
-                      {product.leadTime ?? t.common.onRequest}
+                      {formatLeadTime(
+                        product.leadTimeDays,
+                        t.common.days,
+                        t.common.onRequest,
+                      )}
                     </span>
                   </div>
                   <div className="flex min-w-0 items-start justify-between gap-4">
@@ -230,6 +235,7 @@ export default async function ProductDetailPage({
                     quote: t.products.quote,
                     requestQuote: t.products.requestQuote,
                     units: t.common.units,
+                    days: t.common.days,
                     onRequest: t.common.onRequest,
                   }}
                 />

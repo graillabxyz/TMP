@@ -25,6 +25,29 @@ function isBoundedString(value: unknown, maxLength: number): value is string {
   return typeof value === "string" && value.length <= maxLength;
 }
 
+function normalizeLeadTimeDays(value: unknown) {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed) return "";
+  if (/^\d{1,4}$/.test(trimmed)) {
+    const days = Number(trimmed);
+    return days >= 1 && days <= 3650 ? String(days) : null;
+  }
+
+  const normalized = trimmed.toLocaleLowerCase();
+  const match = normalized.match(/(\d+)(?:\s*-\s*(\d+))?/);
+  if (!match) return null;
+  const amount = Number(match[2] ?? match[1]);
+  const multiplier = /(week|semaine|hafta)/.test(normalized)
+    ? 7
+    : /(month|mois|ay)/.test(normalized)
+      ? 30
+      : 1;
+  const days = amount * multiplier;
+
+  return days >= 1 && days <= 3650 ? String(days) : null;
+}
+
 export function parseProductLocalDraft(
   serialized: string | null,
 ): ProductLocalDraft | null {
@@ -41,7 +64,7 @@ export function parseProductLocalDraft(
       !isBoundedString(value.categoryId, 80) ||
       !isBoundedString(value.description, 5000) ||
       !isBoundedString(value.moq, 24) ||
-      !isBoundedString(value.leadTime, 120) ||
+      normalizeLeadTimeDays(value.leadTime) === null ||
       !isBoundedString(value.priceMin, 32) ||
       !isBoundedString(value.priceMax, 32) ||
       typeof value.currency !== "string" ||
@@ -51,7 +74,10 @@ export function parseProductLocalDraft(
       return null;
     }
 
-    return value as ProductLocalDraft;
+    return {
+      ...(value as ProductLocalDraft),
+      leadTime: normalizeLeadTimeDays(value.leadTime) ?? "",
+    };
   } catch {
     return null;
   }

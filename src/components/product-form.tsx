@@ -175,7 +175,9 @@ export function ProductForm({
   const [categoryId, setCategoryId] = useState(product?.category_id ?? "");
   const [description, setDescription] = useState(product?.description ?? "");
   const [moq, setMoq] = useState(product?.moq?.toString() ?? "");
-  const [leadTime, setLeadTime] = useState(product?.lead_time ?? "");
+  const [leadTime, setLeadTime] = useState(
+    product?.lead_time_days?.toString() ?? "",
+  );
   const [priceMin, setPriceMin] = useState(
     product?.price_min?.toString() ?? "",
   );
@@ -714,7 +716,10 @@ export function ProductForm({
                 <Input
                   id="lead_time"
                   name="lead_time"
-                  maxLength={120}
+                  type="number"
+                  inputMode="numeric"
+                  min="1"
+                  max="3650"
                   value={leadTime}
                   onChange={(event) => {
                     setLeadTime(event.target.value);

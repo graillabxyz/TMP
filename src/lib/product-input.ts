@@ -27,7 +27,7 @@ export type ProductInputValues = {
   categoryId: string;
   description: string;
   moq: number | null;
-  leadTime: string | null;
+  leadTimeDays: number | null;
   priceMin: number | null;
   priceMax: number | null;
   currency: (typeof PRODUCT_CURRENCIES)[number];
@@ -84,7 +84,6 @@ export function validateProductInput(formData: FormData): {
   const title = getString(formData, "title");
   const categoryId = getString(formData, "category_id");
   const description = getString(formData, "description");
-  const leadTime = getString(formData, "lead_time");
   const currency = getString(formData, "currency") || "EUR";
   const status = getString(formData, "status") || "draft";
 
@@ -97,14 +96,15 @@ export function validateProductInput(formData: FormData): {
   if (description.length < 20 || description.length > 5000) {
     errors.description = description ? "descriptionLength" : "required";
   }
-  if (leadTime.length > 120) {
-    errors.lead_time = "invalidOption";
-  }
-
   const moq = parseOptionalNumber(formData, "moq", errors, {
     integer: true,
     min: 1,
     max: 1_000_000_000,
+  });
+  const leadTimeDays = parseOptionalNumber(formData, "lead_time", errors, {
+    integer: true,
+    min: 1,
+    max: 3650,
   });
   const priceMin = parseOptionalNumber(formData, "price_min", errors, {
     min: 0,
@@ -138,7 +138,7 @@ export function validateProductInput(formData: FormData): {
       categoryId,
       description,
       moq,
-      leadTime: leadTime || null,
+      leadTimeDays,
       priceMin,
       priceMax,
       currency: currency as ProductInputValues["currency"],

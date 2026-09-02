@@ -189,6 +189,7 @@ export type Database = {
           description: string;
           description_fr: string | null;
           verified: boolean;
+          rfq_count: number;
           year_founded: number;
           employees: string;
           export_markets: string[];
@@ -232,6 +233,7 @@ export type Database = {
           description: string;
           description_fr?: string | null;
           verified?: boolean;
+          rfq_count?: number;
           year_founded: number;
           employees: string;
           export_markets?: string[];
@@ -365,6 +367,7 @@ export type Database = {
           currency: string;
           moq: number | null;
           lead_time: string | null;
+          lead_time_days: number | null;
           images: string[];
           status: "draft" | "published" | "archived";
           created_at: string;
@@ -385,6 +388,7 @@ export type Database = {
           currency?: string;
           moq?: number | null;
           lead_time?: string | null;
+          lead_time_days?: number | null;
           images?: string[];
           status?: "draft" | "published" | "archived";
           created_at?: string;

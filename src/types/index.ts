@@ -14,6 +14,7 @@ export type Supplier = {
   summary: string;
   description: string;
   verified: boolean;
+  rfqCount: number;
   yearFounded: number;
   employees: string;
   exportMarkets: string[];
@@ -48,7 +49,7 @@ export type MarketplaceProduct = {
   priceMax: number | null;
   currency: string;
   moq: number | null;
-  leadTime: string | null;
+  leadTimeDays: number | null;
   images: string[];
   status: "draft" | "published" | "archived";
   createdAt: string;

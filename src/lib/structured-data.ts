@@ -168,11 +168,12 @@ export function getProductJsonLd(
             value: `${product.moq} units`,
           }
         : null,
-      product.leadTime
+      product.leadTimeDays
         ? {
             "@type": "PropertyValue",
-            name: "Lead time",
-            value: product.leadTime,
+            name: "Lead time in days",
+            value: product.leadTimeDays,
+            unitCode: "DAY",
           }
         : null,
       {

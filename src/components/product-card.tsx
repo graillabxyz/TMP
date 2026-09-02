@@ -5,7 +5,7 @@ import { ArrowRight, BadgeCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { formatPriceRange } from "@/lib/products";
+import { formatLeadTime, formatPriceRange } from "@/lib/products";
 import type { MarketplaceProduct } from "@/types";
 
 type ProductCardProps = {
@@ -21,6 +21,7 @@ type ProductCardProps = {
     quote: string;
     requestQuote: string;
     units: string;
+    days: string;
     onRequest: string;
   };
 };
@@ -98,7 +99,11 @@ export function ProductCard({
           <div>
             <p className="text-muted-foreground">{labels.leadTime}</p>
             <p className="mt-1 line-clamp-2 font-medium text-white">
-              {product.leadTime ?? labels.onRequest}
+              {formatLeadTime(
+                product.leadTimeDays,
+                labels.days,
+                labels.onRequest,
+              )}
             </p>
           </div>
         </div>

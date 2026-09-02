@@ -30,7 +30,11 @@ import { Select } from "@/components/ui/select";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
-import { getCategories, getSuppliers } from "@/lib/marketplace";
+import {
+  getCategories,
+  getFeaturedSuppliers,
+  getSuppliers,
+} from "@/lib/marketplace";
 import { getLandingHeroImage } from "@/lib/site-assets";
 import { getOrganizationJsonLd, getWebsiteJsonLd } from "@/lib/structured-data";
 
@@ -39,12 +43,14 @@ export const revalidate = 300;
 export default async function HomePage() {
   const locale = await getLocale();
   const t = getDictionary(locale);
-  const [categories, suppliers, profile, heroImage] = await Promise.all([
-    getCategories(locale),
-    getSuppliers(locale),
-    getCurrentProfile(),
-    getLandingHeroImage(),
-  ]);
+  const [categories, suppliers, featuredSuppliers, profile, heroImage] =
+    await Promise.all([
+      getCategories(locale),
+      getSuppliers(locale),
+      getFeaturedSuppliers(locale),
+      getCurrentProfile(),
+      getLandingHeroImage(),
+    ]);
   const productsHref = getLocalizedPath(locale, "/products");
   const rfqHref = getLocalizedPath(locale, "/rfq");
   const suppliersHref = getLocalizedPath(locale, "/suppliers");
@@ -54,10 +60,6 @@ export default async function HomePage() {
     : `${getLocalizedPath(locale, "/register")}?next=${encodeURIComponent(
         supplierProfileHref,
       )}&intent=supplier`;
-  const verifiedSuppliers = suppliers.filter((supplier) => supplier.verified);
-  const featuredSuppliers = (
-    verifiedSuppliers.length > 0 ? verifiedSuppliers : suppliers
-  ).slice(0, 3);
   const categoryIconMap: Record<string, LucideIcon> = {
     "textiles-apparel": Shirt,
     "machinery-components": Cog,

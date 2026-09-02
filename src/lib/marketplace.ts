@@ -1,5 +1,6 @@
 import { getDictionary } from "@/lib/dictionary";
 import { cache } from "react";
+import { normalizeSupplierCountry } from "@/lib/country";
 import {
   localizedArray,
   localizedValue,
@@ -48,6 +49,7 @@ type SupplierRow = {
   description: string;
   description_fr: string | null;
   verified: boolean;
+  rfq_count: number;
   year_founded: number | null;
   employees: string;
   export_markets: string[];
@@ -265,7 +267,7 @@ function normalizeSupplier(row: SupplierRow, locale: Locale): Supplier {
       getSupplierNameOverride(locale, row.slug) ??
       localizedValue(locale, row.company_name, row.company_name_fr),
     city: row.city,
-    country: row.country,
+    country: normalizeSupplierCountry(row.country),
     category: getCategoryName(locale, row.category),
     summary: localizedValue(locale, row.summary, row.summary_fr),
     description: localizedValue(locale, row.description, row.description_fr),
@@ -274,6 +276,7 @@ function normalizeSupplier(row: SupplierRow, locale: Locale): Supplier {
       subscriptionStatus: row.verification_subscription_status,
       expiresAt: row.verification_expires_at,
     }),
+    rfqCount: row.rfq_count,
     yearFounded: row.year_founded ?? new Date().getFullYear(),
     employees: row.employees,
     exportMarkets: row.export_markets,
@@ -384,6 +387,7 @@ export const getSuppliers = cache(async function getSuppliers(
         description,
         description_fr,
         verified,
+        rfq_count,
         year_founded,
         employees,
         export_markets,
@@ -415,6 +419,26 @@ export const getSuppliers = cache(async function getSuppliers(
   return (data as unknown as SupplierRow[]).map((supplier) =>
     normalizeSupplier(supplier, locale),
   );
+});
+
+export const getFeaturedSuppliers = cache(async function getFeaturedSuppliers(
+  locale: Locale = defaultLocale,
+  limit = 3,
+): Promise<Supplier[]> {
+  const suppliers = await getSuppliers(locale);
+  const eligibleSuppliers = suppliers.filter(
+    (supplier) => supplier.products.length > 0,
+  );
+
+  if (eligibleSuppliers.length === 0) return [];
+
+  return eligibleSuppliers
+    .toSorted(
+      (left, right) =>
+        Number(right.verified) - Number(left.verified) ||
+        right.rfqCount - left.rfqCount,
+    )
+    .slice(0, limit);
 });
 
 export async function getSupplierBySlug(

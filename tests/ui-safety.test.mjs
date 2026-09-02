@@ -106,3 +106,21 @@ test("directory cards and footer sections preserve heading hierarchy", async () 
     /<h2 className="text-sm font-semibold text-white">/,
   );
 });
+
+test("featured suppliers require products and use a protected aggregate ranking", async () => {
+  const [homeSource, marketplaceSource, migrationSource] = await Promise.all([
+    source("../src/app/(site)/page.tsx"),
+    source("../src/lib/marketplace.ts"),
+    source(
+      "../supabase/migrations/20260902094500_secure_feature_ranking_metrics.sql",
+    ),
+  ]);
+
+  assert.match(homeSource, /getFeaturedSuppliers\(locale\)/);
+  assert.match(marketplaceSource, /supplier\.products\.length > 0/);
+  assert.match(marketplaceSource, /right\.rfqCount - left\.rfqCount/);
+  assert.match(marketplaceSource, /Number\(right\.verified\)/);
+  assert.match(migrationSource, /from public\.rfqs as rfq/);
+  assert.match(migrationSource, /protect_supplier_rfq_count/);
+  assert.match(migrationSource, /current_user in \('anon', 'authenticated'\)/);
+});

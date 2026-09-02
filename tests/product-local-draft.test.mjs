@@ -14,7 +14,7 @@ const draft = {
   categoryId: "textiles",
   description: "A detailed organic cotton product description.",
   moq: "100",
-  leadTime: "2-4 weeks",
+  leadTime: "28",
   priceMin: "8.50",
   priceMax: "12.00",
   currency: "EUR",
@@ -24,6 +24,14 @@ const draft = {
 test("restores a valid local product draft", () => {
   assert.deepEqual(parseProductLocalDraft(JSON.stringify(draft)), draft);
   assert.equal(hasProductLocalDraftContent(draft), true);
+});
+
+test("converts an older text lead time into calendar days", () => {
+  const restored = parseProductLocalDraft(
+    JSON.stringify({ ...draft, leadTime: "2-4 weeks" }),
+  );
+
+  assert.equal(restored?.leadTime, "28");
 });
 
 test("rejects corrupt, unsupported, and oversized local drafts", () => {
