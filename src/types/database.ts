@@ -9,6 +9,54 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      marketplace_activity: {
+        Row: {
+          id: string;
+          user_id: string;
+          activity_type: "search" | "product_view";
+          query: string | null;
+          category_slug: string | null;
+          product_id: string | null;
+          supplier_id: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          activity_type: "search" | "product_view";
+          query?: string | null;
+          category_slug?: string | null;
+          product_id?: string | null;
+          supplier_id?: string | null;
+          created_at?: string;
+        };
+        Update: Partial<
+          Database["public"]["Tables"]["marketplace_activity"]["Insert"]
+        >;
+        Relationships: [
+          {
+            foreignKeyName: "marketplace_activity_category_slug_fkey";
+            columns: ["category_slug"];
+            isOneToOne: false;
+            referencedRelation: "categories";
+            referencedColumns: ["slug"];
+          },
+          {
+            foreignKeyName: "marketplace_activity_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "supplier_products";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "marketplace_activity_supplier_id_fkey";
+            columns: ["supplier_id"];
+            isOneToOne: false;
+            referencedRelation: "suppliers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       profiles: {
         Row: {
           id: string;

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ArrowLeft, BadgeCheck, Factory } from "lucide-react";
 
+import { MarketplaceActivityTracker } from "@/components/marketplace-activity-tracker";
 import { ProductCard } from "@/components/product-card";
 import { ProductGallery } from "@/components/product-gallery";
 import { JsonLd } from "@/components/seo/json-ld";
@@ -84,6 +85,12 @@ export default async function ProductDetailPage({
 
   return (
     <>
+      <MarketplaceActivityTracker
+        kind="product_view"
+        productId={product.id}
+        supplierId={product.supplierId}
+        categorySlug={product.categorySlug}
+      />
       <JsonLd
         data={[
           getProductJsonLd(product, locale),

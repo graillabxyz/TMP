@@ -124,3 +124,23 @@ test("featured suppliers require products and use a protected aggregate ranking"
   assert.match(migrationSource, /protect_supplier_rfq_count/);
   assert.match(migrationSource, /current_user in \('anon', 'authenticated'\)/);
 });
+
+test("homepage recommendations use private activity and RFQ signals", async () => {
+  const [homeSource, productsSource, detailSource, migrationSource] =
+    await Promise.all([
+      source("../src/app/(site)/page.tsx"),
+      source("../src/app/(site)/products/page.tsx"),
+      source("../src/app/(site)/products/[slug]/page.tsx"),
+      source(
+        "../supabase/migrations/20260903090000_personalized_marketplace_recommendations.sql",
+      ),
+    ]);
+
+  assert.match(homeSource, /getRecommendationSignals\(profile\.id\)/);
+  assert.match(homeSource, /rankRecommendedProducts/);
+  assert.match(productsSource, /kind="search"/);
+  assert.match(detailSource, /kind="product_view"/);
+  assert.match(migrationSource, /enable row level security/);
+  assert.match(migrationSource, /user_id = \(select auth\.uid\(\)\)/);
+  assert.match(migrationSource, /offset 200/);
+});

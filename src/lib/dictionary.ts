@@ -94,7 +94,11 @@ const dictionaries = {
       marketplaceWelcome: "Welcome to TMP",
       categoriesForYou: "Categories for you",
       frequentlySearched: "Frequently searched",
-      recommendedForBusiness: "Recommended for your business",
+      recommendedForBusiness: "Recommended for you",
+      recommendationPersonalized:
+        "Based on your recent searches, product views, and quote requests.",
+      recommendationFallback:
+        "Explore current marketplace listings. Recommendations adapt as you search, view products, and request quotes.",
       businessTools: [
         "Request for quotation",
         "Verified manufacturers",
@@ -1021,7 +1025,11 @@ const dictionaries = {
       marketplaceWelcome: "Bienvenue sur TMP",
       categoriesForYou: "Catégories pour vous",
       frequentlySearched: "Souvent recherché",
-      recommendedForBusiness: "Recommandé pour votre activité",
+      recommendedForBusiness: "Recommandé pour vous",
+      recommendationPersonalized:
+        "Selon vos recherches, produits consultés et demandes de devis récentes.",
+      recommendationFallback:
+        "Découvrez les offres actuelles. Les recommandations s’adaptent à vos recherches, consultations et demandes de devis.",
       businessTools: [
         "Demande de devis",
         "Fabricants vérifiés",
@@ -1971,7 +1979,11 @@ const turkishDictionary = {
     marketplaceWelcome: "TMP'ye hoş geldiniz",
     categoriesForYou: "Sizin için kategoriler",
     frequentlySearched: "Sık aranan",
-    recommendedForBusiness: "İşletmeniz için önerilenler",
+    recommendedForBusiness: "Sizin için önerilenler",
+    recommendationPersonalized:
+      "Son aramalarınıza, görüntülediğiniz ürünlere ve teklif taleplerinize göre.",
+    recommendationFallback:
+      "Güncel pazar yeri ilanlarını keşfedin. Öneriler aramalarınıza, ürün görüntülemelerinize ve teklif taleplerinize göre uyarlanır.",
     businessTools: [
       "Teklif talebi",
       "Doğrulanmış üreticiler",

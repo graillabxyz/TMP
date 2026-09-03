@@ -7,6 +7,7 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 
+import { MarketplaceActivityTracker } from "@/components/marketplace-activity-tracker";
 import { ProductCard } from "@/components/product-card";
 import { JsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
@@ -65,6 +66,13 @@ export default async function ProductsPage({
 
   return (
     <>
+      {(query || category) && (
+        <MarketplaceActivityTracker
+          kind="search"
+          query={query}
+          categorySlug={category}
+        />
+      )}
       <JsonLd
         data={getProductCollectionJsonLd(
           products,

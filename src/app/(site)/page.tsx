@@ -30,11 +30,10 @@ import { Select } from "@/components/ui/select";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
-import {
-  getCategories,
-  getFeaturedSuppliers,
-  getSuppliers,
-} from "@/lib/marketplace";
+import { getCategories, getFeaturedSuppliers } from "@/lib/marketplace";
+import { formatPriceRange, getProducts } from "@/lib/products";
+import { getRecommendationSignals } from "@/lib/recommendation-signals";
+import { rankRecommendedProducts } from "@/lib/recommendations";
 import { getLandingHeroImage } from "@/lib/site-assets";
 import { getOrganizationJsonLd, getWebsiteJsonLd } from "@/lib/structured-data";
 
@@ -43,14 +42,21 @@ export const revalidate = 300;
 export default async function HomePage() {
   const locale = await getLocale();
   const t = getDictionary(locale);
-  const [categories, suppliers, featuredSuppliers, profile, heroImage] =
+  const [categories, featuredSuppliers, profile, heroImage, products] =
     await Promise.all([
       getCategories(locale),
-      getSuppliers(locale),
       getFeaturedSuppliers(locale),
       getCurrentProfile(),
       getLandingHeroImage(),
+      getProducts({ locale }),
     ]);
+  const recommendationSignals = profile
+    ? await getRecommendationSignals(profile.id)
+    : [];
+  const recommendedProducts = rankRecommendedProducts(
+    products,
+    recommendationSignals,
+  ).slice(0, 3);
   const productsHref = getLocalizedPath(locale, "/products");
   const rfqHref = getLocalizedPath(locale, "/rfq");
   const suppliersHref = getLocalizedPath(locale, "/suppliers");
@@ -69,14 +75,6 @@ export default async function HomePage() {
     "building-materials": Building2,
     packaging: Package,
   };
-  const previewProducts = suppliers.flatMap((supplier) =>
-    supplier.products.map((product) => ({
-      ...product,
-      supplierName: supplier.name,
-      supplierSlug: supplier.slug,
-    })),
-  );
-  const frequentlySearched = previewProducts.slice(0, 3);
   const businessToolIcons = [Target, Trophy];
 
   return (
@@ -171,6 +169,11 @@ export default async function HomePage() {
               <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">
                 {t.home.recommendedForBusiness}
               </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+                {recommendationSignals.length > 0
+                  ? t.home.recommendationPersonalized
+                  : t.home.recommendationFallback}
+              </p>
             </div>
             <div className="flex flex-wrap gap-2">
               {t.home.businessTools.slice(0, 2).map((tool, index) => {
@@ -229,24 +232,24 @@ export default async function HomePage() {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">
-              {frequentlySearched.map((product) => (
+              {recommendedProducts.map((product) => (
                 <Link
-                  key={`${product.supplierSlug}-${product.name}`}
-                  href={`${productsHref}?q=${encodeURIComponent(product.name)}`}
+                  key={product.id}
+                  href={getLocalizedPath(locale, `/products/${product.slug}`)}
                   className="group overflow-hidden rounded-lg border border-white/10 bg-card shadow-[0_14px_36px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:border-gold-300/35 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   <div className="p-4">
-                    <p className="text-sm font-semibold text-white">
-                      {t.home.frequentlySearched}
+                    <p className="line-clamp-1 text-xs text-gold-200">
+                      {product.supplierName}
                     </p>
-                    <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
-                      {product.name}
+                    <p className="mt-1 line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-white">
+                      {product.title}
                     </p>
                   </div>
-                  <div className="relative mx-4 aspect-square overflow-hidden rounded-md bg-white/[0.92]">
+                  <div className="relative mx-4 aspect-[4/3] overflow-hidden rounded-md bg-white/[0.92]">
                     <Image
-                      src={product.image}
-                      alt={product.name}
+                      src={product.images[0] ?? "/brand/tmp-logo.webp"}
+                      alt={product.title}
                       fill
                       sizes="(min-width: 1024px) 22vw, (min-width: 640px) 33vw, 100vw"
                       className="object-cover transition duration-500 group-hover:scale-105"
@@ -254,8 +257,8 @@ export default async function HomePage() {
                   </div>
                   <div className="flex min-w-0 items-center justify-between gap-3 p-4 text-xs text-muted-foreground">
                     <span className="min-w-0 truncate">{product.category}</span>
-                    <span className="shrink-0 text-gold-200">
-                      {product.moq}
+                    <span className="shrink-0 font-medium text-gold-100">
+                      {formatPriceRange(product, t.products.quote)}
                     </span>
                   </div>
                 </Link>
