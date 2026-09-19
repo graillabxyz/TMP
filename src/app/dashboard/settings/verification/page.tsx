@@ -61,6 +61,7 @@ function badgeVariant(status: string) {
 function getStatusTone(params: Awaited<VerificationPageProps["searchParams"]>) {
   if (
     params.status === "error" ||
+    params.status === "product-access-required" ||
     params.status === "document" ||
     params.status === "missing-company" ||
     params.checkout === "error" ||
@@ -118,24 +119,31 @@ export default async function VerificationSettingsPage({
             ? copy.statusDocumentError
             : params.status === "error"
               ? copy.statusError
-              : params.checkout === "placeholder"
-                ? copy.checkoutPlaceholder
-                : params.checkout === "success"
-                  ? copy.checkoutSuccess
-                  : params.checkout === "existing"
-                    ? copy.checkoutExisting
-                    : params.checkout === "cancelled"
-                      ? copy.checkoutCancelled
-                      : params.checkout === "error"
-                        ? copy.checkoutError
-                        : params.portal === "placeholder"
-                          ? copy.portalPlaceholder
-                          : params.portal === "missing-customer"
-                            ? copy.portalMissingCustomer
-                            : params.portal === "error"
-                              ? copy.portalError
-                              : "";
+              : params.status === "product-access-required"
+                ? copy.productAccessRequired
+                : params.checkout === "placeholder"
+                  ? copy.checkoutPlaceholder
+                  : params.checkout === "success"
+                    ? copy.checkoutSuccess
+                    : params.checkout === "existing"
+                      ? copy.checkoutExisting
+                      : params.checkout === "complimentary"
+                        ? copy.checkoutComplimentary
+                        : params.checkout === "cancelled"
+                          ? copy.checkoutCancelled
+                          : params.checkout === "error"
+                            ? copy.checkoutError
+                            : params.portal === "placeholder"
+                              ? copy.portalPlaceholder
+                              : params.portal === "missing-customer"
+                                ? copy.portalMissingCustomer
+                                : params.portal === "error"
+                                  ? copy.portalError
+                                  : "";
   const statusTone = getStatusTone(params);
+  const hasPremiumAccess = Boolean(
+    supplier?.complimentaryPremium || supplier?.subscriptionStatus === "active",
+  );
 
   return (
     <DashboardShell
@@ -227,15 +235,21 @@ export default async function VerificationSettingsPage({
                       </p>
                       <Badge
                         className="mt-3"
-                        variant={badgeVariant(supplier.subscriptionStatus)}
+                        variant={badgeVariant(
+                          supplier.complimentaryPremium
+                            ? "active"
+                            : supplier.subscriptionStatus,
+                        )}
                       >
-                        {copy.states[supplier.subscriptionStatus]}
+                        {supplier.complimentaryPremium
+                          ? copy.states.lifetime
+                          : copy.states[supplier.subscriptionStatus]}
                       </Badge>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card>
+                <Card className={!hasPremiumAccess ? "opacity-70" : undefined}>
                   <CardHeader>
                     <CardTitle>{copy.benefits}</CardTitle>
                   </CardHeader>
@@ -299,6 +313,7 @@ export default async function VerificationSettingsPage({
                             required={!documents?.businessLicensePath}
                             aria-describedby="business-license-help"
                             className="h-auto min-h-12 py-2 file:mr-3 file:rounded-sm file:bg-gold-300/10 file:px-3 file:py-2 file:text-gold-100"
+                            disabled={!hasPremiumAccess}
                           />
                           <p
                             id="business-license-help"
@@ -326,6 +341,7 @@ export default async function VerificationSettingsPage({
                             required={!documents?.companyRegistrationPath}
                             aria-describedby="company-registration-help"
                             className="h-auto min-h-12 py-2 file:mr-3 file:rounded-sm file:bg-gold-300/10 file:px-3 file:py-2 file:text-gold-100"
+                            disabled={!hasPremiumAccess}
                           />
                           <p
                             id="company-registration-help"
@@ -353,6 +369,7 @@ export default async function VerificationSettingsPage({
                           accept="application/pdf,image/jpeg,image/png,image/webp"
                           aria-describedby="certifications-help"
                           className="h-auto min-h-12 py-2 file:mr-3 file:rounded-sm file:bg-gold-300/10 file:px-3 file:py-2 file:text-gold-100"
+                          disabled={!hasPremiumAccess}
                         />
                         <p
                           id="certifications-help"
@@ -377,9 +394,14 @@ export default async function VerificationSettingsPage({
                           maxLength={3000}
                           defaultValue={documents?.notes ?? ""}
                           placeholder={copy.notesPlaceholder}
+                          disabled={!hasPremiumAccess}
                         />
                       </div>
-                      <Button type="submit" className="w-full sm:w-auto">
+                      <Button
+                        type="submit"
+                        className="w-full sm:w-auto"
+                        disabled={!hasPremiumAccess}
+                      >
                         {copy.submitDocuments}
                       </Button>
                     </form>
@@ -399,24 +421,30 @@ export default async function VerificationSettingsPage({
                     </p>
                   </CardHeader>
                   <CardContent className="p-6">
-                    <BillingActions
-                      subscribeLabel={copy.subscribe}
-                      manageLabel={copy.manage}
-                      preparingLabel={copy.preparing}
-                      openingLabel={copy.opening}
-                      canManageSubscription={Boolean(supplier.stripeCustomerId)}
-                      canStartSubscription={
-                        supplier.subscriptionStatus !== "active" &&
-                        supplier.subscriptionStatus !== "past_due"
-                      }
-                      dismissNotificationLabel={t.common.dismissNotification}
-                      errorLabel={copy.billingActionError}
-                      locale={locale}
-                    />
+                    {!supplier.complimentaryPremium && (
+                      <BillingActions
+                        subscribeLabel={copy.subscribe}
+                        manageLabel={copy.manage}
+                        preparingLabel={copy.preparing}
+                        openingLabel={copy.opening}
+                        canManageSubscription={Boolean(
+                          supplier.stripeCustomerId,
+                        )}
+                        canStartSubscription={
+                          supplier.subscriptionStatus !== "active" &&
+                          supplier.subscriptionStatus !== "past_due"
+                        }
+                        dismissNotificationLabel={t.common.dismissNotification}
+                        errorLabel={copy.billingActionError}
+                        locale={locale}
+                      />
+                    )}
                     <div className="mt-5 rounded-lg border border-white/10 bg-charcoal-800 p-4 text-sm leading-6 text-muted-foreground">
                       {copy.subscriptionStatus}:{" "}
                       <span className="font-medium text-white">
-                        {copy.states[supplier.subscriptionStatus]}
+                        {supplier.complimentaryPremium
+                          ? copy.states.lifetime
+                          : copy.states[supplier.subscriptionStatus]}
                       </span>
                     </div>
                   </CardContent>

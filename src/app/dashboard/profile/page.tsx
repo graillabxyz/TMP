@@ -65,13 +65,15 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
   const supplier = workspace.supplier;
   const isSupplier = profile.role === "supplier" || profile.role === "admin";
   const statusMessage =
-    params.status === "supplier-started"
-      ? verificationCopy.statusSupplierStarted
-      : params.status === "missing-company"
-        ? verificationCopy.statusMissingCompany
-        : params.status === "error"
-          ? verificationCopy.statusError
-          : "";
+    params.status === "product-access-required"
+      ? verificationCopy.productAccessRequired
+      : params.status === "supplier-started"
+        ? verificationCopy.statusSupplierStarted
+        : params.status === "missing-company"
+          ? verificationCopy.statusMissingCompany
+          : params.status === "error"
+            ? verificationCopy.statusError
+            : "";
 
   return (
     <DashboardShell
@@ -84,7 +86,13 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
         <ToastNotice
           message={statusMessage}
           dismissLabel={t.common.dismissNotification}
-          tone={params.status === "supplier-started" ? "success" : "error"}
+          tone={
+            params.status === "supplier-started"
+              ? "success"
+              : params.status === "product-access-required"
+                ? "info"
+                : "error"
+          }
         />
       )}
 
@@ -147,15 +155,22 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                       {verificationCopy.price}
                     </p>
                   </div>
-                  {supplier ? (
+                  {supplier || profile.complimentaryPremium ? (
                     <Badge
                       variant={
-                        supplier.subscriptionStatus === "active"
+                        profile.complimentaryPremium ||
+                        supplier?.complimentaryPremium ||
+                        supplier?.subscriptionStatus === "active"
                           ? "success"
                           : "secondary"
                       }
                     >
-                      {verificationCopy.states[supplier.subscriptionStatus]}
+                      {profile.complimentaryPremium ||
+                      supplier?.complimentaryPremium
+                        ? verificationCopy.states.lifetime
+                        : verificationCopy.states[
+                            supplier?.subscriptionStatus ?? "inactive"
+                          ]}
                     </Badge>
                   ) : (
                     <Badge variant="secondary">
@@ -168,7 +183,9 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                 </p>
               </div>
               <div className="mt-4 grid gap-2">
-                {supplier ? (
+                {supplier &&
+                !supplier.complimentaryPremium &&
+                !profile.complimentaryPremium ? (
                   <BillingActions
                     subscribeLabel={verificationCopy.subscribe}
                     manageLabel={verificationCopy.manage}
@@ -183,12 +200,12 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                     errorLabel={verificationCopy.billingActionError}
                     locale={locale}
                   />
-                ) : (
+                ) : !supplier && !profile.complimentaryPremium ? (
                   <Button disabled variant="outline">
                     <CreditCard aria-hidden="true" />
                     {verificationCopy.subscribe}
                   </Button>
-                )}
+                ) : null}
                 <Button
                   asChild
                   variant="outline"

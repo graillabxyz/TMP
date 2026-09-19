@@ -9,7 +9,8 @@ export type ProductFormState = {
     | "image"
     | "save"
     | "notFound"
-    | "supplierRequired";
+    | "supplierRequired"
+    | "subscriptionRequired";
   fieldErrors?: ProductFieldErrors;
 };
 

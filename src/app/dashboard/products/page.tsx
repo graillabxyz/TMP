@@ -25,6 +25,7 @@ import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { formatPriceRange, getSupplierProductWorkspace } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
+import { hasSupplierProductAccess } from "@/lib/supplier-access";
 
 type DashboardProductsPageProps = {
   searchParams: Promise<{ q?: string; status?: string; view?: string }>;
@@ -89,7 +90,12 @@ export default async function DashboardProductsPage({
   const archivedCount = products.filter(
     (product) => product.status === "archived",
   ).length;
-  const canPublish = profile.role === "supplier" || profile.role === "admin";
+  const canManageProducts = hasSupplierProductAccess({
+    supplierId: workspace.supplier?.id ?? null,
+    role: profile.role,
+    subscriptionStatus: workspace.supplier?.subscriptionStatus ?? null,
+    complimentaryPremium: workspace.supplier?.complimentaryPremium ?? false,
+  });
   const query = params.q?.trim().slice(0, 80) ?? "";
   const normalizedQuery = query.toLocaleLowerCase(locale);
   const activeView: ProductView = ["published", "draft", "archived"].includes(
@@ -111,6 +117,11 @@ export default async function DashboardProductsPage({
   const createHref = getLocalizedPath(locale, "/dashboard/products/new");
   const productsHref = getLocalizedPath(locale, "/dashboard/products");
   const profileHref = getLocalizedPath(locale, "/dashboard/profile");
+  const verificationHref = getLocalizedPath(
+    locale,
+    "/dashboard/settings/verification",
+  );
+  const accessHref = workspace.supplier ? verificationHref : profileHref;
   const getViewHref = (view: ProductView, preserveQuery = true) => {
     const searchParams = new URLSearchParams();
     if (view !== "all") searchParams.set("view", view);
@@ -165,7 +176,7 @@ export default async function DashboardProductsPage({
         />
       )}
 
-      {!canPublish && (
+      {!canManageProducts && (
         <section className="mb-6 flex flex-col gap-4 border-y border-gold-300/20 bg-gold-300/[0.045] px-4 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-5">
           <div className="flex items-start gap-3">
             <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-gold-300/10 text-gold-100">
@@ -185,7 +196,7 @@ export default async function DashboardProductsPage({
             variant="outline"
             className="w-full shrink-0 sm:w-auto"
           >
-            <Link href={profileHref}>{labels.addSupplierProfile}</Link>
+            <Link href={accessHref}>{labels.addSupplierProfile}</Link>
           </Button>
         </section>
       )}
@@ -196,13 +207,17 @@ export default async function DashboardProductsPage({
             {workspace.supplier?.name ?? labels.yourDraftWorkspace}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            {canPublish ? labels.publishHelp : labels.draftHelp}
+            {canManageProducts
+              ? labels.publishHelp
+              : labels.subscriptionRequiredBody}
           </p>
         </div>
         <Button asChild className="w-full sm:w-auto">
-          <Link href={createHref}>
+          <Link href={canManageProducts ? createHref : accessHref}>
             <Plus aria-hidden="true" />
-            {labels.createProduct}
+            {canManageProducts
+              ? labels.createProduct
+              : labels.unlockProductAccess}
           </Link>
         </Button>
       </div>
@@ -341,10 +356,14 @@ export default async function DashboardProductsPage({
                         deleteConfirmLabel={labels.deleteConfirm}
                         deleteLabel={labels.deleteProduct}
                         deleteTitle={labels.deleteConfirmTitle}
-                        editHref={getLocalizedPath(
-                          locale,
-                          `/dashboard/products/${product.id}/edit`,
-                        )}
+                        editHref={
+                          canManageProducts
+                            ? getLocalizedPath(
+                                locale,
+                                `/dashboard/products/${product.id}/edit`,
+                              )
+                            : null
+                        }
                         editLabel={t.common.edit}
                         locale={locale}
                         menuLabel={t.common.action}
@@ -401,10 +420,14 @@ export default async function DashboardProductsPage({
                     deleteConfirmLabel={labels.deleteConfirm}
                     deleteLabel={labels.deleteProduct}
                     deleteTitle={labels.deleteConfirmTitle}
-                    editHref={getLocalizedPath(
-                      locale,
-                      `/dashboard/products/${product.id}/edit`,
-                    )}
+                    editHref={
+                      canManageProducts
+                        ? getLocalizedPath(
+                            locale,
+                            `/dashboard/products/${product.id}/edit`,
+                          )
+                        : null
+                    }
                     editLabel={t.common.edit}
                     locale={locale}
                     menuLabel={t.common.action}
@@ -443,11 +466,21 @@ export default async function DashboardProductsPage({
                 : labels.noProductsBody}
           </p>
           <Button asChild className="mt-5">
-            <Link href={products.length > 0 ? productsHref : createHref}>
+            <Link
+              href={
+                products.length > 0
+                  ? productsHref
+                  : canManageProducts
+                    ? createHref
+                    : accessHref
+              }
+            >
               {products.length > 0 ? null : <Plus aria-hidden="true" />}
               {products.length > 0
                 ? labels.showAllProducts
-                : labels.createProduct}
+                : canManageProducts
+                  ? labels.createProduct
+                  : labels.unlockProductAccess}
             </Link>
           </Button>
         </section>

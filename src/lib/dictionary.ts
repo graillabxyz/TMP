@@ -302,7 +302,7 @@ const dictionaries = {
         "Create an account or sign in to browse products, send detailed RFQs, and manage your sourcing activity.",
       supplierLoginTitle: "Sign in to start your supplier upgrade.",
       supplierLoginBody:
-        "Use your existing TMP account to add company details and unlock supplier tools. Paid verification is optional.",
+        "Use your existing TMP account to add company details, then start the €50 monthly Premium Supplier membership to list products.",
       buyerLogin: "Buyer login",
       supplierLogin: "Supplier login",
       email: "Email",
@@ -328,7 +328,7 @@ const dictionaries = {
       registerTitle: "Source from trusted Turkish suppliers.",
       supplierRegisterTitle: "Create your TMP account to start selling.",
       supplierRegisterBody:
-        "Next you will add your supplier profile and publish products from the same account. Paid verification can be added separately.",
+        "Next you will add your supplier profile, then start Premium Supplier access to create and publish products.",
       accountPath: "Discover the right products",
       accountPathBody:
         "Browse products and compare export-ready Turkish suppliers.",
@@ -340,12 +340,12 @@ const dictionaries = {
         "Use one TMP login for buying, sourcing, and supplier tools.",
       supplierStepUpgrade: "2. Add supplier upgrade",
       supplierStepUpgradeBody:
-        "Add company details and publish products. Add paid verification when you want the badge.",
+        "Add company details, then start Premium Supplier access to create products and submit verification documents.",
       buyerPath: "Buyer path",
       buyerPathBody: "Send RFQs and shortlist suppliers.",
       supplierPath: "Supplier path",
       supplierPathBody:
-        "Add a supplier profile and publish products. Verification is optional.",
+        "Add a supplier profile and start Premium Supplier access to publish products.",
       accountTitle: "TMP account",
       accountBody:
         "Create an account or sign in to browse products, send detailed RFQs, and manage your sourcing activity.",
@@ -354,7 +354,7 @@ const dictionaries = {
         "Create or sign in to the same account you will use for sourcing and supplier tools.",
       supplierIntentTitle: "Step 2: Supplier upgrade",
       supplierIntentBody:
-        "After sign-in, add company details and start publishing. Paid verification is optional.",
+        "After sign-in, add company details and start Premium Supplier access to publish.",
       buyerAccount: "Buyer sourcing",
       supplierAccount: "Supplier profile",
       fullName: "Full name",
@@ -370,7 +370,7 @@ const dictionaries = {
       supplierContinueWithGoogle: "Continue with Google",
       googleHelp: "Use Google to sign in or create your TMP buyer account.",
       supplierGoogleHelp:
-        "Continue with one TMP account. Supplier profile setup happens next; paid verification is optional.",
+        "Continue with one TMP account. Supplier profile and Premium Supplier setup happen after sign-in.",
       orEmail: "or continue with email",
       agreementStart: "By creating an account, you agree to the",
       agreementTerms: "Terms of Service",
@@ -453,13 +453,13 @@ const dictionaries = {
       viewAllProducts: "View all products",
       buyerDraftTitle: "Build your catalog before you sell",
       buyerDraftBody:
-        "Create private product drafts now. Add a free supplier profile when you are ready to publish them on the marketplace.",
-      freeSupplierAccess: "Add free supplier profile",
+        "Add a supplier profile, then start Premium Supplier access to create and publish product listings.",
+      freeSupplierAccess: "Set up supplier access",
       supplierCatalogTitle: "Keep your catalog ready for buyers",
       supplierCatalogBody:
         "Complete product details, use clear photos, and publish listings when they are ready for buyer discovery.",
       optionalVerificationBody:
-        "Supplier tools are free. Paid verification is optional and adds a verified badge after review.",
+        "Premium Supplier access is €50 per month and is required to create or update product listings. The verified badge is awarded after document review.",
       buyerWorkspace: {
         eyebrow: "Buyer workspace",
         description:
@@ -612,16 +612,21 @@ const dictionaries = {
         supplierAccessEditBody:
           "Add a supplier profile before editing supplier product listings.",
         supplierAccessBody:
-          "Product posting is available after adding a supplier profile. Your TMP account can still browse products, save suppliers, and submit RFQs.",
-        draftOnlyNoticeTitle: "Drafts are available on every account",
+          "Product creation requires an active Premium Supplier membership. Your TMP account can still browse products, save suppliers, and submit RFQs without one.",
+        draftOnlyNoticeTitle: "Premium Supplier access required",
         draftOnlyNoticeBody:
-          "Create and edit private product drafts now. To make a listing live, add a free supplier profile with your business name.",
+          "Start the €50 monthly membership to create, edit, and publish product listings.",
         draftOnlyTitle: "Save this as a private draft",
         draftOnlyBody:
-          "You can finish your listing now. Publishing becomes available after you add a free supplier profile.",
-        addSupplierProfile: "Add free supplier profile",
+          "Product creation becomes available after your Premium Supplier membership is active.",
+        addSupplierProfile: "Review premium access",
+        unlockProductAccess: "Unlock product creation",
+        subscriptionRequiredBody:
+          "An active Premium Supplier membership is required to create and edit products.",
         supplierRequiredError:
           "This account can save drafts, but it needs a supplier profile before publishing.",
+        subscriptionRequiredError:
+          "Your Premium Supplier membership must be active before you can save product listings.",
         yourDraftWorkspace: "Your private product workspace",
         allListings: "All products",
         publishedListings: "Published",
@@ -673,17 +678,17 @@ const dictionaries = {
       supplierEnabled: "Supplier tools enabled",
       supplierUpgradeTitle: "Upgrade to supplier",
       supplierUpgradeBody:
-        "Add basic business details to unlock supplier tools. This does not charge you or add a verified badge.",
+        "Add your business details to create a supplier profile. Product listings require Premium Supplier access.",
       businessName: "Business name",
       startSupplierUpgrade: "Upgrade to supplier",
       supplierReadyTitle: "Supplier profile",
       supplierReadyBody:
-        "Your account has supplier tools enabled. You can manage product listings and choose whether to pay for verification.",
+        "Your supplier profile is ready. Start Premium Supplier access to create and manage product listings.",
       verifiedTitle: "Verified badge membership",
       verifiedBody:
-        "The verified badge is a paid monthly membership. Start or manage the subscription when you want the badge and verification review.",
+        "Premium Supplier access is €50 per month and unlocks product listings. Submit business documents to earn the verified badge after review.",
       verifiedLockedBody:
-        "First upgrade to a supplier by adding your business name. Then you can start the paid membership for a verified badge.",
+        "First add your business name to create a supplier profile. Then start Premium Supplier access for product listings and verification review.",
       verificationSettings: "Verification settings",
       manageProducts: "Manage products",
       editSupplierProfile: "Edit supplier profile",
@@ -741,15 +746,15 @@ const dictionaries = {
       subscriptionStatus: "Subscription status",
       benefits: "Verification benefits",
       benefitItems: [
+        "Create, edit, and publish product listings",
         "Verified badge on supplier and product cards",
         "Increased buyer trust during RFQ review",
         "Better visibility in marketplace discovery",
-        "Access to future premium supplier features",
       ],
       subscription: "Monthly subscription",
-      price: "€1 / month",
+      price: "€50 / month",
       priceNote:
-        "Early-access verification membership for pilot suppliers. Pricing may change after the pilot period.",
+        "Premium Supplier access renews monthly. Cancel from the billing portal at any time.",
       subscribe: "Start subscription",
       manage: "Manage subscription",
       documents: "Business verification",
@@ -757,7 +762,7 @@ const dictionaries = {
         "Upload private business documents for admin review. Files are stored securely and are not public marketplace assets.",
       supplierAccessTitle: "Add a supplier profile",
       supplierAccessBody:
-        "Your TMP account can source as a buyer by default. Add company details to unlock supplier tools; paid verification is optional.",
+        "Your TMP account can source as a buyer by default. Add company details, then start Premium Supplier access to list products.",
       supplierCompany: "Supplier company",
       startSupplierProfile: "Start supplier upgrade",
       businessLicense: "Business license",
@@ -774,7 +779,9 @@ const dictionaries = {
       submitDocuments: "Submit for review",
       statusSubmitted: "Verification documents submitted for admin review.",
       statusSupplierStarted:
-        "Supplier profile started. You can publish products now and add paid verification when ready.",
+        "Supplier profile created. Start Premium Supplier access to add products.",
+      productAccessRequired:
+        "An active Premium Supplier membership is required to create or edit products.",
       statusMissingCompany: "Please add a supplier company name.",
       statusDocumentError:
         "Add valid business license and company registration files. Use PDF, JPG, PNG, or WebP files up to 10 MB.",
@@ -786,6 +793,8 @@ const dictionaries = {
         "Checkout completed. Stripe will confirm the subscription by webhook.",
       checkoutExisting:
         "A verification membership already exists. Use Manage subscription to review billing.",
+      checkoutComplimentary:
+        "Lifetime complimentary Premium Supplier access is active on this account.",
       checkoutCancelled: "Checkout cancelled. No subscription was started.",
       checkoutError:
         "We could not open verification membership checkout. Please try again later.",
@@ -809,6 +818,7 @@ const dictionaries = {
         rejected: "Rejected",
         inactive: "Inactive",
         active: "Active",
+        lifetime: "Lifetime complimentary",
         past_due: "Past due",
         canceled: "Canceled",
       },
@@ -1238,7 +1248,7 @@ const dictionaries = {
         "Créez un compte ou connectez-vous pour parcourir les produits, envoyer des demandes détaillées et gérer votre sourcing.",
       supplierLoginTitle: "Connectez-vous pour lancer l’upgrade fournisseur.",
       supplierLoginBody:
-        "Utilisez votre compte TMP pour ajouter la société et débloquer les outils fournisseur. La vérification payante est facultative.",
+        "Utilisez votre compte TMP pour ajouter la société, puis démarrez l’abonnement Fournisseur Premium à 50 € par mois pour lister des produits.",
       buyerLogin: "Connexion acheteur",
       supplierLogin: "Connexion fournisseur",
       email: "Email",
@@ -1264,7 +1274,7 @@ const dictionaries = {
       registerTitle: "Sourcez auprès de fournisseurs turcs de confiance.",
       supplierRegisterTitle: "Créez votre compte TMP pour commencer à vendre.",
       supplierRegisterBody:
-        "Ensuite, ajoutez votre profil fournisseur et publiez vos produits depuis le même compte. La vérification payante reste facultative.",
+        "Ensuite, ajoutez votre profil fournisseur, puis démarrez l’accès Fournisseur Premium pour créer et publier des produits.",
       accountPath: "Trouvez les bons produits",
       accountPathBody:
         "Parcourez les produits et comparez les fournisseurs turcs prêts pour l’export.",
@@ -1276,12 +1286,12 @@ const dictionaries = {
         "Utilisez une seule connexion TMP pour acheter, sourcer et gérer les outils fournisseur.",
       supplierStepUpgrade: "2. Ajouter l’upgrade fournisseur",
       supplierStepUpgradeBody:
-        "Ajoutez la société et publiez vos produits. Activez la vérification payante pour obtenir le badge.",
+        "Ajoutez la société, puis démarrez l’accès Fournisseur Premium pour créer des produits et soumettre vos documents.",
       buyerPath: "Parcours acheteur",
       buyerPathBody: "Envoyez des demandes et sélectionnez des fournisseurs.",
       supplierPath: "Parcours fournisseur",
       supplierPathBody:
-        "Ajoutez un profil fournisseur et publiez vos produits. La vérification est facultative.",
+        "Ajoutez un profil fournisseur et démarrez l’accès Fournisseur Premium pour publier des produits.",
       accountTitle: "Compte TMP",
       accountBody:
         "Créez un compte ou connectez-vous pour parcourir les produits, envoyer des demandes détaillées et gérer votre sourcing.",
@@ -1290,7 +1300,7 @@ const dictionaries = {
         "Créez ou connectez-vous au même compte utilisé pour le sourcing et les outils fournisseur.",
       supplierIntentTitle: "Étape 2 : upgrade fournisseur",
       supplierIntentBody:
-        "Après connexion, ajoutez la société et commencez à publier. La vérification payante est facultative.",
+        "Après connexion, ajoutez la société et démarrez l’accès Fournisseur Premium pour publier.",
       buyerAccount: "Sourcing acheteur",
       supplierAccount: "Profil fournisseur",
       fullName: "Nom complet",
@@ -1307,7 +1317,7 @@ const dictionaries = {
       googleHelp:
         "Utilisez Google pour vous connecter ou créer votre compte acheteur TMP.",
       supplierGoogleHelp:
-        "Continuez avec un seul compte TMP. Le profil fournisseur se configure ensuite; la vérification payante est facultative.",
+        "Continuez avec un seul compte TMP. Le profil et l’accès Fournisseur Premium se configurent après connexion.",
       orEmail: "ou continuer avec email",
       agreementStart: "En créant un compte, vous acceptez les",
       agreementTerms: "Conditions d’utilisation",
@@ -1392,13 +1402,13 @@ const dictionaries = {
       viewAllProducts: "Voir tous les produits",
       buyerDraftTitle: "Préparez votre catalogue avant de vendre",
       buyerDraftBody:
-        "Créez maintenant des brouillons produit privés. Ajoutez un profil fournisseur gratuit lorsque vous êtes prêt à les publier sur la marketplace.",
-      freeSupplierAccess: "Ajouter un profil fournisseur gratuit",
+        "Ajoutez un profil fournisseur, puis démarrez l’accès Fournisseur Premium pour créer et publier des listings produits.",
+      freeSupplierAccess: "Configurer l’accès fournisseur",
       supplierCatalogTitle: "Gardez votre catalogue prêt pour les acheteurs",
       supplierCatalogBody:
         "Complétez les détails, utilisez des photos nettes et publiez les listings prêts à être découverts.",
       optionalVerificationBody:
-        "Les outils fournisseur sont gratuits. La vérification payante est facultative et ajoute un badge après examen.",
+        "L’accès Fournisseur Premium coûte 50 € par mois et est requis pour créer ou modifier les listings produits. Le badge vérifié est accordé après examen des documents.",
       buyerWorkspace: {
         eyebrow: "Espace acheteur",
         description:
@@ -1560,17 +1570,21 @@ const dictionaries = {
         supplierAccessEditBody:
           "Ajoutez un profil fournisseur avant de modifier les listings produits.",
         supplierAccessBody:
-          "La publication produit est disponible après ajout d’un profil fournisseur. Votre compte TMP peut toujours parcourir les produits, enregistrer des fournisseurs et envoyer des demandes.",
-        draftOnlyNoticeTitle:
-          "Les brouillons sont disponibles pour tous les comptes",
+          "La création de produits nécessite un abonnement Fournisseur Premium actif. Sans abonnement, votre compte TMP peut toujours parcourir les produits, enregistrer des fournisseurs et envoyer des demandes.",
+        draftOnlyNoticeTitle: "Accès Fournisseur Premium requis",
         draftOnlyNoticeBody:
-          "Créez et modifiez vos brouillons produit privés. Pour publier un listing, ajoutez gratuitement un profil fournisseur avec le nom de votre entreprise.",
+          "Démarrez l’abonnement mensuel à 50 € pour créer, modifier et publier des produits.",
         draftOnlyTitle: "Enregistrer comme brouillon privé",
         draftOnlyBody:
-          "Vous pouvez terminer votre listing maintenant. La publication sera disponible après l’ajout gratuit d’un profil fournisseur.",
-        addSupplierProfile: "Ajouter un profil fournisseur gratuit",
+          "La création de produits devient disponible lorsque votre abonnement Fournisseur Premium est actif.",
+        addSupplierProfile: "Voir l’accès premium",
+        unlockProductAccess: "Débloquer la création de produits",
+        subscriptionRequiredBody:
+          "Un abonnement Fournisseur Premium actif est requis pour créer et modifier des produits.",
         supplierRequiredError:
           "Ce compte peut enregistrer des brouillons, mais un profil fournisseur est requis pour publier.",
+        subscriptionRequiredError:
+          "Votre abonnement Fournisseur Premium doit être actif pour enregistrer des produits.",
         yourDraftWorkspace: "Votre espace produit privé",
         allListings: "Tous les produits",
         publishedListings: "Publiés",
@@ -1624,17 +1638,17 @@ const dictionaries = {
       supplierEnabled: "Outils fournisseur activés",
       supplierUpgradeTitle: "Passer en fournisseur",
       supplierUpgradeBody:
-        "Ajoutez les informations de base de l’entreprise pour débloquer les outils fournisseur. Cela ne vous facture pas et n’ajoute pas de badge vérifié.",
+        "Ajoutez les informations de votre entreprise pour créer un profil fournisseur. Les listings produits nécessitent l’accès Fournisseur Premium.",
       businessName: "Nom de l’entreprise",
       startSupplierUpgrade: "Passer en fournisseur",
       supplierReadyTitle: "Profil fournisseur",
       supplierReadyBody:
-        "Votre compte a les outils fournisseur activés. Vous pouvez gérer les listings produits et choisir de payer pour la vérification.",
+        "Votre profil fournisseur est prêt. Démarrez l’accès Fournisseur Premium pour créer et gérer les listings produits.",
       verifiedTitle: "Abonnement badge vérifié",
       verifiedBody:
-        "Le badge vérifié est un abonnement mensuel payant. Lancez ou gérez l’abonnement quand vous voulez le badge et la revue de vérification.",
+        "L’accès Fournisseur Premium coûte 50 € par mois et débloque les listings produits. Soumettez les documents de l’entreprise pour obtenir le badge vérifié après examen.",
       verifiedLockedBody:
-        "Passez d’abord en fournisseur en ajoutant le nom de l’entreprise. Vous pourrez ensuite démarrer l’abonnement payant pour le badge vérifié.",
+        "Ajoutez d’abord le nom de votre entreprise pour créer un profil fournisseur. Démarrez ensuite l’accès Fournisseur Premium pour les listings et la vérification.",
       verificationSettings: "Paramètres de vérification",
       manageProducts: "Gérer les produits",
       editSupplierProfile: "Modifier le profil fournisseur",
@@ -1693,15 +1707,15 @@ const dictionaries = {
       subscriptionStatus: "Statut d’abonnement",
       benefits: "Bénéfices de la vérification",
       benefitItems: [
+        "Créer, modifier et publier des listings produits",
         "Badge vérifié sur les cartes fournisseur et produit",
         "Plus de confiance acheteur pendant la revue RFQ",
         "Meilleure visibilité dans la découverte marketplace",
-        "Accès aux futures fonctions premium fournisseur",
       ],
       subscription: "Abonnement mensuel",
-      price: "1 € / mois",
+      price: "50 € / mois",
       priceNote:
-        "Abonnement de vérification en accès anticipé pour les fournisseurs pilotes. Le tarif pourra évoluer après la période pilote.",
+        "L’accès Fournisseur Premium est renouvelé chaque mois. Vous pouvez annuler à tout moment depuis le portail de facturation.",
       subscribe: "Démarrer l’abonnement",
       manage: "Gérer l’abonnement",
       documents: "Vérification entreprise",
@@ -1709,7 +1723,7 @@ const dictionaries = {
         "Importez des documents d’entreprise privés pour la revue admin. Les fichiers sont stockés de façon sécurisée et ne sont pas publics.",
       supplierAccessTitle: "Ajouter un profil fournisseur",
       supplierAccessBody:
-        "Votre compte TMP permet le sourcing acheteur par défaut. Ajoutez la société pour débloquer les outils fournisseur; la vérification payante est facultative.",
+        "Votre compte TMP permet le sourcing acheteur par défaut. Ajoutez votre société, puis démarrez l’accès Fournisseur Premium pour lister des produits.",
       supplierCompany: "Société fournisseur",
       startSupplierProfile: "Démarrer l’upgrade fournisseur",
       businessLicense: "Licence commerciale",
@@ -1726,7 +1740,9 @@ const dictionaries = {
       submitDocuments: "Soumettre pour revue",
       statusSubmitted: "Documents soumis pour revue admin.",
       statusSupplierStarted:
-        "Profil fournisseur démarré. Vous pouvez publier maintenant et ajouter la vérification payante ensuite.",
+        "Profil fournisseur créé. Démarrez l’accès Fournisseur Premium pour ajouter des produits.",
+      productAccessRequired:
+        "Un abonnement Fournisseur Premium actif est requis pour créer ou modifier des produits.",
       statusMissingCompany:
         "Veuillez ajouter le nom de la société fournisseur.",
       statusDocumentError:
@@ -1739,6 +1755,8 @@ const dictionaries = {
         "Checkout terminé. Stripe confirmera l’abonnement via webhook.",
       checkoutExisting:
         "Un abonnement de vérification existe déjà. Utilisez Gérer l’abonnement pour consulter la facturation.",
+      checkoutComplimentary:
+        "L’accès Fournisseur Premium gratuit à vie est actif sur ce compte.",
       checkoutCancelled: "Checkout annulé. Aucun abonnement n’a été lancé.",
       checkoutError:
         "Impossible d’ouvrir le paiement de l’abonnement de vérification. Veuillez réessayer plus tard.",
@@ -1763,6 +1781,7 @@ const dictionaries = {
         rejected: "Rejeté",
         inactive: "Inactif",
         active: "Actif",
+        lifetime: "Gratuit à vie",
         past_due: "En retard",
         canceled: "Annulé",
       },
@@ -2192,7 +2211,7 @@ const turkishDictionary = {
       "Ürünleri incelemek, ayrıntılı teklif talepleri göndermek ve tedarik sürecinizi yönetmek için hesap oluşturun veya giriş yapın.",
     supplierLoginTitle: "Tedarikçi yükseltmesini başlatmak için giriş yapın.",
     supplierLoginBody:
-      "Şirket bilgilerini eklemek ve tedarikçi araçlarını açmak için mevcut TMP hesabınızı kullanın. Ücretli doğrulama isteğe bağlıdır.",
+      "Şirket bilgilerini eklemek için mevcut TMP hesabınızı kullanın, ardından ürün listelemek için aylık €50 Premium Tedarikçi üyeliğini başlatın.",
     buyerLogin: "Alıcı girişi",
     supplierLogin: "Tedarikçi girişi",
     email: "E-posta",
@@ -2218,7 +2237,7 @@ const turkishDictionary = {
     registerTitle: "Güvenilir Türk tedarikçilerden ürün tedarik edin.",
     supplierRegisterTitle: "Satışa başlamak için TMP hesabınızı oluşturun.",
     supplierRegisterBody:
-      "Sonraki adımda tedarikçi profilinizi ekleyip aynı hesaptan ürün yayınlayabilirsiniz. Ücretli doğrulama ayrıca eklenebilir.",
+      "Sonraki adımda tedarikçi profilinizi ekleyin, ardından ürün oluşturmak ve yayınlamak için Premium Tedarikçi erişimini başlatın.",
     accountPath: "Doğru ürünleri keşfedin",
     accountPathBody:
       "Ürünleri inceleyin ve ihracata hazır Türk tedarikçileri karşılaştırın.",
@@ -2230,13 +2249,13 @@ const turkishDictionary = {
       "Satın alma, sourcing ve tedarikçi araçları için tek TMP girişini kullanın.",
     supplierStepUpgrade: "2. Tedarikçi yükseltmesi ekle",
     supplierStepUpgradeBody:
-      "Şirket bilgilerini ekleyip ürün yayınlayın. Rozet istediğinizde ücretli doğrulama ekleyin.",
+      "Şirket bilgilerini ekleyin, ardından ürün oluşturmak ve doğrulama belgelerini göndermek için Premium Tedarikçi erişimini başlatın.",
     buyerPath: "Alıcı yolu",
     buyerPathBody:
       "Teklif talepleri gönderin ve tedarikçileri kısa listeye alın.",
     supplierPath: "Tedarikçi yolu",
     supplierPathBody:
-      "Tedarikçi profili ekleyip ürün yayınlayın. Doğrulama isteğe bağlıdır.",
+      "Tedarikçi profili ekleyin ve ürün yayınlamak için Premium Tedarikçi erişimini başlatın.",
     accountTitle: "TMP hesabı",
     accountBody:
       "Ürünleri incelemek, ayrıntılı teklif talepleri göndermek ve tedarik sürecinizi yönetmek için hesap oluşturun veya giriş yapın.",
@@ -2245,7 +2264,7 @@ const turkishDictionary = {
       "Sourcing ve tedarikçi araçları için kullanacağınız aynı hesaba giriş yapın veya hesap oluşturun.",
     supplierIntentTitle: "Adım 2: Tedarikçi yükseltmesi",
     supplierIntentBody:
-      "Girişten sonra şirket bilgilerini ekleyip yayınlamaya başlayın. Ücretli doğrulama isteğe bağlıdır.",
+      "Girişten sonra şirket bilgilerini ekleyin ve yayınlamak için Premium Tedarikçi erişimini başlatın.",
     buyerAccount: "Alıcı tedariki",
     supplierAccount: "Tedarikçi profili",
     fullName: "Ad soyad",
@@ -2262,7 +2281,7 @@ const turkishDictionary = {
     googleHelp:
       "TMP alıcı hesabınıza giriş yapmak veya hesap oluşturmak için Google'ı kullanın.",
     supplierGoogleHelp:
-      "Tek TMP hesabıyla devam edin. Tedarikçi profili sonraki adımda kurulur; ücretli doğrulama isteğe bağlıdır.",
+      "Tek TMP hesabıyla devam edin. Tedarikçi profili ve Premium Tedarikçi erişimi girişten sonra kurulur.",
     orEmail: "veya e-posta ile devam et",
     agreementStart: "Hesap oluşturarak",
     agreementTerms: "Hizmet Şartları'nı",
@@ -2342,13 +2361,13 @@ const turkishDictionary = {
     viewAllProducts: "Tüm ürünleri görüntüle",
     buyerDraftTitle: "Satışa başlamadan kataloğunuzu hazırlayın",
     buyerDraftBody:
-      "Şimdi özel ürün taslakları oluşturun. Pazar yerinde yayınlamaya hazır olduğunuzda ücretsiz bir tedarikçi profili ekleyin.",
-    freeSupplierAccess: "Ücretsiz tedarikçi profili ekle",
+      "Tedarikçi profili ekleyin, ardından ürün ilanları oluşturmak ve yayınlamak için Premium Tedarikçi erişimini başlatın.",
+    freeSupplierAccess: "Tedarikçi erişimini ayarla",
     supplierCatalogTitle: "Kataloğunuzu alıcılara hazır tutun",
     supplierCatalogBody:
       "Ürün bilgilerini tamamlayın, net fotoğraflar kullanın ve alıcı keşfine hazır ilanları yayınlayın.",
     optionalVerificationBody:
-      "Tedarikçi araçları ücretsizdir. Ücretli doğrulama isteğe bağlıdır ve inceleme sonrasında doğrulanmış rozet ekler.",
+      "Premium Tedarikçi erişimi aylık €50’dir ve ürün ilanı oluşturmak veya güncellemek için zorunludur. Doğrulanmış rozet, belge incelemesinden sonra verilir.",
     buyerWorkspace: {
       eyebrow: "Alıcı çalışma alanı",
       description:
@@ -2503,16 +2522,21 @@ const turkishDictionary = {
       supplierAccessEditBody:
         "Tedarikçi ürün ilanlarını düzenlemeden önce tedarikçi profili ekleyin.",
       supplierAccessBody:
-        "Ürün yayınlama, tedarikçi profili eklendikten sonra kullanılabilir. TMP hesabınız yine ürünleri inceleyebilir, tedarikçileri kaydedebilir ve RFQ gönderebilir.",
-      draftOnlyNoticeTitle: "Taslaklar tüm hesaplarda kullanılabilir",
+        "Ürün oluşturmak için etkin Premium Tedarikçi üyeliği gerekir. Üyelik olmadan TMP hesabınızla ürünleri inceleyebilir, tedarikçileri kaydedebilir ve RFQ gönderebilirsiniz.",
+      draftOnlyNoticeTitle: "Premium Tedarikçi erişimi gerekli",
       draftOnlyNoticeBody:
-        "Şimdi özel ürün taslakları oluşturup düzenleyin. Bir ilanı yayına almak için işletme adınızla ücretsiz bir tedarikçi profili ekleyin.",
+        "Ürün ilanları oluşturmak, düzenlemek ve yayınlamak için aylık €50 üyeliği başlatın.",
       draftOnlyTitle: "Özel taslak olarak kaydedin",
       draftOnlyBody:
-        "İlanınızı şimdi tamamlayabilirsiniz. Ücretsiz tedarikçi profili ekledikten sonra yayınlama açılır.",
-      addSupplierProfile: "Ücretsiz tedarikçi profili ekle",
+        "Premium Tedarikçi üyeliğiniz etkin olduğunda ürün oluşturma açılır.",
+      addSupplierProfile: "Premium erişimi incele",
+      unlockProductAccess: "Ürün oluşturmayı aç",
+      subscriptionRequiredBody:
+        "Ürün oluşturmak ve düzenlemek için etkin Premium Tedarikçi üyeliği gerekir.",
       supplierRequiredError:
         "Bu hesap taslak kaydedebilir, ancak yayınlamak için tedarikçi profili gerekir.",
+      subscriptionRequiredError:
+        "Ürün ilanlarını kaydetmeden önce Premium Tedarikçi üyeliğiniz etkin olmalıdır.",
       yourDraftWorkspace: "Özel ürün çalışma alanınız",
       allListings: "Tüm ürünler",
       publishedListings: "Yayında",
@@ -2564,17 +2588,17 @@ const turkishDictionary = {
     supplierEnabled: "Tedarikçi araçları etkin",
     supplierUpgradeTitle: "Tedarikçiye yükselt",
     supplierUpgradeBody:
-      "Tedarikçi araçlarını açmak için temel işletme bilgilerini ekleyin. Bu işlem ücret almaz ve doğrulanmış rozet eklemez.",
+      "Tedarikçi profili oluşturmak için işletme bilgilerinizi ekleyin. Ürün ilanları için Premium Tedarikçi erişimi gerekir.",
     businessName: "İşletme adı",
     startSupplierUpgrade: "Tedarikçiye yükselt",
     supplierReadyTitle: "Tedarikçi profili",
     supplierReadyBody:
-      "Hesabınızda tedarikçi araçları etkin. Ürün ilanlarını yönetebilir ve doğrulama için ödeme yapıp yapmamayı seçebilirsiniz.",
+      "Tedarikçi profiliniz hazır. Ürün ilanları oluşturmak ve yönetmek için Premium Tedarikçi erişimini başlatın.",
     verifiedTitle: "Doğrulanmış rozet üyeliği",
     verifiedBody:
-      "Doğrulanmış rozet ücretli aylık üyelikle verilir. Rozet ve doğrulama incelemesi istediğinizde aboneliği başlatın veya yönetin.",
+      "Premium Tedarikçi erişimi aylık €50’dir ve ürün ilanlarını açar. İnceleme sonrasında doğrulanmış rozet almak için işletme belgelerinizi gönderin.",
     verifiedLockedBody:
-      "Önce işletme adınızı ekleyerek tedarikçiye yükseltin. Ardından doğrulanmış rozet için ücretli üyeliği başlatabilirsiniz.",
+      "Önce işletme adınızı ekleyerek tedarikçi profili oluşturun. Ardından ürün ilanları ve doğrulama için Premium Tedarikçi erişimini başlatın.",
     verificationSettings: "Doğrulama ayarları",
     manageProducts: "Ürünleri yönet",
     editSupplierProfile: "Tedarikçi profilini düzenle",
@@ -2631,15 +2655,15 @@ const turkishDictionary = {
     subscriptionStatus: "Abonelik durumu",
     benefits: "Doğrulama avantajları",
     benefitItems: [
+      "Ürün ilanları oluşturma, düzenleme ve yayınlama",
       "Tedarikçi ve ürün kartlarında doğrulanmış rozet",
       "RFQ incelemesi sırasında daha yüksek alıcı güveni",
       "Pazar yeri keşfinde daha iyi görünürlük",
-      "Gelecekteki premium tedarikçi özelliklerine erişim",
     ],
     subscription: "Aylık abonelik",
-    price: "€1 / ay",
+    price: "€50 / ay",
     priceNote:
-      "Pilot tedarikçiler için erken erişim doğrulama üyeliği. Pilot dönemden sonra fiyat değişebilir.",
+      "Premium Tedarikçi erişimi aylık yenilenir. Faturalandırma portalından istediğiniz zaman iptal edebilirsiniz.",
     subscribe: "Aboneliği başlat",
     manage: "Aboneliği yönet",
     documents: "İşletme doğrulaması",
@@ -2647,7 +2671,7 @@ const turkishDictionary = {
       "Yönetici incelemesi için özel işletme belgelerini yükleyin. Dosyalar güvenli biçimde saklanır ve pazar yerinde herkese açık değildir.",
     supplierAccessTitle: "Tedarikçi profili ekle",
     supplierAccessBody:
-      "TMP hesabınız varsayılan olarak alıcı sourcing yapabilir. Tedarikçi araçlarını açmak için şirket bilgilerini ekleyin; ücretli doğrulama isteğe bağlıdır.",
+      "TMP hesabınız varsayılan olarak alıcı sourcing yapabilir. Şirket bilgilerinizi ekleyin, ardından ürün listelemek için Premium Tedarikçi erişimini başlatın.",
     supplierCompany: "Tedarikçi şirketi",
     startSupplierProfile: "Tedarikçi yükseltmesini başlat",
     businessLicense: "İşletme lisansı",
@@ -2664,7 +2688,9 @@ const turkishDictionary = {
     submitDocuments: "İncelemeye gönder",
     statusSubmitted: "Doğrulama belgeleri yönetici incelemesine gönderildi.",
     statusSupplierStarted:
-      "Tedarikçi profili başlatıldı. Ürünleri hemen yayınlayabilir, ücretli doğrulamayı daha sonra ekleyebilirsiniz.",
+      "Tedarikçi profili oluşturuldu. Ürün eklemek için Premium Tedarikçi erişimini başlatın.",
+    productAccessRequired:
+      "Ürün oluşturmak veya düzenlemek için etkin Premium Tedarikçi üyeliği gerekir.",
     statusMissingCompany: "Lütfen tedarikçi şirket adını ekleyin.",
     statusDocumentError:
       "Geçerli işletme lisansı ve şirket kayıt dosyaları ekleyin. En fazla 10 MB PDF, JPG, PNG veya WebP kullanın.",
@@ -2675,6 +2701,8 @@ const turkishDictionary = {
       "Checkout tamamlandı. Stripe aboneliği webhook ile onaylayacak.",
     checkoutExisting:
       "Bir doğrulama üyeliği zaten mevcut. Faturalandırmayı incelemek için Aboneliği yönet seçeneğini kullanın.",
+    checkoutComplimentary:
+      "Bu hesapta ömür boyu ücretsiz Premium Tedarikçi erişimi etkindir.",
     checkoutCancelled: "Checkout iptal edildi. Abonelik başlatılmadı.",
     checkoutError:
       "Doğrulama üyeliği ödemesi açılamadı. Lütfen daha sonra tekrar deneyin.",
@@ -2697,6 +2725,7 @@ const turkishDictionary = {
       rejected: "Reddedildi",
       inactive: "Pasif",
       active: "Aktif",
+      lifetime: "Ömür boyu ücretsiz",
       past_due: "Gecikmiş",
       canceled: "İptal edildi",
     },

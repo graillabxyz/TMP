@@ -63,6 +63,7 @@ export type Database = {
           email: string;
           full_name: string | null;
           role: "buyer" | "supplier" | "admin";
+          complimentary_premium: boolean;
           created_at: string;
           updated_at: string;
         };
@@ -71,6 +72,7 @@ export type Database = {
           email: string;
           full_name?: string | null;
           role?: "buyer" | "supplier" | "admin";
+          complimentary_premium?: boolean;
           created_at?: string;
           updated_at?: string;
         };
@@ -254,6 +256,7 @@ export type Database = {
             | "active"
             | "past_due"
             | "canceled";
+          complimentary_premium: boolean;
           stripe_customer_id: string | null;
           stripe_subscription_id: string | null;
           stripe_last_event_id: string | null;
@@ -298,6 +301,7 @@ export type Database = {
             | "active"
             | "past_due"
             | "canceled";
+          complimentary_premium?: boolean;
           stripe_customer_id?: string | null;
           stripe_subscription_id?: string | null;
           stripe_last_event_id?: string | null;

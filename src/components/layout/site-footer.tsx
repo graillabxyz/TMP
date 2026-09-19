@@ -4,6 +4,7 @@ import { Logo } from "@/components/logo";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
+import { OWNER_CONTACT_EMAIL } from "@/lib/marketplace-config";
 import { getCategories } from "@/lib/marketplace";
 
 export async function SiteFooter() {
@@ -23,7 +24,7 @@ export async function SiteFooter() {
     { label: t.footer.suppliers, href: getLocalizedPath(locale, "/suppliers") },
     { label: t.footer.rfq, href: getLocalizedPath(locale, "/rfq") },
     { label: t.nav.join, href: getLocalizedPath(locale, "/register") },
-    { label: t.footer.contact, href: "mailto:o.biyik@outlook.fr" },
+    { label: t.footer.contact, href: `mailto:${OWNER_CONTACT_EMAIL}` },
     {
       label: t.footer.supplierOnboarding,
       href: supplierUpgradeHref,

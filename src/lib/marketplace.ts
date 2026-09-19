@@ -66,6 +66,7 @@ type SupplierRow = {
     | "active"
     | "past_due"
     | "canceled";
+  complimentary_premium: boolean;
   verification_expires_at: string | null;
   category:
     | { name: string; name_fr: string | null; slug: string }
@@ -272,6 +273,7 @@ function normalizeSupplier(row: SupplierRow, locale: Locale): Supplier {
     summary: localizedValue(locale, row.summary, row.summary_fr),
     description: localizedValue(locale, row.description, row.description_fr),
     verified: hasActiveVerifiedBadge({
+      complimentaryPremium: row.complimentary_premium,
       verificationStatus: row.verification_status,
       subscriptionStatus: row.verification_subscription_status,
       expiresAt: row.verification_expires_at,
@@ -400,6 +402,7 @@ export const getSuppliers = cache(async function getSuppliers(
         certifications_fr,
         verification_status,
         verification_subscription_status,
+        complimentary_premium,
         verification_expires_at,
         category:categories(name, name_fr, slug),
         products:supplier_products(title, title_fr, slug, moq, images, category:categories(name, name_fr, slug))

@@ -15,6 +15,7 @@ import {
   validateUpload,
 } from "@/lib/media";
 import { slugify } from "@/lib/slug";
+import { hasSupplierProductAccess } from "@/lib/supplier-access";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import type { ProductInsert, ProductUpdate } from "@/lib/products";
 
@@ -27,6 +28,12 @@ type SupplierProductsMutationTable = {
   delete: () => FilterBuilder;
   insert: (payload: ProductInsert) => MutationResult;
   update: (payload: ProductUpdate) => FilterBuilder;
+};
+type ProductArchiveRpcClient = {
+  rpc: (
+    functionName: "archive_owned_product",
+    args: { product_id: string },
+  ) => Promise<{ error: MutationError }>;
 };
 
 function getString(formData: FormData, key: string) {
@@ -53,6 +60,7 @@ async function getCurrentProductContext() {
 
   if (!user) {
     return {
+      canManageProducts: false,
       canPublish: false,
       supabase,
       supplierId: null,
@@ -64,12 +72,20 @@ async function getCurrentProductContext() {
     await Promise.all([
       supabase
         .from("suppliers")
-        .select("id")
+        .select("id, complimentary_premium, verification_subscription_status")
         .eq("owner_id", user.id)
         .maybeSingle(),
       supabase.from("profiles").select("role").eq("id", user.id).maybeSingle(),
     ]);
-  const supplier = data as unknown as { id: string } | null;
+  const supplier = data as unknown as {
+    id: string;
+    complimentary_premium: boolean;
+    verification_subscription_status:
+      | "inactive"
+      | "active"
+      | "past_due"
+      | "canceled";
+  } | null;
   const profile = profileData as unknown as {
     role: "buyer" | "supplier" | "admin";
   } | null;
@@ -81,10 +97,16 @@ async function getCurrentProductContext() {
     console.error("Unable to load product owner profile", profileError.message);
   }
 
+  const canManageProducts = hasSupplierProductAccess({
+    supplierId: supplier?.id ?? null,
+    role: profile?.role ?? "buyer",
+    subscriptionStatus: supplier?.verification_subscription_status ?? null,
+    complimentaryPremium: supplier?.complimentary_premium ?? false,
+  });
+
   return {
-    canPublish:
-      Boolean(supplier?.id) &&
-      (profile?.role === "supplier" || profile?.role === "admin"),
+    canManageProducts,
+    canPublish: canManageProducts,
     supabase,
     supplierId: supplier?.id ?? null,
     userId: user.id,
@@ -233,7 +255,7 @@ export async function createProduct(
 
   if (!parsed.values) return invalidState(parsed.errors);
 
-  const { canPublish, supabase, supplierId, userId } =
+  const { canManageProducts, supabase, supplierId, userId } =
     await getCurrentProductContext();
   if (!userId) {
     const nextPath = getLocalizedPath(locale, "/dashboard/products/new");
@@ -241,8 +263,8 @@ export async function createProduct(
       `${getLocalizedPath(locale, "/login")}?status=auth-required&next=${encodeURIComponent(nextPath)}`,
     );
   }
-  if (parsed.values.status === "published" && !canPublish) {
-    return { status: "error", formError: "supplierRequired" };
+  if (!canManageProducts || !supplierId) {
+    return { status: "error", formError: "subscriptionRequired" };
   }
 
   const imageFiles = getImageFiles(formData);
@@ -255,7 +277,7 @@ export async function createProduct(
 
   const uploadedImages = await uploadProductImages({
     files: imageFiles,
-    supplierId: supplierId ?? "drafts",
+    supplierId,
     supabase,
     userId,
   });
@@ -327,15 +349,15 @@ export async function updateProduct(
   }
   if (!parsed.values) return invalidState(parsed.errors);
 
-  const { canPublish, supabase, supplierId, userId } =
+  const { canManageProducts, supabase, supplierId, userId } =
     await getCurrentProductContext();
   if (!userId) {
     redirect(
       `${getLocalizedPath(locale, "/login")}?status=auth-required&next=${encodeURIComponent(productsPath)}`,
     );
   }
-  if (parsed.values.status === "published" && !canPublish) {
-    return { status: "error", formError: "supplierRequired" };
+  if (!canManageProducts || !supplierId) {
+    return { status: "error", formError: "subscriptionRequired" };
   }
 
   const { data: existingData, error: existingError } = await supabase
@@ -364,7 +386,7 @@ export async function updateProduct(
   const uploadedImages = imageFiles.length
     ? await uploadProductImages({
         files: imageFiles,
-        supplierId: supplierId ?? "drafts",
+        supplierId,
         supabase,
         userId,
       })
@@ -523,13 +545,10 @@ export async function archiveProduct(formData: FormData) {
     redirect(`${productsPath}?status=error`);
   }
 
-  const productMutations = supabase.from(
-    "supplier_products",
-  ) as unknown as SupplierProductsMutationTable;
-  const { error } = await productMutations
-    .update({ status: "archived", updated_at: new Date().toISOString() })
-    .eq("id", productId)
-    .eq("owner_id", userId);
+  const productArchiveClient = supabase as unknown as ProductArchiveRpcClient;
+  const { error } = await productArchiveClient.rpc("archive_owned_product", {
+    product_id: productId,
+  });
 
   if (error) {
     console.error("Unable to archive product", error.message);

@@ -1,4 +1,5 @@
 type BadgeEligibility = {
+  complimentaryPremium?: boolean;
   verificationStatus: string;
   subscriptionStatus: string;
   expiresAt?: string | null;
@@ -8,8 +9,12 @@ export function hasActiveVerifiedBadge(
   supplier: BadgeEligibility,
   now = Date.now(),
 ) {
+  if (supplier.verificationStatus !== "verified") {
+    return false;
+  }
+
   if (
-    supplier.verificationStatus !== "verified" ||
+    !supplier.complimentaryPremium &&
     supplier.subscriptionStatus !== "active"
   ) {
     return false;

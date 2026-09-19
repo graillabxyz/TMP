@@ -4,6 +4,7 @@ import { Mail, Phone, X } from "lucide-react";
 import type { CSSProperties } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { OWNER_CONTACT_EMAIL } from "@/lib/marketplace-config";
 import { cn } from "@/lib/utils";
 
 type ContactDropdownProps = {
@@ -19,7 +20,7 @@ type ContactDropdownProps = {
 
 const ADMIN_PHONE_DISPLAY = "06 83 02 47 52";
 const ADMIN_PHONE_HREF = "tel:+33683024752";
-const ADMIN_EMAIL = "o.biyik@outlook.fr";
+const ADMIN_EMAIL = OWNER_CONTACT_EMAIL;
 
 export function ContactDropdown({ labels }: ContactDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);

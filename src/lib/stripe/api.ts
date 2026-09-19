@@ -1,3 +1,4 @@
+import { isExpectedVerificationPrice } from "@/lib/marketplace-config";
 import { getStripeConfig } from "@/lib/stripe/config";
 
 const STRIPE_API_BASE = "https://api.stripe.com/v1";
@@ -21,6 +22,15 @@ type StripeSubscriptionResponse = {
     owner_id?: string;
   };
   customer?: string | { id?: string };
+};
+
+type StripePriceResponse = {
+  active: boolean;
+  currency: string;
+  unit_amount: number | null;
+  recurring?: {
+    interval?: string;
+  } | null;
 };
 
 type StripeApiError = {
@@ -56,6 +66,19 @@ async function stripeRequest<T>(
   return payload;
 }
 
+async function assertVerificationPrice(priceId: string) {
+  const price = await stripeRequest<StripePriceResponse>(
+    `/prices/${encodeURIComponent(priceId)}`,
+    { method: "GET" },
+  );
+
+  if (!isExpectedVerificationPrice(price)) {
+    throw new Error(
+      "STRIPE_VERIFICATION_PRICE_ID must reference an active EUR 50 monthly recurring price.",
+    );
+  }
+}
+
 export async function createVerificationCheckoutSession(input: {
   origin: string;
   returnPath: string;
@@ -69,6 +92,8 @@ export async function createVerificationCheckoutSession(input: {
   if (!verificationPriceId) {
     throw new Error("Missing STRIPE_VERIFICATION_PRICE_ID.");
   }
+
+  await assertVerificationPrice(verificationPriceId);
 
   const body = new URLSearchParams({
     mode: "subscription",

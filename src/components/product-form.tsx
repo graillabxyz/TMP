@@ -105,6 +105,7 @@ export type ProductFormLabels = {
   saveError: string;
   notFoundError: string;
   supplierRequiredError: string;
+  subscriptionRequiredError: string;
   draftOnlyNoticeTitle: string;
   draftOnlyNoticeBody: string;
   draftOnlyTitle: string;
@@ -393,17 +394,19 @@ export function ProductForm({
   };
 
   const formError =
-    state.formError === "supplierRequired"
-      ? labels.supplierRequiredError
-      : state.formError === "category"
-        ? labels.categoryError
-        : state.formError === "save"
-          ? labels.saveError
-          : state.formError === "image"
-            ? labels.imageInvalidError
-            : state.formError === "notFound"
-              ? labels.notFoundError
-              : labels.formError;
+    state.formError === "subscriptionRequired"
+      ? labels.subscriptionRequiredError
+      : state.formError === "supplierRequired"
+        ? labels.supplierRequiredError
+        : state.formError === "category"
+          ? labels.categoryError
+          : state.formError === "save"
+            ? labels.saveError
+            : state.formError === "image"
+              ? labels.imageInvalidError
+              : state.formError === "notFound"
+                ? labels.notFoundError
+                : labels.formError;
   const selectedCategory = categories.find(
     (category) => category.id === categoryId,
   );

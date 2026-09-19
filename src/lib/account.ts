@@ -9,6 +9,7 @@ export type CurrentProfile = {
   email: string;
   fullName: string | null;
   role: AccountRole;
+  complimentaryPremium: boolean;
 } | null;
 
 export const getCurrentProfile = cache(async (): Promise<CurrentProfile> => {
@@ -32,7 +33,7 @@ export const getCurrentProfile = cache(async (): Promise<CurrentProfile> => {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, email, role")
+    .select("id, email, role, complimentary_premium")
     .eq("id", user.id)
     .maybeSingle();
   const fullName =
@@ -48,6 +49,7 @@ export const getCurrentProfile = cache(async (): Promise<CurrentProfile> => {
       email: user.email ?? "",
       fullName,
       role: "buyer",
+      complimentaryPremium: false,
     };
   }
 
@@ -55,6 +57,7 @@ export const getCurrentProfile = cache(async (): Promise<CurrentProfile> => {
     id: string;
     email: string;
     role: AccountRole;
+    complimentary_premium: boolean;
   } | null;
 
   return profile
@@ -63,11 +66,13 @@ export const getCurrentProfile = cache(async (): Promise<CurrentProfile> => {
         email: profile.email,
         fullName,
         role: profile.role,
+        complimentaryPremium: profile.complimentary_premium,
       }
     : {
         id: user.id,
         email: user.email ?? "",
         fullName,
         role: "buyer",
+        complimentaryPremium: false,
       };
 });

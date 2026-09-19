@@ -11,6 +11,7 @@ export const dynamic = "force-dynamic";
 type CheckoutSupplierRow = {
   id: string;
   owner_id: string | null;
+  complimentary_premium: boolean;
   stripe_customer_id: string | null;
   verification_subscription_status:
     | "inactive"
@@ -55,7 +56,7 @@ export async function POST(request: NextRequest) {
     const { data: supplierData, error } = await supabase
       .from("suppliers")
       .select(
-        "id, owner_id, stripe_customer_id, verification_subscription_status",
+        "id, owner_id, complimentary_premium, stripe_customer_id, verification_subscription_status",
       )
       .eq("owner_id", user.id)
       .maybeSingle();
@@ -66,6 +67,14 @@ export async function POST(request: NextRequest) {
         mode: "supplier-required",
         url: `${origin}${verificationPath}?status=supplier-missing`,
         message: "Supplier profile is required.",
+      });
+    }
+
+    if (supplier.complimentary_premium) {
+      return NextResponse.json({
+        mode: "complimentary",
+        url: `${origin}${verificationPath}?checkout=complimentary`,
+        message: "Lifetime premium access is already active.",
       });
     }
 

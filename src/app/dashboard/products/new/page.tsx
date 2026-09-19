@@ -9,6 +9,8 @@ import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
 import { createMetadata } from "@/lib/seo";
+import { hasSupplierProductAccess } from "@/lib/supplier-access";
+import { getVerificationWorkspace } from "@/lib/verification";
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
@@ -41,6 +43,22 @@ export default async function NewProductPage() {
     );
   }
 
+  const workspace = await getVerificationWorkspace(profile.id);
+  const supplier = workspace.supplier;
+  const canManageProducts = hasSupplierProductAccess({
+    supplierId: supplier?.id ?? null,
+    role: profile.role,
+    subscriptionStatus: supplier?.subscriptionStatus ?? null,
+    complimentaryPremium: supplier?.complimentaryPremium ?? false,
+  });
+
+  if (!canManageProducts) {
+    const accessPath = supplier
+      ? getLocalizedPath(locale, "/dashboard/settings/verification")
+      : getLocalizedPath(locale, "/dashboard/profile");
+    redirect(`${accessPath}?status=product-access-required`);
+  }
+
   return (
     <DashboardShell
       eyebrow={labels.eyebrow}
@@ -51,7 +69,7 @@ export default async function NewProductPage() {
       <ProductForm
         accountId={profile.id}
         action={createProduct}
-        canPublish={profile.role === "supplier" || profile.role === "admin"}
+        canPublish
         categories={categories}
         cancelHref={getLocalizedPath(locale, "/dashboard/products")}
         cancelLabel={t.common.cancel}

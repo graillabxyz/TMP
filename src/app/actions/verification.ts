@@ -77,17 +77,22 @@ async function getSupplierId() {
       supplierId: null,
       userId: null,
       verificationStatus: null,
+      hasPremiumAccess: false,
     };
   }
 
   const { data, error } = await supabase
     .from("suppliers")
-    .select("id, verification_status")
+    .select(
+      "id, complimentary_premium, verification_status, verification_subscription_status",
+    )
     .eq("owner_id", user.id)
     .maybeSingle();
   const supplier = data as unknown as {
     id: string;
+    complimentary_premium: boolean;
     verification_status: SupplierVerificationStatus;
+    verification_subscription_status: string;
   } | null;
 
   if (error) {
@@ -99,6 +104,10 @@ async function getSupplierId() {
     supplierId: supplier?.id ?? null,
     userId: user.id,
     verificationStatus: supplier?.verification_status ?? null,
+    hasPremiumAccess: Boolean(
+      supplier?.complimentary_premium ||
+      supplier?.verification_subscription_status === "active",
+    ),
   };
 }
 
@@ -274,7 +283,7 @@ export async function submitVerificationDocuments(formData: FormData) {
     locale,
     "/dashboard/settings/verification",
   );
-  const { supabase, supplierId, userId, verificationStatus } =
+  const { supabase, supplierId, userId, verificationStatus, hasPremiumAccess } =
     await getSupplierId();
 
   if (!userId) {
@@ -287,6 +296,10 @@ export async function submitVerificationDocuments(formData: FormData) {
 
   if (!supplierId) {
     redirect(`${verificationPath}?status=supplier-missing`);
+  }
+
+  if (!hasPremiumAccess) {
+    redirect(`${verificationPath}?status=product-access-required`);
   }
 
   const notes = getString(formData, "notes");

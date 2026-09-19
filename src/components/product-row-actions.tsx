@@ -28,7 +28,7 @@ type ProductRowActionsProps = {
   deleteConfirmLabel: string;
   deleteLabel: string;
   deleteTitle: string;
-  editHref: string;
+  editHref: string | null;
   editLabel: string;
   locale: string;
   menuLabel: string;
@@ -138,17 +138,19 @@ export function ProductRowActions({
   return (
     <>
       <div className="flex items-center justify-end gap-2">
-        <Button
-          asChild
-          size="sm"
-          variant="outline"
-          className="h-11 flex-1 md:h-9 md:flex-none"
-        >
-          <Link href={editHref}>
-            <Pencil aria-hidden="true" />
-            {editLabel}
-          </Link>
-        </Button>
+        {editHref && (
+          <Button
+            asChild
+            size="sm"
+            variant="outline"
+            className="h-11 flex-1 md:h-9 md:flex-none"
+          >
+            <Link href={editHref}>
+              <Pencil aria-hidden="true" />
+              {editLabel}
+            </Link>
+          </Button>
+        )}
         <div ref={menuRef} className="relative">
           <Button
             ref={menuTriggerRef}

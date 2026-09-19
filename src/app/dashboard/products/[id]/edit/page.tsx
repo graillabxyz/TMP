@@ -10,6 +10,8 @@ import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getCategories } from "@/lib/marketplace";
 import { getEditableProduct } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
+import { hasSupplierProductAccess } from "@/lib/supplier-access";
+import { getVerificationWorkspace } from "@/lib/verification";
 
 type EditProductPageProps = {
   params: Promise<{ id: string }>;
@@ -48,6 +50,21 @@ export default async function EditProductPage({
     );
   }
 
+  const workspace = await getVerificationWorkspace(profile.id);
+  const supplier = workspace.supplier;
+  const canManageProducts = hasSupplierProductAccess({
+    supplierId: supplier?.id ?? null,
+    role: profile.role,
+    subscriptionStatus: supplier?.subscriptionStatus ?? null,
+    complimentaryPremium: supplier?.complimentaryPremium ?? false,
+  });
+
+  if (!canManageProducts) {
+    redirect(
+      `${getLocalizedPath(locale, "/dashboard/settings/verification")}?status=product-access-required`,
+    );
+  }
+
   const [categories, product] = await Promise.all([
     categoriesPromise,
     getEditableProduct(id, profile.id),
@@ -66,7 +83,7 @@ export default async function EditProductPage({
       <ProductForm
         accountId={profile.id}
         action={updateProduct}
-        canPublish={profile.role === "supplier" || profile.role === "admin"}
+        canPublish
         categories={categories}
         cancelHref={getLocalizedPath(locale, "/dashboard/products")}
         cancelLabel={t.common.cancel}

@@ -19,6 +19,7 @@ import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { getSupplierProductWorkspace } from "@/lib/products";
 import { createMetadata } from "@/lib/seo";
+import { hasSupplierProductAccess } from "@/lib/supplier-access";
 import { getVerificationWorkspace } from "@/lib/verification";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -69,6 +70,15 @@ export default async function DashboardPage() {
   );
   const verificationSupplier = verificationWorkspace.supplier;
   const productLabels = t.dashboard.productManager;
+  const canManageProducts = hasSupplierProductAccess({
+    supplierId: verificationSupplier?.id ?? null,
+    role: profile.role,
+    subscriptionStatus: verificationSupplier?.subscriptionStatus ?? null,
+    complimentaryPremium: verificationSupplier?.complimentaryPremium ?? false,
+  });
+  const productAccessHref = verificationSupplier
+    ? verificationHref
+    : profileHref;
 
   return (
     <DashboardShell
@@ -109,9 +119,13 @@ export default async function DashboardPage() {
           </div>
         </div>
         <Button asChild className="w-full shrink-0 sm:w-auto">
-          <Link href={createProductHref}>
+          <Link
+            href={canManageProducts ? createProductHref : productAccessHref}
+          >
             <PackagePlus aria-hidden="true" />
-            {isSupplier ? productLabels.createProduct : productLabels.saveDraft}
+            {canManageProducts
+              ? productLabels.createProduct
+              : productLabels.unlockProductAccess}
           </Link>
         </Button>
       </section>
@@ -152,10 +166,14 @@ export default async function DashboardPage() {
               {products.slice(0, 4).map((product) => (
                 <Link
                   key={product.id}
-                  href={getLocalizedPath(
-                    locale,
-                    `/dashboard/products/${product.id}/edit`,
-                  )}
+                  href={
+                    canManageProducts
+                      ? getLocalizedPath(
+                          locale,
+                          `/dashboard/products/${product.id}/edit`,
+                        )
+                      : productsHref
+                  }
                   className="flex min-w-0 items-center gap-3 px-4 py-4 transition hover:bg-white/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:px-5"
                 >
                   <div className="relative size-12 shrink-0 overflow-hidden rounded-md border border-white/10 bg-charcoal-800">
@@ -202,8 +220,14 @@ export default async function DashboardPage() {
                 {t.dashboard.noProductsYet}
               </p>
               <Button asChild variant="outline" className="mt-4">
-                <Link href={createProductHref}>
-                  {t.dashboard.createFirstProduct}
+                <Link
+                  href={
+                    canManageProducts ? createProductHref : productAccessHref
+                  }
+                >
+                  {canManageProducts
+                    ? t.dashboard.createFirstProduct
+                    : productLabels.unlockProductAccess}
                 </Link>
               </Button>
             </div>
@@ -243,11 +267,14 @@ export default async function DashboardPage() {
                   <StatusRow
                     label={t.verificationSettings.subscriptionStatus}
                     value={
-                      t.verificationSettings.states[
-                        verificationSupplier.subscriptionStatus
-                      ]
+                      verificationSupplier.complimentaryPremium
+                        ? t.verificationSettings.states.lifetime
+                        : t.verificationSettings.states[
+                            verificationSupplier.subscriptionStatus
+                          ]
                     }
                     active={
+                      verificationSupplier.complimentaryPremium ||
                       verificationSupplier.subscriptionStatus === "active"
                     }
                   />

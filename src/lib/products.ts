@@ -40,6 +40,7 @@ type PublicProductRow = {
     company_name_fr: string | null;
     slug: string;
     verified: boolean;
+    complimentary_premium: boolean;
     verification_status: "none" | "pending" | "verified" | "rejected";
     verification_subscription_status:
       | "inactive"
@@ -116,6 +117,7 @@ function normalizeProduct(
     supplierSlug: getSupplierSlugOverride(product.supplier?.slug),
     supplierVerified: product.supplier
       ? hasActiveVerifiedBadge({
+          complimentaryPremium: product.supplier.complimentary_premium,
           verificationStatus: product.supplier.verification_status,
           subscriptionStatus: product.supplier.verification_subscription_status,
           expiresAt: product.supplier.verification_expires_at,
@@ -198,7 +200,7 @@ export async function getProducts({
         status,
         created_at,
         category:categories(name, name_fr, slug),
-        supplier:suppliers(id, company_name, company_name_fr, slug, verified, verification_status, verification_subscription_status, verification_expires_at)
+        supplier:suppliers(id, company_name, company_name_fr, slug, verified, complimentary_premium, verification_status, verification_subscription_status, verification_expires_at)
       `,
     )
     .eq("status", "published")
@@ -274,7 +276,9 @@ export async function getSupplierProductWorkspace(
     await Promise.all([
       supabase
         .from("suppliers")
-        .select("id, company_name, company_name_fr, slug")
+        .select(
+          "id, company_name, company_name_fr, slug, complimentary_premium, verification_subscription_status",
+        )
         .eq("owner_id", userId)
         .maybeSingle(),
       supabase
@@ -304,6 +308,12 @@ export async function getSupplierProductWorkspace(
     company_name: string;
     company_name_fr: string | null;
     slug: string;
+    complimentary_premium: boolean;
+    verification_subscription_status:
+      | "inactive"
+      | "active"
+      | "past_due"
+      | "canceled";
   } | null;
 
   if (supplierError) {
@@ -325,6 +335,8 @@ export async function getSupplierProductWorkspace(
             supplier.company_name_fr,
           ),
           slug: supplier.slug,
+          complimentaryPremium: supplier.complimentary_premium,
+          subscriptionStatus: supplier.verification_subscription_status,
         }
       : null,
     products: (
