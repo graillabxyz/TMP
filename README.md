@@ -100,8 +100,9 @@ Apply the SQL migrations in order from `supabase/migrations/`.
 Current RLS stance:
 
 - Public can read categories, listed supplier profiles, and published products.
-- Suppliers can publish listings immediately; verification controls only the
-  paid verified badge.
+- Product creation, editing, media uploads, and publication require an active
+  supplier subscription or an approved lifetime complimentary entitlement.
+- The public verified badge additionally requires completed verification review.
 - Only authenticated users can insert RFQs, and the requester email and owner ID
   must match Supabase Auth.
 - Public cannot select, update, or delete RFQs.
@@ -169,8 +170,9 @@ STRIPE_WEBHOOK_SECRET=
 SUPABASE_SERVICE_ROLE_KEY=
 ```
 
-`STRIPE_VERIFICATION_PRICE_ID` should be the recurring monthly Price ID for the
-Verified Supplier subscription. The current `1 EUR` amount is test pricing only.
+`STRIPE_VERIFICATION_PRICE_ID` must be an active recurring monthly Price ID for
+the Verified Supplier subscription priced at `50 EUR`. Checkout rejects prices
+with a different amount, currency, billing interval, or inactive status.
 The webhook route verifies Stripe signatures, uses the server-only Supabase
 service role, and calls a synchronization RPC that is not executable by
 `anon` or `authenticated`. Duplicate and older Stripe events do not roll
