@@ -10,12 +10,6 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const allowedSourceHosts = new Set(["images.unsplash.com"]);
 const maxBytes = 10 * 1024 * 1024;
-const curatedProductMedia = JSON.parse(
-  await readFile(
-    resolve(process.cwd(), "src/data/curated-product-media.json"),
-    "utf8",
-  ),
-);
 
 if (!supabaseUrl || !serviceRoleKey) {
   throw new Error(
@@ -114,10 +108,9 @@ async function migrateProductImages() {
   if (error) throw error;
 
   for (const product of data ?? []) {
-    const curatedSourceUrl = curatedProductMedia[product.slug];
-    const sourceUrl = curatedSourceUrl ?? product.images?.[0];
+    const sourceUrl = product.images?.[0];
 
-    if (!sourceUrl || (!curatedSourceUrl && isSupabaseUrl(sourceUrl))) continue;
+    if (!sourceUrl || isSupabaseUrl(sourceUrl)) continue;
 
     const image = await downloadApprovedImage(sourceUrl);
     const path = `catalog/products/${product.id}/primary.${image.extension}`;
@@ -128,9 +121,7 @@ async function migrateProductImages() {
       .eq("id", product.id);
 
     if (updateError) throw updateError;
-    console.info(
-      `${curatedSourceUrl ? "Curated" : "Migrated"} product image: ${product.slug}`,
-    );
+    console.info(`Migrated product image: ${product.slug}`);
   }
 }
 

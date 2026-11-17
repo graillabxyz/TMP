@@ -7,15 +7,11 @@ import {
   type Locale,
   defaultLocale,
 } from "@/lib/i18n";
-import { repairKnownSeedImage } from "@/lib/media-fallbacks";
 import { hasActiveVerifiedBadge } from "@/lib/supplier-verification";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import {
   getCategoryOverride,
   getCategorySlugOverride,
-  getProductOverride,
-  getSupplierNameOverride,
-  getSupplierSlugOverride,
 } from "@/lib/translation-overrides";
 import type { Category, ProductPreview, Supplier } from "@/types";
 
@@ -75,135 +71,6 @@ type SupplierRow = {
   products: SupplierProductRow[] | null;
 };
 
-const trSupplierCopy: Record<
-  string,
-  Partial<
-    Pick<
-      Supplier,
-      | "name"
-      | "country"
-      | "category"
-      | "summary"
-      | "description"
-      | "exportMarkets"
-      | "moq"
-      | "responseTime"
-      | "tags"
-      | "certifications"
-    >
-  >
-> = {
-  "anatolia-textile-studio": {
-    name: "Anadolu Tekstil Stüdyosu",
-    country: "Türkiye",
-    category: "Tekstil ve Giyim",
-    summary:
-      "Premium triko, private label basics ve ihracata hazır giyim üretimi.",
-    description:
-      "Denetlenmiş üretim hatları ve hızlı numune kapasitesiyle Avrupa moda, iş giyimi ve basic markalarına hizmet veren dikey entegre tekstil partneri.",
-    exportMarkets: ["Almanya", "Hollanda", "Fransa"],
-    moq: "300 adet",
-    responseTime: "12 saatten kısa",
-    tags: ["Private label", "OEKO-TEX", "Triko"],
-    certifications: ["OEKO-TEX Standard 100", "ISO 9001", "BSCI denetimi"],
-  },
-  "marmara-machinery-works": {
-    name: "Marmara Makine Atölyesi",
-    country: "Türkiye",
-    category: "Makine ve Komponentler",
-    summary:
-      "AB alıcıları için CNC işlenmiş komponentler ve endüstriyel montajlar.",
-    description:
-      "Endüstriyel ekipman üreticileri için CNC, lazer kesim ve montaj kapasitesine sahip hassas üretim partneri.",
-    exportMarkets: ["İtalya", "Avusturya", "Polonya"],
-    moq: "Proje bazlı",
-    responseTime: "24 saatten kısa",
-    tags: ["CNC", "ISO 9001", "Özel takım"],
-    certifications: [
-      "ISO 9001",
-      "CE dokümantasyon desteği",
-      "EN 1090 partneri",
-    ],
-  },
-  "aegean-homeware-co": {
-    name: "Ege Ev Ürünleri",
-    country: "Türkiye",
-    category: "Ev ve Yaşam",
-    summary: "Perakendeciler için seramik, tekstil ve çağdaş ev ürünleri.",
-    description:
-      "Bölgesel zanaatı modern üretim planlamasıyla birleştiren, butik perakende ve hospitality gruplarına yönelik tasarım odaklı ev ürünleri tedarikçisi.",
-    exportMarkets: ["İspanya", "Danimarka", "İsveç"],
-    moq: "150 set",
-    responseTime: "18 saatten kısa",
-    tags: ["Seramik", "Hospitality", "Tasarım odaklı"],
-    certifications: ["Gıda temas uyumu", "Sedex üyesi", "REACH desteği"],
-  },
-  "izmir-natural-foods": {
-    name: "İzmir Doğal Gıdalar",
-    country: "Türkiye",
-    category: "Gıda ve İçerikler",
-    summary:
-      "Kuru meyve, kuruyemiş, baharat ve perakendeye hazır Akdeniz ürünleri.",
-    description:
-      "İzlenebilir tedarik, AB etiket desteği ve market alıcıları için esnek private label ambalaj sunan ihracat odaklı gıda üreticisi.",
-    exportMarkets: ["Belçika", "Birleşik Krallık", "Çekya"],
-    moq: "1 palet",
-    responseTime: "24 saatten kısa",
-    tags: ["Private label", "Perakende paketler", "İzlenebilir"],
-    certifications: ["BRCGS beklemede", "Helal", "Organik hatlar mevcut"],
-  },
-  "bursa-building-materials": {
-    name: "Bursa Yapı Malzemeleri",
-    country: "Türkiye",
-    category: "Yapı Malzemeleri",
-    summary:
-      "Cephe sistemleri, yalıtım, armatürler ve fit-out malzeme tedariki.",
-    description:
-      "Alüminyum profiller, yalıtım levhaları, hırdavat ve ihracata hazır fit-out programları için Bursa bölgesi kapasitesine sahip yapı malzemeleri tedarikçisi.",
-    exportMarkets: ["Romanya", "Almanya", "Macaristan"],
-    moq: "1 konteyner",
-    responseTime: "24 saatten kısa",
-    tags: ["Cephe sistemleri", "Fit-out tedariki", "Konteyner yükleri"],
-    certifications: [
-      "ISO 9001",
-      "CE işaretli hatlar",
-      "Yangına dayanımlı seçenekler",
-    ],
-  },
-  "bursa-auto-systems": {
-    name: "Bursa Yapı Malzemeleri",
-    country: "Türkiye",
-    category: "Yapı Malzemeleri",
-    summary:
-      "Cephe sistemleri, yalıtım, armatürler ve fit-out malzeme tedariki.",
-    description:
-      "Alüminyum profiller, yalıtım levhaları, hırdavat ve ihracata hazır fit-out programları için Bursa bölgesi kapasitesine sahip yapı malzemeleri tedarikçisi.",
-    exportMarkets: ["Romanya", "Almanya", "Macaristan"],
-    moq: "1 konteyner",
-    responseTime: "24 saatten kısa",
-    tags: ["Cephe sistemleri", "Fit-out tedariki", "Konteyner yükleri"],
-    certifications: [
-      "ISO 9001",
-      "CE işaretli hatlar",
-      "Yangına dayanımlı seçenekler",
-    ],
-  },
-  "istanbul-packaging-lab": {
-    name: "İstanbul Ambalaj Laboratuvarı",
-    country: "Türkiye",
-    category: "Ambalaj",
-    summary:
-      "Premium kutular, e-ticaret kargo paketleri, etiketler ve perakende ambalaj.",
-    description:
-      "Hızlı prototipleme ve ihracata hazır kaliteli finisaj isteyen e-ticaret, kozmetik ve gıda markaları için modern ambalaj partneri.",
-    exportMarkets: ["Fransa", "İrlanda", "Portekiz"],
-    moq: "1.000 adet",
-    responseTime: "8 saatten kısa",
-    tags: ["FSC kağıt", "Düşük MOQ", "Hızlı numune"],
-    certifications: ["FSC malzeme mevcut", "ISO 14001 yol haritası"],
-  },
-};
-
 function normalizeCategory(row: CategoryRow, locale: Locale): Category {
   const override = getCategoryOverride(locale, row.slug);
 
@@ -223,21 +90,16 @@ function normalizeProduct(
   locale: Locale,
 ): ProductPreview {
   const t = getDictionary(locale);
-  const productOverride = getProductOverride(locale, row.slug);
   const categoryOverride = getCategoryOverride(locale, row.category?.slug);
 
   return {
-    name:
-      productOverride?.title ?? localizedValue(locale, row.title, row.title_fr),
+    name: localizedValue(locale, row.title, row.title_fr),
     category: row.category
-      ? (productOverride?.category ??
-        categoryOverride?.name ??
+      ? (categoryOverride?.name ??
         localizedValue(locale, row.category.name, row.category.name_fr))
       : t.common.product,
     moq: row.moq ? `${row.moq} ${t.common.units}` : t.common.onRequest,
-    image: row.images[0]
-      ? repairKnownSeedImage(row.images[0], row.slug)
-      : "/brand/tmp-logo.webp",
+    image: row.images[0] ?? "/brand/tmp-logo.webp",
   };
 }
 
@@ -263,10 +125,8 @@ function getCategoryName(
 
 function normalizeSupplier(row: SupplierRow, locale: Locale): Supplier {
   const supplier = {
-    slug: getSupplierSlugOverride(row.slug),
-    name:
-      getSupplierNameOverride(locale, row.slug) ??
-      localizedValue(locale, row.company_name, row.company_name_fr),
+    slug: row.slug,
+    name: localizedValue(locale, row.company_name, row.company_name_fr),
     city: row.city,
     country: normalizeSupplierCountry(row.country),
     category: getCategoryName(locale, row.category),
@@ -295,13 +155,6 @@ function normalizeSupplier(row: SupplierRow, locale: Locale): Supplier {
       normalizeProduct(product, locale),
     ),
   };
-
-  if (locale === "tr" && trSupplierCopy[row.slug]) {
-    return {
-      ...supplier,
-      ...trSupplierCopy[row.slug],
-    };
-  }
 
   return supplier;
 }
@@ -358,10 +211,12 @@ export const getSupplierOptions = cache(async function getSupplierOptions(
   }
 
   return data.map((supplier) => ({
-    slug: getSupplierSlugOverride(supplier.slug),
-    name:
-      getSupplierNameOverride(locale, supplier.slug) ??
-      localizedValue(locale, supplier.company_name, supplier.company_name_fr),
+    slug: supplier.slug,
+    name: localizedValue(
+      locale,
+      supplier.company_name,
+      supplier.company_name_fr,
+    ),
   }));
 });
 

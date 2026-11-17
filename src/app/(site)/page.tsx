@@ -159,148 +159,157 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="border-y border-white/10 bg-card/45">
-        <div className="container py-10 sm:py-12 lg:py-14">
-          <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-sm text-gold-200">
-                {t.home.marketplaceWelcome}
-              </p>
-              <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">
-                {t.home.recommendedForBusiness}
-              </h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
-                {recommendationSignals.length > 0
-                  ? t.home.recommendationPersonalized
-                  : t.home.recommendationFallback}
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {t.home.businessTools.slice(0, 2).map((tool, index) => {
-                const Icon = businessToolIcons[index] ?? Target;
-                const href =
-                  index === 0
-                    ? rfqHref
-                    : index === 1
-                      ? `${suppliersHref}?verified=1`
-                      : productsHref;
-
-                return (
-                  <Link
-                    key={tool}
-                    href={href}
-                    className="inline-flex min-h-11 items-center gap-2 rounded-md border border-white/10 bg-white/[0.045] px-3 py-2 text-sm text-white transition hover:border-gold-300/35 hover:bg-white/[0.075] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                  >
-                    <Icon className="size-4 text-gold-200" aria-hidden="true" />
-                    {tool}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="mt-6 grid gap-4 lg:grid-cols-[280px_1fr]">
-            <div className="workspace-panel p-4">
-              <p className="font-semibold text-white">
-                {t.home.categoriesForYou}
-              </p>
-              <div className="mt-4 grid gap-1">
-                {categories.slice(0, 6).map((category) => {
-                  const Icon = categoryIconMap[category.slug] ?? Factory;
+      {recommendedProducts.length > 0 && (
+        <section className="border-y border-white/10 bg-card/45">
+          <div className="container py-10 sm:py-12 lg:py-14">
+            <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <p className="text-sm text-gold-200">
+                  {t.home.marketplaceWelcome}
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold text-white sm:text-3xl">
+                  {t.home.recommendedForBusiness}
+                </h2>
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
+                  {recommendationSignals.length > 0
+                    ? t.home.recommendationPersonalized
+                    : t.home.recommendationFallback}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {t.home.businessTools.slice(0, 2).map((tool, index) => {
+                  const Icon = businessToolIcons[index] ?? Target;
+                  const href =
+                    index === 0
+                      ? rfqHref
+                      : index === 1
+                        ? `${suppliersHref}?verified=1`
+                        : productsHref;
 
                   return (
                     <Link
-                      key={category.slug}
-                      href={`${productsHref}?category=${category.slug}`}
-                      className="group flex min-h-11 items-center justify-between gap-3 rounded-md px-2 py-2.5 text-sm text-muted-foreground transition hover:bg-white/[0.055] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      key={tool}
+                      href={href}
+                      className="inline-flex min-h-11 items-center gap-2 rounded-md border border-white/10 bg-white/[0.045] px-3 py-2 text-sm text-white transition hover:border-gold-300/35 hover:bg-white/[0.075] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
-                      <span className="flex min-w-0 items-center gap-3">
-                        <Icon
-                          className="size-4 shrink-0 text-gold-200"
-                          aria-hidden="true"
-                        />
-                        <span className="truncate">{category.name}</span>
-                      </span>
-                      <ChevronRight
-                        className="size-4 shrink-0 opacity-45 transition group-hover:opacity-100"
+                      <Icon
+                        className="size-4 text-gold-200"
                         aria-hidden="true"
                       />
+                      {tool}
                     </Link>
                   );
                 })}
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
-              {recommendedProducts.map((product) => (
-                <Link
-                  key={product.id}
-                  href={getLocalizedPath(locale, `/products/${product.slug}`)}
-                  className="group overflow-hidden rounded-lg border border-white/10 bg-card shadow-[0_14px_36px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:border-gold-300/35 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                >
-                  <div className="p-4">
-                    <p className="line-clamp-1 text-xs text-gold-200">
-                      {product.supplierName}
-                    </p>
-                    <p className="mt-1 line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-white">
-                      {product.title}
-                    </p>
-                  </div>
-                  <div className="relative mx-4 aspect-[4/3] overflow-hidden rounded-md bg-white/[0.92]">
-                    <Image
-                      src={product.images[0] ?? "/brand/tmp-logo.webp"}
-                      alt={product.title}
-                      fill
-                      sizes="(min-width: 1024px) 22vw, (min-width: 640px) 33vw, 100vw"
-                      className="object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="flex min-w-0 items-center justify-between gap-3 p-4 text-xs text-muted-foreground">
-                    <span className="min-w-0 truncate">{product.category}</span>
-                    <span className="shrink-0 font-medium text-gold-100">
-                      {formatPriceRange(product, t.products.quote)}
-                    </span>
-                  </div>
-                </Link>
-              ))}
+            <div className="mt-6 grid gap-4 lg:grid-cols-[280px_1fr]">
+              <div className="workspace-panel p-4">
+                <p className="font-semibold text-white">
+                  {t.home.categoriesForYou}
+                </p>
+                <div className="mt-4 grid gap-1">
+                  {categories.slice(0, 6).map((category) => {
+                    const Icon = categoryIconMap[category.slug] ?? Factory;
+
+                    return (
+                      <Link
+                        key={category.slug}
+                        href={`${productsHref}?category=${category.slug}`}
+                        className="group flex min-h-11 items-center justify-between gap-3 rounded-md px-2 py-2.5 text-sm text-muted-foreground transition hover:bg-white/[0.055] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      >
+                        <span className="flex min-w-0 items-center gap-3">
+                          <Icon
+                            className="size-4 shrink-0 text-gold-200"
+                            aria-hidden="true"
+                          />
+                          <span className="truncate">{category.name}</span>
+                        </span>
+                        <ChevronRight
+                          className="size-4 shrink-0 opacity-45 transition group-hover:opacity-100"
+                          aria-hidden="true"
+                        />
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-3">
+                {recommendedProducts.map((product) => (
+                  <Link
+                    key={product.id}
+                    href={getLocalizedPath(locale, `/products/${product.slug}`)}
+                    className="group overflow-hidden rounded-lg border border-white/10 bg-card shadow-[0_14px_36px_rgba(0,0,0,0.16)] transition hover:-translate-y-0.5 hover:border-gold-300/35 hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                  >
+                    <div className="p-4">
+                      <p className="line-clamp-1 text-xs text-gold-200">
+                        {product.supplierName}
+                      </p>
+                      <p className="mt-1 line-clamp-2 min-h-10 text-sm font-semibold leading-5 text-white">
+                        {product.title}
+                      </p>
+                    </div>
+                    <div className="relative mx-4 aspect-[4/3] overflow-hidden rounded-md bg-white/[0.92]">
+                      <Image
+                        src={product.images[0] ?? "/brand/tmp-logo.webp"}
+                        alt={product.title}
+                        fill
+                        sizes="(min-width: 1024px) 22vw, (min-width: 640px) 33vw, 100vw"
+                        className="object-cover transition duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                    <div className="flex min-w-0 items-center justify-between gap-3 p-4 text-xs text-muted-foreground">
+                      <span className="min-w-0 truncate">
+                        {product.category}
+                      </span>
+                      <span className="shrink-0 font-medium text-gold-100">
+                        {formatPriceRange(product, t.products.quote)}
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="section-shell">
-        <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
-          <div>
-            <p className="text-sm text-gold-200">{t.home.featuredSuppliers}</p>
-            <h2 className="mt-3 max-w-2xl text-3xl font-semibold text-white sm:text-4xl">
-              {t.home.featuredTitle}
-            </h2>
+        </section>
+      )}
+      {featuredSuppliers.length > 0 && (
+        <section className="section-shell">
+          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+            <div>
+              <p className="text-sm text-gold-200">
+                {t.home.featuredSuppliers}
+              </p>
+              <h2 className="mt-3 max-w-2xl text-3xl font-semibold text-white sm:text-4xl">
+                {t.home.featuredTitle}
+              </h2>
+            </div>
+            <Button asChild variant="outline">
+              <Link href={suppliersHref}>{t.home.exploreSuppliers}</Link>
+            </Button>
           </div>
-          <Button asChild variant="outline">
-            <Link href={suppliersHref}>{t.home.exploreSuppliers}</Link>
-          </Button>
-        </div>
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {featuredSuppliers.map((supplier) => (
-            <SupplierCard
-              key={supplier.slug}
-              supplier={supplier}
-              supplierHref={getLocalizedPath(
-                locale,
-                `/suppliers/${supplier.slug}`,
-              )}
-              labels={{
-                verified: t.common.verified,
-                moq: t.common.moq,
-                response: t.common.response,
-                viewSupplier: t.suppliers.viewSupplier,
-                imageAlt: t.suppliers.imageAlt,
-              }}
-            />
-          ))}
-        </div>
-      </section>
-
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {featuredSuppliers.map((supplier) => (
+              <SupplierCard
+                key={supplier.slug}
+                supplier={supplier}
+                supplierHref={getLocalizedPath(
+                  locale,
+                  `/suppliers/${supplier.slug}`,
+                )}
+                labels={{
+                  verified: t.common.verified,
+                  moq: t.common.moq,
+                  response: t.common.response,
+                  viewSupplier: t.suppliers.viewSupplier,
+                  imageAlt: t.suppliers.imageAlt,
+                }}
+              />
+            ))}
+          </div>
+        </section>
+      )}
       <section className="border-y border-white/10 bg-card/35">
         <div className="section-shell">
           <div className="grid gap-8 lg:grid-cols-[.85fr_1.15fr] lg:items-end">

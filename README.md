@@ -50,6 +50,13 @@ that key with `NEXT_PUBLIC_`, expose it to client code, or commit it.
 
 ## Database
 
+Production no longer contains the historical demo catalog. After rebuilding a
+database from historical migrations, run `node scripts/remove-demo-content.mjs`
+to preview the cleanup, then add `--apply` to remove known unowned seed suppliers,
+their products, legacy duplicates, and explicitly labeled test RFQs. The script
+preserves user-owned suppliers and writes a private recovery snapshot inside the
+ignored `.vercel/cleanup-backups/` directory before deleting records.
+
 Apply the SQL migrations in order from `supabase/migrations/`.
 
 - `20260508000000_initial_marketplace_schema.sql` creates the base marketplace seed.

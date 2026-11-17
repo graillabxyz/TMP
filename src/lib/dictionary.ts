@@ -90,7 +90,6 @@ const dictionaries = {
       allCategories: "All categories",
       startSourcing: "Start sourcing",
       popularSearches: "Popular searches",
-      liveBoard: "Sourcing brief examples",
       marketplaceWelcome: "Welcome to TMP",
       categoriesForYou: "Categories for you",
       frequentlySearched: "Frequently searched",
@@ -399,9 +398,6 @@ const dictionaries = {
       title: "Dashboard",
       description:
         "Track supplier visibility, inbound RFQs, product inquiries, and verification readiness.",
-      previewData: "Preview pipeline",
-      previewBody:
-        "Dashboard counts and rows are staged examples until live RFQs and supplier analytics are connected.",
       overview: "Overview",
       products: "Products",
       profile: "Profile",
@@ -415,17 +411,6 @@ const dictionaries = {
         "Open RFQs",
         "Product inquiries",
         "Verification",
-      ],
-      supplierRequestRows: [
-        ["Organic cotton basics", "Germany", "500 units", "New"],
-        ["Rigid cosmetics boxes", "France", "2,000 units", "Review"],
-        ["CNC aluminum housing", "Italy", "100 units", "Quoted"],
-      ],
-      readinessRows: [
-        ["Company documents", "Complete"],
-        ["Certifications", "Needs review"],
-        ["Factory photos", "Complete"],
-        ["Export references", "Pending"],
       ],
       recentRequests: "Recent buyer requests",
       profileReadiness: "Profile readiness",
@@ -472,11 +457,6 @@ const dictionaries = {
         ],
         activeRequests: "Active sourcing requests",
         createRfq: "Create RFQ",
-        requestRows: [
-          ["Organic cotton basics", "Matching suppliers", "3 replies"],
-          ["Rigid cosmetics boxes", "Reviewing quotes", "2 replies"],
-          ["CNC aluminum housing", "Draft request", "Not sent"],
-        ],
         discovery: "Supplier discovery",
         continueSourcing: "Continue sourcing",
         discoveryBody:
@@ -1031,7 +1011,6 @@ const dictionaries = {
       allCategories: "Toutes les catégories",
       startSourcing: "Lancer le sourcing",
       popularSearches: "Recherches populaires",
-      liveBoard: "Exemples de briefs sourcing",
       marketplaceWelcome: "Bienvenue sur TMP",
       categoriesForYou: "Catégories pour vous",
       frequentlySearched: "Souvent recherché",
@@ -1348,9 +1327,6 @@ const dictionaries = {
       title: "Tableau de bord",
       description:
         "Suivez visibilité, demandes entrantes, demandes produit et préparation à la vérification.",
-      previewData: "Pipeline preview",
-      previewBody:
-        "Les compteurs et lignes du dashboard sont des exemples tant que les RFQ et analytics fournisseurs ne sont pas connectes.",
       overview: "Vue d’ensemble",
       products: "Produits",
       profile: "Profil",
@@ -1364,17 +1340,6 @@ const dictionaries = {
         "Demandes ouvertes",
         "Demandes produit",
         "Vérification",
-      ],
-      supplierRequestRows: [
-        ["Basiques coton bio", "Allemagne", "500 unités", "Nouveau"],
-        ["Boîtes cosmétiques rigides", "France", "2 000 unités", "Revue"],
-        ["Boîtier aluminium CNC", "Italie", "100 unités", "Devis reçu"],
-      ],
-      readinessRows: [
-        ["Documents société", "Complet"],
-        ["Certifications", "À revoir"],
-        ["Photos usine", "Complet"],
-        ["Références export", "En attente"],
       ],
       recentRequests: "Demandes acheteurs récentes",
       profileReadiness: "Préparation du profil",
@@ -1421,15 +1386,6 @@ const dictionaries = {
         ],
         activeRequests: "Demandes de sourcing actives",
         createRfq: "Créer une demande",
-        requestRows: [
-          [
-            "Basiques coton bio",
-            "Fournisseurs en correspondance",
-            "3 réponses",
-          ],
-          ["Boîtes cosmétiques rigides", "Devis en revue", "2 réponses"],
-          ["Boîtier aluminium CNC", "Demande brouillon", "Non envoyé"],
-        ],
         discovery: "Découverte fournisseurs",
         continueSourcing: "Continuer le sourcing",
         discoveryBody:
@@ -1994,7 +1950,6 @@ const turkishDictionary = {
     allCategories: "Tüm kategoriler",
     startSourcing: "Tedarike başla",
     popularSearches: "Popüler aramalar",
-    liveBoard: "Tedarik talebi örnekleri",
     marketplaceWelcome: "TMP'ye hoş geldiniz",
     categoriesForYou: "Sizin için kategoriler",
     frequentlySearched: "Sık aranan",
@@ -2312,9 +2267,6 @@ const turkishDictionary = {
     title: "Panel",
     description:
       "Tedarikçi görünürlüğünü, gelen RFQ'ları, ürün taleplerini ve doğrulama hazırlığını takip edin.",
-    previewData: "Önizleme hattı",
-    previewBody:
-      "Canlı RFQ'lar ve tedarikçi analitiği bağlanana kadar panel sayıları ve satırları örnek veridir.",
     overview: "Genel bakış",
     products: "Ürünler",
     profile: "Profil",
@@ -2324,17 +2276,6 @@ const turkishDictionary = {
     verification: "Doğrulama",
     verificationSettings: "Doğrulama ayarları",
     metrics: ["Aktif ilanlar", "Açık RFQ'lar", "Ürün talepleri", "Doğrulama"],
-    supplierRequestRows: [
-      ["Organik pamuk basics", "Almanya", "500 adet", "Yeni"],
-      ["Sert kozmetik kutuları", "Fransa", "2.000 adet", "İnceleme"],
-      ["CNC alüminyum gövde", "İtalya", "100 adet", "Tekliflendi"],
-    ],
-    readinessRows: [
-      ["Şirket belgeleri", "Tamamlandı"],
-      ["Sertifikalar", "İnceleme gerekli"],
-      ["Fabrika fotoğrafları", "Tamamlandı"],
-      ["İhracat referansları", "Beklemede"],
-    ],
     recentRequests: "Son alıcı talepleri",
     profileReadiness: "Profil hazırlığı",
     buyerActivity: "Alıcı aktivitesi",
@@ -2380,11 +2321,6 @@ const turkishDictionary = {
       ],
       activeRequests: "Aktif sourcing talepleri",
       createRfq: "RFQ oluştur",
-      requestRows: [
-        ["Organik pamuk basics", "Tedarikçiler eşleştiriliyor", "3 yanıt"],
-        ["Sert kozmetik kutuları", "Teklifler inceleniyor", "2 yanıt"],
-        ["CNC alüminyum gövde", "Taslak talep", "Gönderilmedi"],
-      ],
       discovery: "Tedarikçi keşfi",
       continueSourcing: "Sourcing'e devam et",
       discoveryBody:

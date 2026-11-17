@@ -1,16 +1,11 @@
 import { defaultLocale, localizedValue, type Locale } from "@/lib/i18n";
 import { getDictionary } from "@/lib/dictionary";
-import { repairKnownSeedImages } from "@/lib/media-fallbacks";
 import { hasActiveVerifiedBadge } from "@/lib/supplier-verification";
 import { createPublicSupabaseClient } from "@/lib/supabase/public";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 import {
   getCategoryOverride,
   getCategorySlugOverride,
-  getProductOverride,
-  getProductSlugOverride,
-  getSupplierNameOverride,
-  getSupplierSlugOverride,
 } from "@/lib/translation-overrides";
 import type { MarketplaceProduct } from "@/types";
 import type { Database } from "@/types/database";
@@ -66,10 +61,8 @@ export type DashboardProduct = {
   updatedAt: string;
 };
 
-function fallbackImage(images: string[], productSlug: string) {
-  return images.length > 0
-    ? repairKnownSeedImages(images, productSlug)
-    : ["/brand/tmp-logo.webp"];
+function fallbackImage(images: string[]) {
+  return images.length > 0 ? images : ["/brand/tmp-logo.webp"];
 }
 
 function getSafeSearchPattern(query?: string) {
@@ -87,34 +80,31 @@ function normalizeProduct(
   locale: Locale,
 ): MarketplaceProduct {
   const t = getDictionary(locale);
-  const productOverride = getProductOverride(locale, product.slug);
   const categoryOverride = getCategoryOverride(locale, product.category?.slug);
 
   return {
     id: product.id,
-    slug: getProductSlugOverride(product.slug),
-    title:
-      productOverride?.title ??
-      localizedValue(locale, product.title, product.title_fr),
-    description:
-      productOverride?.description ??
-      localizedValue(locale, product.description, product.description_fr),
+    slug: product.slug,
+    title: localizedValue(locale, product.title, product.title_fr),
+    description: localizedValue(
+      locale,
+      product.description,
+      product.description_fr,
+    ),
     category: product.category
-      ? (productOverride?.category ??
-        categoryOverride?.name ??
+      ? (categoryOverride?.name ??
         localizedValue(locale, product.category.name, product.category.name_fr))
       : t.common.uncategorized,
     categorySlug: getCategorySlugOverride(product.category?.slug),
     supplierName: product.supplier
-      ? (getSupplierNameOverride(locale, product.supplier.slug) ??
-        localizedValue(
+      ? localizedValue(
           locale,
           product.supplier.company_name,
           product.supplier.company_name_fr,
-        ))
+        )
       : t.common.supplier,
     supplierId: product.supplier?.id ?? null,
-    supplierSlug: getSupplierSlugOverride(product.supplier?.slug),
+    supplierSlug: product.supplier?.slug ?? "",
     supplierVerified: product.supplier
       ? hasActiveVerifiedBadge({
           complimentaryPremium: product.supplier.complimentary_premium,
@@ -128,7 +118,7 @@ function normalizeProduct(
     currency: product.currency,
     moq: product.moq,
     leadTimeDays: product.lead_time_days,
-    images: fallbackImage(product.images, product.slug),
+    images: fallbackImage(product.images),
     status: product.status,
     createdAt: product.created_at,
   };
@@ -358,9 +348,7 @@ export async function getSupplierProductWorkspace(
     ).map((product) => ({
       id: product.id,
       slug: product.slug,
-      title:
-        getProductOverride(locale, product.slug)?.title ??
-        localizedValue(locale, product.title, product.title_fr),
+      title: localizedValue(locale, product.title, product.title_fr),
       status: product.status,
       categoryName: product.category
         ? (getCategoryOverride(locale, product.category.slug)?.name ??
