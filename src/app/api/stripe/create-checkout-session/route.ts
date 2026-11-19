@@ -39,6 +39,14 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    const body = await request.json().catch(() => ({}));
+    const plan = body?.plan ?? "monthly";
+    if (plan !== "monthly" && plan !== "annual") {
+      return NextResponse.json(
+        { message: "Invalid membership plan." },
+        { status: 400 },
+      );
+    }
     const supabase = await createServerSupabaseClient();
     const {
       data: { user },
@@ -105,6 +113,8 @@ export async function POST(request: NextRequest) {
       ownerId: supplier.owner_id ?? user.id,
       customerId: supplier.stripe_customer_id,
       customerEmail: user.email,
+      plan,
+      expectedAnnualOffer: body?.annualOffer === true,
     });
 
     return NextResponse.json({

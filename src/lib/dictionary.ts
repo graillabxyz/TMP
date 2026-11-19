@@ -301,7 +301,7 @@ const dictionaries = {
         "Create an account or sign in to browse products, send detailed RFQs, and manage your sourcing activity.",
       supplierLoginTitle: "Sign in to start your supplier upgrade.",
       supplierLoginBody:
-        "Use your existing TMP account to add company details, then start the €50 monthly Premium Supplier membership to list products.",
+        "Add company details to your TMP account, then choose a monthly or annual Premium Supplier membership to list products.",
       buyerLogin: "Buyer login",
       supplierLogin: "Supplier login",
       email: "Email",
@@ -426,7 +426,7 @@ const dictionaries = {
         "Prepare verification and product quality signals before buyer traffic increases.",
       upgradeTitle: "Upgrade to Verified Supplier",
       upgradeBody:
-        "Start the monthly verification subscription and submit documents for admin review.",
+        "Start a Premium Supplier membership and submit documents for admin review.",
       upgradeCta: "Open verification settings",
       listingOverview: "Listing overview",
       publishedProducts: "Published",
@@ -444,7 +444,7 @@ const dictionaries = {
       supplierCatalogBody:
         "Complete product details, use clear photos, and publish listings when they are ready for buyer discovery.",
       optionalVerificationBody:
-        "Premium Supplier access is €50 per month and is required to create or update product listings. The verified badge is awarded after document review.",
+        "Premium Supplier membership is required to create or update product listings. Choose monthly or annual billing. The verified badge is awarded after document review.",
       buyerWorkspace: {
         eyebrow: "Buyer workspace",
         description:
@@ -595,7 +595,7 @@ const dictionaries = {
           "Product creation requires an active Premium Supplier membership. Your TMP account can still browse products, save suppliers, and submit RFQs without one.",
         draftOnlyNoticeTitle: "Premium Supplier access required",
         draftOnlyNoticeBody:
-          "Start the €50 monthly membership to create, edit, and publish product listings.",
+          "Choose a monthly or annual membership to create, edit, and publish product listings.",
         draftOnlyTitle: "Save this as a private draft",
         draftOnlyBody:
           "Product creation becomes available after your Premium Supplier membership is active.",
@@ -666,7 +666,7 @@ const dictionaries = {
         "Your supplier profile is ready. Start Premium Supplier access to create and manage product listings.",
       verifiedTitle: "Verified badge membership",
       verifiedBody:
-        "Premium Supplier access is €50 per month and unlocks product listings. Submit business documents to earn the verified badge after review.",
+        "Premium Supplier access unlocks product listings. Submit business documents to earn the verified badge after review.",
       verifiedLockedBody:
         "First add your business name to create a supplier profile. Then start Premium Supplier access for product listings and verification review.",
       verificationSettings: "Verification settings",
@@ -720,7 +720,7 @@ const dictionaries = {
       eyebrow: "Supplier verification",
       title: "Verification settings",
       description:
-        "Manage the monthly verification subscription, submit business documents, and prepare your supplier profile for admin approval.",
+        "Manage your Premium Supplier membership and submit business documents for verification.",
       overview: "Verification overview",
       currentStatus: "Verification status",
       subscriptionStatus: "Subscription status",
@@ -731,7 +731,16 @@ const dictionaries = {
         "Increased buyer trust during RFQ review",
         "Better visibility in marketplace discovery",
       ],
-      subscription: "Monthly subscription",
+      subscription: "Premium Supplier membership",
+      billingPeriod: "Billing period",
+      monthly: "Monthly",
+      annual: "Annual",
+      annualPrice: "€300 for the first year",
+      annualRenewalPrice: "€600 / year",
+      annualSaving: "Six months free in your first year",
+      annualNote: "Pay €300 upfront for 12 months. Renews at €600/year. First annual subscription only. Cancel renewal in the billing portal.",
+      annualRenewalNote: "Pay €600 upfront for 12 months. Renews annually. Cancel renewal in the billing portal.",
+      complimentaryNote: "This account has complimentary lifetime Premium Supplier access. No payment or renewal is required. The public verified badge still requires document approval.",
       price: "€50 / month",
       priceNote:
         "Premium Supplier access renews monthly. Cancel from the billing portal at any time.",
@@ -1227,7 +1236,7 @@ const dictionaries = {
         "Créez un compte ou connectez-vous pour parcourir les produits, envoyer des demandes détaillées et gérer votre sourcing.",
       supplierLoginTitle: "Connectez-vous pour lancer l’upgrade fournisseur.",
       supplierLoginBody:
-        "Utilisez votre compte TMP pour ajouter la société, puis démarrez l’abonnement Fournisseur Premium à 50 € par mois pour lister des produits.",
+        "Ajoutez votre société à votre compte TMP, puis choisissez un abonnement Fournisseur Premium mensuel ou annuel pour publier des produits.",
       buyerLogin: "Connexion acheteur",
       supplierLogin: "Connexion fournisseur",
       email: "Email",
@@ -1355,7 +1364,7 @@ const dictionaries = {
         "Préparez les signaux de vérification et de qualité avant l’augmentation du trafic acheteur.",
       upgradeTitle: "Passer en fournisseur vérifié",
       upgradeBody:
-        "Lancez l’abonnement mensuel de vérification et soumettez vos documents pour revue admin.",
+        "Démarrez un abonnement Fournisseur Premium et soumettez vos documents pour examen.",
       upgradeCta: "Ouvrir la vérification",
       listingOverview: "Aperçu du catalogue",
       publishedProducts: "Publiés",
@@ -1373,7 +1382,7 @@ const dictionaries = {
       supplierCatalogBody:
         "Complétez les détails, utilisez des photos nettes et publiez les listings prêts à être découverts.",
       optionalVerificationBody:
-        "L’accès Fournisseur Premium coûte 50 € par mois et est requis pour créer ou modifier les listings produits. Le badge vérifié est accordé après examen des documents.",
+        "L’abonnement Fournisseur Premium est requis pour créer ou modifier les annonces produits. Choisissez une facturation mensuelle ou annuelle. Le badge vérifié est accordé après examen des documents.",
       buyerWorkspace: {
         eyebrow: "Espace acheteur",
         description:
@@ -1529,7 +1538,7 @@ const dictionaries = {
           "La création de produits nécessite un abonnement Fournisseur Premium actif. Sans abonnement, votre compte TMP peut toujours parcourir les produits, enregistrer des fournisseurs et envoyer des demandes.",
         draftOnlyNoticeTitle: "Accès Fournisseur Premium requis",
         draftOnlyNoticeBody:
-          "Démarrez l’abonnement mensuel à 50 € pour créer, modifier et publier des produits.",
+          "Choisissez un abonnement mensuel ou annuel pour créer, modifier et publier des produits.",
         draftOnlyTitle: "Enregistrer comme brouillon privé",
         draftOnlyBody:
           "La création de produits devient disponible lorsque votre abonnement Fournisseur Premium est actif.",
@@ -1602,7 +1611,7 @@ const dictionaries = {
         "Votre profil fournisseur est prêt. Démarrez l’accès Fournisseur Premium pour créer et gérer les listings produits.",
       verifiedTitle: "Abonnement badge vérifié",
       verifiedBody:
-        "L’accès Fournisseur Premium coûte 50 € par mois et débloque les listings produits. Soumettez les documents de l’entreprise pour obtenir le badge vérifié après examen.",
+        "L’accès Fournisseur Premium débloque les annonces produits. Soumettez les documents de l’entreprise pour obtenir le badge vérifié après examen.",
       verifiedLockedBody:
         "Ajoutez d’abord le nom de votre entreprise pour créer un profil fournisseur. Démarrez ensuite l’accès Fournisseur Premium pour les listings et la vérification.",
       verificationSettings: "Paramètres de vérification",
@@ -1657,7 +1666,7 @@ const dictionaries = {
       eyebrow: "Vérification fournisseur",
       title: "Paramètres de vérification",
       description:
-        "Gérez l’abonnement mensuel de vérification, soumettez les documents d’entreprise et préparez le profil pour l’approbation admin.",
+        "Gérez votre abonnement Fournisseur Premium et soumettez vos documents d’entreprise pour vérification.",
       overview: "Vue d’ensemble",
       currentStatus: "Statut de vérification",
       subscriptionStatus: "Statut d’abonnement",
@@ -1668,7 +1677,16 @@ const dictionaries = {
         "Plus de confiance acheteur pendant la revue RFQ",
         "Meilleure visibilité dans la découverte marketplace",
       ],
-      subscription: "Abonnement mensuel",
+      subscription: "Abonnement Fournisseur Premium",
+      billingPeriod: "Période de facturation",
+      monthly: "Mensuel",
+      annual: "Annuel",
+      annualPrice: "300 € la première année",
+      annualRenewalPrice: "600 € / an",
+      annualSaving: "Six mois offerts la première année",
+      annualNote: "Payez 300 € à l’avance pour 12 mois. Renouvellement à 600 €/an. Premier abonnement annuel uniquement. Annulez le renouvellement depuis le portail de facturation.",
+      annualRenewalNote: "Payez 600 € à l’avance pour 12 mois. Renouvellement annuel. Annulez le renouvellement depuis le portail de facturation.",
+      complimentaryNote: "Ce compte bénéficie d’un accès Fournisseur Premium offert à vie. Aucun paiement ni renouvellement n’est requis. Le badge vérifié public reste soumis à l’approbation des documents.",
       price: "50 € / mois",
       priceNote:
         "L’accès Fournisseur Premium est renouvelé chaque mois. Vous pouvez annuler à tout moment depuis le portail de facturation.",
@@ -2166,7 +2184,7 @@ const turkishDictionary = {
       "Ürünleri incelemek, ayrıntılı teklif talepleri göndermek ve tedarik sürecinizi yönetmek için hesap oluşturun veya giriş yapın.",
     supplierLoginTitle: "Tedarikçi yükseltmesini başlatmak için giriş yapın.",
     supplierLoginBody:
-      "Şirket bilgilerini eklemek için mevcut TMP hesabınızı kullanın, ardından ürün listelemek için aylık €50 Premium Tedarikçi üyeliğini başlatın.",
+      "TMP hesabınıza şirket bilgilerinizi ekleyin, ardından ürün listelemek için aylık veya yıllık Premium Tedarikçi üyeliği seçin.",
     buyerLogin: "Alıcı girişi",
     supplierLogin: "Tedarikçi girişi",
     email: "E-posta",
@@ -2290,7 +2308,7 @@ const turkishDictionary = {
       "Alıcı trafiği artmadan önce doğrulama ve ürün kalite sinyallerini hazırlayın.",
     upgradeTitle: "Doğrulanmış tedarikçiye yükselt",
     upgradeBody:
-      "Aylık doğrulama aboneliğini başlatın ve belgeleri yönetici incelemesine gönderin.",
+      "Premium Tedarikçi üyeliğini başlatın ve belgeleri yönetici incelemesine gönderin.",
     upgradeCta: "Doğrulama ayarlarını aç",
     listingOverview: "İlan özeti",
     publishedProducts: "Yayında",
@@ -2308,7 +2326,7 @@ const turkishDictionary = {
     supplierCatalogBody:
       "Ürün bilgilerini tamamlayın, net fotoğraflar kullanın ve alıcı keşfine hazır ilanları yayınlayın.",
     optionalVerificationBody:
-      "Premium Tedarikçi erişimi aylık €50’dir ve ürün ilanı oluşturmak veya güncellemek için zorunludur. Doğrulanmış rozet, belge incelemesinden sonra verilir.",
+      "Ürün ilanı oluşturmak veya güncellemek için Premium Tedarikçi üyeliği gereklidir. Aylık veya yıllık faturalandırma seçin. Doğrulanmış rozet, belge incelemesinden sonra verilir.",
     buyerWorkspace: {
       eyebrow: "Alıcı çalışma alanı",
       description:
@@ -2461,7 +2479,7 @@ const turkishDictionary = {
         "Ürün oluşturmak için etkin Premium Tedarikçi üyeliği gerekir. Üyelik olmadan TMP hesabınızla ürünleri inceleyebilir, tedarikçileri kaydedebilir ve RFQ gönderebilirsiniz.",
       draftOnlyNoticeTitle: "Premium Tedarikçi erişimi gerekli",
       draftOnlyNoticeBody:
-        "Ürün ilanları oluşturmak, düzenlemek ve yayınlamak için aylık €50 üyeliği başlatın.",
+        "Ürün ilanları oluşturmak, düzenlemek ve yayınlamak için aylık veya yıllık üyelik seçin.",
       draftOnlyTitle: "Özel taslak olarak kaydedin",
       draftOnlyBody:
         "Premium Tedarikçi üyeliğiniz etkin olduğunda ürün oluşturma açılır.",
@@ -2532,7 +2550,7 @@ const turkishDictionary = {
       "Tedarikçi profiliniz hazır. Ürün ilanları oluşturmak ve yönetmek için Premium Tedarikçi erişimini başlatın.",
     verifiedTitle: "Doğrulanmış rozet üyeliği",
     verifiedBody:
-      "Premium Tedarikçi erişimi aylık €50’dir ve ürün ilanlarını açar. İnceleme sonrasında doğrulanmış rozet almak için işletme belgelerinizi gönderin.",
+      "Premium Tedarikçi erişimi ürün ilanlarını açar. İnceleme sonrasında doğrulanmış rozet almak için işletme belgelerinizi gönderin.",
     verifiedLockedBody:
       "Önce işletme adınızı ekleyerek tedarikçi profili oluşturun. Ardından ürün ilanları ve doğrulama için Premium Tedarikçi erişimini başlatın.",
     verificationSettings: "Doğrulama ayarları",
@@ -2585,7 +2603,7 @@ const turkishDictionary = {
     eyebrow: "Tedarikçi doğrulaması",
     title: "Doğrulama ayarları",
     description:
-      "Aylık doğrulama aboneliğini yönetin, işletme belgelerini gönderin ve tedarikçi profilinizi yönetici onayına hazırlayın.",
+      "Premium Tedarikçi üyeliğinizi yönetin ve doğrulama için işletme belgelerinizi gönderin.",
     overview: "Doğrulama özeti",
     currentStatus: "Doğrulama durumu",
     subscriptionStatus: "Abonelik durumu",
@@ -2596,7 +2614,16 @@ const turkishDictionary = {
       "RFQ incelemesi sırasında daha yüksek alıcı güveni",
       "Pazar yeri keşfinde daha iyi görünürlük",
     ],
-    subscription: "Aylık abonelik",
+    subscription: "Premium Tedarikçi üyeliği",
+    billingPeriod: "Faturalandırma dönemi",
+    monthly: "Aylık",
+    annual: "Yıllık",
+    annualPrice: "İlk yıl için €300",
+    annualRenewalPrice: "€600 / yıl",
+    annualSaving: "İlk yıl altı ay ücretsiz",
+    annualNote: "12 ay için peşin €300 ödeyin. Yıllık €600 ile yenilenir. Yalnızca ilk yıllık abonelik için geçerlidir. Yenilemeyi faturalandırma portalından iptal edebilirsiniz.",
+    annualRenewalNote: "12 ay için peşin €600 ödeyin. Her yıl yenilenir. Yenilemeyi faturalandırma portalından iptal edebilirsiniz.",
+    complimentaryNote: "Bu hesaba ömür boyu ücretsiz Premium Tedarikçi erişimi tanımlanmıştır. Ödeme veya yenileme gerekmez. Herkese açık doğrulanmış rozet için belge onayı gereklidir.",
     price: "€50 / ay",
     priceNote:
       "Premium Tedarikçi erişimi aylık yenilenir. Faturalandırma portalından istediğiniz zaman iptal edebilirsiniz.",

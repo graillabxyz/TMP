@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ToastNotice } from "@/components/ui/toast-notice";
-import { BillingActions } from "@/components/verification/billing-actions";
+import { MembershipBilling } from "@/components/verification/membership-billing";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
@@ -413,40 +413,10 @@ export default async function VerificationSettingsPage({
                 <Card className="overflow-hidden">
                   <CardHeader className="border-b border-white/10 bg-gold-300/[0.08]">
                     <CardTitle>{copy.subscription}</CardTitle>
-                    <p className="text-3xl font-semibold text-white">
-                      {copy.price}
-                    </p>
-                    <p className="text-sm leading-6 text-muted-foreground">
-                      {copy.priceNote}
-                    </p>
                   </CardHeader>
                   <CardContent className="p-6">
-                    {!supplier.complimentaryPremium && (
-                      <BillingActions
-                        subscribeLabel={copy.subscribe}
-                        manageLabel={copy.manage}
-                        preparingLabel={copy.preparing}
-                        openingLabel={copy.opening}
-                        canManageSubscription={Boolean(
-                          supplier.stripeCustomerId,
-                        )}
-                        canStartSubscription={
-                          supplier.subscriptionStatus !== "active" &&
-                          supplier.subscriptionStatus !== "past_due"
-                        }
-                        dismissNotificationLabel={t.common.dismissNotification}
-                        errorLabel={copy.billingActionError}
-                        locale={locale}
-                      />
-                    )}
-                    <div className="mt-5 rounded-lg border border-white/10 bg-charcoal-800 p-4 text-sm leading-6 text-muted-foreground">
-                      {copy.subscriptionStatus}:{" "}
-                      <span className="font-medium text-white">
-                        {supplier.complimentaryPremium
-                          ? copy.states.lifetime
-                          : copy.states[supplier.subscriptionStatus]}
-                      </span>
-                    </div>
+                    <MembershipBilling locale={locale} supplier={supplier}
+                      complimentary={supplier.complimentaryPremium} />
                   </CardContent>
                 </Card>
               </aside>

@@ -32,6 +32,8 @@ SUPABASE_SERVICE_ROLE_KEY=
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
 STRIPE_VERIFICATION_PRICE_ID=
+STRIPE_ANNUAL_PRICE_ID=
+STRIPE_ANNUAL_COUPON_ID=
 STRIPE_WEBHOOK_SECRET=
 RESEND_API_KEY=
 RFQ_NOTIFICATION_FROM=
@@ -180,6 +182,15 @@ SUPABASE_SERVICE_ROLE_KEY=
 `STRIPE_VERIFICATION_PRICE_ID` must be an active recurring monthly Price ID for
 the Verified Supplier subscription priced at `50 EUR`. Checkout rejects prices
 with a different amount, currency, billing interval, or inactive status.
+`STRIPE_ANNUAL_PRICE_ID` must be an active `600 EUR` yearly price on the same
+Verified Supplier product. `STRIPE_ANNUAL_COUPON_ID` must be a valid,
+product-restricted 50% coupon with duration `once`: the first annual invoice is
+`300 EUR`, followed by `600 EUR/year` renewals. No free trial is created.
+Prior annual subscriptions for the Stripe customer disqualify repeat introductory
+discounts; monthly subscribers remain eligible for their first annual membership.
+Existing subscribers use the billing portal rather than starting a second plan.
+Complimentary accounts see no prices or payment controls; this does not change
+their document-review requirement for the public verified badge.
 The webhook route verifies Stripe signatures, uses the server-only Supabase
 service role, and calls a synchronization RPC that is not executable by
 `anon` or `authenticated`. Duplicate and older Stripe events do not roll

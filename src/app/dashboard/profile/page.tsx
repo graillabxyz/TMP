@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { BadgeCheck, Building2, CreditCard, UserRound } from "lucide-react";
+import { BadgeCheck, Building2, UserRound } from "lucide-react";
 
 import { startSupplierProfile } from "@/app/actions/verification";
 import { DashboardShell } from "@/components/layout/dashboard-shell";
@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToastNotice } from "@/components/ui/toast-notice";
-import { BillingActions } from "@/components/verification/billing-actions";
+import { MembershipBilling } from "@/components/verification/membership-billing";
 import { getCurrentProfile } from "@/lib/account";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
@@ -146,66 +146,10 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
                 {isSupplier ? copy.verifiedBody : copy.verifiedLockedBody}
               </p>
               <div className="mt-4 border-y border-white/10 py-4">
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <div>
-                    <p className="font-medium text-white">
-                      {verificationCopy.subscription}
-                    </p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {verificationCopy.price}
-                    </p>
-                  </div>
-                  {supplier || profile.complimentaryPremium ? (
-                    <Badge
-                      variant={
-                        profile.complimentaryPremium ||
-                        supplier?.complimentaryPremium ||
-                        supplier?.subscriptionStatus === "active"
-                          ? "success"
-                          : "secondary"
-                      }
-                    >
-                      {profile.complimentaryPremium ||
-                      supplier?.complimentaryPremium
-                        ? verificationCopy.states.lifetime
-                        : verificationCopy.states[
-                            supplier?.subscriptionStatus ?? "inactive"
-                          ]}
-                    </Badge>
-                  ) : (
-                    <Badge variant="secondary">
-                      {verificationCopy.states.none}
-                    </Badge>
-                  )}
-                </div>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  {verificationCopy.priceNote}
-                </p>
+                <MembershipBilling locale={locale} supplier={supplier}
+                  complimentary={Boolean(profile.complimentaryPremium || supplier?.complimentaryPremium)} />
               </div>
               <div className="mt-4 grid gap-2">
-                {supplier &&
-                !supplier.complimentaryPremium &&
-                !profile.complimentaryPremium ? (
-                  <BillingActions
-                    subscribeLabel={verificationCopy.subscribe}
-                    manageLabel={verificationCopy.manage}
-                    preparingLabel={verificationCopy.preparing}
-                    openingLabel={verificationCopy.opening}
-                    canManageSubscription={Boolean(supplier.stripeCustomerId)}
-                    canStartSubscription={
-                      supplier.subscriptionStatus !== "active" &&
-                      supplier.subscriptionStatus !== "past_due"
-                    }
-                    dismissNotificationLabel={t.common.dismissNotification}
-                    errorLabel={verificationCopy.billingActionError}
-                    locale={locale}
-                  />
-                ) : !supplier && !profile.complimentaryPremium ? (
-                  <Button disabled variant="outline">
-                    <CreditCard aria-hidden="true" />
-                    {verificationCopy.subscribe}
-                  </Button>
-                ) : null}
                 <Button
                   asChild
                   variant="outline"
