@@ -127,7 +127,8 @@ export default async function VerificationSettingsPage({
                     ? copy.checkoutSuccess
                     : params.checkout === "existing"
                       ? copy.checkoutExisting
-                      : params.checkout === "complimentary"
+                      : params.checkout === "complimentary" &&
+                          (profile.complimentaryPremium || supplier?.complimentaryPremium)
                         ? copy.checkoutComplimentary
                         : params.checkout === "cancelled"
                           ? copy.checkoutCancelled

@@ -740,7 +740,7 @@ const dictionaries = {
       annualSaving: "Six months free in your first year",
       annualNote: "Pay €300 upfront for 12 months. Renews at €600/year. First annual subscription only. Cancel renewal in the billing portal.",
       annualRenewalNote: "Pay €600 upfront for 12 months. Renews annually. Cancel renewal in the billing portal.",
-      complimentaryNote: "This account has complimentary lifetime Premium Supplier access. No payment or renewal is required. The public verified badge still requires document approval.",
+      complimentaryNote: "Premium Supplier access is included for the platform owner. No subscription payment is required. The public verified badge still requires document approval.",
       price: "€50 / month",
       priceNote:
         "Premium Supplier access renews monthly. Cancel from the billing portal at any time.",
@@ -783,7 +783,7 @@ const dictionaries = {
       checkoutExisting:
         "A verification membership already exists. Use Manage subscription to review billing.",
       checkoutComplimentary:
-        "Lifetime complimentary Premium Supplier access is active on this account.",
+        "Owner access is active. No subscription payment is required.",
       checkoutCancelled: "Checkout cancelled. No subscription was started.",
       checkoutError:
         "We could not open verification membership checkout. Please try again later.",
@@ -807,7 +807,7 @@ const dictionaries = {
         rejected: "Rejected",
         inactive: "Inactive",
         active: "Active",
-        lifetime: "Lifetime complimentary",
+        lifetime: "Owner access",
         past_due: "Past due",
         canceled: "Canceled",
       },
@@ -1686,7 +1686,7 @@ const dictionaries = {
       annualSaving: "Six mois offerts la première année",
       annualNote: "Payez 300 € à l’avance pour 12 mois. Renouvellement à 600 €/an. Premier abonnement annuel uniquement. Annulez le renouvellement depuis le portail de facturation.",
       annualRenewalNote: "Payez 600 € à l’avance pour 12 mois. Renouvellement annuel. Annulez le renouvellement depuis le portail de facturation.",
-      complimentaryNote: "Ce compte bénéficie d’un accès Fournisseur Premium offert à vie. Aucun paiement ni renouvellement n’est requis. Le badge vérifié public reste soumis à l’approbation des documents.",
+      complimentaryNote: "L’accès Fournisseur Premium est inclus pour le propriétaire de la plateforme. Aucun paiement d’abonnement n’est requis. Le badge vérifié public reste soumis à l’approbation des documents.",
       price: "50 € / mois",
       priceNote:
         "L’accès Fournisseur Premium est renouvelé chaque mois. Vous pouvez annuler à tout moment depuis le portail de facturation.",
@@ -1730,7 +1730,7 @@ const dictionaries = {
       checkoutExisting:
         "Un abonnement de vérification existe déjà. Utilisez Gérer l’abonnement pour consulter la facturation.",
       checkoutComplimentary:
-        "L’accès Fournisseur Premium gratuit à vie est actif sur ce compte.",
+        "L’accès propriétaire est actif. Aucun paiement d’abonnement n’est requis.",
       checkoutCancelled: "Checkout annulé. Aucun abonnement n’a été lancé.",
       checkoutError:
         "Impossible d’ouvrir le paiement de l’abonnement de vérification. Veuillez réessayer plus tard.",
@@ -1755,7 +1755,7 @@ const dictionaries = {
         rejected: "Rejeté",
         inactive: "Inactif",
         active: "Actif",
-        lifetime: "Gratuit à vie",
+        lifetime: "Accès propriétaire",
         past_due: "En retard",
         canceled: "Annulé",
       },
@@ -2623,7 +2623,7 @@ const turkishDictionary = {
     annualSaving: "İlk yıl altı ay ücretsiz",
     annualNote: "12 ay için peşin €300 ödeyin. Yıllık €600 ile yenilenir. Yalnızca ilk yıllık abonelik için geçerlidir. Yenilemeyi faturalandırma portalından iptal edebilirsiniz.",
     annualRenewalNote: "12 ay için peşin €600 ödeyin. Her yıl yenilenir. Yenilemeyi faturalandırma portalından iptal edebilirsiniz.",
-    complimentaryNote: "Bu hesaba ömür boyu ücretsiz Premium Tedarikçi erişimi tanımlanmıştır. Ödeme veya yenileme gerekmez. Herkese açık doğrulanmış rozet için belge onayı gereklidir.",
+    complimentaryNote: "Platform sahibine Premium Tedarikçi erişimi dahildir. Abonelik ödemesi gerekmez. Herkese açık doğrulanmış rozet için belge onayı gereklidir.",
     price: "€50 / ay",
     priceNote:
       "Premium Tedarikçi erişimi aylık yenilenir. Faturalandırma portalından istediğiniz zaman iptal edebilirsiniz.",
@@ -2665,7 +2665,7 @@ const turkishDictionary = {
     checkoutExisting:
       "Bir doğrulama üyeliği zaten mevcut. Faturalandırmayı incelemek için Aboneliği yönet seçeneğini kullanın.",
     checkoutComplimentary:
-      "Bu hesapta ömür boyu ücretsiz Premium Tedarikçi erişimi etkindir.",
+      "Platform sahibi erişimi etkindir. Abonelik ödemesi gerekmez.",
     checkoutCancelled: "Checkout iptal edildi. Abonelik başlatılmadı.",
     checkoutError:
       "Doğrulama üyeliği ödemesi açılamadı. Lütfen daha sonra tekrar deneyin.",
@@ -2688,7 +2688,7 @@ const turkishDictionary = {
       rejected: "Reddedildi",
       inactive: "Pasif",
       active: "Aktif",
-      lifetime: "Ömür boyu ücretsiz",
+      lifetime: "Platform sahibi erişimi",
       past_due: "Gecikmiş",
       canceled: "İptal edildi",
     },
