@@ -83,6 +83,7 @@ export async function POST(request: NextRequest) {
       origin,
       returnPath: verificationPath,
       customerId: supplier.stripe_customer_id,
+      locale,
     });
 
     return NextResponse.json({

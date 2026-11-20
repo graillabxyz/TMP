@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ToastNotice } from "@/components/ui/toast-notice";
 import { MembershipBilling } from "@/components/verification/membership-billing";
 import { getCurrentProfile } from "@/lib/account";
+import { CheckoutConfirmation } from "@/components/verification/checkout-confirmation";
 import { getDictionary } from "@/lib/dictionary";
 import { getLocale, getLocalizedPath } from "@/lib/i18n";
 import { createMetadata } from "@/lib/seo";
@@ -31,6 +32,7 @@ type VerificationPageProps = {
     status?: string;
     checkout?: string;
     portal?: string;
+    session_id?: string;
   }>;
 };
 
@@ -128,7 +130,8 @@ export default async function VerificationSettingsPage({
                     : params.checkout === "existing"
                       ? copy.checkoutExisting
                       : params.checkout === "complimentary" &&
-                          (profile.complimentaryPremium || supplier?.complimentaryPremium)
+                          (profile.complimentaryPremium ||
+                            supplier?.complimentaryPremium)
                         ? copy.checkoutComplimentary
                         : params.checkout === "cancelled"
                           ? copy.checkoutCancelled
@@ -174,7 +177,19 @@ export default async function VerificationSettingsPage({
 
       {profile?.role !== "buyer" && (
         <>
-          {statusMessage && (
+          {params.checkout === "success" && (
+            <CheckoutConfirmation
+              sessionId={params.session_id ?? ""}
+              labels={{
+                pending: copy.checkoutSuccess,
+                active: copy.membershipActivated,
+                delayed: copy.confirmationDelayed,
+                error: copy.confirmationError,
+                dismiss: t.common.dismissNotification,
+              }}
+            />
+          )}
+          {statusMessage && params.checkout !== "success" && (
             <ToastNotice
               message={statusMessage}
               dismissLabel={t.common.dismissNotification}
@@ -416,8 +431,11 @@ export default async function VerificationSettingsPage({
                     <CardTitle>{copy.subscription}</CardTitle>
                   </CardHeader>
                   <CardContent className="p-6">
-                    <MembershipBilling locale={locale} supplier={supplier}
-                      complimentary={supplier.complimentaryPremium} />
+                    <MembershipBilling
+                      locale={locale}
+                      supplier={supplier}
+                      complimentary={supplier.complimentaryPremium}
+                    />
                   </CardContent>
                 </Card>
               </aside>

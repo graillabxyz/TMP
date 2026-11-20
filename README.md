@@ -34,6 +34,7 @@ STRIPE_SECRET_KEY=
 STRIPE_VERIFICATION_PRICE_ID=
 STRIPE_ANNUAL_PRICE_ID=
 STRIPE_ANNUAL_COUPON_ID=
+STRIPE_PORTAL_CONFIGURATION_ID=
 STRIPE_WEBHOOK_SECRET=
 RESEND_API_KEY=
 RFQ_NOTIFICATION_FROM=
@@ -191,6 +192,26 @@ discounts; monthly subscribers remain eligible for their first annual membership
 Existing subscribers use the billing portal rather than starting a second plan.
 Complimentary accounts see no prices or payment controls; this does not change
 their document-review requirement for the public verified badge.
+The portal configuration must enable invoice history, payment-method updates,
+and cancellation **at period end**. Self-service plan switching is intentionally
+disabled: members cancel renewal, retain access for the paid period, then choose
+their next plan. This avoids prorated changes accidentally bypassing the annual
+introductory offer. Checkout and the portal use the account's selected language.
+Checkout creates/reuses a supplier-scoped Stripe customer, reuses same-plan open
+sessions, expires old-plan sessions, and uses idempotency keys for retries.
+The signed webhook reads current Stripe state, validates the configured price,
+currency, quantity, supplier owner and customer before synchronizing membership.
+Enable `customer.subscription.created`, `.updated`, `.deleted`,
+`checkout.session.completed`, and `checkout.session.async_payment_succeeded`.
+The return page makes up to ten authenticated confirmation checks, three seconds apart; a return
+URL alone never grants access. Billing-period dates support both legacy and
+item-level Stripe subscription payloads.
+
+Remaining release validation: a sandbox paid subscription and renewal/cancellation
+cycle against a staging Supabase project, plus a live SQL/RLS review (the connected
+management API must have project access). A successful Checkout creation is not
+proof of payment-to-database activation. Stripe webhook failures should be monitored
+and retried; the database currently relies on synchronized subscription status.
 The webhook route verifies Stripe signatures, uses the server-only Supabase
 service role, and calls a synchronization RPC that is not executable by
 `anon` or `authenticated`. Duplicate and older Stripe events do not roll

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CreditCard, ExternalLink } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -45,6 +45,7 @@ async function postAndRedirect(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ plan, annualOffer }),
+    signal: AbortSignal.timeout(45000),
   });
   const payload = (await response.json()) as { message?: string; url?: string };
 
@@ -79,8 +80,11 @@ export function BillingActions({
   const [plan, setPlan] = useState<MembershipPlan>("monthly");
   const [loading, setLoading] = useState<"checkout" | "portal" | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const inFlight = useRef(false);
 
   async function openBilling(path: string, nextLoading: "checkout" | "portal") {
+    if (inFlight.current) return;
+    inFlight.current = true;
     setError(null);
     setLoading(nextLoading);
 
@@ -89,6 +93,7 @@ export function BillingActions({
     } catch {
       setError(errorLabel);
       setLoading(null);
+      inFlight.current = false;
     }
   }
 
@@ -116,7 +121,7 @@ export function BillingActions({
               </label>
             ))}
           </div>
-          <div className="space-y-2 pb-2">
+          <div className="space-y-2 pb-2" aria-live="polite" aria-atomic="true">
             <p className="text-xl font-semibold text-white">
               {plan === "monthly"
                 ? pricing.price

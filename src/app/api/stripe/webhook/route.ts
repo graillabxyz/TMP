@@ -1,110 +1,24 @@
 import { NextResponse, type NextRequest } from "next/server";
-
 import { retrieveStripeSubscription } from "@/lib/stripe/api";
 import { getStripeConfig } from "@/lib/stripe/config";
+import {
+  blocksNewSubscription,
+  getMembershipDetails,
+} from "@/lib/stripe/membership";
 import { verifyStripeWebhookSignature } from "@/lib/stripe/webhook-signature";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin";
 
-type StripeEventObject = {
-  id?: string;
-  customer?: string | { id?: string };
-  subscription?: string;
-  status?: string;
-  current_period_end?: number;
-  metadata?: {
-    supplier_id?: string;
-    owner_id?: string;
-  };
-};
-
-type StripeSyncRpcClient = {
-  rpc: (
-    functionName: "sync_supplier_stripe_subscription",
-    args: {
-      p_supplier_id: string;
-      p_stripe_customer_id: string;
-      p_stripe_subscription_id: string;
-      p_stripe_status: string;
-      p_current_period_end: string | null;
-      p_event_id: string;
-      p_event_created_at: string;
-    },
-  ) => Promise<{ error: { message: string } | null }>;
-};
-
-function getStripeId(value: string | { id?: string } | undefined) {
-  return typeof value === "string" ? value : (value?.id ?? "");
-}
-
-function getPeriodEnd(value: number | undefined) {
-  return value ? new Date(value * 1000).toISOString() : null;
-}
-
-async function syncSubscription(input: {
-  eventCreatedAt?: number;
-  eventId?: string;
-  supplierId?: string;
-  customerId?: string;
-  subscriptionId?: string;
-  status?: string;
-  currentPeriodEnd?: number;
-}) {
-  if (
-    !input.eventCreatedAt ||
-    !input.eventId ||
-    !input.supplierId ||
-    !input.subscriptionId ||
-    !input.status
-  ) {
-    throw new Error("Stripe subscription event is missing supplier metadata.");
-  }
-
-  const supabase =
-    createAdminSupabaseClient() as unknown as StripeSyncRpcClient;
-  const { error } = await supabase.rpc("sync_supplier_stripe_subscription", {
-    p_supplier_id: input.supplierId,
-    p_stripe_customer_id: input.customerId ?? "",
-    p_stripe_subscription_id: input.subscriptionId,
-    p_stripe_status: input.status,
-    p_current_period_end: getPeriodEnd(input.currentPeriodEnd),
-    p_event_id: input.eventId,
-    p_event_created_at: new Date(input.eventCreatedAt * 1000).toISOString(),
-  });
-
-  if (error) {
-    throw new Error(error.message);
-  }
-}
-
 export async function POST(request: NextRequest) {
   const config = getStripeConfig();
-  const signature = request.headers.get("stripe-signature");
-  const payload = await request.text();
-
-  if (!config.webhookSecret) {
-    if (process.env.NODE_ENV === "production") {
-      return NextResponse.json(
-        { error: "Stripe webhook secret is not configured." },
-        { status: 500 },
-      );
-    }
-
-    return NextResponse.json({
-      received: true,
-      mode: "placeholder",
-      message:
-        "Stripe webhook received in placeholder mode. Configure STRIPE_WEBHOOK_SECRET before verifying live events.",
-    });
-  }
-
-  if (!signature) {
+  if (!config.webhookSecret)
     return NextResponse.json(
-      { error: "Missing Stripe signature header." },
-      { status: 400 },
+      { error: "Webhook unavailable." },
+      { status: 503 },
     );
-  }
-
+  const payload = await request.text();
+  const signature = request.headers.get("stripe-signature");
   if (
+    !signature ||
     !verifyStripeWebhookSignature({
       payload,
       signature,
@@ -116,81 +30,115 @@ export async function POST(request: NextRequest) {
       { status: 400 },
     );
   }
-
-  let event: {
-    id: string;
-    created: number;
-    type: string;
-    data: {
-      object: StripeEventObject;
-    };
-  };
-
+  let event;
   try {
-    event = JSON.parse(payload) as typeof event;
+    event = JSON.parse(payload);
+    if (
+      !event?.id ||
+      !Number.isFinite(event.created) ||
+      !event.type ||
+      !event.data?.object
+    )
+      throw new Error("Invalid event");
   } catch {
     return NextResponse.json(
-      { error: "Invalid Stripe webhook payload." },
+      { error: "Invalid Stripe event." },
       { status: 400 },
     );
   }
-
   try {
-    if (event.type === "checkout.session.completed") {
-      const session = event.data.object;
+    const object = event.data.object;
+    const subscriptionId = [
+      "checkout.session.completed",
+      "checkout.session.async_payment_succeeded",
+    ].includes(event.type)
+      ? object.subscription
+      : [
+            "customer.subscription.created",
+            "customer.subscription.updated",
+            "customer.subscription.deleted",
+          ].includes(event.type)
+        ? object.id
+        : null;
+    if (!subscriptionId || typeof subscriptionId !== "string")
+      return NextResponse.json({ received: true });
 
-      if (session.subscription) {
-        const subscription = await retrieveStripeSubscription(
-          session.subscription,
-        );
-
-        await syncSubscription({
-          eventCreatedAt: event.created,
-          eventId: event.id,
-          supplierId:
-            session.metadata?.supplier_id ?? subscription.metadata?.supplier_id,
-          customerId: getStripeId(session.customer ?? subscription.customer),
-          subscriptionId: subscription.id,
-          status: subscription.status,
-          currentPeriodEnd: subscription.current_period_end,
-        });
+    // Read current Stripe state: delayed events must not restore stale paid access.
+    const subscription = await retrieveStripeSubscription(subscriptionId);
+    const details = getMembershipDetails(subscription, config);
+    const supplierId = subscription.metadata?.supplier_id;
+    const ownerId = subscription.metadata?.owner_id;
+    const customerId =
+      typeof subscription.customer === "string"
+        ? subscription.customer
+        : subscription.customer?.id;
+    if (!supplierId || !ownerId || !customerId) {
+      if (!details) return NextResponse.json({ received: true, ignored: true });
+      throw new Error("Membership ownership metadata is missing.");
+    }
+    const supabase = createAdminSupabaseClient();
+    const { data, error } = await supabase
+      .from("suppliers")
+      .select("owner_id, stripe_customer_id, stripe_subscription_id")
+      .eq("id", supplierId)
+      .single();
+    const supplier = data as {
+      owner_id: string;
+      stripe_customer_id: string | null;
+      stripe_subscription_id: string | null;
+    } | null;
+    if (
+      error ||
+      !supplier ||
+      supplier.owner_id !== ownerId ||
+      (supplier.stripe_customer_id &&
+        supplier.stripe_customer_id !== customerId)
+    ) {
+      throw new Error("Stripe membership does not match supplier ownership.");
+    }
+    if (!details && supplier.stripe_subscription_id !== subscription.id)
+      return NextResponse.json({ received: true, ignored: true });
+    if (
+      supplier.stripe_subscription_id &&
+      supplier.stripe_subscription_id !== subscription.id
+    ) {
+      const current = await retrieveStripeSubscription(
+        supplier.stripe_subscription_id,
+      );
+      if (
+        blocksNewSubscription(current.status) ||
+        !blocksNewSubscription(subscription.status)
+      ) {
+        return NextResponse.json({ received: true, ignored: true });
       }
     }
-
-    if (
-      event.type === "customer.subscription.updated" ||
-      event.type === "customer.subscription.deleted"
-    ) {
-      const subscription = event.data.object;
-
-      await syncSubscription({
-        eventCreatedAt: event.created,
-        eventId: event.id,
-        supplierId: subscription.metadata?.supplier_id,
-        customerId: getStripeId(subscription.customer),
-        subscriptionId: subscription.id,
-        status:
-          event.type === "customer.subscription.deleted"
-            ? "canceled"
-            : subscription.status,
-        currentPeriodEnd: subscription.current_period_end,
-      });
-    }
+    const rpc = supabase as unknown as {
+      rpc: (
+        name: string,
+        args: Record<string, unknown>,
+      ) => Promise<{ error: { message: string } | null }>;
+    };
+    const result = await rpc.rpc("sync_supplier_stripe_subscription", {
+      p_supplier_id: supplierId,
+      p_stripe_customer_id: customerId,
+      p_stripe_subscription_id: subscription.id,
+      p_stripe_status: details?.accessStatus ?? "inactive",
+      p_current_period_end: details
+        ? new Date(details.endsAt * 1000).toISOString()
+        : null,
+      p_event_id: event.id,
+      p_event_created_at: new Date(event.created * 1000).toISOString(),
+    });
+    if (result.error) throw new Error(result.error.message);
+    return NextResponse.json({ received: true });
   } catch (error) {
     console.error(
-      "Unable to process Stripe webhook",
+      "Stripe membership synchronization failed",
       error instanceof Error ? error.message : error,
     );
-
     return NextResponse.json(
-      { error: "Unable to process Stripe webhook." },
+      { error: "Unable to synchronize membership." },
       { status: 500 },
     );
   }
-
-  return NextResponse.json({
-    received: true,
-    mode: "verified",
-    message: "Stripe webhook verified and processed.",
-  });
 }

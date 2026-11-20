@@ -4,12 +4,26 @@ import {
   type MembershipPlan,
 } from "@/lib/marketplace-config";
 import { getStripeConfig } from "@/lib/stripe/config";
+import {
+  blocksNewSubscription,
+  type MembershipSubscription,
+} from "@/lib/stripe/membership";
 
 const STRIPE_API_BASE = "https://api.stripe.com/v1";
 
 type StripeCheckoutSessionResponse = {
   id: string;
   url: string | null;
+  status?: string;
+  payment_status?: string;
+  subscription?: string | null;
+  customer?: string | null;
+  metadata?: {
+    supplier_id?: string;
+    owner_id?: string;
+    membership_plan?: string;
+    annual_offer?: string;
+  };
 };
 
 type StripePortalSessionResponse = {
@@ -17,16 +31,7 @@ type StripePortalSessionResponse = {
   url: string;
 };
 
-type StripeSubscriptionResponse = {
-  id: string;
-  status: string;
-  current_period_end?: number;
-  metadata?: {
-    supplier_id?: string;
-    owner_id?: string;
-  };
-  customer?: string | { id?: string };
-};
+type StripeSubscriptionResponse = MembershipSubscription;
 
 type StripePriceResponse = {
   product: string;
@@ -57,6 +62,8 @@ async function stripeRequest<T>(
 
   const response = await fetch(`${STRIPE_API_BASE}${path}`, {
     ...init,
+    cache: "no-store",
+    signal: init.signal ?? AbortSignal.timeout(12000),
     headers: {
       Authorization: `Bearer ${secretKey}`,
       "Content-Type": "application/x-www-form-urlencoded",
@@ -70,6 +77,60 @@ async function stripeRequest<T>(
   }
 
   return payload;
+}
+
+export async function getOrCreateBillingCustomer(input: {
+  supplierId: string;
+  ownerId: string;
+  email?: string | null;
+  customerId?: string | null;
+}) {
+  if (input.customerId) return input.customerId;
+  // Customer creation is idempotent while Stripe's metadata search index catches up.
+  const query = new URLSearchParams({
+    query: `metadata['supplier_id']:'${input.supplierId}' AND metadata['owner_id']:'${input.ownerId}'`,
+    limit: "1",
+  });
+  const existing = await stripeRequest<{ data: Array<{ id: string }> }>(
+    `/customers/search?${query}`,
+    { method: "GET" },
+  );
+  if (existing.data[0]) return existing.data[0].id;
+  const body = new URLSearchParams({
+    "metadata[supplier_id]": input.supplierId,
+    "metadata[owner_id]": input.ownerId,
+  });
+  if (input.email) body.set("email", input.email);
+  const customer = await stripeRequest<{ id: string }>("/customers", {
+    method: "POST",
+    body,
+    headers: {
+      "Idempotency-Key": `tmp-customer-${input.supplierId}-${input.ownerId}`,
+    },
+  });
+  return customer.id;
+}
+
+export async function getCustomerSubscriptions(customerId: string) {
+  const rows: MembershipSubscription[] = [];
+  let cursor = "";
+  for (let page = 0; page < 20; page++) {
+    const query = new URLSearchParams({
+      customer: customerId,
+      status: "all",
+      limit: "100",
+    });
+    if (cursor) query.set("starting_after", cursor);
+    const result = await stripeRequest<{
+      data: MembershipSubscription[];
+      has_more: boolean;
+    }>(`/subscriptions?${query}`, { method: "GET" });
+    rows.push(...result.data);
+    if (!result.has_more) return rows;
+    cursor = result.data.at(-1)?.id ?? "";
+    if (!cursor) break;
+  }
+  throw new Error("Unable to verify subscription history.");
 }
 
 async function assertVerificationPrice(priceId: string, plan: MembershipPlan) {
@@ -132,6 +193,7 @@ export async function createVerificationCheckoutSession(input: {
   customerEmail?: string | null;
   plan?: MembershipPlan;
   expectedAnnualOffer?: boolean;
+  locale?: "en" | "fr" | "tr";
 }) {
   const { verificationPriceId, annualPriceId, annualCouponId } =
     getStripeConfig();
@@ -143,6 +205,16 @@ export async function createVerificationCheckoutSession(input: {
   }
 
   const price = await assertVerificationPrice(priceId, plan);
+  if (!input.customerId) throw new Error("A billing customer is required.");
+  const subscriptions = await getCustomerSubscriptions(input.customerId);
+  if (subscriptions.some((sub) => blocksNewSubscription(sub.status))) {
+    return createBillingPortalSession({
+      origin: input.origin,
+      returnPath: input.returnPath,
+      customerId: input.customerId,
+      locale: input.locale,
+    });
+  }
   const annualOffer =
     plan === "annual" && (await isAnnualOfferEligible(input.customerId));
   if (plan === "annual" && input.expectedAnnualOffer !== annualOffer) {
@@ -172,9 +244,12 @@ export async function createVerificationCheckoutSession(input: {
     "line_items[0][quantity]": "1",
     "metadata[supplier_id]": input.supplierId,
     "metadata[owner_id]": input.ownerId,
+    "metadata[membership_plan]": plan,
+    "metadata[annual_offer]": String(annualOffer),
     "subscription_data[metadata][supplier_id]": input.supplierId,
     "subscription_data[metadata][owner_id]": input.ownerId,
     "subscription_data[metadata][membership_plan]": plan,
+    locale: input.locale ?? "en",
   });
 
   if (annualOffer) body.set("discounts[0][coupon]", annualCouponId);
@@ -185,9 +260,66 @@ export async function createVerificationCheckoutSession(input: {
     body.set("customer_email", input.customerEmail);
   }
 
+  const open = await stripeRequest<{
+    data: StripeCheckoutSessionResponse[];
+    has_more: boolean;
+  }>(
+    `/checkout/sessions?${new URLSearchParams({ customer: input.customerId, status: "open", limit: "100" })}`,
+    { method: "GET" },
+  );
+  if (open.has_more) throw new Error("Too many open checkout sessions.");
+  for (const session of open.data) {
+    if (session.metadata?.supplier_id !== input.supplierId)
+      throw new Error("Unexpected open checkout for this customer.");
+    if (
+      session.metadata?.membership_plan === plan &&
+      session.metadata.annual_offer === String(annualOffer)
+    )
+      return session;
+    // A different plan cannot remain payable in another tab. If it completed meanwhile, stop here.
+    await stripeRequest(
+      `/checkout/sessions/${encodeURIComponent(session.id)}/expire`,
+      { method: "POST" },
+    );
+  }
+  const recent = await stripeRequest<{ data: StripeCheckoutSessionResponse[] }>(
+    `/checkout/sessions?${new URLSearchParams({ customer: input.customerId, limit: "1" })}`,
+    { method: "GET" },
+  );
+  const latest = recent.data[0];
+  // Another request may have opened or completed checkout after the first list call.
+  if (
+    latest?.status === "open" &&
+    !open.data.some((session) => session.id === latest.id)
+  ) {
+    if (latest.metadata?.supplier_id !== input.supplierId)
+      throw new Error("Unexpected checkout owner.");
+    if (
+      latest.metadata.membership_plan === plan &&
+      latest.metadata.annual_offer === String(annualOffer)
+    )
+      return latest;
+    await stripeRequest(
+      `/checkout/sessions/${encodeURIComponent(latest.id)}/expire`,
+      { method: "POST" },
+    );
+  }
+  if (latest?.status === "complete" && latest.subscription) {
+    const paid = await retrieveStripeSubscription(latest.subscription);
+    if (blocksNewSubscription(paid.status))
+      return createBillingPortalSession({
+        origin: input.origin,
+        returnPath: input.returnPath,
+        customerId: input.customerId,
+        locale: input.locale,
+      });
+  }
   return stripeRequest<StripeCheckoutSessionResponse>("/checkout/sessions", {
     method: "POST",
     body,
+    headers: {
+      "Idempotency-Key": `tmp-checkout-${input.supplierId}-${recent.data[0]?.id ?? "initial"}`,
+    },
   });
 }
 
@@ -195,7 +327,11 @@ export async function createBillingPortalSession(input: {
   origin: string;
   returnPath: string;
   customerId: string;
+  locale?: "en" | "fr" | "tr";
 }) {
+  const { portalConfigurationId } = getStripeConfig();
+  if (!portalConfigurationId)
+    throw new Error("Billing portal is not configured.");
   return stripeRequest<StripePortalSessionResponse>(
     "/billing_portal/sessions",
     {
@@ -203,6 +339,8 @@ export async function createBillingPortalSession(input: {
       body: new URLSearchParams({
         customer: input.customerId,
         return_url: `${input.origin}${input.returnPath}`,
+        configuration: portalConfigurationId,
+        locale: input.locale ?? "en",
       }),
     },
   );
@@ -210,9 +348,16 @@ export async function createBillingPortalSession(input: {
 
 export async function retrieveStripeSubscription(subscriptionId: string) {
   return stripeRequest<StripeSubscriptionResponse>(
-    `/subscriptions/${subscriptionId}`,
+    `/subscriptions/${encodeURIComponent(subscriptionId)}`,
     {
       method: "GET",
     },
+  );
+}
+
+export async function retrieveCheckoutSession(id: string) {
+  return stripeRequest<StripeCheckoutSessionResponse>(
+    `/checkout/sessions/${encodeURIComponent(id)}`,
+    { method: "GET" },
   );
 }

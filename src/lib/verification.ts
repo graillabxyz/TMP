@@ -16,6 +16,7 @@ export type VerificationWorkspace = {
     verificationStatus: VerificationStatus;
     subscriptionStatus: VerificationSubscriptionStatus;
     stripeCustomerId: string | null;
+    stripeSubscriptionId: string | null;
     verificationStartedAt: string | null;
     verificationExpiresAt: string | null;
   } | null;
@@ -35,6 +36,7 @@ type SupplierRow = {
   verification_status: VerificationStatus;
   verification_subscription_status: VerificationSubscriptionStatus;
   stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
   verification_started_at: string | null;
   verification_expires_at: string | null;
 };
@@ -63,7 +65,7 @@ export async function getVerificationWorkspace(
   const { data: supplierData, error: supplierError } = await supabase
     .from("suppliers")
     .select(
-      "id, company_name, complimentary_premium, verification_status, verification_subscription_status, stripe_customer_id, verification_started_at, verification_expires_at",
+      "id, company_name, complimentary_premium, verification_status, verification_subscription_status, stripe_customer_id, stripe_subscription_id, verification_started_at, verification_expires_at",
     )
     .eq("owner_id", userId)
     .maybeSingle();
@@ -105,6 +107,7 @@ export async function getVerificationWorkspace(
       verificationStatus: supplier.verification_status,
       subscriptionStatus: supplier.verification_subscription_status,
       stripeCustomerId: supplier.stripe_customer_id,
+      stripeSubscriptionId: supplier.stripe_subscription_id,
       verificationStartedAt: supplier.verification_started_at,
       verificationExpiresAt: supplier.verification_expires_at,
     },

@@ -733,6 +733,15 @@ const dictionaries = {
       ],
       subscription: "Premium Supplier membership",
       billingPeriod: "Billing period",
+      currentPlan: "Current plan",
+      renewsOn: "Renews on",
+      accessEnds: "Access ends on",
+      manageBillingNote: "View invoices, update payment details, or cancel renewal in the billing portal. To change plans, cancel renewal and choose your next plan after the current paid period ends.",
+      billingDetailsUnavailable: "Billing details are temporarily unavailable. Use the billing portal to review your subscription.",
+      annualUnavailable: "Annual checkout is temporarily unavailable. Please try again later.",
+      membershipActivated: "Your membership is active. You can now create and publish products.",
+      confirmationDelayed: "Payment confirmation is taking longer than usual. Please refresh this page shortly. Do not pay again.",
+      confirmationError: "We could not confirm this checkout. Review your subscription before trying another payment.",
       monthly: "Monthly",
       annual: "Annual",
       annualPrice: "€300 for the first year",
@@ -779,7 +788,7 @@ const dictionaries = {
       checkoutPlaceholder:
         "Verification memberships are temporarily unavailable. Please try again later.",
       checkoutSuccess:
-        "Checkout completed. Stripe will confirm the subscription by webhook.",
+        "Confirming your payment and activating your membership...",
       checkoutExisting:
         "A verification membership already exists. Use Manage subscription to review billing.",
       checkoutComplimentary:
@@ -1679,6 +1688,15 @@ const dictionaries = {
       ],
       subscription: "Abonnement Fournisseur Premium",
       billingPeriod: "Période de facturation",
+      currentPlan: "Formule actuelle",
+      renewsOn: "Renouvellement le",
+      accessEnds: "Fin de l’accès le",
+      manageBillingNote: "Consultez les factures, modifiez le moyen de paiement ou annulez le renouvellement dans le portail de facturation. Pour changer de formule, annulez le renouvellement et choisissez une formule à la fin de la période payée.",
+      billingDetailsUnavailable: "Les détails de facturation sont temporairement indisponibles. Consultez votre abonnement dans le portail de facturation.",
+      annualUnavailable: "Le paiement annuel est temporairement indisponible. Veuillez réessayer plus tard.",
+      membershipActivated: "Votre abonnement est actif. Vous pouvez créer et publier des produits.",
+      confirmationDelayed: "La confirmation du paiement prend plus de temps que prévu. Actualisez cette page dans un instant. Ne payez pas à nouveau.",
+      confirmationError: "Nous n’avons pas pu confirmer ce paiement. Consultez votre abonnement avant de réessayer de payer.",
       monthly: "Mensuel",
       annual: "Annuel",
       annualPrice: "300 € la première année",
@@ -1726,7 +1744,7 @@ const dictionaries = {
       checkoutPlaceholder:
         "Les abonnements de vérification sont temporairement indisponibles. Veuillez réessayer plus tard.",
       checkoutSuccess:
-        "Checkout terminé. Stripe confirmera l’abonnement via webhook.",
+        "Confirmation du paiement et activation de votre abonnement...",
       checkoutExisting:
         "Un abonnement de vérification existe déjà. Utilisez Gérer l’abonnement pour consulter la facturation.",
       checkoutComplimentary:
@@ -2616,6 +2634,15 @@ const turkishDictionary = {
     ],
     subscription: "Premium Tedarikçi üyeliği",
     billingPeriod: "Faturalandırma dönemi",
+    currentPlan: "Mevcut plan",
+    renewsOn: "Yenileme tarihi",
+    accessEnds: "Erişim bitiş tarihi",
+    manageBillingNote: "Faturalandırma portalında faturaları görüntüleyebilir, ödeme bilgilerini güncelleyebilir veya yenilemeyi iptal edebilirsiniz. Plan değiştirmek için yenilemeyi iptal edin ve ödenmiş dönem bittikten sonra yeni planınızı seçin.",
+    billingDetailsUnavailable: "Faturalandırma bilgileri geçici olarak kullanılamıyor. Aboneliğinizi faturalandırma portalından kontrol edin.",
+    annualUnavailable: "Yıllık ödeme geçici olarak kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
+    membershipActivated: "Üyeliğiniz etkin. Artık ürün oluşturabilir ve yayınlayabilirsiniz.",
+    confirmationDelayed: "Ödeme onayı beklenenden uzun sürüyor. Lütfen kısa süre sonra sayfayı yenileyin. Tekrar ödeme yapmayın.",
+    confirmationError: "Bu ödemeyi doğrulayamadık. Yeniden ödeme yapmadan önce aboneliğinizi kontrol edin.",
     monthly: "Aylık",
     annual: "Yıllık",
     annualPrice: "İlk yıl için €300",
@@ -2661,7 +2688,7 @@ const turkishDictionary = {
     checkoutPlaceholder:
       "Doğrulama üyelikleri geçici olarak kullanılamıyor. Lütfen daha sonra tekrar deneyin.",
     checkoutSuccess:
-      "Checkout tamamlandı. Stripe aboneliği webhook ile onaylayacak.",
+      "Ödemeniz doğrulanıyor ve üyeliğiniz etkinleştiriliyor...",
     checkoutExisting:
       "Bir doğrulama üyeliği zaten mevcut. Faturalandırmayı incelemek için Aboneliği yönet seçeneğini kullanın.",
     checkoutComplimentary:

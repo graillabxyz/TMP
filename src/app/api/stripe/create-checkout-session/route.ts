@@ -2,7 +2,10 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { getAppOrigin, isAllowedAppOrigin } from "@/lib/app-url";
 import { getLocalizedPath, isLocale } from "@/lib/i18n";
-import { createVerificationCheckoutSession } from "@/lib/stripe/api";
+import {
+  createVerificationCheckoutSession,
+  getOrCreateBillingCustomer,
+} from "@/lib/stripe/api";
 import { isStripeServerConfigured } from "@/lib/stripe/config";
 import { createClient as createServerSupabaseClient } from "@/lib/supabase/server";
 
@@ -106,15 +109,22 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    const customerId = await getOrCreateBillingCustomer({
+      supplierId: supplier.id,
+      ownerId: user.id,
+      email: user.email,
+      customerId: supplier.stripe_customer_id,
+    });
     const session = await createVerificationCheckoutSession({
       origin,
       returnPath: verificationPath,
       supplierId: supplier.id,
       ownerId: supplier.owner_id ?? user.id,
-      customerId: supplier.stripe_customer_id,
+      customerId,
       customerEmail: user.email,
       plan,
       expectedAnnualOffer: body?.annualOffer === true,
+      locale,
     });
 
     return NextResponse.json({

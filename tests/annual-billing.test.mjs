@@ -39,6 +39,7 @@ const input = {
   ownerId: "owner",
   plan: "annual",
   expectedAnnualOffer: true,
+  customerId: "cus_example",
 };
 
 function mockStripe(t, overrides = {}) {
@@ -47,6 +48,7 @@ function mockStripe(t, overrides = {}) {
     STRIPE_VERIFICATION_PRICE_ID: "price_month",
     STRIPE_ANNUAL_PRICE_ID: "price_year",
     STRIPE_ANNUAL_COUPON_ID: "coupon_intro",
+    STRIPE_PORTAL_CONFIGURATION_ID: "bpc_example",
   })) {
     const original = process.env[key];
     process.env[key] = value;
@@ -58,7 +60,12 @@ function mockStripe(t, overrides = {}) {
   }
   const requests = [];
   t.mock.method(globalThis, "fetch", async (url, init) => {
-    requests.push({ url: String(url), body: init.body });
+    requests.push({
+      url: String(url),
+      body: init.body,
+      method: init.method,
+      headers: init.headers,
+    });
     const path = new URL(url).pathname;
     let value;
     if (path.endsWith("/price_year")) value = overrides.price ?? annualPrice;
@@ -77,7 +84,19 @@ function mockStripe(t, overrides = {}) {
           ? overrides.history(url)
           : { data: overrides.history ?? [], has_more: false };
     else if (path.endsWith("/checkout/sessions"))
-      value = { id: "cs_example", url: "https://checkout.stripe.com/example" };
+      value =
+        init.method === "GET"
+          ? {
+              data:
+                typeof overrides.sessions === "function"
+                  ? overrides.sessions(url)
+                  : (overrides.sessions ?? []),
+              has_more: false,
+            }
+          : { id: "cs_example", url: "https://checkout.stripe.com/example" };
+    else if (path.endsWith("/expire")) value = { status: "expired" };
+    else if (path.endsWith("/billing_portal/sessions"))
+      value = { id: "bps_example", url: "https://billing.stripe.com/example" };
     else throw new Error(`Unexpected Stripe call: ${url}`);
     return Response.json(value);
   });
@@ -111,6 +130,96 @@ test("annual price and coupon guards reject wrong amounts, intervals and recurri
       false,
     );
   }
+});
+
+test("an existing Stripe subscription opens the portal even before the DB webhook catches up", async (t) => {
+  const requests = mockStripe(t, {
+    history: [{ id: "sub_active", status: "active", items: { data: [] } }],
+  });
+  await createVerificationCheckoutSession(input);
+  assert.equal(requests.at(-1).body.get("configuration"), "bpc_example");
+  assert.equal(
+    requests.some(
+      (r) => r.url.endsWith("/checkout/sessions") && r.method === "POST",
+    ),
+    false,
+  );
+});
+
+test("same-plan retries reuse an open checkout and other plans expire before replacement", async (t) => {
+  const session = {
+    id: "cs_existing",
+    status: "open",
+    url: "https://checkout.stripe.com/existing",
+    metadata: {
+      supplier_id: "supplier",
+      membership_plan: "annual",
+      annual_offer: "true",
+    },
+  };
+  const requests = mockStripe(t, { sessions: [session] });
+  assert.equal(
+    (await createVerificationCheckoutSession(input)).id,
+    "cs_existing",
+  );
+  assert.equal(
+    requests.some(
+      (r) => r.url.endsWith("/checkout/sessions") && r.method === "POST",
+    ),
+    false,
+  );
+  await createVerificationCheckoutSession({
+    ...input,
+    plan: "monthly",
+    locale: "fr",
+  });
+  assert.ok(requests.some((r) => r.url.endsWith("/cs_existing/expire")));
+  assert.equal(
+    requests.at(-1).headers["Idempotency-Key"],
+    "tmp-checkout-supplier-cs_existing",
+  );
+  assert.equal(requests.at(-1).body.get("locale"), "fr");
+});
+
+test("a checkout opened between Stripe list calls is reused instead of duplicated", async (t) => {
+  const session = {
+    id: "cs_racing",
+    status: "open",
+    url: "https://checkout.stripe.com/racing",
+    metadata: {
+      supplier_id: "supplier",
+      membership_plan: "annual",
+      annual_offer: "true",
+    },
+  };
+  const requests = mockStripe(t, {
+    sessions: (url) =>
+      new URL(url).searchParams.has("status") ? [] : [session],
+  });
+  assert.equal(
+    (await createVerificationCheckoutSession(input)).id,
+    "cs_racing",
+  );
+  assert.equal(
+    requests.some((r) => r.method === "POST"),
+    false,
+  );
+});
+
+test("an unexpected checkout owner fails closed", async (t) => {
+  const requests = mockStripe(t, {
+    sessions: [
+      { id: "cs_foreign", status: "open", metadata: { supplier_id: "other" } },
+    ],
+  });
+  await assert.rejects(
+    createVerificationCheckoutSession(input),
+    /Unexpected open checkout/,
+  );
+  assert.equal(
+    requests.some((r) => r.method === "POST"),
+    false,
+  );
 });
 
 test("first annual checkout is EUR 600 recurring with a single 50% discount and no trial", async (t) => {
